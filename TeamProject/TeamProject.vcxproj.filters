@@ -32,14 +32,11 @@
     <ClInclude Include="GameTechRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Coursework.h">
+    <ClInclude Include="ExampleScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExampleScene.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

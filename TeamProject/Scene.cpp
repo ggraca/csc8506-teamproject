@@ -1,10 +1,10 @@
 #include "Scene.h"
-#include "../GameTechCommon/GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
 
+#include "../GameTechCommon/GameWorld.h"
 #include "../GameTechCommon/PositionConstraint.h"
 
 using namespace NCL;

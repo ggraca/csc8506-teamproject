@@ -8,13 +8,6 @@
 
 #include "../GameTechCommon/NavigationGrid.h"
 
-enum BotState {
-    Following,
-    Returning,
-    Patrolling,
-    Dead // :(
-};
-
 namespace NCL {
     namespace CSC8503 {
         class ExampleScene : public Scene/*, public PacketReceiver*/ {

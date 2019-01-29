@@ -1,6 +1,7 @@
+#include <time.h>
+
 #include "../Common/Window.h"
 #include "ExampleScene.h"
-#include <time.h>
 
 using namespace NCL;
 using namespace CSC8503;
