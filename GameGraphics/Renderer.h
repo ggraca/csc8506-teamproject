@@ -1,15 +1,15 @@
 #pragma once
 
 #include <algorithm>
-#include "../nclgl/OGLRenderer.h"
-#include "../nclgl/SceneNode.h"
-#include "../nclgl/Frustum.h"
-#include "../nclgl/Camera.h"
-#include "../nclgl/Light.h"
-#include "../nclgl/HeightMap.h"
-#include "../nclgl/MD5Mesh.h"
-#include "../nclgl/MD5Node.h"
-#include "../nclgl/OBJMesh.h"
+#include "../GameGraphicsCommon/OGLRenderer.h"
+#include "../GameGraphicsCommon/SceneNode.h"
+#include "../GameGraphicsCommon/Frustum.h"
+#include "../GameGraphicsCommon/Camera.h"
+#include "../GameGraphicsCommon/Light.h"
+#include "../GameGraphicsCommon/HeightMap.h"
+#include "../GameGraphicsCommon/MD5Mesh.h"
+#include "../GameGraphicsCommon/MD5Node.h"
+#include "../GameGraphicsCommon/OBJMesh.h"
 #include <string>
 
 #define LIGHTNUM 2

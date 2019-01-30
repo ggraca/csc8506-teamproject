@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="GLEW">
-      <UniqueIdentifier>{b1c3e3e4-6e8c-4d6a-82a5-fca1a5b2dae5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SOIL">
-      <UniqueIdentifier>{e0147123-f732-4234-9c4b-575401d4d6df}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Quaternion.h">
@@ -99,54 +93,6 @@
     <ClInclude Include="Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLEW\include\GL\freeglut.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLEW\include\GL\freeglut_ext.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLEW\include\GL\freeglut_std.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLEW\include\GL\glew.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLEW\include\GL\glext.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLEW\include\GL\glut.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLEW\include\GL\glxew.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLEW\include\GL\wglew.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="GLEW\include\GL\wglext.h">
-      <Filter>GLEW</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\image_DXT.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\image_helper.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\SOIL.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\stbi_DDS_aug.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\stbi_DDS_aug_c.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\stb_image_aug.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
-    <ClInclude Include="SOIL\SOIL.h">
-      <Filter>SOIL</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MD5Node.cpp">
@@ -206,37 +152,5 @@
     <ClCompile Include="MD5Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\image_DXT.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\image_helper.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\original\stb_image-1.09.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\original\stb_image-1.16.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\SOIL.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\stb_image_aug.c">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\test_SOIL.cpp">
-      <Filter>SOIL</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SOIL\Simple OpenGL Image Library\projects\VC9\Debug\BuildLog.htm">
-      <Filter>SOIL</Filter>
-    </None>
-    <None Include="SOIL\Simple OpenGL Image Library\soil.html">
-      <Filter>SOIL</Filter>
-    </None>
-    <None Include="SOIL\SLN\Debug\BuildLog.htm">
-      <Filter>SOIL</Filter>
-    </None>
   </ItemGroup>
 </Project>

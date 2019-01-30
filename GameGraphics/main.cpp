@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include <time.h>
 
-#pragma comment(lib, "nclgl.lib")
+#pragma comment(lib, "GameGraphicsCommon.lib")
 
 int main() {
   Window w("Next UE4!", 1920, 1200, false);

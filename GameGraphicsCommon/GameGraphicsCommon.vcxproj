@@ -26,7 +26,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -71,13 +71,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)\GameGraphicsCommon\GLEW\include;$(SolutionDir)\GameGraphicsCommon\SOIL;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\GameGraphicsCommon\GLEW\lib\$(Configuration);$(SolutionDir)\GameGraphicsCommon\SOIL\$(Configuration);$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\GameGraphicsCommon\GLEW\lib\$(Configuration);$(SolutionDir)\GameGraphicsCommon\SOIL\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -119,15 +120,6 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GameTimer.h" />
-    <ClInclude Include="GLEW\include\GL\freeglut.h" />
-    <ClInclude Include="GLEW\include\GL\freeglut_ext.h" />
-    <ClInclude Include="GLEW\include\GL\freeglut_std.h" />
-    <ClInclude Include="GLEW\include\GL\glew.h" />
-    <ClInclude Include="GLEW\include\GL\glext.h" />
-    <ClInclude Include="GLEW\include\GL\glut.h" />
-    <ClInclude Include="GLEW\include\GL\glxew.h" />
-    <ClInclude Include="GLEW\include\GL\wglew.h" />
-    <ClInclude Include="GLEW\include\GL\wglext.h" />
     <ClInclude Include="HeightMap.h" />
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="Keyboard.h" />
@@ -145,13 +137,6 @@
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\image_DXT.h" />
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\image_helper.h" />
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\SOIL.h" />
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\stbi_DDS_aug.h" />
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\stbi_DDS_aug_c.h" />
-    <ClInclude Include="SOIL\Simple OpenGL Image Library\src\stb_image_aug.h" />
-    <ClInclude Include="SOIL\SOIL.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
@@ -176,23 +161,7 @@
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\image_DXT.c" />
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\image_helper.c" />
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\original\stb_image-1.09.c" />
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\original\stb_image-1.16.c" />
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\SOIL.c" />
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\stb_image_aug.c" />
-    <ClCompile Include="SOIL\Simple OpenGL Image Library\src\test_SOIL.cpp" />
     <ClCompile Include="Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SOIL\Simple OpenGL Image Library\projects\VC9\Debug\BuildLog.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="SOIL\Simple OpenGL Image Library\soil.html" />
-    <None Include="SOIL\SLN\Debug\BuildLog.htm">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

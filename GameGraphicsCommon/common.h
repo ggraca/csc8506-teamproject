@@ -52,13 +52,13 @@ static inline double DegToRad(const double rad)	{
 #define max(a,b)    (((a) > (b)) ? (a) : (b))
 #define min(a,b)    (((a) < (b)) ? (a) : (b))
 
-#define SHADERDIR	"../../Shaders/"
-#define MESHDIR		"../../Meshes/"
-#define TEXTUREDIR  "../../Textures/"
-#define SOUNDSDIR	"../../Sounds/"
+#define SHADERDIR	"../GameGraphicsCommon/Assets/Shaders/"
+#define MESHDIR		"../GameGraphicsCommon/Assets/Meshes/"
+#define TEXTUREDIR  "../GameGraphicsCommon/Assets/Textures/"
+#define SOUNDSDIR	"../GameGraphicsCommon/Assets/Sounds/"
 
-#define MYSHADERDIR	"../../MyShaders/"
-#define MYMESHDIR		"../../MyMeshes/"
-#define MYTEXTUREDIR  "../../MyTextures/"
-#define MYSOUNDSDIR	"../../MySounds/"
-#define MYSKYBOXES	"../../MySkyboxes/"
+#define MYSHADERDIR	"../GameGraphics/Assets/MyShaders/"
+#define MYMESHDIR		"../GameGraphics/Assets/MyMeshes/"
+#define MYTEXTUREDIR  "../GameGraphics/Assets/MyTextures/"
+#define MYSOUNDSDIR	"../GameGraphics/Assets/MySounds/"
+#define MYSKYBOXES	"../GameGraphics/Assets/MySkyboxes/"
