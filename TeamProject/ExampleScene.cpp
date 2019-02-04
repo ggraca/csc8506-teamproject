@@ -60,7 +60,5 @@ void ExampleScene::UpdateGame(float dt) {
 void ExampleScene::DebugScene(float dt) {
 	Debug::AddStringToDebugMenu("Graphics: ");
 	Debug::AddStringToDebugMenu("FPS: " + std::to_string((int)(1 / dt)) + "." + std::to_string((int)(10 / dt) % 10));
-	Debug::AddStringToDebugMenu("Verts: ");
-	Debug::AddStringToDebugMenu("Draw Calls: ");
-	Debug::AddStringToDebugMenu("Shadow Casters: ");
+	renderer->DebugRenderer();
 }

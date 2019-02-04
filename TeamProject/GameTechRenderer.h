@@ -17,6 +17,8 @@ namespace NCL {
 			GameTechRenderer(GameWorld& world);
 			~GameTechRenderer();
 
+			void DebugRenderer();
+
 		protected:
 			void RenderFrame()	override;
 
@@ -42,6 +44,8 @@ namespace NCL {
 			Vector4		lightColour;
 			float		lightRadius;
 			Vector3		lightPosition;
+
+			int vertsDrawn = 0;
 		};
 	}
 }

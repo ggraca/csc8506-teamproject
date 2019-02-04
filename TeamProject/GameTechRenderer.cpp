@@ -177,8 +177,16 @@ void GameTechRenderer::RenderCamera() {
 		glUniform4fv(colourLocation, 1, (float*)&i->GetColour());
 
 		BindMesh((*i).GetMesh());
+
+		vertsDrawn += (*i).GetMesh()->GetVertexCount();
+
 		DrawBoundMesh();
 	}
+}
+
+void GameTechRenderer::DebugRenderer() {
+	Debug::AddStringToDebugMenu("Verts: " + std::to_string(vertsDrawn));
+	vertsDrawn = 0;
 }
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
