@@ -53,7 +53,7 @@ void Debug::FlushRenderables() {
 
 	for (int i = 0; i < DebugMenu.size(); i++)
 	{
-		renderer->DrawString(DebugMenu[i].data, Vector2(20, 20 + (DebugMenu.size() - i) * 20));
+		renderer->DrawString(DebugMenu[i].data, Vector2(20, (DebugMenu.size() - i) * 20));
 	}
 
 	DebugMenu.clear();

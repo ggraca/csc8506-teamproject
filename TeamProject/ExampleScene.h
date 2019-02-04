@@ -18,6 +18,7 @@ namespace NCL {
         protected:
             void ResetWorld();
 			void DebugScene(float dt);
+			void HandleCommand();
 
             /*
             GameServer* server;
@@ -26,6 +27,8 @@ namespace NCL {
 
 			float frameTime = 60.0f;
 			int calculateNewFPS = 0;
+			bool consoleOpen = false;
+			std::string consoleCommand = "";
         };
     }
 }
