@@ -46,6 +46,7 @@ void Debug::FlushRenderables() {
 		renderer->DrawString(DebugMenu[i].data, Vector2(20, (DebugMenu.size() - i) * 20);
 	}
 
+	DebugMenu.clear();
 	stringEntries.clear();
 	lineEntries.clear();
 }
