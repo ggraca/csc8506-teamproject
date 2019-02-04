@@ -190,6 +190,7 @@ void GameTechRenderer::RenderCamera() {
 
 //Outputs any debug data to the debug menu
 void GameTechRenderer::DebugRenderer() {
+	Debug::AddStringToDebugMenu("Screen Size: " + std::to_string(currentWidth) + "x" + std::to_string(currentHeight));
 	Debug::AddStringToDebugMenu("Verts: " + std::to_string(vertsDrawn));
 	Debug::AddStringToDebugMenu("Shadow Casters: " + std::to_string(shadowCasters));
 	shadowCasters = 0;
