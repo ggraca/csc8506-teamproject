@@ -106,6 +106,9 @@ void GameTechRenderer::RenderShadowMap() {
 		DrawBoundMesh();
 	}
 
+	// Calculates how many shadow casting lights are currently being renderered
+	shadowCasters++;
+
 	glViewport(0, 0, currentWidth, currentHeight);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -178,14 +181,18 @@ void GameTechRenderer::RenderCamera() {
 
 		BindMesh((*i).GetMesh());
 
+		//Calculates how many vertices are drawn per frame
 		vertsDrawn += (*i).GetMesh()->GetVertexCount();
 
 		DrawBoundMesh();
 	}
 }
 
+//Outputs any debug data to the debug menu
 void GameTechRenderer::DebugRenderer() {
 	Debug::AddStringToDebugMenu("Verts: " + std::to_string(vertsDrawn));
+	Debug::AddStringToDebugMenu("Shadow Casters: " + std::to_string(shadowCasters));
+	shadowCasters = 0;
 	vertsDrawn = 0;
 }
 

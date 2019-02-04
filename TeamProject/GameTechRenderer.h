@@ -46,6 +46,7 @@ namespace NCL {
 			Vector3		lightPosition;
 
 			int vertsDrawn = 0;
+			int shadowCasters = 0;
 		};
 	}
 }
