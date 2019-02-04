@@ -17,11 +17,15 @@ namespace NCL {
             void UpdateGame(float dt);
         protected:
             void ResetWorld();
+			void DebugScene(float dt);
 
             /*
             GameServer* server;
             GameClient* client;
             */
+
+			float frameTime = 60.0f;
+			int calculateNewFPS = 0;
         };
     }
 }

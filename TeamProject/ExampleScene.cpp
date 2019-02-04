@@ -46,5 +46,21 @@ void ExampleScene::UpdateGame(float dt) {
   physics->Update(dt);
 
   Debug::FlushRenderables();
+
+  calculateNewFPS++;
+  if (calculateNewFPS > 10) {
+	  frameTime = dt;
+	  calculateNewFPS = 0;
+  }
+  DebugScene(frameTime);
+
   renderer->Render();
+}
+
+void ExampleScene::DebugScene(float dt) {
+	Debug::AddStringToDebugMenu("Graphics: ");
+	Debug::AddStringToDebugMenu("FPS: " + std::to_string((int)(1 / dt)) + "." + std::to_string((int)(10 / dt) % 10));
+	Debug::AddStringToDebugMenu("Verts: ");
+	Debug::AddStringToDebugMenu("Draw Calls: ");
+	Debug::AddStringToDebugMenu("Shadow Casters: ");
 }
