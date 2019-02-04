@@ -6,6 +6,7 @@ OGLRenderer* Debug::renderer = nullptr;
 
 std::vector<Debug::DebugStringEntry>	Debug::stringEntries;
 std::vector<Debug::DebugLineEntry>		Debug::lineEntries;
+std::vector<Debug::DebugStringEntry>    Debug::DebugMenu;
 
 
 void Debug::Print(const std::string& text, const Vector2&pos, const Vector4& colour) {
@@ -38,6 +39,11 @@ void Debug::FlushRenderables() {
 
 	for (const auto& i : lineEntries) {
 		renderer->DrawLine(i.start, i.end, i.colour);
+	}
+
+	for (int i = 0; i < DebugMenu.size(); i++)
+	{
+		renderer->DrawString(DebugMenu[i].data, Vector2(20, (DebugMenu.size() - i) * 20);
 	}
 
 	stringEntries.clear();

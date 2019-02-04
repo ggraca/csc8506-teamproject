@@ -35,6 +35,7 @@ namespace NCL {
 
 		static std::vector<DebugStringEntry>	stringEntries;
 		static std::vector<DebugLineEntry>	lineEntries;
+		static std::vector<DebugStringEntry> DebugMenu;
 
 		static OGLRenderer* renderer;
 	};
