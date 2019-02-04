@@ -50,6 +50,10 @@ void GameWorld::GetObjectIterators(
 	last	= gameObjects.end();
 }
 
+int GameWorld::GetObjectCount(){
+	return gameObjects.size();
+}
+
 void GameWorld::UpdateWorld(float dt) {
 	UpdateTransforms();
 

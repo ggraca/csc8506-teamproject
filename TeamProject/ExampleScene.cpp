@@ -58,6 +58,8 @@ void ExampleScene::UpdateGame(float dt) {
 }
 
 void ExampleScene::DebugScene(float dt) {
+	Debug::AddStringToDebugMenu("World: ");
+	Debug::AddStringToDebugMenu("GameObjects: " + std::to_string(world->GetObjectCount()));
 	Debug::AddStringToDebugMenu("Graphics: ");
 	Debug::AddStringToDebugMenu("FPS: " + std::to_string((int)(1 / dt)) + "." + std::to_string((int)(10 / dt) % 10));
 	renderer->DebugRenderer();
