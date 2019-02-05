@@ -23,5 +23,5 @@ void DebugMenu::Update(const float dt, GameTechRenderer* renderer) {
 	Debug::AddStringToDebugMenu("Screen Size: " + std::to_string(renderer->GetRendererWidth())
 		+ "x" + std::to_string(renderer->GetRendererHeight()));
 	Debug::AddStringToDebugMenu("Verts: " + std::to_string(renderer->GetVertsDrawn()));
-	Debug::AddStringToDebugMenu("Shadow Casters: " + std::to_string(renderer->GetShadowCasters));
+	Debug::AddStringToDebugMenu("Shadow Casters: " + std::to_string(renderer->GetShadowCasters()));
 }
