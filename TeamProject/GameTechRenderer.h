@@ -17,6 +17,11 @@ namespace NCL {
 			GameTechRenderer(GameWorld& world);
 			~GameTechRenderer();
 
+			int GetRendererWidth() const { return currentWidth; }
+			int GetRendererHeight() const { return currentHeight; }
+			int GetVertsDrawn() const { return vertsDrawn; }
+			int GetShadowCasters() const { return shadowCasters; }
+
 		protected:
 			void RenderFrame()	override;
 
