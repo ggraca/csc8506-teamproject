@@ -144,12 +144,15 @@ void PhysicsSystem::BasicCollisionDetection() {
 			if (j == i) continue;
 			if ((*j)->GetPhysicsObject() == nullptr) continue;
 
-			CollisionDetection::CollisionInfo info;
-			if(CollisionDetection::ObjectIntersection(*i, *j, info)) {
-				ImpulseResolveCollision(*info.a, *info.b, info.point);
-				info.framesLeft = numCollisionFrames;
-				allCollisions.insert(info);
-			}
+			if (gameWorld.GetLayering().CanLayersCollide((*i)->GetLayer(),(*j)->GetLayer()))
+			{
+				CollisionDetection::CollisionInfo info;
+				if (CollisionDetection::ObjectIntersection(*i, *j, info)) {
+					ImpulseResolveCollision(*info.a, *info.b, info.point);
+					info.framesLeft = numCollisionFrames;
+					allCollisions.insert(info);
+				}
+			}			
 		}
 	}
 }

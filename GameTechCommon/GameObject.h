@@ -5,6 +5,7 @@
 #include "PhysicsObject.h"
 #include "RenderObject.h"
 #include "NetworkObject.h"
+#include "Layer.h"
 
 #include <vector>
 
@@ -67,42 +68,29 @@ namespace NCL {
 				name = s;
 			}
 
+			void SetLayer(Layer::ObjectLayer l)
+			{
+				this->layer = l;
+			}
+
+			Layer::ObjectLayer GetLayer() const
+			{
+				return this->layer;
+			}
+
+
 			virtual void OnCollisionBegin(GameObject* otherObject) {
-				if (name == "goal") {
-					if (otherObject->name == "") return;
-					if (winner == nullptr) winner = otherObject;
-				} else if (name.substr(0, 3) == "bot") {
-					if (otherObject->name.substr(0, 3) == "bot") {
-						std::cout << "bot collision with bot" << std::endl;
-						killBot = true;
-					}
-					else if (otherObject->name != "") {
-						std::cout << "bot collision with player" << std::endl;
-
-						if (otherObject->GetPhysicsObject()->GetLinearVelocity().Length() < 300) {
-							otherObject->GetPhysicsObject()->AddForce(
-								Vector3(rand(), 0, rand()).Normalised() * 15000
-							);
-						} else {
-							killBot = true;
-							killerName = otherObject->name;
-						}
-
-					}
-				}
+				
 			}
 
 			virtual void OnCollisionEnd(GameObject* otherObject) {
-				//std::cout << "OnCollisionEnd event occured!\n";
+				
 			}
 
 			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
 
-			GameObject* GetWinner() const {
-				return winner;
-			}
-			bool killBot = false;
-			string killerName = "";
+			
+			
 		protected:
 			Transform			transform;
 
@@ -110,10 +98,11 @@ namespace NCL {
 			PhysicsObject*		physicsObject;
 			RenderObject*		renderObject;
 			NetworkObject*		networkObject;
+			Layer::ObjectLayer  layer;
 
 			bool	isActive;
 			string	name;
-			GameObject* winner = nullptr;
+			
 		};
 	}
 }

@@ -3,6 +3,9 @@
 #include "Ray.h"
 #include "CollisionDetection.h"
 #include "QuadTree.h"
+#include "Layer.h"
+
+
 namespace NCL {
 		class Camera;
 		using Maths::Ray;
@@ -48,6 +51,16 @@ namespace NCL {
 				std::vector<Constraint*>::const_iterator& first,
 				std::vector<Constraint*>::const_iterator& last) const;
 
+			void SetLayering(Layer layer)
+			{
+				this->layering = layer;
+			}
+
+			Layer GetLayering() const
+			{
+				return this->layering;
+			}
+
 		protected:
 			void UpdateTransforms();
 			void UpdateQuadTree();
@@ -62,6 +75,7 @@ namespace NCL {
 
 			bool shuffleConstraints;
 			bool shuffleObjects;
+			Layer layering;
 		};
 	}
 }

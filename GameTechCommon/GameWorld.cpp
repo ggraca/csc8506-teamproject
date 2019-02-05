@@ -11,9 +11,9 @@ GameWorld::GameWorld()	{
 	mainCamera = new Camera();
 
 	quadTree = nullptr;
-
 	shuffleConstraints	= false;
 	shuffleObjects		= false;
+	layering = Layer();
 }
 
 GameWorld::~GameWorld()	{
