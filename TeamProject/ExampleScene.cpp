@@ -25,6 +25,7 @@ ExampleScene::ExampleScene() : Scene() {
   Window::GetWindow()->LockMouseToWindow(true);
 
   ResetWorld();
+  debugMenu = DebugMenu();
 }
 
 void ExampleScene::ResetWorld() {
@@ -46,13 +47,7 @@ void ExampleScene::UpdateGame(float dt) {
   physics->Update(dt);
 
   Debug::FlushRenderables();
-
-  calculateNewFPS++;
-  if (calculateNewFPS > 10) {
-	  frameTime = dt;
-	  calculateNewFPS = 0;
-  }
-  DebugScene(frameTime);
+  debugMenu.Update(dt, renderer);
 
   renderer->Render();
 }

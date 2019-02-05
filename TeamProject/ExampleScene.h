@@ -21,6 +21,8 @@ namespace NCL {
             void ResetWorld();
 			void DebugScene(float dt);
 
+			DebugMenu debugMenu;
+
             /*
             GameServer* server;
             GameClient* client;
