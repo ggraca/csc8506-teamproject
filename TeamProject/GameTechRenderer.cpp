@@ -133,6 +133,8 @@ void GameTechRenderer::RenderCamera() {
 	int lightRadiusLocation = 0;
 
 	int cameraLocation = 0;
+	shadowCasters = 0;
+	vertsDrawn = 0;
 
 	//TODO - PUT IN FUNCTION
 	glActiveTexture(GL_TEXTURE0 + 1);
@@ -186,15 +188,6 @@ void GameTechRenderer::RenderCamera() {
 
 		DrawBoundMesh();
 	}
-}
-
-//Outputs any debug data to the debug menu
-void GameTechRenderer::DebugRenderer() {
-	Debug::AddStringToDebugMenu("Screen Size: " + std::to_string(currentWidth) + "x" + std::to_string(currentHeight));
-	Debug::AddStringToDebugMenu("Verts: " + std::to_string(vertsDrawn));
-	Debug::AddStringToDebugMenu("Shadow Casters: " + std::to_string(shadowCasters));
-	shadowCasters = 0;
-	vertsDrawn = 0;
 }
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {

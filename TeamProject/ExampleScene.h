@@ -7,6 +7,8 @@
 #include "../GameTechCommon/GameClient.h"
 
 #include "../GameTechCommon/NavigationGrid.h"
+#include "Console.h"
+#include "DebugMenu.h"
 
 namespace NCL {
     namespace CSC8503 {
@@ -18,17 +20,11 @@ namespace NCL {
         protected:
             void ResetWorld();
 			void DebugScene(float dt);
-			void HandleCommand();
 
             /*
             GameServer* server;
             GameClient* client;
             */
-
-			float frameTime = 60.0f;
-			int calculateNewFPS = 0;
-			bool consoleOpen = false;
-			std::string consoleCommand = "";
         };
     }
 }

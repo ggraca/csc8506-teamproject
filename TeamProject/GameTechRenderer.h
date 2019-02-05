@@ -17,8 +17,6 @@ namespace NCL {
 			GameTechRenderer(GameWorld& world);
 			~GameTechRenderer();
 
-			void DebugRenderer();
-
 		protected:
 			void RenderFrame()	override;
 
