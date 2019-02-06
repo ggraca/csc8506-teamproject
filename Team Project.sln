@@ -11,8 +11,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLRendering", "Plugins\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontBuilder", "FontBuilder\FontBuilder.vcxproj", "{F75A977F-2D2B-4D4A-A5E4-72905D38922A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Programs", "Programs", "{EBB755EB-3523-4820-A137-826DC4A89983}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Networking-ENet", "Plugins\Networking-ENet\Networking-ENet.vcxproj", "{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeamProject", "TeamProject\TeamProject.vcxproj", "{86B67DBB-8D8A-4B90-9383-A95C534E2A01}"
@@ -40,7 +38,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameGraphics", "GameGraphic
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameGraphicsCommon", "GameGraphicsCommon\GameGraphicsCommon.vcxproj", "{071557A5-5ADD-41A5-80AB-9D48B17CC87D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletHelloWorld", "BulletHelloWorld\BulletHelloWorld.vcxproj", "{F7631993-FE01-40DA-A3B4-39F572662C79}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletHelloWorld", "Plugins\Bullet\BulletHelloWorld\BulletHelloWorld.vcxproj", "{F7631993-FE01-40DA-A3B4-39F572662C79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,8 +134,9 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EF869029-64F1-467F-BB9B-1D3B49EDECFA} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A} = {EBB755EB-3523-4820-A137-826DC4A89983}
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
 		{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
+		{F7631993-FE01-40DA-A3B4-39F572662C79} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28397354-383B-4D5D-B8BE-A6498FC71C4C}
