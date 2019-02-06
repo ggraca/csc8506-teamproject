@@ -1,11 +1,20 @@
 #include "Console.h"
-#include "../GameTechCommon/Debug.h"
-
+#include "utils.h"
 
 using namespace NCL;
 
+void TestCommand(vector<string> commandparams) {
+	cout << "Command found with name: " + commandparams[0] << endl;
+	cout << "Parameters are: " << endl;;
+	for (int i = 1; i < commandparams.size(); i++)
+	{
+		cout << commandparams[i] << endl;
+	}
+}
+
 Console::Console()
 {
+	RegisterCommand("testcommand", TestCommand);
 }
 
 
@@ -14,140 +23,150 @@ Console::~Console()
 }
 
 void Console::HandleCommand() {
-	std::function<void(std::string)> functionaCall;
-	functionaCall = commands.find(consoleCommand)->second;
-	consoleCommand = "";
+	function<void(vector<string>)> functionCall;
+	vector<string> parsedCommand = split_string(currentCommand, ' ');
+
+	auto foundCommand = commands.find(parsedCommand[0]);
+	currentCommand = "";
+
+	if (foundCommand == commands.end()) {
+		cout << __FUNCTION__ << " was called with invalid command!" << endl;
+		return;
+	}
+
+	functionCall = foundCommand->second;
+	functionCall(parsedCommand);
 }
 
-void Console::RegisterCommand(std::string identifier, std::function<void(std::string)> command) {
-	commands.insert(std::pair<std::string, std::function<void(std::string)>>(identifier, command));
+void Console::RegisterCommand(string identifier, function<void(vector<string>)> command) {
+	commands.insert(pair<string, function<void(vector<string>)>>(identifier, command));
 }
 
 void Console::Update() {
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
 		consoleOpen = !consoleOpen;
-		consoleCommand = "";
+		currentCommand = "";
 	}
 
 	if (consoleOpen) {
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_0)) {
-			consoleCommand += "0";
+			currentCommand += "0";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_1)) {
-			consoleCommand += "1";
+			currentCommand += "1";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_2)) {
-			consoleCommand += "2";
+			currentCommand += "2";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_3)) {
-			consoleCommand += "3";
+			currentCommand += "3";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_4)) {
-			consoleCommand += "4";
+			currentCommand += "4";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_5)) {
-			consoleCommand += "5";
+			currentCommand += "5";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_6)) {
-			consoleCommand += "6";
+			currentCommand += "6";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_7)) {
-			consoleCommand += "7";
+			currentCommand += "7";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_8)) {
-			consoleCommand += "8";
+			currentCommand += "8";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_9)) {
-			consoleCommand += "9";
+			currentCommand += "9";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_A)) {
-			consoleCommand += "a";
+			currentCommand += "a";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) {
-			consoleCommand += "b";
+			currentCommand += "b";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
-			consoleCommand += "c";
+			currentCommand += "c";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_D)) {
-			consoleCommand += "d";
+			currentCommand += "d";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_E)) {
-			consoleCommand += "e";
+			currentCommand += "e";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_F)) {
-			consoleCommand += "f";
+			currentCommand += "f";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_G)) {
-			consoleCommand += "g";
+			currentCommand += "g";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_H)) {
-			consoleCommand += "h";
+			currentCommand += "h";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_I)) {
-			consoleCommand += "i";
+			currentCommand += "i";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_J)) {
-			consoleCommand += "j";
+			currentCommand += "j";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_K)) {
-			consoleCommand += "k";
+			currentCommand += "k";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_L)) {
-			consoleCommand += "l";
+			currentCommand += "l";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_M)) {
-			consoleCommand += "m";
+			currentCommand += "m";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_N)) {
-			consoleCommand += "n";
+			currentCommand += "n";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_O)) {
-			consoleCommand += "o";
+			currentCommand += "o";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
-			consoleCommand += "p";
+			currentCommand += "p";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Q)) {
-			consoleCommand += "q";
+			currentCommand += "q";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_R)) {
-			consoleCommand += "r";
+			currentCommand += "r";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_S)) {
-			consoleCommand += "s";
+			currentCommand += "s";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_T)) {
-			consoleCommand += "t";
+			currentCommand += "t";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
-			consoleCommand += "u";
+			currentCommand += "u";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
-			consoleCommand += "v";
+			currentCommand += "v";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_W)) {
-			consoleCommand += "w";
+			currentCommand += "w";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_X)) {
-			consoleCommand += "x";
+			currentCommand += "x";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Y)) {
-			consoleCommand += "y";
+			currentCommand += "y";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) {
-			consoleCommand += "z";
+			currentCommand += "z";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_SPACE)) {
-			consoleCommand += " ";
+			currentCommand += " ";
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_RETURN)) {
 			HandleCommand();
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_BACK)) {
-			consoleCommand.pop_back();
+			currentCommand.pop_back();
 		}
 
-		Debug::AddStringToDebugMenu(consoleCommand);
+		Debug::AddStringToDebugMenu(currentCommand);
 	}
 }

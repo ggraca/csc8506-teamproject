@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
 #include <map>
 #include <functional>
+#include "../GameTechCommon/Debug.h"
 
 class Console
 {
@@ -10,11 +10,11 @@ public:
 	~Console();
 
 	void Update();
-	void RegisterCommand(std::string identifier, std::function<void(std::string)> command);
+	void RegisterCommand(string identifier, function<void(vector<string>)> command);
 protected:
-	std::map<std::string, std::function<void(std::string)>> commands;
+	map<string, function<void(vector<string>)>> commands;
 	bool consoleOpen = false;
-	std::string consoleCommand = "";
+	string currentCommand = "";
 
 	void HandleCommand();
 };

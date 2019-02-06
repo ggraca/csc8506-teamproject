@@ -1,7 +1,7 @@
 #pragma once
 #include "../Plugins/OpenGLRendering/OGLRenderer.h"
-#include <vector>
-#include <string>
+
+using namespace std;
 
 namespace NCL {
 	class Debug

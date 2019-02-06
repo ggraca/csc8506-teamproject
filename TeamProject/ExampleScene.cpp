@@ -26,6 +26,7 @@ ExampleScene::ExampleScene() : Scene() {
 
   ResetWorld();
   debugMenu = DebugMenu();
+  console = Console();
 }
 
 void ExampleScene::ResetWorld() {
@@ -48,6 +49,7 @@ void ExampleScene::UpdateGame(float dt) {
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
+  console.Update();
 
   renderer->Render();
 }

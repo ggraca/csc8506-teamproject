@@ -22,6 +22,7 @@ namespace NCL {
 			void DebugScene(float dt);
 
 			DebugMenu debugMenu;
+			Console console;
 
             /*
             GameServer* server;
