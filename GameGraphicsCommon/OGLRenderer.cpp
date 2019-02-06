@@ -135,7 +135,7 @@ OGLRenderer::OGLRenderer(Window &window)	{
 
 #ifdef OPENGL_DEBUGGING
 	//PFNWGLCREATECONTEXTATTRIBSARBPROC glDebugMessageCallbackTEMP = (PFNWGLCREATECONTEXTATTRIBSARBPROC) wglGetProcAddress("glDebugMessageCallbackARB");
-	glDebugMessageCallbackARB(&OGLRenderer::DebugCallback, NULL);
+	//glDebugMessageCallbackARB(&OGLRenderer::DebugCallback, NULL);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 #endif
 
@@ -259,39 +259,39 @@ void OGLRenderer::SetShaderLight(const Light &l) {
 }
 
 #ifdef OPENGL_DEBUGGING
-void OGLRenderer::DebugCallback(GLuint source, GLuint type,GLuint id, GLuint severity,
-	int length, const char* message, void* userParam)	{
-
-		string sourceName;
-		string typeName;
-		string severityName;
-
-		switch(source) {
-			case GL_DEBUG_SOURCE_API_ARB			: sourceName = "Source(OpenGL)"			;break;
-			case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB	: sourceName = "Source(Window System)"	;break;
-			case GL_DEBUG_SOURCE_SHADER_COMPILER_ARB: sourceName = "Source(Shader Compiler)";break;
-			case GL_DEBUG_SOURCE_THIRD_PARTY_ARB	: sourceName = "Source(Third Party)"	;break;
-			case GL_DEBUG_SOURCE_APPLICATION_ARB	: sourceName = "Source(Application)"	;break;
-			case GL_DEBUG_SOURCE_OTHER_ARB			: sourceName = "Source(Other)"			;break;
-		}
-
-		switch(type) {
-			case GL_DEBUG_TYPE_ERROR_ARB				: typeName = "Type(Error)"					;break;
-			case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB	: typeName = "Type(Deprecated Behaviour)"	;break;
-			case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB	: typeName = "Type(Undefined Behaviour)"	;break;
-			case GL_DEBUG_TYPE_PORTABILITY_ARB			: typeName = "Type(Portability)"			;break;
-			case GL_DEBUG_TYPE_PERFORMANCE_ARB			: typeName = "Type(Performance)"			;break;
-			case GL_DEBUG_TYPE_OTHER_ARB				: typeName = "Type(Other)"					;break;
-		}
-
-		switch(severity) {
-			case GL_DEBUG_SEVERITY_HIGH_ARB		: severityName = "Priority(High)"		;break;
-			case GL_DEBUG_SEVERITY_MEDIUM_ARB	: severityName = "Priority(Medium)"		;break;
-			case GL_DEBUG_SEVERITY_LOW_ARB		: severityName = "Priority(Low)"		;break;
-		}
-
-		cout << "OpenGL Debug Output: " + sourceName + ", " + typeName + ", " + severityName + ", " + string(message) << endl;
-}
+//void OGLRenderer::DebugCallback(GLuint source, GLuint type,GLuint id, GLuint severity,
+//	int length, const char* message, void* userParam)	{
+//
+//		string sourceName;
+//		string typeName;
+//		string severityName;
+//
+//		switch(source) {
+//			case GL_DEBUG_SOURCE_API_ARB			: sourceName = "Source(OpenGL)"			;break;
+//			case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB	: sourceName = "Source(Window System)"	;break;
+//			case GL_DEBUG_SOURCE_SHADER_COMPILER_ARB: sourceName = "Source(Shader Compiler)";break;
+//			case GL_DEBUG_SOURCE_THIRD_PARTY_ARB	: sourceName = "Source(Third Party)"	;break;
+//			case GL_DEBUG_SOURCE_APPLICATION_ARB	: sourceName = "Source(Application)"	;break;
+//			case GL_DEBUG_SOURCE_OTHER_ARB			: sourceName = "Source(Other)"			;break;
+//		}
+//
+//		switch(type) {
+//			case GL_DEBUG_TYPE_ERROR_ARB				: typeName = "Type(Error)"					;break;
+//			case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB	: typeName = "Type(Deprecated Behaviour)"	;break;
+//			case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB	: typeName = "Type(Undefined Behaviour)"	;break;
+//			case GL_DEBUG_TYPE_PORTABILITY_ARB			: typeName = "Type(Portability)"			;break;
+//			case GL_DEBUG_TYPE_PERFORMANCE_ARB			: typeName = "Type(Performance)"			;break;
+//			case GL_DEBUG_TYPE_OTHER_ARB				: typeName = "Type(Other)"					;break;
+//		}
+//
+//		switch(severity) {
+//			case GL_DEBUG_SEVERITY_HIGH_ARB		: severityName = "Priority(High)"		;break;
+//			case GL_DEBUG_SEVERITY_MEDIUM_ARB	: severityName = "Priority(Medium)"		;break;
+//			case GL_DEBUG_SEVERITY_LOW_ARB		: severityName = "Priority(Low)"		;break;
+//		}
+//
+//		cout << "OpenGL Debug Output: " + sourceName + ", " + typeName + ", " + severityName + ", " + string(message) << endl;
+//}
 #endif
 
 void	OGLRenderer::DrawDebugPerspective(Matrix4*matrix)  {
