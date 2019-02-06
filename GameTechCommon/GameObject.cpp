@@ -11,7 +11,8 @@ GameObject::GameObject(string objectName)
 	physicsObject	= nullptr;
 	renderObject	= nullptr;
 	networkObject	= nullptr;
-	layer			= Layer::ObjectLayer::Default;
+	layer			= LayerAndTag::ObjectLayer::Default;
+	tag				= LayerAndTag::Tags::Untagged;
 }
 
 GameObject::~GameObject()	{

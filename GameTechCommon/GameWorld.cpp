@@ -13,7 +13,7 @@ GameWorld::GameWorld()	{
 	quadTree = nullptr;
 	shuffleConstraints	= false;
 	shuffleObjects		= false;
-	layering = Layer();
+	layering = LayerAndTag();
 }
 
 GameWorld::~GameWorld()	{
@@ -34,11 +34,20 @@ void GameWorld::ClearAndErase() {
 	Clear();
 }
 
-void GameWorld::AddGameObject(GameObject* o) {
+void GameWorld::AddGameObject(GameObject* o) 
+{
 	gameObjects.emplace_back(o);
 }
 
-void GameWorld::RemoveGameObject(GameObject* o) {
+void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
+{
+	o->SetParent(parent);
+	gameObjects.emplace_back(o);
+}
+
+void GameWorld::RemoveGameObject(GameObject* o) 
+{
+	o->SetParent(nullptr);
 	std::remove(gameObjects.begin(), gameObjects.end(), o);
 }
 
@@ -50,7 +59,8 @@ void GameWorld::GetObjectIterators(
 	last	= gameObjects.end();
 }
 
-void GameWorld::UpdateWorld(float dt) {
+void GameWorld::UpdateWorld(float dt) 
+{
 	UpdateTransforms();
 
 	if (shuffleObjects) {
@@ -62,9 +72,46 @@ void GameWorld::UpdateWorld(float dt) {
 	}
 }
 
+vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
+{
+	vector<GameObject*> temp;
+
+	std::vector<GameObject*>::const_iterator first;
+	std::vector<GameObject*>::const_iterator last;
+	GetObjectIterators(first, last);
+
+	for (first; first < last; first++)
+	{
+		if ((*first)->IsParent(obj->GetRenderObject()->GetTransform()))
+		{
+			temp.push_back((*first));
+		}
+	}
+	return temp;
+}
+
+vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj,LayerAndTag::Tags tag)
+{
+	vector<GameObject*> temp;
+
+	std::vector<GameObject*>::const_iterator first;
+	std::vector<GameObject*>::const_iterator last;
+	GetObjectIterators(first, last);
+
+	for (first; first < last; first++)
+	{
+		if ((*first)->CompareTag(tag) && (*first)->IsParent(obj->GetRenderObject()->GetTransform()))
+		{
+			temp.push_back((*first));
+		}
+	}
+	return temp;
+}
+
 
 void GameWorld::UpdateTransforms() {
-	for (auto& i : gameObjects) {
+	for (auto& i : gameObjects)
+	{
 		i->GetTransform().UpdateMatrices();
 	}
 }

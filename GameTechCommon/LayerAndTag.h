@@ -1,14 +1,22 @@
 #pragma once
-class Layer
+class LayerAndTag
 {
 public:
-	static enum ObjectLayer {
+	static enum ObjectLayer 
+	{
 		Default,
 		UI,
 		MAX
 	};
 
-	Layer()
+
+	static enum Tags
+	{
+		Untagged,
+		Player
+	};
+
+	LayerAndTag()
 	{
 		LayerMatrix[ObjectLayer::MAX][ObjectLayer::MAX] = { 0 };
 		InitializeLayerMatrixCollisions();

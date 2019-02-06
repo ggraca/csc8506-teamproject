@@ -5,7 +5,7 @@
 #include "PhysicsObject.h"
 #include "RenderObject.h"
 #include "NetworkObject.h"
-#include "Layer.h"
+#include "LayerAndTag.h"
 
 #include <vector>
 
@@ -68,16 +68,36 @@ namespace NCL {
 				name = s;
 			}
 
-			void SetLayer(Layer::ObjectLayer l)
+			void SetLayer(LayerAndTag::ObjectLayer l)
 			{
 				this->layer = l;
 			}
 
-			Layer::ObjectLayer GetLayer() const
+			LayerAndTag::ObjectLayer GetLayer() const
 			{
 				return this->layer;
 			}
 
+			void SetTag(LayerAndTag::Tags t)
+			{
+				this->tag = t;
+			}
+
+			LayerAndTag::Tags GetTag() const
+			{
+				return this->tag;
+			}
+
+			bool CompareTag(LayerAndTag::Tags t)
+			{
+				return (this->tag == t);
+			}
+
+			bool CompareTag(const GameObject& other)
+			{
+				
+				return (this->tag == other.tag);
+			}
 
 			virtual void OnCollisionBegin(GameObject* otherObject) {
 				
@@ -88,7 +108,34 @@ namespace NCL {
 			}
 
 			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
+			
+			void SetParent(const GameObject * parent)
+			{
+				if (parent)
+				{
+					this->GetRenderObject()->GetTransform()->SetParent(parent->GetRenderObject()->GetTransform());
+					parent->GetRenderObject()->GetTransform()->AddChild(this->GetRenderObject()->GetTransform());
+				}
+				else
+				{
+					if (this->GetRenderObject()->GetTransform()->GetParent() != nullptr)
+					{
+						this->GetRenderObject()->GetTransform()->GetParent()->RemoveChild(this->GetRenderObject()->GetTransform());
+					}
 
+					this->GetRenderObject()->GetTransform()->SetParent(nullptr);
+				}
+			}
+
+			bool IsParent(const Transform* transform)
+			{
+				return (this->GetRenderObject()->GetTransform()->GetParent() == transform);
+			}
+
+			void AddChild(GameObject * child)
+			{
+				child->SetParent(this);
+			}
 			
 			
 		protected:
@@ -98,7 +145,9 @@ namespace NCL {
 			PhysicsObject*		physicsObject;
 			RenderObject*		renderObject;
 			NetworkObject*		networkObject;
-			Layer::ObjectLayer  layer;
+			LayerAndTag::ObjectLayer  layer;
+			LayerAndTag::Tags   tag;
+			
 
 			bool	isActive;
 			string	name;
