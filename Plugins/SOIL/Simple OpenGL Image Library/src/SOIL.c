@@ -1968,7 +1968,7 @@ int query_DXT_capability( void )
 	/*	check for the capability	*/
 	if( has_DXT_capability == SOIL_CAPABILITY_UNKNOWN )
 	{
-
+		
 		//DIRTY DIRTY DIRTY -Rich
 		/*	we haven't yet checked for the capability, do so	*/
 		if( glGetString( GL_EXTENSIONS ) != NULL && NULL == strstr(

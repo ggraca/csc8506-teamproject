@@ -1,6 +1,5 @@
 #include <string>
 #include <iostream>
-#include <ctime>
 
 #include <windows.h>
 #include <shellapi.h>
