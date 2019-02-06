@@ -6,6 +6,7 @@ OGLRenderer* Debug::renderer = nullptr;
 
 std::vector<Debug::DebugStringEntry>	Debug::stringEntries;
 std::vector<Debug::DebugLineEntry>		Debug::lineEntries;
+std::vector<Debug::DebugStringEntry>    Debug::DebugMenu;
 
 
 void Debug::Print(const std::string& text, const Vector2&pos, const Vector4& colour) {
@@ -21,11 +22,21 @@ void Debug::Print(const std::string& text, const Vector2&pos, const Vector4& col
 void Debug::DrawLine(const Vector3& startpoint, const Vector3& endpoint, const Vector4& colour) {
 	DebugLineEntry newEntry;
 
-	newEntry.start	= startpoint;
-	newEntry.end	= endpoint;
+	newEntry.start = startpoint;
+	newEntry.end = endpoint;
 	newEntry.colour = colour;
 
 	lineEntries.emplace_back(newEntry);
+}
+
+void Debug::AddStringToDebugMenu(const std::string &text) {
+	DebugStringEntry newEntry;
+
+	newEntry.data = text;
+	newEntry.position = Vector2(0, 0);
+	newEntry.colour = Vector4(1, 1, 1, 1);
+
+	DebugMenu.emplace_back(newEntry);
 }
 
 void Debug::FlushRenderables() {
@@ -40,6 +51,12 @@ void Debug::FlushRenderables() {
 		renderer->DrawLine(i.start, i.end, i.colour);
 	}
 
+	for (int i = 0; i < DebugMenu.size(); i++)
+	{
+		renderer->DrawString(DebugMenu[i].data, Vector2(20, (DebugMenu.size() - i) * 20));
+	}
+
+	DebugMenu.clear();
 	stringEntries.clear();
 	lineEntries.clear();
 }

@@ -44,6 +44,8 @@ namespace NCL {
 				std::vector<GameObject*>::const_iterator& first,
 				std::vector<GameObject*>::const_iterator& last) const;
 
+			int GetObjectCount();
+
 			void GetConstraintIterators(
 				std::vector<Constraint*>::const_iterator& first,
 				std::vector<Constraint*>::const_iterator& last) const;
