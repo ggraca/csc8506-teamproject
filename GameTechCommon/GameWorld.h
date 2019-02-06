@@ -49,6 +49,7 @@ namespace NCL {
 			void GetObjectIterators(
 				std::vector<GameObject*>::const_iterator& first,
 				std::vector<GameObject*>::const_iterator& last) const;
+
 			vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj);
 			vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
 
