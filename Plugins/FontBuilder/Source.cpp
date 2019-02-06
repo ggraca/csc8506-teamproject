@@ -2,10 +2,10 @@
 #include <fstream>
 #include <string>
 #define STB_TRUETYPE_IMPLEMENTATION
-#include "../Common/stb/stb_truetype.h"
+#include "../../Common/stb/stb_truetype.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "../Common/stb/stb_image_write.h"
+#include "../../Common/stb/stb_image_write.h"
 
 using std::string;
 

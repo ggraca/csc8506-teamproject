@@ -9,13 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{712B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLRendering", "Plugins\OpenGLRendering\OpenGLRendering.vcxproj", "{EF869029-64F1-467F-BB9B-1D3B49EDECFA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontBuilder", "FontBuilder\FontBuilder.vcxproj", "{F75A977F-2D2B-4D4A-A5E4-72905D38922A}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Networking-ENet", "Plugins\Networking-ENet\Networking-ENet.vcxproj", "{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeamProject", "TeamProject\TeamProject.vcxproj", "{86B67DBB-8D8A-4B90-9383-A95C534E2A01}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F93B1523-C80E-4CFC-8A88-660866D29C10} = {F93B1523-C80E-4CFC-8A88-660866D29C10}
+		{F7631993-FE01-40DA-A3B4-39F572662C79} = {F7631993-FE01-40DA-A3B4-39F572662C79}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameTechCommon", "GameTechCommon\GameTechCommon.vcxproj", "{F93B1523-C80E-4CFC-8A88-660866D29C10}"
@@ -39,6 +38,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameGraphicsCommon", "GameGraphicsCommon\GameGraphicsCommon.vcxproj", "{071557A5-5ADD-41A5-80AB-9D48B17CC87D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletHelloWorld", "Plugins\Bullet\BulletHelloWorld\BulletHelloWorld.vcxproj", "{F7631993-FE01-40DA-A3B4-39F572662C79}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontBuilder", "Plugins\FontBuilder\FontBuilder.vcxproj", "{F75A977F-2D2B-4D4A-A5E4-72905D38922A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,14 +65,6 @@ Global
 		{EF869029-64F1-467F-BB9B-1D3B49EDECFA}.Release|Win32.Build.0 = Release|Win32
 		{EF869029-64F1-467F-BB9B-1D3B49EDECFA}.Release|x64.ActiveCfg = Release|x64
 		{EF869029-64F1-467F-BB9B-1D3B49EDECFA}.Release|x64.Build.0 = Release|x64
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Debug|Win32.Build.0 = Debug|Win32
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Debug|x64.ActiveCfg = Debug|x64
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Debug|x64.Build.0 = Debug|x64
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|Win32.ActiveCfg = Release|Win32
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|Win32.Build.0 = Release|Win32
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|x64.ActiveCfg = Release|x64
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|x64.Build.0 = Release|x64
 		{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F}.Debug|Win32.Build.0 = Debug|Win32
 		{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F}.Debug|x64.ActiveCfg = Debug|x64
@@ -128,15 +121,23 @@ Global
 		{F7631993-FE01-40DA-A3B4-39F572662C79}.Release|Win32.Build.0 = Release|Win32
 		{F7631993-FE01-40DA-A3B4-39F572662C79}.Release|x64.ActiveCfg = Release|x64
 		{F7631993-FE01-40DA-A3B4-39F572662C79}.Release|x64.Build.0 = Release|x64
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Debug|Win32.Build.0 = Debug|Win32
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Debug|x64.ActiveCfg = Debug|x64
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Debug|x64.Build.0 = Debug|x64
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|Win32.ActiveCfg = Release|Win32
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|Win32.Build.0 = Release|Win32
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|x64.ActiveCfg = Release|x64
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EF869029-64F1-467F-BB9B-1D3B49EDECFA} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
-		{F75A977F-2D2B-4D4A-A5E4-72905D38922A} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
 		{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
 		{F7631993-FE01-40DA-A3B4-39F572662C79} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
+		{F75A977F-2D2B-4D4A-A5E4-72905D38922A} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28397354-383B-4D5D-B8BE-A6498FC71C4C}
