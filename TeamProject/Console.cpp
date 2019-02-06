@@ -14,8 +14,13 @@ Console::~Console()
 }
 
 void Console::HandleCommand() {
-	std::cout << consoleCommand << std::endl;
+	std::function<void(std::string)> functionaCall;
+	functionaCall = commands.find(consoleCommand)->second;
 	consoleCommand = "";
+}
+
+void Console::RegisterCommand(std::string identifier, std::function<void(std::string)> command) {
+	commands.insert(std::pair<std::string, std::function<void(std::string)>>(identifier, command));
 }
 
 void Console::Update() {
