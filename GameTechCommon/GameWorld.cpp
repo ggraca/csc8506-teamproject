@@ -41,13 +41,21 @@ void GameWorld::AddGameObject(GameObject* o)
 
 void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
 {
-	o->SetParent(parent);
+	if (o)
+	{
+		o->SetParent(parent);
+	}
+	
 	gameObjects.emplace_back(o);
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 
 {
-	o->SetParent(nullptr);
+	if (o)
+	{
+		o->SetParent(nullptr);
+	}
+
 	std::remove(gameObjects.begin(), gameObjects.end(), o);
 }
 
@@ -76,17 +84,16 @@ vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
 {
 	vector<GameObject*> temp;
 
-	std::vector<GameObject*>::const_iterator first;
-	std::vector<GameObject*>::const_iterator last;
-	GetObjectIterators(first, last);
 
-	for (first; first < last; first++)
+	for (auto& i : gameObjects)
 	{
-		if ((*first)->IsParent(obj->GetRenderObject()->GetTransform()))
+		if (i->IsParent(obj->GetRenderObject()->GetTransform()))
 		{
-			temp.push_back((*first));
+			temp.push_back(i);
 		}
 	}
+
+
 	return temp;
 }
 
@@ -94,17 +101,16 @@ vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj,LayerAn
 {
 	vector<GameObject*> temp;
 
-	std::vector<GameObject*>::const_iterator first;
-	std::vector<GameObject*>::const_iterator last;
-	GetObjectIterators(first, last);
-
-	for (first; first < last; first++)
+	
+	for (auto& i : gameObjects)
 	{
-		if ((*first)->CompareTag(tag) && (*first)->IsParent(obj->GetRenderObject()->GetTransform()))
+		if (i->CompareTag(tag) && i->IsParent(obj->GetRenderObject()->GetTransform()))
 		{
-			temp.push_back((*first));
+			temp.push_back(i);
 		}
 	}
+
+
 	return temp;
 }
 
