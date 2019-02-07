@@ -18,6 +18,8 @@ namespace NCL {
         protected:
             void ResetWorld();
 
+			void GenerateWorld();
+
             /*
             GameServer* server;
             GameClient* client;

@@ -25,6 +25,7 @@ ExampleScene::ExampleScene() : Scene() {
   Window::GetWindow()->LockMouseToWindow(true);
 
   ResetWorld();
+  GenerateWorld();
 }
 
 void ExampleScene::ResetWorld() {
@@ -32,7 +33,25 @@ void ExampleScene::ResetWorld() {
   physics->Clear();
 
   // Floor
-  AddFloorToWorld(Vector3(200, 0, 200));
+  AddFloorToWorld(Vector3(0, 0, 0));
+}
+
+void ExampleScene::GenerateWorld()
+{
+	//Root object
+	//AddCubeToWorld(Vector3(0, 0, 0), Vector3(10, 10, 10),0);
+	AddWallToWorld(Vector3(-500, 10, 0), Vector3(5, 100, 500));
+	AddWallToWorld(Vector3(0, 10, 500), Vector3(500, 100, 5));
+	AddWallToWorld(Vector3(500, 10, 0), Vector3(5, 100, 500));
+	AddWallToWorld(Vector3(0, 10, -500), Vector3(500, 100, 5));
+
+	
+
+	//Create root node 
+	//Create children c
+	//rootNode->AddChild(c)
+	//Create another child b
+	//c->AddChild(b)
 }
 
 ExampleScene::~ExampleScene() {

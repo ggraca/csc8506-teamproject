@@ -41,6 +41,7 @@ namespace NCL {
 			void MoveSelectedObject();
 
 			GameObject* AddFloorToWorld(const Vector3& position);
+			GameObject* AddWallToWorld(const Vector3& position, Vector3 dimensions);
 			GameObject* AddSphereToWorld(const Vector3& position, float radius, float inverseMass = 10.0f);
 			GameObject* AddCubeToWorld(const Vector3& position, Vector3 dimensions, float inverseMass = 10.0f);
 
@@ -59,6 +60,7 @@ namespace NCL {
 			OGLMesh*	sphereMesh	= nullptr;
 			OGLTexture* basicTex	= nullptr;
 			OGLTexture* woodTex	= nullptr;
+			OGLTexture* wallTex = nullptr;
 			OGLTexture* grassTex	= nullptr;
 			OGLTexture* ballTex	= nullptr;
 			OGLShader*	basicShader = nullptr;

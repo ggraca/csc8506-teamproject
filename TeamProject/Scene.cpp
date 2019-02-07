@@ -42,6 +42,7 @@ void Scene::InitialiseAssets() {
 
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
+  wallTex = (OGLTexture*)TextureLoader::LoadAPITexture("brick.png");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
   basicShader = new OGLShader("GameTechVert.glsl", "GameTechFrag.glsl");
@@ -55,6 +56,7 @@ Scene::~Scene() {
   delete sphereMesh;
   delete basicTex;
   delete woodTex;
+  delete wallTex;
   delete grassTex;
   delete ballTex;
   delete basicShader;
@@ -121,6 +123,28 @@ GameObject* Scene::AddFloorToWorld(const Vector3& position) {
   world->AddGameObject(floor);
 
   return floor;
+}
+
+GameObject* Scene::AddWallToWorld(const Vector3& position, Vector3 dimensions)
+{
+	GameObject* wall = new GameObject();
+
+	AABBVolume* volume = new AABBVolume(dimensions);
+	wall->SetBoundingVolume((CollisionVolume*)volume);
+
+	wall->GetTransform().SetWorldPosition(position);
+	wall->GetTransform().SetWorldScale(dimensions);
+
+	wall->SetRenderObject(new RenderObject(&wall->GetTransform(), cubeMesh, wallTex, basicShader));
+	wall->SetPhysicsObject(new PhysicsObject(&wall->GetTransform(), wall->GetBoundingVolume()));
+
+	wall->GetPhysicsObject()->SetInverseMass(0);
+	wall->GetPhysicsObject()->InitCubeInertia();
+
+	world->AddGameObject(wall);
+
+	return wall;
+
 }
 
 /*
