@@ -3,7 +3,7 @@
 
 using namespace NCL;
 
-void TestCommand(vector<string> commandparams) {
+void TestCommand(vector<string> commandparams, void* data) {
 	cout << "Command found with name: " + commandparams[0] << endl;
 	cout << "Parameters are: " << endl;;
 	for (int i = 1; i < commandparams.size(); i++)
@@ -14,7 +14,7 @@ void TestCommand(vector<string> commandparams) {
 
 Console::Console()
 {
-	RegisterCommand("testcommand", TestCommand);
+	RegisterCommand("testcommand", TestCommand, nullptr);
 }
 
 
@@ -23,7 +23,7 @@ Console::~Console()
 }
 
 void Console::HandleCommand() {
-	function<void(vector<string>)> functionCall;
+	function<void(vector<string>, void*)> functionCall;
 	vector<string> parsedCommand = split_string(currentCommand, ' ');
 
 	auto foundCommand = commands.find(parsedCommand[0]);
@@ -34,12 +34,12 @@ void Console::HandleCommand() {
 		return;
 	}
 
-	functionCall = foundCommand->second;
-	functionCall(parsedCommand);
+	functionCall = foundCommand->second.first;
+	functionCall(parsedCommand, foundCommand->second.second);
 }
 
-void Console::RegisterCommand(string identifier, function<void(vector<string>)> command) {
-	commands.insert(pair<string, function<void(vector<string>)>>(identifier, command));
+void Console::RegisterCommand(string identifier, function<void(vector<string>, void*)> command, void* data) {
+	commands.insert(pair<string, pair<function<void(vector<string>, void*)>, void*>>(identifier, make_pair(command, data)));
 }
 
 void Console::Update() {

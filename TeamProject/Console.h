@@ -10,9 +10,9 @@ public:
 	~Console();
 
 	void Update();
-	void RegisterCommand(string identifier, function<void(vector<string>)> command);
+	void RegisterCommand(string identifier, function<void(vector<string>, void*)> command, void* data);
 protected:
-	map<string, function<void(vector<string>)>> commands;
+	map<string, pair<function<void(vector<string>, void*)>, void*>> commands;
 	bool consoleOpen = false;
 	string currentCommand = "";
 
