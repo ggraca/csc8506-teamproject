@@ -24,6 +24,12 @@ Console::~Console()
 
 void Console::HandleCommand() {
 	function<void(vector<string>, void*)> functionCall;
+
+	if (currentCommand == "") {
+		cout << __FUNCTION__ << " was called with an empty command!" << endl;
+		return;
+	}
+
 	vector<string> parsedCommand = split_string(currentCommand, ' ');
 
 	auto foundCommand = commands.find(parsedCommand[0]);
