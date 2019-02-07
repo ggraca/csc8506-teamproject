@@ -3,13 +3,16 @@
 
 using namespace NCL::CSC8503;
 
-GameObject::GameObject(string objectName)	{
+GameObject::GameObject(string objectName)	
+{
 	name			= objectName;
 	isActive		= true;
 	boundingVolume	= nullptr;
 	physicsObject	= nullptr;
 	renderObject	= nullptr;
 	networkObject	= nullptr;
+	layer			= LayerAndTag::ObjectLayer::Default;
+	tag				= LayerAndTag::Tags::Untagged;
 }
 
 GameObject::~GameObject()	{

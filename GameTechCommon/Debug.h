@@ -1,7 +1,7 @@
 #pragma once
 #include "../Plugins/OpenGLRendering/OGLRenderer.h"
-#include <vector>
-#include <string>
+
+using namespace std;
 
 namespace NCL {
 	class Debug
@@ -9,6 +9,7 @@ namespace NCL {
 	public:
 		static void Print(const std::string& text, const Vector2&pos, const Vector4& colour = Vector4(1, 1, 1, 1));
 		static void DrawLine(const Vector3& startpoint, const Vector3& endpoint, const Vector4& colour = Vector4(1, 1, 1, 1));
+		static void AddStringToDebugMenu(const std::string& text);
 		//static void DrawPoint();
 
 		static void SetRenderer(OGLRenderer* r) {
@@ -35,6 +36,7 @@ namespace NCL {
 
 		static std::vector<DebugStringEntry>	stringEntries;
 		static std::vector<DebugLineEntry>	lineEntries;
+		static std::vector<DebugStringEntry> DebugMenu;
 
 		static OGLRenderer* renderer;
 	};

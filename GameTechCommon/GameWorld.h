@@ -3,6 +3,9 @@
 #include "Ray.h"
 #include "CollisionDetection.h"
 #include "QuadTree.h"
+#include "LayerAndTag.h"
+
+
 namespace NCL {
 		class Camera;
 		using Maths::Ray;
@@ -12,6 +15,8 @@ namespace NCL {
 
 		class GameWorld	{
 		public:
+
+			
 			GameWorld();
 			~GameWorld();
 
@@ -19,6 +24,7 @@ namespace NCL {
 			void ClearAndErase();
 
 			void AddGameObject(GameObject* o);
+			void AddGameObject(GameObject* o, const GameObject* parent);
 			void RemoveGameObject(GameObject* o);
 
 			void AddConstraint(Constraint* c);
@@ -44,9 +50,24 @@ namespace NCL {
 				std::vector<GameObject*>::const_iterator& first,
 				std::vector<GameObject*>::const_iterator& last) const;
 
+			vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
+			vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+      
+			int GetObjectCount();
+
 			void GetConstraintIterators(
 				std::vector<Constraint*>::const_iterator& first,
 				std::vector<Constraint*>::const_iterator& last) const;
+
+			void SetLayering(LayerAndTag layer)
+			{
+				this->layering = layer;
+			}
+
+			LayerAndTag GetLayering() const
+			{
+				return this->layering;
+			}
 
 		protected:
 			void UpdateTransforms();
@@ -62,6 +83,7 @@ namespace NCL {
 
 			bool shuffleConstraints;
 			bool shuffleObjects;
+			LayerAndTag layering;
 		};
 	}
 }

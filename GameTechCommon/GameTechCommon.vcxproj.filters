@@ -126,6 +126,9 @@
     <ClInclude Include="NetworkObject.h">
       <Filter>Networking</Filter>
     </ClInclude>
+    <ClInclude Include="LayerAndTag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameWorld.cpp">
@@ -196,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="NetworkObject.cpp">
       <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="LayerAndTag.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

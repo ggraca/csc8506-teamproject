@@ -68,7 +68,25 @@ namespace NCL {
 				return worldOrientation.Conjugate().ToMatrix3();
 			}
 
+			void AddChild(Transform* transform)
+			{
+				children.push_back(transform);
+			}
+
+			void RemoveChild(Transform * transform)
+			{
+				std::remove(children.begin(), children.end(), transform);
+			}
+
+			void GetChildTransformIterators(std::vector<Transform*>::const_iterator&b, std::vector<Transform*>::const_iterator&e) const
+			{
+				b = children.begin();
+				e = children.end();
+			}
+
+
 			void UpdateMatrices();
+
 
 		protected:
 			Matrix4		localMatrix;

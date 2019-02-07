@@ -32,15 +32,14 @@ Coursework::Coursework() : TutorialGame() {
     levels.push_back("level2.txt");
     levels.push_back("level3.txt");
 
-    if (isServer) {
+    if (isServer) 
+	{
         currentLevel = 0;
         LoadLevel(levels[currentLevel]);
         me = FindOrCreatePlayer("server");
         SpawnPlayer(me, spawns[0]);
         ResetCamera();
-    } else {
-      ;
-    }
+    } 
 }
 
 void Coursework::InitNetwork() {
@@ -173,101 +172,14 @@ Coursework::~Coursework() {
 }
 
 void Coursework::UpdateGame(float dt) {
-    if (isServer) {
-        server->UpdateServer();
-        if (server->newClient) {
-            int id = players.size();
-            SpawnPlayer(
-                FindOrCreatePlayer("player" + to_string(id)),
-                spawns[id]
-            );
-            server->SendGlobalPacket(StringPacket(SerializeState()));
-            server->newClient = false;
-        }
-    } else {
-        client->UpdateClient();
-    }
+   
 
 
     world->GetMainCamera()->UpdateCamera(dt);
     world->UpdateWorld(dt);
     renderer->Update(dt);
-
-    if (isServer) {
-        physics->Update(dt);
-
-        // Lock ball in Y pos
-        for(auto p : players) {
-            Vector3 ballPos = p->ball->GetTransform().GetWorldPosition();
-            p->ball->GetTransform().SetWorldPosition(
-                Vector3(ballPos.x, 10 + ballRadius, ballPos.z)
-            );
-        }
-
-        UpdateBots(dt);
-        ServerInput();
-
-        for(int i = 0; i < goals.size(); i++) {
-            GameObject* goal = goals[i];
-
-            if (goal->GetWinner() == nullptr) continue;
-
-            // Menu
-            if (goals.size() > 1) {
-                currentLevel = i + 1;
-            } else {
-                std::cout << goal->GetName() << " won the game!" << std::endl;
-                Player* p = FindOrCreatePlayer(goal->GetWinner()->GetName());
-                p->wins++;
-
-                currentLevel++;
-                if (currentLevel > levels.size() - 1) currentLevel = 1;
-            }
-
-            LoadLevel(levels[currentLevel]);
-
-            for(int i = 0; i < players.size(); i++)
-                SpawnPlayer(players[i], spawns[i]);
-
-            ResetCamera();
-        }
-
-        for(auto b : bots) {
-            if (b->cube->killBot) {
-                b->state = Dead;
-                b->cube->killBot = false;
-
-                if (b->cube->killerName != "") {
-                    Player* p = FindOrCreatePlayer(b->cube->killerName);
-                    p->kills++;
-                    b->cube->killerName = "";
-                }
-            }
-        }
-
-        server->SendGlobalPacket(StringPacket(SerializeState()));
-    }
-
-    if (me != nullptr) {
-        UpdateInput(dt);
-
-        Vector3 ballPos = me->ball->GetTransform().GetWorldPosition();
-        Vector3 cameraPos = world->GetMainCamera()->GetPosition();
-        Vector3 dir = ballPos - cameraPos;
-        dir.y = 0;
-        dir.Normalise();
-
-        Debug::DrawLine(ballPos, ballPos + dir * forceMagnitude / 200, Vector4(1, 0, 0, 1));
-    }
-
-    for(int i = 0; i < players.size(); i++) {
-        renderer->DrawString(
-            players[i]->name + ": " + to_string(players[i]->wins) + " | " + to_string(players[i]->kills),
-            Vector2(10, 30 * i + 10)
-        );
-    }
-
-
+	physics->Update(dt);
+  
 
     Debug::FlushRenderables();
     renderer->Render();
