@@ -28,6 +28,7 @@ void Console::HandleCommand() {
 
 	auto foundCommand = commands.find(parsedCommand[0]);
 	AddToPreviousCommandList();
+	previousCommandIndex = previousCommands.size();
 	currentCommand = "";
 
 	if (foundCommand == commands.end()) {
@@ -176,6 +177,28 @@ void Console::Update() {
 		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_BACK)) {
 			currentCommand.pop_back();
+		}
+		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_UP)) {
+			previousCommandIndex--;
+
+			if (previousCommandIndex < 0) {
+				previousCommandIndex = previousCommands.size() - 1;
+			}
+
+			if (!empty(previousCommands)) {
+				currentCommand = previousCommands[previousCommandIndex];
+			}
+		}
+		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_DOWN)) {
+			previousCommandIndex++;
+
+			if (previousCommandIndex > previousCommands.size() - 1) {
+				previousCommandIndex = 0;
+			}
+
+			if (!empty(previousCommands)) {
+				currentCommand = previousCommands[previousCommandIndex];
+			}
 		}
 
 		for (int i = 0; i < previousCommands.size(); i++)

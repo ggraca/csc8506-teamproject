@@ -16,6 +16,7 @@ protected:
 	vector<string> previousCommands;
 	bool consoleOpen = false;
 	string currentCommand = "";
+	int previousCommandIndex = 0;
 
 	void HandleCommand();
 	void AddToPreviousCommandList();
