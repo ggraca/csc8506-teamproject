@@ -157,6 +157,9 @@ void Console::Update() {
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) {
 			currentCommand += "z";
 		}
+		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_MINUS)) {
+			currentCommand += "-";
+		}
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_SPACE)) {
 			currentCommand += " ";
 		}
