@@ -27,6 +27,7 @@ void Console::HandleCommand() {
 	vector<string> parsedCommand = split_string(currentCommand, ' ');
 
 	auto foundCommand = commands.find(parsedCommand[0]);
+	AddToPreviousCommandList();
 	currentCommand = "";
 
 	if (foundCommand == commands.end()) {
@@ -40,6 +41,13 @@ void Console::HandleCommand() {
 
 void Console::RegisterCommand(string identifier, function<void(vector<string>, void*)> command, void* data) {
 	commands.insert(pair<string, pair<function<void(vector<string>, void*)>, void*>>(identifier, make_pair(command, data)));
+}
+
+void Console::AddToPreviousCommandList() {
+	if (previousCommands.size() == 5) {
+		previousCommands.erase(previousCommands.begin());
+	}
+	previousCommands.push_back(currentCommand);
 }
 
 void Console::Update() {
@@ -170,6 +178,10 @@ void Console::Update() {
 			currentCommand.pop_back();
 		}
 
+		for (int i = 0; i < previousCommands.size(); i++)
+		{
+			Debug::AddStringToDebugMenu(previousCommands[i]);
+		}
 		Debug::AddStringToDebugMenu(currentCommand);
 	}
 }

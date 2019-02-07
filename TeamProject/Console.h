@@ -13,9 +13,11 @@ public:
 	void RegisterCommand(string identifier, function<void(vector<string>, void*)> command, void* data);
 protected:
 	map<string, pair<function<void(vector<string>, void*)>, void*>> commands;
+	vector<string> previousCommands;
 	bool consoleOpen = false;
 	string currentCommand = "";
 
 	void HandleCommand();
+	void AddToPreviousCommandList();
 };
 
