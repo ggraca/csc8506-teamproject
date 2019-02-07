@@ -24,7 +24,7 @@ namespace NCL {
 			void ClearAndErase();
 
 			void AddGameObject(GameObject* o);
-			void GameWorld::AddGameObject(GameObject* o, const GameObject* parent);
+			void AddGameObject(GameObject* o, const GameObject* parent);
 			void RemoveGameObject(GameObject* o);
 
 			void AddConstraint(Constraint* c);
@@ -50,8 +50,8 @@ namespace NCL {
 				std::vector<GameObject*>::const_iterator& first,
 				std::vector<GameObject*>::const_iterator& last) const;
 
-			vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj);
-			vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+			vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
+			vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
       
 			int GetObjectCount();
 
