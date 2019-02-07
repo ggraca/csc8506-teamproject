@@ -52,6 +52,8 @@ namespace NCL {
 
 			vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj);
 			vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+      
+			int GetObjectCount();
 
 			void GetConstraintIterators(
 				std::vector<Constraint*>::const_iterator& first,

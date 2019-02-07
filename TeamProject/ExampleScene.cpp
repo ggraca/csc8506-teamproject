@@ -25,6 +25,8 @@ ExampleScene::ExampleScene() : Scene() {
   Window::GetWindow()->LockMouseToWindow(true);
 
   ResetWorld();
+  debugMenu = DebugMenu();
+  console = Console();
 }
 
 void ExampleScene::ResetWorld() {
@@ -46,5 +48,12 @@ void ExampleScene::UpdateGame(float dt) {
   physics->Update(dt);
 
   Debug::FlushRenderables();
+  debugMenu.Update(dt, renderer);
+  console.Update();
+
   renderer->Render();
+}
+
+void ExampleScene::DebugScene(float dt) {
+
 }

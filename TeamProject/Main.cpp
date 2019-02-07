@@ -14,7 +14,7 @@ int main() {
 
 	w->ShowOSPointer(false);
 	w->LockMouseToWindow(true);
-  w->ShowConsole(true);
+    w->ShowConsole(true);
 
 	ExampleScene* g = new ExampleScene();
 

@@ -150,6 +150,7 @@ namespace NCL {
 		KEYBOARD_COMMA = 0xBC,  // Comma Key  (,)
 		KEYBOARD_MINUS = 0xBD,  // Minus Key  (-)
 		KEYBOARD_PERIOD = 0xBE,  // Period Key (.)
+		KEYBOARD_TILDE = 0xDF,  // Tilde key (`)
 		KEYBOARD_ATTN = 0xF6,  // Attn key 
 		KEYBOARD_CRSEL = 0xF7,  // CrSel key 
 		KEYBOARD_EXSEL = 0xF8,  // ExSel key 

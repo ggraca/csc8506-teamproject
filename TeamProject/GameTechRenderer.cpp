@@ -106,6 +106,9 @@ void GameTechRenderer::RenderShadowMap() {
 		DrawBoundMesh();
 	}
 
+	// Calculates how many shadow casting lights are currently being renderered
+	shadowCasters++;
+
 	glViewport(0, 0, currentWidth, currentHeight);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -130,6 +133,8 @@ void GameTechRenderer::RenderCamera() {
 	int lightRadiusLocation = 0;
 
 	int cameraLocation = 0;
+	shadowCasters = 0;
+	vertsDrawn = 0;
 
 	//TODO - PUT IN FUNCTION
 	glActiveTexture(GL_TEXTURE0 + 1);
@@ -177,6 +182,10 @@ void GameTechRenderer::RenderCamera() {
 		glUniform4fv(colourLocation, 1, (float*)&i->GetColour());
 
 		BindMesh((*i).GetMesh());
+
+		//Calculates how many vertices are drawn per frame
+		vertsDrawn += (*i).GetMesh()->GetVertexCount();
+
 		DrawBoundMesh();
 	}
 }

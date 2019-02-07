@@ -67,8 +67,11 @@ void GameWorld::GetObjectIterators(
 	last	= gameObjects.end();
 }
 
-void GameWorld::UpdateWorld(float dt) 
-{
+int GameWorld::GetObjectCount(){
+	return gameObjects.size();
+}
+
+void GameWorld::UpdateWorld(float dt) {
 	UpdateTransforms();
 
 	if (shuffleObjects) {
