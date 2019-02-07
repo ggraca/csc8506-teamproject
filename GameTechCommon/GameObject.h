@@ -5,6 +5,7 @@
 #include "PhysicsObject.h"
 #include "RenderObject.h"
 #include "NetworkObject.h"
+#include "LayerAndTag.h"
 
 #include <vector>
 
@@ -67,42 +68,76 @@ namespace NCL {
 				name = s;
 			}
 
+			void SetLayer(LayerAndTag::ObjectLayer l)
+			{
+				this->layer = l;
+			}
+
+			LayerAndTag::ObjectLayer GetLayer() const
+			{
+				return this->layer;
+			}
+
+			void SetTag(LayerAndTag::Tags t)
+			{
+				this->tag = t;
+			}
+
+			LayerAndTag::Tags GetTag() const
+			{
+				return this->tag;
+			}
+
+			bool CompareTag(LayerAndTag::Tags t)
+			{
+				return (this->tag == t);
+			}
+
+			bool CompareTag(const GameObject& other)
+			{
+				
+				return (this->tag == other.tag);
+			}
+
 			virtual void OnCollisionBegin(GameObject* otherObject) {
-				if (name == "goal") {
-					if (otherObject->name == "") return;
-					if (winner == nullptr) winner = otherObject;
-				} else if (name.substr(0, 3) == "bot") {
-					if (otherObject->name.substr(0, 3) == "bot") {
-						std::cout << "bot collision with bot" << std::endl;
-						killBot = true;
-					}
-					else if (otherObject->name != "") {
-						std::cout << "bot collision with player" << std::endl;
-
-						if (otherObject->GetPhysicsObject()->GetLinearVelocity().Length() < 300) {
-							otherObject->GetPhysicsObject()->AddForce(
-								Vector3(rand(), 0, rand()).Normalised() * 15000
-							);
-						} else {
-							killBot = true;
-							killerName = otherObject->name;
-						}
-
-					}
-				}
+				
 			}
 
 			virtual void OnCollisionEnd(GameObject* otherObject) {
-				//std::cout << "OnCollisionEnd event occured!\n";
+				
 			}
 
 			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
+			
+			void SetParent(const GameObject * parent)
+			{
+				if (parent)
+				{
+					this->GetRenderObject()->GetTransform()->SetParent(parent->GetRenderObject()->GetTransform());
+					parent->GetRenderObject()->GetTransform()->AddChild(this->GetRenderObject()->GetTransform());
+				}
+				else
+				{
+					if (this->GetRenderObject()->GetTransform()->GetParent() != nullptr)
+					{
+						this->GetRenderObject()->GetTransform()->GetParent()->RemoveChild(this->GetRenderObject()->GetTransform());
+					}
 
-			GameObject* GetWinner() const {
-				return winner;
+					this->GetRenderObject()->GetTransform()->SetParent(nullptr);
+				}
 			}
-			bool killBot = false;
-			string killerName = "";
+
+			bool IsParent(const Transform* transform)
+			{
+				return (this->GetRenderObject()->GetTransform()->GetParent() == transform);
+			}
+
+			void AddChild(GameObject * child)
+			{
+				child->SetParent(this);
+			}
+			
+			
 		protected:
 			Transform			transform;
 
@@ -110,10 +145,13 @@ namespace NCL {
 			PhysicsObject*		physicsObject;
 			RenderObject*		renderObject;
 			NetworkObject*		networkObject;
+			LayerAndTag::ObjectLayer  layer;
+			LayerAndTag::Tags   tag;
+			
 
 			bool	isActive;
 			string	name;
-			GameObject* winner = nullptr;
+			
 		};
 	}
 }

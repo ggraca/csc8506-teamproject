@@ -11,9 +11,9 @@ GameWorld::GameWorld()	{
 	mainCamera = new Camera();
 
 	quadTree = nullptr;
-
 	shuffleConstraints	= false;
 	shuffleObjects		= false;
+	layering = LayerAndTag();
 }
 
 GameWorld::~GameWorld()	{
@@ -34,11 +34,28 @@ void GameWorld::ClearAndErase() {
 	Clear();
 }
 
-void GameWorld::AddGameObject(GameObject* o) {
+void GameWorld::AddGameObject(GameObject* o) 
+{
 	gameObjects.emplace_back(o);
 }
 
-void GameWorld::RemoveGameObject(GameObject* o) {
+void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
+{
+	if (o)
+	{
+		o->SetParent(parent);
+	}
+	
+	gameObjects.emplace_back(o);
+}
+
+void GameWorld::RemoveGameObject(GameObject* o) 
+{
+	if (o)
+	{
+		o->SetParent(nullptr);
+	}
+
 	std::remove(gameObjects.begin(), gameObjects.end(), o);
 }
 
@@ -66,9 +83,44 @@ void GameWorld::UpdateWorld(float dt) {
 	}
 }
 
+vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
+{
+	vector<GameObject*> temp;
+
+
+	for (auto& i : gameObjects)
+	{
+		if (i->IsParent(obj->GetRenderObject()->GetTransform()))
+		{
+			temp.push_back(i);
+		}
+	}
+
+
+	return temp;
+}
+
+vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj,LayerAndTag::Tags tag)
+{
+	vector<GameObject*> temp;
+
+	
+	for (auto& i : gameObjects)
+	{
+		if (i->CompareTag(tag) && i->IsParent(obj->GetRenderObject()->GetTransform()))
+		{
+			temp.push_back(i);
+		}
+	}
+
+
+	return temp;
+}
+
 
 void GameWorld::UpdateTransforms() {
-	for (auto& i : gameObjects) {
+	for (auto& i : gameObjects)
+	{
 		i->GetTransform().UpdateMatrices();
 	}
 }
