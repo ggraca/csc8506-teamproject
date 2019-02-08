@@ -11,6 +11,7 @@ public:
 
 	void Update();
 	void RegisterCommand(string identifier, function<void(vector<string>)> command);
+	void Toggle() { consoleOpen = !consoleOpen; }
 protected:
 	map<string, function<void(vector<string>)>> commands;
 	bool consoleOpen = false;
