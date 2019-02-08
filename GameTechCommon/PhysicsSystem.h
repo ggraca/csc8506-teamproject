@@ -5,7 +5,6 @@
 #include "..\Plugins\Bullet\src\btBulletDynamicsCommon.h"
 
 #include "BulletPhysics.h"
-#include "..\TeamProject\Scene.h"
 
 namespace NCL {
 	namespace CSC8503 {

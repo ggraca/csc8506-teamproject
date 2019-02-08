@@ -48,8 +48,8 @@ void ExampleScene::ResetWorld() {
 
   //AddFloorToWorld(Vector3(200, -10, 200));
   AddCubeToWorld(Vector3(200, -10, 200), Vector3(500, 10, 500), 0); //TODO Do these need to be deleted in destructor?!?!?!
-  AddCubeToWorld(Vector3(0, 100, 0), Vector3(20, 20, 20), 1);
-  AddSphereToWorld(Vector3(40, 5, 20), 10, 1);
+ // AddCubeToWorld(Vector3(0, 100, 0), Vector3(20, 20, 20), 1);
+  //AddSphereToWorld(Vector3(40, 5, 20), 10, 1);
 
 }
 

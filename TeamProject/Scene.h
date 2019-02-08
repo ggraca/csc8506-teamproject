@@ -2,8 +2,7 @@
 #include "GameTechRenderer.h"
 
 #include "../GameTechCommon/PhysicsSystem.h"
-#include "..\Plugins\Bullet\src\btBulletDynamicsCommon.h"
-#include "..\GameTechCommon\BulletPhysics.h"
+#include "../GameTechCommon/BulletPhysics.h"
 
 namespace NCL {
 	namespace CSC8503 {

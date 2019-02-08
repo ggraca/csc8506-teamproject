@@ -52,7 +52,7 @@ for this module, even in the coursework, but you can add it
 
 */
 void Scene::InitialiseAssets() {
-  cubeMesh = new OGLMesh("cube.msh");
+  cubeMesh = new OGLMesh("Cube.msh");
   cubeMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   cubeMesh->UploadToGPU();
 
