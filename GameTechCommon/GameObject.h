@@ -18,7 +18,9 @@ namespace NCL {
 		class GameObject	{
 		public:
 			GameObject(string name = "");
-			~GameObject();
+			virtual ~GameObject();
+
+			void ClearScripts();
 
 			void SetBoundingVolume(CollisionVolume* vol) {
 				boundingVolume = vol;
@@ -141,6 +143,46 @@ namespace NCL {
 			virtual void Start(){ std::cout << "Start is called for:" << name << std::endl; }
 			virtual void Update(){ std::cout << "Update is called for:" << name << std::endl; }
 			virtual void LateUpdate(){ std::cout << "LateUpdate is called for:" << name << std::endl; }
+
+			
+			void AddScript(GameObject* obj);
+
+			template<class T>
+			void RemoveScript()
+			{
+
+				for (int i = 0; i < scripts.size();i++)
+				{
+					if (dynamic_cast<T>(scripts[i]))
+					{
+						std::cout << "Here" << std::endl;
+
+						delete scripts[i];
+						scripts.erase(scripts.begin()+i);
+
+						return;
+					}
+				}
+			}
+
+			template<class T>
+			T GetScript()
+			{
+				for (auto& i : scripts)
+				{
+					if (dynamic_cast<T>(i))
+					{
+						return dynamic_cast<T>(i);
+					}
+				}
+
+				return nullptr;
+			}
+
+			bool HasOtherScriptsAttached() { return (scripts.size() > 0); }
+
+			void UpdateAttachedScripts();
+			void LateUpdateAttachedScripts();
 			
 		protected:
 			Transform			transform;
@@ -151,20 +193,31 @@ namespace NCL {
 			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
+			std::vector<ScriptObject*> scripts;
 			
 
 			bool	isActive;
-			string	name;
+			string	name;	
 			
 		};
 
-		class Player :public virtual GameObject
+		class ScriptObject
+		{
+		protected:
+			
+			
+		};
+
+		class Player :  virtual public GameObject
 		{
 		public:
+			virtual ~Player() {}
+
 			void Awake ()override { std::cout << "Overriden awake is called for:" << name << std::endl; }
 			void Start()override { std::cout << "Overriden Start is called for:" << name << std::endl; }
 			void Update()override { std::cout << "Overriden Update is called for:" << name << std::endl; }
-			void LateUpdate()override { std::cout << "Overriden LAteUpdate is called for:" << name << std::endl; }
+			void LateUpdate()override { std::cout << "Overriden LateUpdate is called for:" << name << std::endl; }
 		};
-	}
+		
+}
 }

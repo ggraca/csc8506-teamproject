@@ -48,6 +48,11 @@ void NCL::CSC8503::GameWorld::UpdateGameObjects()
 	for (auto&i : gameObjects) 
 	{
 		i->Update();
+
+		if (i->HasOtherScriptsAttached())
+		{
+			i->UpdateAttachedScripts();
+		}
 	}
 }
 
@@ -56,6 +61,11 @@ void NCL::CSC8503::GameWorld::LateUpdateGameObjects()
 	for (auto&i : gameObjects)
 	{
 		i->LateUpdate();
+
+		if (i->HasOtherScriptsAttached())
+		{
+			i->LateUpdateAttachedScripts();
+		}
 	}
 }
 
@@ -63,7 +73,7 @@ void GameWorld::AddGameObject(GameObject* o)
 {
 
 	CallObjectStartUpFunctions(o);
-	gameObjects.emplace_back(o);
+	gameObjects.push_back(o);
 }
 
 void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
@@ -74,7 +84,7 @@ void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
 	}
 
 	CallObjectStartUpFunctions(o);
-	gameObjects.emplace_back(o);
+	gameObjects.push_back(o);
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 
@@ -82,9 +92,20 @@ void GameWorld::RemoveGameObject(GameObject* o)
 	if (o)
 	{
 		o->SetParent(nullptr);
+
+		for (int i = 0; i < gameObjects.size(); i++)
+		{
+			if (gameObjects[i] == o)
+			{
+				delete gameObjects[i];
+				gameObjects.erase(gameObjects.begin() + i);
+				o = nullptr;
+			}
+		}
 	}
 
-	std::remove(gameObjects.begin(), gameObjects.end(), o);
+	
+
 }
 
 void GameWorld::GetObjectIterators(
@@ -123,7 +144,7 @@ vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
 	{
 		if (i->IsParent(obj->GetRenderObject()->GetTransform()))
 		{
-			temp.push_back(i);
+			temp.emplace_back(i);
 		}
 	}
 
@@ -140,7 +161,7 @@ vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj,LayerAn
 	{
 		if (i->CompareTag(tag) && i->IsParent(obj->GetRenderObject()->GetTransform()))
 		{
-			temp.push_back(i);
+			temp.emplace_back(i);
 		}
 	}
 

@@ -17,11 +17,24 @@ GameObject::GameObject(string objectName)
 	
 }
 
-GameObject::~GameObject()	{
+GameObject::~GameObject()	
+{
 	delete boundingVolume;
 	delete physicsObject;
 	delete renderObject;
 	delete networkObject;
+
+	ClearScripts();
+	std::cout << name << " Destroyed" << std::endl;
+}
+
+void GameObject::ClearScripts()
+{
+	for (auto&i : scripts)
+	{
+		delete i;
+	}
+	scripts.clear();
 }
 
 bool GameObject::InsideAABB(const Vector3& boxPos, const Vector3& halfSize) {
@@ -30,3 +43,30 @@ bool GameObject::InsideAABB(const Vector3& boxPos, const Vector3& halfSize) {
 	}
 	return CollisionDetection::AABBTest(transform, *boundingVolume, boxPos, halfSize);
 }
+
+void GameObject::UpdateAttachedScripts()
+{
+	for (auto&i : scripts)
+	{
+		i->Update();
+	}
+}
+
+void GameObject::LateUpdateAttachedScripts()
+{
+	for (auto&i : scripts)
+	{
+		i->LateUpdate();
+	}
+}
+
+
+void GameObject::AddScript(GameObject* obj)
+{
+	if (obj) 
+	{
+		scripts.push_back(obj);
+	}
+		
+}
+

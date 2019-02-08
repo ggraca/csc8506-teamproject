@@ -151,7 +151,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 }
 
 GameObject* Scene::AddCubeToWorld(const Vector3& position, Vector3 dimensions, float inverseMass) {
-  Player* cube = new Player();
+  GameObject* cube = new GameObject();
 
   AABBVolume* volume = new AABBVolume(dimensions);
 
@@ -165,8 +165,15 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, Vector3 dimensions, f
 
   cube->GetPhysicsObject()->SetInverseMass(inverseMass);
   cube->GetPhysicsObject()->InitCubeInertia();
+  Player *pl = new Player();
+  pl->SetName("Script Attached");
+  cube->AddScript((GameObject*)pl);
+  
+  cube->SetName("something");
+  cube->GetScript<Player*>()->
 
   world->AddGameObject(cube);
+
 
   return cube;
 }
