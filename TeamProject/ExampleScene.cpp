@@ -51,6 +51,12 @@ void ExampleScene::UpdateGame(float dt) {
   debugMenu.Update(dt, renderer);
   console.Update();
 
+  //Might want moved into a seperate function that handles input
+  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
+	  console.Toggle();
+	  debugMenu.Toggle();
+  }
+
   renderer->Render();
 }
 

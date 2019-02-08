@@ -43,11 +43,6 @@ void Console::RegisterCommand(string identifier, function<void(vector<string>)> 
 }
 
 void Console::Update() {
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-		consoleOpen = !consoleOpen;
-		currentCommand = "";
-	}
-
 	if (consoleOpen) {
 		if (Window::GetKeyboard()->KeyPressed(KEYBOARD_0)) {
 			currentCommand += "0";
