@@ -1,6 +1,11 @@
 #pragma once
+
 #include "../GameTechCommon/GameWorld.h"
 #include <set>
+#include "..\Plugins\Bullet\src\btBulletDynamicsCommon.h"
+
+#include "BulletPhysics.h"
+#include "..\TeamProject\ExampleScene.h"
 
 namespace NCL {
 	namespace CSC8503 {
@@ -27,6 +32,9 @@ namespace NCL {
 			static const float UNIT_RECIPROCAL;
 
 		protected:
+
+			void UpdateBulletPositions(float dt, int iterations);
+
 			void BasicCollisionDetection();
 			void BroadPhase();
 			void NarrowPhase();

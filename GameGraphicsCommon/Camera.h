@@ -17,20 +17,38 @@ _-_-_-_-_-_-_-""  ""
 #include "Matrix4.h"
 #include "Vector3.h"
 
-class Camera	{
+class Camera {
 public:
-	Camera(void){
-		yaw		= 0.0f;
-		pitch	= 0.0f;
+	Camera(void) {
+		yaw = 0.0f;
+		pitch = 0.0f;
+		roll = 0.0f;
+		speedx = 0.1f;
+		speedy = 0.01f;
+		speedz = 0.1f;
 	};
 
-	Camera(float pitch, float yaw, Vector3 position){
-		this->pitch		= pitch;
-		this->yaw		= yaw;
-		this->position	= position;
+	Camera(float yaw, float pitch, Vector3 position) {
+		this->yaw = yaw;
+		this->pitch = pitch;
+		roll = 0.0f;
+		speedx = 0.1f;
+		speedy = 0.01f;
+		speedz = 0.1f;
+		this->position = position;
+	};
+
+	Camera(float speedx, float speedy, float speedz, float roll, float pitch, float yaw, Vector3 position) {
+		this->speedx = speedx;
+		this->speedy = speedy;
+		this->speedz = speedz;
+		this->roll = roll;
+		this->pitch = pitch;
+		this->yaw = yaw;
+		this->position = position;
 	}
 
-	~Camera(void){};
+	~Camera(void) {};
 
 	void UpdateCamera(float msec = 10.0f);
 
@@ -39,22 +57,31 @@ public:
 	Matrix4 BuildViewMatrix();
 
 	//Gets position in world space
-	Vector3 GetPosition() const { return position;}
+	Vector3 GetPosition() const { return position; }
 	//Sets position in world space
-	void	SetPosition(Vector3 val) { position = val;}
+	void	SetPosition(Vector3 val) { position = val; }
 
 	//Gets yaw, in degrees
-	float	GetYaw()   const { return yaw;}
+	float	GetYaw()   const { return yaw; }
 	//Sets yaw, in degrees
-	void	SetYaw(float y) {yaw = y;}
+	void	SetYaw(float y) { yaw = y; }
 
 	//Gets pitch, in degrees
-	float	GetPitch() const { return pitch;}
+	float	GetPitch() const { return pitch; }
 	//Sets pitch, in degrees
-	void	SetPitch(float p) {pitch = p;}
+	void	SetPitch(float p) { pitch = p; }
+
+	//Gets roll, in degrees
+	float	GetRoll() const { return roll; }
+	//Sets roll, in degrees
+	void	SetRoll(float r) { roll = r; }
 
 protected:
+	float	speedx;
+	float	speedy;
+	float	speedz;
 	float	yaw;
 	float	pitch;
+	float	roll;
 	Vector3 position;
 };

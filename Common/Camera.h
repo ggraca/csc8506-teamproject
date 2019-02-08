@@ -2,6 +2,9 @@
 #include "Matrix4.h"
 #include "Vector3.h"
 
+#define max(a,b)    (((a) > (b)) ? (a) : (b))
+#define min(a,b)    (((a) < (b)) ? (a) : (b))
+
 namespace NCL {
 	using namespace NCL::Maths;
 	enum CameraType {
@@ -14,6 +17,10 @@ namespace NCL {
 		Camera(void) {
 			pitch		= 0.0f;
 			yaw			= 0.0f;
+			roll = 0.0f;
+			speedx = 10.0f;
+			speedy = 10.0f;
+			speedz = 10.0f;
 
 			this->fov	= 45.0f;
 			this->nearPlane = 1.0f;
@@ -26,6 +33,10 @@ namespace NCL {
 			this->pitch		= pitch;
 			this->yaw		= yaw;
 			this->position	= position;
+			roll = 0.0f;
+			speedx = 1.0f;
+			speedy = 1.0f;
+			speedz = 1.0f;
 
 			this->fov		= 45.0f;
 			this->nearPlane = 1.0f;
@@ -94,6 +105,10 @@ namespace NCL {
 		float	fov;
 		float	yaw;
 		float	pitch;
+		float	roll;
+		float	speedx;
+		float	speedy;
+		float	speedz;
 		Vector3 position;
 	};
 }

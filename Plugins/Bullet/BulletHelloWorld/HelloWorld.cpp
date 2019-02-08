@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 
 	btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
-	dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	
 
 	///-----initialization_end-----
 

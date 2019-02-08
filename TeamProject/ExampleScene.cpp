@@ -11,15 +11,19 @@
 #include <fstream>
 
 
+#include "btBulletDynamicsCommon.h"
+
+
+
 using namespace NCL;
 using namespace CSC8503;
 
 
-ExampleScene::ExampleScene() : Scene() {
-  physics->SetGravity(Vector3(0, -4, 0));
-  physics->UseGravity(false);
-  world->ShuffleConstraints(true);
-  world->ShuffleObjects(true);
+ExampleScene::ExampleScene() : Scene(-9.81) {
+ /* physics->SetGravity(Vector3(0, -9.81, 0));
+  physics->UseGravity(true);*/
+  /*world->ShuffleConstraints(true);
+  world->ShuffleObjects(true);*/
 
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
@@ -29,12 +33,24 @@ ExampleScene::ExampleScene() : Scene() {
   console = Console();
 }
 
+ExampleScene::ExampleScene(float g) : Scene(g) {
+	Window::GetWindow()->ShowOSPointer(false);
+	Window::GetWindow()->LockMouseToWindow(true);
+
+	ResetWorld();
+	debugMenu = DebugMenu();
+	console = Console();
+}
+
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
-  physics->Clear();
+ // physics->Clear();
 
-  // Floor
-  AddFloorToWorld(Vector3(200, 0, 200));
+  //AddFloorToWorld(Vector3(200, -10, 200));
+  AddCubeToWorld(Vector3(200, -10, 200), Vector3(500, 10, 500), 0); //TODO Do these need to be deleted in destructor?!?!?!
+  AddCubeToWorld(Vector3(0, 100, 0), Vector3(20, 20, 20), 1);
+  AddSphereToWorld(Vector3(40, 5, 20), 10, 1);
+
 }
 
 ExampleScene::~ExampleScene() {
@@ -45,6 +61,7 @@ void ExampleScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   renderer->Update(dt);
+
   physics->Update(dt);
 
   Debug::FlushRenderables();

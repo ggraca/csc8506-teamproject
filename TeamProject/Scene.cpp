@@ -7,6 +7,8 @@
 #include "../GameTechCommon/GameWorld.h"
 #include "../GameTechCommon/PositionConstraint.h"
 
+
+
 using namespace NCL;
 using namespace CSC8503;
 
@@ -15,6 +17,8 @@ Scene::Scene() {
   renderer = new GameTechRenderer(*world);
   physics = new PhysicsSystem(*world);
 
+  bulletPhysics = new BulletPhysics();
+
   forceMagnitude = 2000.0f;
   useGravity = false;
   inSelectionMode = false;
@@ -22,6 +26,22 @@ Scene::Scene() {
   Debug::SetRenderer(renderer);
 
   InitialiseAssets();
+}
+
+Scene::Scene(float g) {
+	world = new GameWorld();
+	renderer = new GameTechRenderer(*world);
+	physics = new PhysicsSystem(*world);
+
+	bulletPhysics = new BulletPhysics(g);
+
+	forceMagnitude = 2000.0f;
+	useGravity = false;
+	inSelectionMode = false;
+
+	Debug::SetRenderer(renderer);
+
+	InitialiseAssets();
 }
 
 /*
@@ -62,6 +82,7 @@ Scene::~Scene() {
   delete physics;
   delete renderer;
   delete world;
+  delete bulletPhysics;
 }
 
 void Scene::UpdateGame(float dt) {
@@ -123,49 +144,69 @@ GameObject* Scene::AddFloorToWorld(const Vector3& position) {
   return floor;
 }
 
-/*
+void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass)
+{
+	bulletPhysics->collisionShapes.push_back(Shape);
+	btTransform Transform;
+	Transform.setIdentity();
+	Transform.setOrigin(btVector3(position.x, position.y, position.z)); //TODO Cast position vector?
+	btScalar mass(inverseMass);
+	bool isDynamic = (mass != 0.0f);
+	btVector3 localInertia(0, 0, 0);
+	if (isDynamic)
+		Shape->calculateLocalInertia(mass, localInertia);
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(Transform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+	bulletPhysics->dynamicsWorld->addRigidBody(body);
+}
 
-Builds a game object that uses a sphere mesh for its graphics, and a bounding sphere for its
-rigid body representation. This and the cube function will let you build a lot of 'simple'
-physics worlds. You'll probably need another function for the creation of OBB cubes too.
-
-*/
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass) {
   GameObject* sphere = new GameObject();
 
-  Vector3 sphereSize = Vector3(radius, radius, radius);
+  btCollisionShape* Shape = new btSphereShape(btScalar(radius));
+  SetBulletPhysicsParameters(Shape, position, inverseMass);
+
+
   SphereVolume* volume = new SphereVolume(radius);
   sphere->SetBoundingVolume((CollisionVolume*)volume);
+  sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), sphere->GetBoundingVolume())); //TODO These 3 lines still required until we find some way of linking render objects to physics objects
+  //sphere->GetPhysicsObject()->SetInverseMass(inverseMass);
+  //sphere->GetPhysicsObject()->InitSphereInertia();
+
+
+  Vector3 sphereSize = Vector3(radius, radius, radius);
   sphere->GetTransform().SetWorldScale(sphereSize);
   sphere->GetTransform().SetWorldPosition(position);
-
   sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, ballTex, basicShader));
-  sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), sphere->GetBoundingVolume()));
-
-  sphere->GetPhysicsObject()->SetInverseMass(inverseMass);
-  sphere->GetPhysicsObject()->InitSphereInertia();
-
+ 
   world->AddGameObject(sphere);
 
   return sphere;
 }
 
+
+
 GameObject* Scene::AddCubeToWorld(const Vector3& position, Vector3 dimensions, float inverseMass) {
   GameObject* cube = new GameObject();
 
+  btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+  SetBulletPhysicsParameters(Shape, position, inverseMass);
+
+
+
   AABBVolume* volume = new AABBVolume(dimensions);
-
   cube->SetBoundingVolume((CollisionVolume*)volume);
+  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume())); //TODO These 3 lines still required until we find some way of linking render objects to physics objects
+  //cube->GetPhysicsObject()->SetInverseMass(inverseMass);
+  //cube->GetPhysicsObject()->InitCubeInertia();
 
-  cube->GetTransform().SetWorldPosition(position);
-  cube->GetTransform().SetWorldScale(dimensions);
 
+
+  cube->GetTransform().SetWorldPosition(position); //TODO Is this used for rendering purposes???
+  cube->GetTransform().SetWorldScale(dimensions); //TODO Is this used for rendering purposes???
   cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
-  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
-
-  cube->GetPhysicsObject()->SetInverseMass(inverseMass);
-  cube->GetPhysicsObject()->InitCubeInertia();
-
+  
   world->AddGameObject(cube);
 
   return cube;

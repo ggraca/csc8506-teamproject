@@ -15,6 +15,7 @@ namespace NCL {
         class ExampleScene : public Scene/*, public PacketReceiver*/ {
         public:
             ExampleScene();
+			ExampleScene(float g);
             ~ExampleScene();
             void UpdateGame(float dt);
         protected:
