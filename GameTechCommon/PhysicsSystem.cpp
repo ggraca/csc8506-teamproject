@@ -34,6 +34,7 @@ PhysicsSystem::PhysicsSystem(GameWorld& g) : gameWorld(g)	{
 }
 
 PhysicsSystem::~PhysicsSystem()	{
+	delete bulletPhysics;
 }
 
 void PhysicsSystem::SetGravity(const Vector3& g) {

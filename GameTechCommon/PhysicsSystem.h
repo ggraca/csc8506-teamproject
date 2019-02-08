@@ -34,11 +34,13 @@ namespace NCL {
 
 			BulletPhysics*      bulletPhysics;
 
+			void UpdateBulletPositions(float dt, int iterations);
+
 		protected:
 
 			
 
-			void UpdateBulletPositions(float dt, int iterations);
+			
 
 			void BasicCollisionDetection();
 			void BroadPhase();
