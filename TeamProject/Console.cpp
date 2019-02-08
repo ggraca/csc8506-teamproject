@@ -184,7 +184,9 @@ void Console::Update() {
 				acceptingInput = false;
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_BACK)) {
-				currentCommand.pop_back();
+        if (currentCommand != "") {
+            currentCommand.pop_back();
+        }
 			}
       if (Window::GetKeyboard()->KeyPressed(KEYBOARD_UP)) {
 			  previousCommandIndex--;
@@ -213,7 +215,6 @@ void Console::Update() {
       {
         Debug::AddStringToDebugMenu(previousCommands[i]);
       }
-      Debug::AddStringToDebugMenu(currentCommand);
       
 			if (indicatorTimer <= 30) {
 				Debug::AddStringToDebugMenu(currentCommand + '|');
