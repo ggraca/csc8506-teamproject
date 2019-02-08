@@ -70,18 +70,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Plugins\SOIL\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Plugins\SOIL\$(Configuration);$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Plugins\SOIL\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Plugins\SOIL\$(Configuration);$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -89,13 +89,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\SOIL;$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link />
     <Link>
       <AdditionalDependencies>GameTechCommon.lib;Common.lib;OpenGLRendering.lib;Networking-ENet.lib;ws2_32.lib;Winmm.lib;BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib;BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Plugins\Bullet\lib\Debug_Win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Plugins\Bullet\lib\Debug_Win32;$(SolutionDir)Plugins\SOIL\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -103,12 +103,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\SOIL;$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>GameTechCommon.lib;Common.lib;OpenGLRendering.lib;Networking-ENet.lib;ws2_32.lib;Winmm.lib;BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib;BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Plugins\Bullet\lib\Debug_x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Plugins\Bullet\lib\Debug_x64;$(SolutionDir)Plugins\SOIL\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -118,14 +118,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\Bullet\src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\SOIL;$(SolutionDir)Plugins\Bullet\src;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>GameTechCommon.lib;Common.lib;OpenGLRendering.lib;Networking-ENet.lib;ws2_32.lib;Winmm.lib;BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib;;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Plugins\Bullet\lib\Release_Win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Plugins\Bullet\lib\Release_Win32;$(SolutionDir)Plugins\SOIL\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -135,14 +135,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\Bullet\src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\SOIL;$(SolutionDir)Plugins\Bullet\src;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>GameTechCommon.lib;Common.lib;OpenGLRendering.lib;Networking-ENet.lib;ws2_32.lib;Winmm.lib;BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib;;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Plugins\Bullet\lib\Release_x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Plugins\Bullet\lib\Release_x64;$(SolutionDir)Plugins\SOIL\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -151,14 +151,19 @@
     <ClCompile Include="ExampleScene.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="OBJMesh.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChildMeshInterface.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="ExampleScene.h" />
     <ClInclude Include="GameTechRenderer.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="OBJMesh.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

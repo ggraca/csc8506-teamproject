@@ -30,6 +30,7 @@ ExampleScene::ExampleScene() : Scene() {
 
   debugMenu = DebugMenu();
   console = Console();
+  
 
 }
 
@@ -43,13 +44,16 @@ void ExampleScene::ResetWorld() {
 
 void ExampleScene::GenerateWorld()
 {
-	 GameObject* root = new GameObject();
-	 world->AddGameObject(root);
-	//AddCubeToWorld(Vector3(0, 0, 0), Vector3(10, 10, 10),0);
+	GameObject* root = new GameObject();
+	world->AddGameObject(root);
+	//level walls
 	AddWallToWorld(Vector3(-500, 10, 0), Vector3(5, 100, 500))->SetParent(root);
 	AddWallToWorld(Vector3(0, 10, 500), Vector3(500, 100, 5))->SetParent(root);
 	AddWallToWorld(Vector3(500, 10, 0), Vector3(5, 100, 500))->SetParent(root);
 	AddWallToWorld(Vector3(0, 10, -500), Vector3(500, 100, 5))->SetParent(root);
+	//create basic castle
+
+
 
 	
 

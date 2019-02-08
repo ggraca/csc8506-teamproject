@@ -16,6 +16,9 @@
     <Filter Include="Gameplay">
       <UniqueIdentifier>{b5e8571b-6c6b-4bd6-bf3f-d1ce88eda303}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{79db25b7-8671-4f97-bbfe-b57510e90518}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -39,6 +42,12 @@
     <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJMesh.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTechRenderer.h">
@@ -58,6 +67,15 @@
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildMeshInterface.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJMesh.h">
+      <Filter>Mesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

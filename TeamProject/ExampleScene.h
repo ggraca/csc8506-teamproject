@@ -10,6 +10,7 @@
 #include "Console.h"
 #include "DebugMenu.h"
 
+
 namespace NCL {
     namespace CSC8503 {
         class ExampleScene : public Scene/*, public PacketReceiver*/ {
@@ -17,6 +18,15 @@ namespace NCL {
             ExampleScene();
             ~ExampleScene();
             void UpdateGame(float dt);
+
+			//static void CreateTower()
+			//{
+			//	OBJMesh* m = new OBJMesh();
+			//	m->LoadOBJMesh(MESHDIR"tinker.obj");
+			//	tower = m;
+			//}
+			//static void DeleteTower() { delete tower; }
+
         protected:
             void ResetWorld();
 			void DebugScene(float dt);
@@ -25,6 +35,8 @@ namespace NCL {
 			Console console;
 
 			void GenerateWorld();
+
+			//static Mesh* tower;
 
             /*
             GameServer* server;

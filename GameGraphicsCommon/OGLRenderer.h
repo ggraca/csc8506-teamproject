@@ -19,8 +19,7 @@ _-_-_-_-_-_-_-""  ""
 #include <fstream>
 #include <vector>
 
-#include "GL/glew.h"
-#include "GL/wglew.h"
+#include "../Plugins/OpenGLRendering/glad/glad.h"
 
 #include "SOIL.h"
 
@@ -39,7 +38,7 @@ _-_-_-_-_-_-_-""  ""
 using std::vector;
 
 #pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glew32.lib")
+//#pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "SOIL.lib")
 
 #define OPENGL_DEBUGGING
