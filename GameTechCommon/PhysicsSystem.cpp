@@ -61,9 +61,8 @@ void PhysicsSystem::Update(float dt) {
 	dTOffset += dt; //We accumulate time delta here - there might be remainders from previous frame!
 	int iterationCount = (int)(dTOffset / iterationDt); //And split it up here
 
+	UpdateBulletPositions(dTOffset, iterationCount);
 
-
-	
 	dTOffset -= iterationDt * iterationCount;
 
 	ClearForces();	//Once we've finished with the forces, reset them to zero
@@ -355,9 +354,7 @@ void PhysicsSystem::UpdateBulletPositions(float dt, int iterations) {
 
 		Transform& transform = (*i)->GetTransform();
 
-		g->bulletPhysics->dynamicsWorld->stepSimulation(dt, iterations);
-
-		btCollisionObject* obj = g->bulletPhysics->dynamicsWorld->getCollisionObjectArray()[i];
+		btCollisionObject* obj = g->bulletPhysics->dynamicsWorld->getCollisionObjectArray()[i]; //TODO This will only work if all gameWorld objects are physics objects!
 		btRigidBody* body = btRigidBody::upcast(obj);
 		btTransform trans;
 		if (body && body->getMotionState())
@@ -372,4 +369,5 @@ void PhysicsSystem::UpdateBulletPositions(float dt, int iterations) {
 		transform.SetLocalPosition(position);
 		/*transform.SetWorldPosition(position);*/
 	}
+	g->bulletPhysics->dynamicsWorld->stepSimulation(dt, iterations);
 }
