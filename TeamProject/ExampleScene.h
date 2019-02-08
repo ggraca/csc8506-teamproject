@@ -19,7 +19,7 @@ namespace NCL {
             void UpdateGame(float dt);
         protected:
             void ResetWorld();
-			void DebugScene(float dt);
+			void RegisterConsoleCommands();
 
 			DebugMenu debugMenu;
 			Console console;
