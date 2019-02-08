@@ -15,7 +15,9 @@ public:
 protected:
 	map<string, function<void(vector<string>)>> commands;
 	bool consoleOpen = false;
+	bool acceptingInput = false;
 	string currentCommand = "";
+	int indicatorTimer = 0;
 
 	void HandleCommand();
 };
