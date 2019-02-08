@@ -19,7 +19,7 @@ using namespace NCL;
 using namespace CSC8503;
 
 
-ExampleScene::ExampleScene() : Scene(-9.81) {
+ExampleScene::ExampleScene() : Scene() {
  /* physics->SetGravity(Vector3(0, -9.81, 0));
   physics->UseGravity(true);*/
   /*world->ShuffleConstraints(true);
@@ -33,14 +33,14 @@ ExampleScene::ExampleScene() : Scene(-9.81) {
   console = Console();
 }
 
-ExampleScene::ExampleScene(float g) : Scene(g) {
-	Window::GetWindow()->ShowOSPointer(false);
-	Window::GetWindow()->LockMouseToWindow(true);
-
-	ResetWorld();
-	debugMenu = DebugMenu();
-	console = Console();
-}
+//ExampleScene::ExampleScene(float g) : Scene(g) {
+//	Window::GetWindow()->ShowOSPointer(false);
+//	Window::GetWindow()->LockMouseToWindow(true);
+//
+//	ResetWorld();
+//	debugMenu = DebugMenu();
+//	console = Console();
+//}
 
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();

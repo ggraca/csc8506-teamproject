@@ -1,7 +1,7 @@
 #pragma once
 #include "GameTechRenderer.h"
-#include "..\GameTechCommon\PhysicsSystem.h"
 
+#include "../GameTechCommon/PhysicsSystem.h"
 #include "..\Plugins\Bullet\src\btBulletDynamicsCommon.h"
 #include "..\GameTechCommon\BulletPhysics.h"
 
@@ -10,12 +10,12 @@ namespace NCL {
 		class Scene		{
 		public:
 			Scene();
-			Scene(float g);
+			/*Scene(float g);*/
 			~Scene();
 
 			virtual void UpdateGame(float dt);
 
-			BulletPhysics*      bulletPhysics;
+			
 
 		protected:
 			void InitialiseAssets();
@@ -53,8 +53,7 @@ namespace NCL {
 
 			GameTechRenderer*	renderer;
 			PhysicsSystem*		physics;
-			GameWorld*			world;
-			
+			GameWorld*		world;
 
 			bool useGravity;
 			bool inSelectionMode;

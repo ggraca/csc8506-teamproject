@@ -17,7 +17,7 @@ Scene::Scene() {
   renderer = new GameTechRenderer(*world);
   physics = new PhysicsSystem(*world);
 
-  bulletPhysics = new BulletPhysics();
+  
 
   forceMagnitude = 2000.0f;
   useGravity = false;
@@ -28,21 +28,21 @@ Scene::Scene() {
   InitialiseAssets();
 }
 
-Scene::Scene(float g) {
-	world = new GameWorld();
-	renderer = new GameTechRenderer(*world);
-	physics = new PhysicsSystem(*world);
-
-	bulletPhysics = new BulletPhysics(g);
-
-	forceMagnitude = 2000.0f;
-	useGravity = false;
-	inSelectionMode = false;
-
-	Debug::SetRenderer(renderer);
-
-	InitialiseAssets();
-}
+//Scene::Scene(float g) {
+//	world = new GameWorld();
+//	renderer = new GameTechRenderer(*world);
+//	physics = new PhysicsSystem(*world);
+//
+//	bulletPhysics = new BulletPhysics(g);
+//
+//	forceMagnitude = 2000.0f;
+//	useGravity = false;
+//	inSelectionMode = false;
+//
+//	Debug::SetRenderer(renderer);
+//
+//	InitialiseAssets();
+//}
 
 /*
 
@@ -79,10 +79,9 @@ Scene::~Scene() {
   delete ballTex;
   delete basicShader;
 
-  delete physics;
+  //delete physics;
   delete renderer;
   delete world;
-  delete bulletPhysics;
 }
 
 void Scene::UpdateGame(float dt) {
@@ -146,7 +145,7 @@ GameObject* Scene::AddFloorToWorld(const Vector3& position) {
 
 void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass)
 {
-	bulletPhysics->collisionShapes.push_back(Shape);
+	physics->bulletPhysics->collisionShapes.push_back(Shape);
 	btTransform Transform;
 	Transform.setIdentity();
 	Transform.setOrigin(btVector3(position.x, position.y, position.z)); //TODO Cast position vector?
@@ -158,7 +157,7 @@ void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& p
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Transform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
 	btRigidBody* body = new btRigidBody(rbInfo);
-	bulletPhysics->dynamicsWorld->addRigidBody(body);
+	physics->bulletPhysics->dynamicsWorld->addRigidBody(body);
 }
 
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass) {

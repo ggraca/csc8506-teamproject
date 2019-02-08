@@ -23,6 +23,9 @@ const float PhysicsSystem::UNIT_MULTIPLIER = 1.0f;
 const float PhysicsSystem::UNIT_RECIPROCAL = 1.0f / UNIT_MULTIPLIER;
 
 PhysicsSystem::PhysicsSystem(GameWorld& g) : gameWorld(g)	{
+
+	bulletPhysics = new BulletPhysics();
+
 	applyGravity	= true;
 	useBroadPhase	= true;
 	dTOffset		= 0.0f;
@@ -347,14 +350,15 @@ void PhysicsSystem::UpdateBulletPositions(float dt, int iterations) {
 	std::vector<GameObject*>::const_iterator first;
 	std::vector<GameObject*>::const_iterator last;
 	gameWorld.GetObjectIterators(first, last);
-
+	int j = 0;
 	for (auto i = first; i != last; i++) {
+		j++;
 		PhysicsObject* object = (*i)->GetPhysicsObject();
 		if (object == nullptr) continue;
 
 		Transform& transform = (*i)->GetTransform();
 
-		btCollisionObject* obj = g->bulletPhysics->dynamicsWorld->getCollisionObjectArray()[i]; //TODO This will only work if all gameWorld objects are physics objects!
+		btCollisionObject* obj = bulletPhysics->dynamicsWorld->getCollisionObjectArray()[j]; //TODO This will only work if all gameWorld objects are physics objects!
 		btRigidBody* body = btRigidBody::upcast(obj);
 		btTransform trans;
 		if (body && body->getMotionState())
@@ -369,5 +373,5 @@ void PhysicsSystem::UpdateBulletPositions(float dt, int iterations) {
 		transform.SetLocalPosition(position);
 		/*transform.SetWorldPosition(position);*/
 	}
-	g->bulletPhysics->dynamicsWorld->stepSimulation(dt, iterations);
+	bulletPhysics->dynamicsWorld->stepSimulation(dt, iterations);
 }
