@@ -151,7 +151,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 }
 
 GameObject* Scene::AddCubeToWorld(const Vector3& position, Vector3 dimensions, float inverseMass) {
-  GameObject* cube = new GameObject();
+  Player* cube = new Player();
 
   AABBVolume* volume = new AABBVolume(dimensions);
 

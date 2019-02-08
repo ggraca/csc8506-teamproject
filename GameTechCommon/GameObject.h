@@ -137,6 +137,10 @@ namespace NCL {
 				child->SetParent(this);
 			}
 			
+			virtual void Awake() { std::cout << "Awake is called for:" << name << std::endl; }
+			virtual void Start(){ std::cout << "Start is called for:" << name << std::endl; }
+			virtual void Update(){ std::cout << "Update is called for:" << name << std::endl; }
+			virtual void LateUpdate(){ std::cout << "LateUpdate is called for:" << name << std::endl; }
 			
 		protected:
 			Transform			transform;
@@ -152,6 +156,15 @@ namespace NCL {
 			bool	isActive;
 			string	name;
 			
+		};
+
+		class Player :public virtual GameObject
+		{
+		public:
+			void Awake ()override { std::cout << "Overriden awake is called for:" << name << std::endl; }
+			void Start()override { std::cout << "Overriden Start is called for:" << name << std::endl; }
+			void Update()override { std::cout << "Overriden Update is called for:" << name << std::endl; }
+			void LateUpdate()override { std::cout << "Overriden LAteUpdate is called for:" << name << std::endl; }
 		};
 	}
 }

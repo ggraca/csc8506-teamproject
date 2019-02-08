@@ -23,6 +23,9 @@ namespace NCL {
 			void Clear();
 			void ClearAndErase();
 
+			void CallObjectStartUpFunctions(GameObject* o);
+			void UpdateGameObjects();
+			void LateUpdateGameObjects();
 			void AddGameObject(GameObject* o);
 			void AddGameObject(GameObject* o, const GameObject* parent);
 			void RemoveGameObject(GameObject* o);

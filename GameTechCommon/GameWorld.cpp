@@ -34,8 +34,35 @@ void GameWorld::ClearAndErase() {
 	Clear();
 }
 
-void GameWorld::AddGameObject(GameObject* o) 
+void NCL::CSC8503::GameWorld::CallObjectStartUpFunctions(GameObject * o)
 {
+	if (o)
+	{
+		o->Awake();
+		o->Start();
+	}
+}
+
+void NCL::CSC8503::GameWorld::UpdateGameObjects()
+{
+	for (auto&i : gameObjects) 
+	{
+		i->Update();
+	}
+}
+
+void NCL::CSC8503::GameWorld::LateUpdateGameObjects()
+{
+	for (auto&i : gameObjects)
+	{
+		i->LateUpdate();
+	}
+}
+
+void GameWorld::AddGameObject(GameObject* o)
+{
+
+	CallObjectStartUpFunctions(o);
 	gameObjects.emplace_back(o);
 }
 
@@ -45,7 +72,8 @@ void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
 	{
 		o->SetParent(parent);
 	}
-	
+
+	CallObjectStartUpFunctions(o);
 	gameObjects.emplace_back(o);
 }
 
@@ -71,8 +99,11 @@ int GameWorld::GetObjectCount(){
 	return gameObjects.size();
 }
 
-void GameWorld::UpdateWorld(float dt) {
+void GameWorld::UpdateWorld(float dt) 
+{
+	UpdateGameObjects();
 	UpdateTransforms();
+	LateUpdateGameObjects();
 
 	if (shuffleObjects) {
 		std::random_shuffle(gameObjects.begin(), gameObjects.end());
