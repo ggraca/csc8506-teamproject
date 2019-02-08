@@ -3,7 +3,7 @@
 
 using namespace NCL;
 
-void TestCommand(vector<string> commandparams) {
+void TestCommand(vector<string> commandparams, void* data) {
 	cout << "Command found with name: " + commandparams[0] << endl;
 	cout << "Parameters are: " << endl;;
 	for (int i = 1; i < commandparams.size(); i++)
@@ -14,7 +14,7 @@ void TestCommand(vector<string> commandparams) {
 
 Console::Console()
 {
-	RegisterCommand("testcommand", TestCommand);
+	RegisterCommand("testcommand", TestCommand, nullptr);
 }
 
 
@@ -23,10 +23,18 @@ Console::~Console()
 }
 
 void Console::HandleCommand() {
-	function<void(vector<string>)> functionCall;
+	function<void(vector<string>, void*)> functionCall;
+
+	if (currentCommand == "") {
+		cout << __FUNCTION__ << " was called with an empty command!" << endl;
+		return;
+	}
+
 	vector<string> parsedCommand = split_string(currentCommand, ' ');
 
 	auto foundCommand = commands.find(parsedCommand[0]);
+	AddToPreviousCommandList();
+	previousCommandIndex = previousCommands.size();
 	currentCommand = "";
 
 	if (foundCommand == commands.end()) {
@@ -34,12 +42,19 @@ void Console::HandleCommand() {
 		return;
 	}
 
-	functionCall = foundCommand->second;
-	functionCall(parsedCommand);
+	functionCall = foundCommand->second.first;
+	functionCall(parsedCommand, foundCommand->second.second);
 }
 
-void Console::RegisterCommand(string identifier, function<void(vector<string>)> command) {
-	commands.insert(pair<string, function<void(vector<string>)>>(identifier, command));
+void Console::RegisterCommand(string identifier, function<void(vector<string>, void*)> command, void* data) {
+	commands.insert(pair<string, pair<function<void(vector<string>, void*)>, void*>>(identifier, make_pair(command, data)));
+}
+
+void Console::AddToPreviousCommandList() {
+	if (previousCommands.size() == 5) {
+		previousCommands.erase(previousCommands.begin());
+	}
+	previousCommands.push_back(currentCommand);
 }
 
 void Console::Update() {
@@ -158,6 +173,9 @@ void Console::Update() {
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) {
 				currentCommand += "z";
 			}
+      if (Window::GetKeyboard()->KeyPressed(KEYBOARD_MINUS)) {
+			  currentCommand += "-";
+		  }
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_SPACE)) {
 				currentCommand += " ";
 			}
@@ -168,6 +186,35 @@ void Console::Update() {
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_BACK)) {
 				currentCommand.pop_back();
 			}
+      if (Window::GetKeyboard()->KeyPressed(KEYBOARD_UP)) {
+			  previousCommandIndex--;
+
+        if (previousCommandIndex < 0) {
+          previousCommandIndex = previousCommands.size() - 1;
+        }
+
+        if (!empty(previousCommands)) {
+          currentCommand = previousCommands[previousCommandIndex];
+        }
+      }
+      if (Window::GetKeyboard()->KeyPressed(KEYBOARD_DOWN)) {
+        previousCommandIndex++;
+
+        if (previousCommandIndex > previousCommands.size() - 1) {
+          previousCommandIndex = 0;
+        }
+
+        if (!empty(previousCommands)) {
+          currentCommand = previousCommands[previousCommandIndex];
+        }
+      }
+      
+      for (int i = 0; i < previousCommands.size(); i++)
+      {
+        Debug::AddStringToDebugMenu(previousCommands[i]);
+      }
+      Debug::AddStringToDebugMenu(currentCommand);
+      
 			if (indicatorTimer <= 30) {
 				Debug::AddStringToDebugMenu(currentCommand + '|');
 			}

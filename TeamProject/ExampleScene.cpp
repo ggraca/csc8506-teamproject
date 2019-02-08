@@ -27,6 +27,7 @@ ExampleScene::ExampleScene() : Scene() {
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
+  RegisterConsoleCommands();
 }
 
 void ExampleScene::ResetWorld() {
@@ -60,6 +61,15 @@ void ExampleScene::UpdateGame(float dt) {
   renderer->Render();
 }
 
-void ExampleScene::DebugScene(float dt) {
+void CommandSetCameraPosition(vector<string> commandParams, void* data) {
+	float x = stof(commandParams[1]);
+	float y = stof(commandParams[2]);
+	float z = stof(commandParams[3]);
 
+	GameWorld* world = (GameWorld*)data;
+	world->GetMainCamera()->SetPosition(Vector3(x, y, z));
+}
+
+void ExampleScene::RegisterConsoleCommands() {
+	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
 }
