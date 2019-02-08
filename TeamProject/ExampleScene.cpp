@@ -35,7 +35,6 @@ void ExampleScene::ResetWorld() {
 
   // Floor
   AddFloorToWorld(Vector3(200, 0, 200));
-  AddCubeToWorld(Vector3(0, 100, 0), Vector3(10, 10, 10));
 }
 
 ExampleScene::~ExampleScene() {

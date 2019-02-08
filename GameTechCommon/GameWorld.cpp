@@ -34,21 +34,12 @@ void GameWorld::ClearAndErase() {
 	Clear();
 }
 
-void NCL::CSC8503::GameWorld::CallObjectStartUpFunctions(GameObject * o)
-{
-	if (o)
-	{
-		o->Awake();
-		o->Start();
-	}
-}
+
 
 void NCL::CSC8503::GameWorld::UpdateGameObjects()
 {
 	for (auto&i : gameObjects) 
 	{
-		i->Update();
-
 		if (i->HasOtherScriptsAttached())
 		{
 			i->UpdateAttachedScripts();
@@ -60,8 +51,7 @@ void NCL::CSC8503::GameWorld::LateUpdateGameObjects()
 {
 	for (auto&i : gameObjects)
 	{
-		i->LateUpdate();
-
+		
 		if (i->HasOtherScriptsAttached())
 		{
 			i->LateUpdateAttachedScripts();
@@ -71,9 +61,20 @@ void NCL::CSC8503::GameWorld::LateUpdateGameObjects()
 
 void GameWorld::AddGameObject(GameObject* o)
 {
+	if (o)
+	{
+		CallInitialObjectFunctions(o);
+		gameObjects.push_back(o);
+	}
+}
 
-	CallObjectStartUpFunctions(o);
-	gameObjects.push_back(o);
+void NCL::CSC8503::GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
+{
+	if (o)
+	{
+		o->SetIsAddedToWorld(true);
+		o->SetUpInitialScripts();
+	}
 }
 
 void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
@@ -81,10 +82,9 @@ void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
 	if (o)
 	{
 		o->SetParent(parent);
+		CallInitialObjectFunctions(o);
+		gameObjects.push_back(o);
 	}
-
-	CallObjectStartUpFunctions(o);
-	gameObjects.push_back(o);
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 

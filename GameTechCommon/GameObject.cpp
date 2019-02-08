@@ -8,6 +8,7 @@ GameObject::GameObject(string objectName)
 	
 	name			= objectName;
 	isActive		= true;
+	isAddedToWorld  = false;
 	boundingVolume	= nullptr;
 	physicsObject	= nullptr;
 	renderObject	= nullptr;
@@ -44,6 +45,31 @@ bool GameObject::InsideAABB(const Vector3& boxPos, const Vector3& halfSize) {
 	return CollisionDetection::AABBTest(transform, *boundingVolume, boxPos, halfSize);
 }
 
+void NCL::CSC8503::GameObject::AddScript(ScriptObject * obj)
+{
+	if (obj)
+	{
+		scripts.push_back(obj);
+
+		if (isAddedToWorld)
+		{
+			obj->Awake();
+			obj->Start();
+		}
+
+	}
+}
+
+
+void NCL::CSC8503::GameObject::SetUpInitialScripts()
+{
+	for (auto&i : scripts)
+	{
+		i->Awake();
+		i->Start();
+	}
+}
+
 void GameObject::UpdateAttachedScripts()
 {
 	for (auto&i : scripts)
@@ -61,12 +87,13 @@ void GameObject::LateUpdateAttachedScripts()
 }
 
 
-void GameObject::AddScript(GameObject* obj)
+NCL::CSC8503::ScriptObject::ScriptObject()
 {
-	if (obj) 
-	{
-		scripts.push_back(obj);
-	}
-		
+	gameObject = nullptr;
 }
 
+///////////////////////////////////Script Object
+NCL::CSC8503::ScriptObject::ScriptObject(GameObject * go)
+{
+	this->gameObject = go;
+}
