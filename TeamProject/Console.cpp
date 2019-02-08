@@ -168,7 +168,16 @@ void Console::Update() {
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_BACK)) {
 				currentCommand.pop_back();
 			}
+			if (indicatorTimer <= 30) {
+				Debug::AddStringToDebugMenu(currentCommand + '|');
+			}
+			else {
+				Debug::AddStringToDebugMenu(currentCommand);
+				if (indicatorTimer >= 60) {
+					indicatorTimer = 0;
+				}
+			}
 		}
-		Debug::AddStringToDebugMenu(currentCommand);
+		indicatorTimer++;
 	}
 }
