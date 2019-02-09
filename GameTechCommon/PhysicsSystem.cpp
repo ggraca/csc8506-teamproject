@@ -24,7 +24,8 @@ const float PhysicsSystem::UNIT_RECIPROCAL = 1.0f / UNIT_MULTIPLIER;
 
 PhysicsSystem::PhysicsSystem(GameWorld& g) : gameWorld(g)	{
 
-	bulletPhysics = new BulletPhysics();
+//	bulletPhysics = new BulletPhysics();
+
 
 	applyGravity	= true;
 	useBroadPhase	= true;
@@ -34,7 +35,8 @@ PhysicsSystem::PhysicsSystem(GameWorld& g) : gameWorld(g)	{
 }
 
 PhysicsSystem::~PhysicsSystem()	{
-	delete bulletPhysics;
+//	delete bulletPhysics;
+
 }
 
 void PhysicsSystem::SetGravity(const Vector3& g) {
@@ -65,7 +67,7 @@ void PhysicsSystem::Update(float dt) {
 	dTOffset += dt; //We accumulate time delta here - there might be remainders from previous frame!
 	int iterationCount = (int)(dTOffset / iterationDt); //And split it up here
 
-	UpdateBulletPositions(dTOffset, iterationCount);
+//	UpdateBulletPositions(dTOffset, iterationCount);
 
 	dTOffset -= iterationDt * iterationCount;
 
@@ -347,32 +349,32 @@ void PhysicsSystem::UpdateConstraints(float dt) {
 	}
 }
 
-void PhysicsSystem::UpdateBulletPositions(float dt, int iterations) {
-	std::vector<GameObject*>::const_iterator first;
-	std::vector<GameObject*>::const_iterator last;
-	gameWorld.GetObjectIterators(first, last);
-	int j = 0;
-	for (auto i = first; i != last; i++) {
-		j++;
-		PhysicsObject* object = (*i)->GetPhysicsObject();
-		if (object == nullptr) continue;
-
-		Transform& transform = (*i)->GetTransform();
-
-		btCollisionObject* obj = bulletPhysics->dynamicsWorld->getCollisionObjectArray()[j]; //TODO This will only work if all gameWorld objects are physics objects!
-		btRigidBody* body = btRigidBody::upcast(obj);
-		btTransform trans;
-		if (body && body->getMotionState())
-		{
-			body->getMotionState()->getWorldTransform(trans);
-		}
-		else
-		{
-			trans = obj->getWorldTransform();
-		}
-		Vector3 position = Vector3(float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
-		transform.SetLocalPosition(position);
-		/*transform.SetWorldPosition(position);*/
-	}
-	bulletPhysics->dynamicsWorld->stepSimulation(dt, iterations);
-}
+//void PhysicsSystem::UpdateBulletPositions(float dt, int iterations) {
+//	std::vector<GameObject*>::const_iterator first;
+//	std::vector<GameObject*>::const_iterator last;
+//	gameWorld.GetObjectIterators(first, last);
+//	int j = 0;
+//	for (auto i = first; i != last; i++) {
+//		j++;
+//		PhysicsObject* object = (*i)->GetPhysicsObject();
+//		if (object == nullptr) continue;
+//
+//		Transform& transform = (*i)->GetTransform();
+//
+//		btCollisionObject* obj = bulletPhysics->dynamicsWorld->getCollisionObjectArray()[j]; //TODO This will only work if all gameWorld objects are physics objects!
+//		btRigidBody* body = btRigidBody::upcast(obj);
+//		btTransform trans;
+//		if (body && body->getMotionState())
+//		{
+//			body->getMotionState()->getWorldTransform(trans);
+//		}
+//		else
+//		{
+//			trans = obj->getWorldTransform();
+//		}
+//		Vector3 position = Vector3(float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
+//		transform.SetLocalPosition(position);
+//		/*transform.SetWorldPosition(position);*/
+//	}
+//	bulletPhysics->dynamicsWorld->stepSimulation(dt, iterations);
+//}

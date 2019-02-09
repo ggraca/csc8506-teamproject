@@ -31,9 +31,17 @@ namespace NCL {
 			static const float UNIT_MULTIPLIER;
 			static const float UNIT_RECIPROCAL;
 
-			BulletPhysics*      bulletPhysics;
+	//		BulletPhysics*      bulletPhysics;
 
-			void UpdateBulletPositions(float dt, int iterations);
+	//		void UpdateBulletPositions(float dt, int iterations);
+
+			btDiscreteDynamicsWorld* dynamicsWorld;
+			btAlignedObjectArray<btCollisionShape*> collisionShapes;
+		private:
+			btDefaultCollisionConfiguration* collisionConfiguration;
+			btCollisionDispatcher* dispatcher;
+			btBroadphaseInterface* overlappingPairCache;
+			btSequentialImpulseConstraintSolver* solver;
 
 		protected:
 

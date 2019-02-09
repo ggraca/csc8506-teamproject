@@ -79,7 +79,7 @@ Scene::~Scene() {
   delete ballTex;
   delete basicShader;
 
-  //delete physics;
+  delete physics;
   delete renderer;
   delete world;
 }
@@ -143,28 +143,28 @@ GameObject* Scene::AddFloorToWorld(const Vector3& position) {
   return floor;
 }
 
-void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass)
-{
-	physics->bulletPhysics->collisionShapes.push_back(Shape);
-	btTransform Transform;
-	Transform.setIdentity();
-	Transform.setOrigin(btVector3(position.x, position.y, position.z)); //TODO Cast position vector?
-	btScalar mass(inverseMass);
-	bool isDynamic = (mass != 0.0f);
-	btVector3 localInertia(0, 0, 0);
-	if (isDynamic)
-		Shape->calculateLocalInertia(mass, localInertia);
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(Transform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
-	btRigidBody* body = new btRigidBody(rbInfo);
-	physics->bulletPhysics->dynamicsWorld->addRigidBody(body);
-}
+//void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass)
+//{
+//	physics->bulletPhysics->collisionShapes.push_back(Shape);
+//	btTransform Transform;
+//	Transform.setIdentity();
+//	Transform.setOrigin(btVector3(position.x, position.y, position.z)); //TODO Cast position vector?
+//	btScalar mass(inverseMass);
+//	bool isDynamic = (mass != 0.0f);
+//	btVector3 localInertia(0, 0, 0);
+//	if (isDynamic)
+//		Shape->calculateLocalInertia(mass, localInertia);
+//	btDefaultMotionState* myMotionState = new btDefaultMotionState(Transform);
+//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
+//	btRigidBody* body = new btRigidBody(rbInfo);
+//	physics->bulletPhysics->dynamicsWorld->addRigidBody(body);
+//}
 
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass) {
   GameObject* sphere = new GameObject();
 
-  btCollisionShape* Shape = new btSphereShape(btScalar(radius));
-  SetBulletPhysicsParameters(Shape, position, inverseMass);
+  //btCollisionShape* Shape = new btSphereShape(btScalar(radius));
+  //SetBulletPhysicsParameters(Shape, position, inverseMass);
 
 
   SphereVolume* volume = new SphereVolume(radius);
@@ -189,8 +189,8 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 GameObject* Scene::AddCubeToWorld(const Vector3& position, Vector3 dimensions, float inverseMass) {
   GameObject* cube = new GameObject();
 
-  btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
-  SetBulletPhysicsParameters(Shape, position, inverseMass);
+  //btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+  //SetBulletPhysicsParameters(Shape, position, inverseMass);
 
 
 
