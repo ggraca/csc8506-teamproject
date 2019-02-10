@@ -129,9 +129,6 @@
     <ClInclude Include="LayerAndTag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BulletPhysics.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameWorld.cpp">
@@ -205,9 +202,6 @@
     </ClCompile>
     <ClCompile Include="LayerAndTag.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletPhysics.cpp">
-      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

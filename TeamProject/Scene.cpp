@@ -7,50 +7,20 @@
 #include "../GameTechCommon/GameWorld.h"
 #include "../GameTechCommon/PositionConstraint.h"
 
-
-
 using namespace NCL;
 using namespace CSC8503;
 
 Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
-  physics = new PhysicsSystem(*world);
-
-  
-
-  forceMagnitude = 2000.0f;
-  useGravity = false;
-  inSelectionMode = false;
+  physics = new BulletPhysics(*world);
+  physics->gravity = Vector3(4, -18.81, 0);
 
   Debug::SetRenderer(renderer);
 
   InitialiseAssets();
 }
 
-//Scene::Scene(float g) {
-//	world = new GameWorld();
-//	renderer = new GameTechRenderer(*world);
-//	physics = new PhysicsSystem(*world);
-//
-//	bulletPhysics = new BulletPhysics(g);
-//
-//	forceMagnitude = 2000.0f;
-//	useGravity = false;
-//	inSelectionMode = false;
-//
-//	Debug::SetRenderer(renderer);
-//
-//	InitialiseAssets();
-//}
-
-/*
-
-Each of the little demo scenarios used in the game uses the same 2 meshes,
-and the same texture and shader. There's no need to ever load in anything else
-for this module, even in the coursework, but you can add it
-
-*/
 void Scene::InitialiseAssets() {
   cubeMesh = new OGLMesh("Cube.msh");
   cubeMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
@@ -60,10 +30,14 @@ void Scene::InitialiseAssets() {
   sphereMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   sphereMesh->UploadToGPU();
 
+  /*cylinderMesh = new OGLMesh("cylinder.msh");
+  cylinderMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+  cylinderMesh->UploadToGPU();*/
+
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
-  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
+  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
   basicShader = new OGLShader("GameTechVert.glsl", "GameTechFrag.glsl");
 
   InitCamera();
@@ -103,6 +77,31 @@ void Scene::UpdateGame(float dt) {
 }
 
 void Scene::UpdateKeys() {
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_J)) {
+	//	Vector3 gravity = physics->gravity;
+	//	physics->gravity = Vector3(gravity.x - 1, gravity.y, gravity.z);
+	////	physics->gravity = Vector3(0, 0, 0);
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_L)) {
+	//	Vector3 gravity = physics->gravity;
+	//	physics->gravity = Vector3(gravity.x + 1, gravity.y, gravity.z);
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_J)) {
+	//	Vector3 gravity = physics->gravity;
+	//	physics->gravity = Vector3(gravity.x, gravity.y, gravity.z - 1);
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_L)) {
+	//	Vector3 gravity = physics->gravity;
+	//	physics->gravity = Vector3(gravity.x, gravity.y, gravity.z + 1);
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_P)) {
+	//	Vector3 gravity = physics->gravity;
+	//	physics->gravity = Vector3(gravity.x, gravity.y + 1, gravity.z - 1);
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
+	//	Vector3 gravity = physics->gravity;
+	//	physics->gravity = Vector3(gravity.x, gravity.y - 1, gravity.z + 1);
+	//}
 }
 
 void Scene::InitCamera() {
@@ -115,64 +114,36 @@ void Scene::InitCamera() {
 
 void Scene::InitWorld() {
   world->ClearAndErase();
-  physics->Clear();
 }
 
-/*
-
-A single function to add a large immoveable cube to the bottom of our world
-
-*/
-GameObject* Scene::AddFloorToWorld(const Vector3& position) {
-  GameObject* floor = new GameObject();
-
-  Vector3 floorSize = Vector3(500, 10, 500);
-  AABBVolume* volume = new AABBVolume(floorSize);
-  floor->SetBoundingVolume((CollisionVolume*)volume);
-  floor->GetTransform().SetWorldScale(floorSize);
-  floor->GetTransform().SetWorldPosition(position);
-
-  floor->SetRenderObject(new RenderObject(&floor->GetTransform(), cubeMesh, grassTex, basicShader));
-  floor->SetPhysicsObject(new PhysicsObject(&floor->GetTransform(), floor->GetBoundingVolume()));
-
-  floor->GetPhysicsObject()->SetInverseMass(0);
-  floor->GetPhysicsObject()->InitCubeInertia();
-
-  world->AddGameObject(floor);
-
-  return floor;
+void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, Quaternion orientation)
+{
+	physics->collisionShapes.push_back(Shape);
+	btTransform Transform;
+	btQuaternion orient = btQuaternion(orientation.x, orientation.y, orientation.z, orientation.w);
+	Transform.setIdentity();
+	Transform.setOrigin(btVector3(position.x, position.y, position.z));
+	Transform.setRotation(orient);
+	btScalar mass(inverseMass);
+	bool isDynamic = (mass != 0.0f);
+	btVector3 localInertia(0, 0, 0);
+	if (isDynamic)
+		Shape->calculateLocalInertia(mass, localInertia);
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(Transform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+	physics->dynamicsWorld->addRigidBody(body);
 }
-
-//void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass)
-//{
-//	physics->bulletPhysics->collisionShapes.push_back(Shape);
-//	btTransform Transform;
-//	Transform.setIdentity();
-//	Transform.setOrigin(btVector3(position.x, position.y, position.z)); //TODO Cast position vector?
-//	btScalar mass(inverseMass);
-//	bool isDynamic = (mass != 0.0f);
-//	btVector3 localInertia(0, 0, 0);
-//	if (isDynamic)
-//		Shape->calculateLocalInertia(mass, localInertia);
-//	btDefaultMotionState* myMotionState = new btDefaultMotionState(Transform);
-//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
-//	btRigidBody* body = new btRigidBody(rbInfo);
-//	physics->bulletPhysics->dynamicsWorld->addRigidBody(body);
-//}
 
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass) {
   GameObject* sphere = new GameObject();
 
-  //btCollisionShape* Shape = new btSphereShape(btScalar(radius));
-  //SetBulletPhysicsParameters(Shape, position, inverseMass);
+  btCollisionShape* Shape = new btSphereShape(btScalar(radius));
+  SetBulletPhysicsParameters(Shape, position, inverseMass);
 
-
-  SphereVolume* volume = new SphereVolume(radius);
-  sphere->SetBoundingVolume((CollisionVolume*)volume);
-  sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), sphere->GetBoundingVolume())); //TODO These 3 lines still required until we find some way of linking render objects to physics objects
-  //sphere->GetPhysicsObject()->SetInverseMass(inverseMass);
-  //sphere->GetPhysicsObject()->InitSphereInertia();
-
+  //SphereVolume* volume = new SphereVolume(radius);
+  //sphere->SetBoundingVolume((CollisionVolume*)volume);
+  //sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), sphere->GetBoundingVolume())); //TODO These 3 lines may still be required until we find some better way of linking render objects to physics objects
 
   Vector3 sphereSize = Vector3(radius, radius, radius);
   sphere->GetTransform().SetWorldScale(sphereSize);
@@ -184,26 +155,19 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   return sphere;
 }
 
-
-
-GameObject* Scene::AddCubeToWorld(const Vector3& position, Vector3 dimensions, float inverseMass) {
+GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass) {
   GameObject* cube = new GameObject();
 
-  //btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
-  //SetBulletPhysicsParameters(Shape, position, inverseMass);
+  btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+  SetBulletPhysicsParameters(Shape, position, inverseMass, orient);
 
-
-
-  AABBVolume* volume = new AABBVolume(dimensions);
-  cube->SetBoundingVolume((CollisionVolume*)volume);
-  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume())); //TODO These 3 lines still required until we find some way of linking render objects to physics objects
-  //cube->GetPhysicsObject()->SetInverseMass(inverseMass);
-  //cube->GetPhysicsObject()->InitCubeInertia();
-
-
-
-  cube->GetTransform().SetWorldPosition(position); //TODO Is this used for rendering purposes???
-  cube->GetTransform().SetWorldScale(dimensions); //TODO Is this used for rendering purposes???
+  //AABBVolume* volume = new AABBVolume(dimensions);
+  //cube->SetBoundingVolume((CollisionVolume*)volume);
+  //cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume())); //TODO These 3 lines may still required until we find some better way of linking render objects to physics objects
+  
+  cube->GetTransform().SetLocalOrientation(orient);
+  cube->GetTransform().SetWorldPosition(position); 
+  cube->GetTransform().SetWorldScale(dimensions);
   cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
   
   world->AddGameObject(cube);
@@ -211,14 +175,30 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, Vector3 dimensions, f
   return cube;
 }
 
-/*
+void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
+	float sphereRadius = 3.0 * (rand() % 100) / (float)100;
+	float x = 10.0 * (rand() % 100) / (float)100;
+	srand(time(NULL));
+	float y = 10.0 * (rand() % 100) / (float)100;
+	srand(time(NULL));
+	float z = 10.0 * (rand() % 100) / (float)100;
+	srand(time(NULL));
+	Vector3 cubeDims = Vector3(x, y, z);
 
-Every frame, this code will let you perform a raycast, to see if there's an object
-underneath the cursor, and if so 'select it' into a pointer, so that it can be
-manipulated later. Pressing Q will let you toggle between this behaviour and instead
-letting you move the camera around.
+	for (int x = 0; x < numCols; ++x) {
+		for (int z = 0; z < numRows; ++z) {
+			cout << (rand() % 100) / (float)100 << endl;
+			Vector3 position = Vector3(x * colSpacing, positiony.y * ((rand() % 100) / (float)100), z * rowSpacing);
+			if (rand() % 2) {
+				AddCubeToWorld(position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims);
+			}
+			else {
+				AddSphereToWorld(position, sphereRadius);
+			}
+		}
+	}
+}
 
-*/
 bool Scene::SelectObject() {
   if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Q)) {
     inSelectionMode = !inSelectionMode;

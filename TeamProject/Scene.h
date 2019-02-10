@@ -9,12 +9,9 @@ namespace NCL {
 		class Scene		{
 		public:
 			Scene();
-			/*Scene(float g);*/
 			~Scene();
 
 			virtual void UpdateGame(float dt);
-
-			
 
 		protected:
 			void InitialiseAssets();
@@ -24,34 +21,18 @@ namespace NCL {
 
 			virtual void InitWorld();
 
-			/*
-			These are some of the world/object creation functions I created when testing the functionality
-			in the module. Feel free to mess around with them to see different objects being created in different
-			test scenarios (constraints, collision types, and so on).
-			*/
-			//void InitSphereGridWorld(int numRows, int numCols, float rowSpacing, float colSpacing, float radius);
-			//void InitMixedGridWorld(int numRows, int numCols, float rowSpacing, float colSpacing);
-			//void InitCubeGridWorld(int numRows, int numCols, float rowSpacing, float colSpacing, const Vector3& cubeDims);
-			//void InitSphereCollisionTorqueTest();
-			//void InitCubeCollisionTorqueTest();
-			//void InitSphereAABBTest();
-			//void InitGJKWorld();
-			//void BridgeConstraintTest();
-			//void SimpleGJKTest();
-			//void SimpleAABBTest();
-			//void SimpleAABBTest2();
-
 			bool SelectObject();
 			void MoveSelectedObject();
+			void InitMixedGridWorld(const Vector3& position, int numRows, int numCols, float rowSpacing, float colSpacing);
 
-			void SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass);
+			void SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, Quaternion orientation = Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0));
 
-			GameObject* AddFloorToWorld(const Vector3& position);
 			GameObject* AddSphereToWorld(const Vector3& position, float radius, float inverseMass = 10.0f);
-			GameObject* AddCubeToWorld(const Vector3& position, Vector3 dimensions, float inverseMass = 10.0f);
+			GameObject* AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float inverseMass = 10.0f);
+			/*GameObject* AddCylinderToWorld(const Vector3& position, Vector3 dimensions, float inverseMass = 10.0f);*/
 
 			GameTechRenderer*	renderer;
-			PhysicsSystem*		physics;
+			BulletPhysics*		physics;
 			GameWorld*		world;
 
 			bool useGravity;
@@ -63,6 +44,7 @@ namespace NCL {
 
 			OGLMesh*	cubeMesh	= nullptr;
 			OGLMesh*	sphereMesh	= nullptr;
+			OGLMesh*	cylinderMesh = nullptr;
 			OGLTexture* basicTex	= nullptr;
 			OGLTexture* woodTex	= nullptr;
 			OGLTexture* grassTex	= nullptr;

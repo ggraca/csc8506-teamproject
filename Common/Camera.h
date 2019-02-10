@@ -18,9 +18,9 @@ namespace NCL {
 			pitch		= 0.0f;
 			yaw			= 0.0f;
 			roll = 0.0f;
-			speedx = 10.0f;
-			speedy = 10.0f;
-			speedz = 10.0f;
+			speedx = 1.0f;
+			speedy = 1.0f;
+			speedz = 1.0f;
 
 			this->fov	= 45.0f;
 			this->nearPlane = 1.0f;
