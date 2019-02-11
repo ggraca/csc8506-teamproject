@@ -23,6 +23,7 @@ namespace NCL {
 			std::string	data;
 			Vector2 position;
 			Vector4 colour;
+			float size;
 		};
 
 		struct DebugLineEntry {
