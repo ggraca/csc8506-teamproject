@@ -1,5 +1,5 @@
 #pragma once
-#include "../../TeamProject/GameTechRenderer.h"
+#include "GameTechRenderer.h"
 #include "../GameTechCommon/PhysicsSystem.h"
 
 

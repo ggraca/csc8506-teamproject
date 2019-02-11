@@ -26,7 +26,7 @@ void Scene::InitialiseAssets() {
   cubeMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   cubeMesh->UploadToGPU();
 
-  sphereMesh = new OGLMesh("sphere.obj");
+  sphereMesh = new OGLMesh("sphere2.msh");
   sphereMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   sphereMesh->UploadToGPU();
 
