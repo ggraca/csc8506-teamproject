@@ -22,6 +22,8 @@ namespace NCL {
 			int GetVertsDrawn() const { return vertsDrawn; }
 			int GetShadowCasters() const { return shadowCasters; }
 
+			void GenerateScreenTexture(GLuint & into, bool depth = false);
+
 		protected:
 			void RenderFrame()	override;
 			void GenBuffers();
