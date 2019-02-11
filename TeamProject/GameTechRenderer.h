@@ -53,6 +53,10 @@ namespace NCL {
 			GLuint gBufferNormalTex; // Normals go here
 			GLuint gBufferSpecularTex; // Specular goes here
 
+			GLuint lightFBO; // FBO for our lighting pass
+			GLuint lightEmissiveTex; // emissive lighting
+			GLuint lightSpecularTex; // specular lighting
+
 			Vector4		lightColour;
 			float		lightRadius;
 			Vector3		lightPosition;
