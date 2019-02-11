@@ -166,7 +166,9 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, Vector3 dimensions, f
   cube->GetPhysicsObject()->SetInverseMass(inverseMass);
   cube->GetPhysicsObject()->InitCubeInertia();
 
+ 
   world->AddGameObject(cube);
+
 
   return cube;
 }

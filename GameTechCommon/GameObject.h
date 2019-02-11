@@ -14,11 +14,15 @@ using std::vector;
 namespace NCL {
 	namespace CSC8503 {
 		class NetworkObject;
+		class ScriptObject;
+		
 
 		class GameObject	{
 		public:
 			GameObject(string name = "");
-			~GameObject();
+			virtual ~GameObject();
+
+			void ClearScripts();
 
 			void SetBoundingVolume(CollisionVolume* vol) {
 				boundingVolume = vol;
@@ -88,6 +92,9 @@ namespace NCL {
 				return this->tag;
 			}
 
+			void SetIsAddedToWorld(bool status) { isAddedToWorld = status; }
+			bool GetIsAddedToWorld() const { return isAddedToWorld; }
+
 			bool CompareTag(LayerAndTag::Tags t)
 			{
 				return (this->tag == t);
@@ -99,11 +106,13 @@ namespace NCL {
 				return (this->tag == other.tag);
 			}
 
-			virtual void OnCollisionBegin(GameObject* otherObject) {
+			virtual void OnCollisionBegin(GameObject* otherObject) 
+			{
 				
 			}
 
-			virtual void OnCollisionEnd(GameObject* otherObject) {
+			virtual void OnCollisionEnd(GameObject* otherObject) 
+			{
 				
 			}
 
@@ -138,6 +147,48 @@ namespace NCL {
 			}
 			
 			
+
+			
+			void AddScript(ScriptObject* obj);
+			
+
+			template<class T>
+			void RemoveScript()
+			{
+
+				for (int i = 0; i < scripts.size();i++)
+				{
+					if (dynamic_cast<T>(scripts[i]))
+					{
+						delete scripts[i];
+						scripts.erase(scripts.begin()+i);
+
+						return;
+					}
+				}
+			}
+
+			template<class T>
+			T GetScript()
+			{
+				for (auto& i : scripts)
+				{
+					if (dynamic_cast<T>(i))
+					{
+						return dynamic_cast<T>(i);
+					}
+				}
+
+				return nullptr;
+			}
+
+			void SetUpInitialScripts();
+
+			bool HasOtherScriptsAttached() { return (scripts.size() > 0); }
+
+			void UpdateAttachedScripts();
+			void LateUpdateAttachedScripts();
+			
 		protected:
 			Transform			transform;
 
@@ -147,11 +198,74 @@ namespace NCL {
 			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
+			std::vector<ScriptObject*> scripts;
 			
 
 			bool	isActive;
-			string	name;
+			bool	isAddedToWorld;
+			string	name;	
 			
 		};
-	}
+
+		class ScriptObject
+		{
+		public:
+
+			ScriptObject();
+
+
+			ScriptObject(GameObject * go);
+
+
+			virtual ~ScriptObject()
+			{
+				//don"t delete gameobject as it may still meant to live after script is detached
+			}
+
+			virtual void Awake() {}
+			virtual void Start() { }
+			virtual void Update() {}
+			virtual void LateUpdate() {}
+
+		protected:
+
+			GameObject * gameObject;
+
+		};
+		
+		//I am keeping those for example templates for scripts
+
+		class Player :  virtual public ScriptObject
+		{
+		public:
+
+			Player(GameObject * obj) :ScriptObject(obj)
+			{
+
+			}
+			virtual ~Player() {}
+
+			void Awake() override{  }
+			void Start() override {  }
+			void Update() override { }
+			void LateUpdate() override {}
+		};
+
+		class Enemy : virtual public ScriptObject
+		{
+		public:
+
+			Enemy(GameObject * obj) :ScriptObject(obj)
+			{
+
+			}
+			virtual ~Enemy() {}
+
+			void Awake() override {}
+			void Start() override {}
+			void Update() override {}
+			void LateUpdate() override {}
+		};
+		
+}
 }

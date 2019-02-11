@@ -34,29 +34,65 @@ void GameWorld::ClearAndErase() {
 	Clear();
 }
 
-void GameWorld::AddGameObject(GameObject* o) 
+
+
+void GameWorld::UpdateGameObjects()
 {
-	gameObjects.emplace_back(o);
+	for (auto&i : gameObjects) 
+	{	
+		i->UpdateAttachedScripts();
+	}
+}
+
+void GameWorld::LateUpdateGameObjects()
+{
+	for (auto&i : gameObjects)
+	{
+		i->LateUpdateAttachedScripts();
+	}
+}
+
+void GameWorld::AddGameObject(GameObject* o)
+{
+	if (!o) { return; }
+	
+	CallInitialObjectFunctions(o);
+	gameObjects.push_back(o);
+	
+}
+
+void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
+{
+	if (!o) { return; }
+
+	o->SetIsAddedToWorld(true);
+	o->SetUpInitialScripts();
+	
 }
 
 void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
 {
-	if (o)
-	{
-		o->SetParent(parent);
-	}
-	
-	gameObjects.emplace_back(o);
+	if (!o) { return; }
+
+	o->SetParent(parent);
+	AddGameObject(o);
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 
 {
-	if (o)
-	{
-		o->SetParent(nullptr);
-	}
+	if (!o) { return; }
 
-	std::remove(gameObjects.begin(), gameObjects.end(), o);
+	o->SetParent(nullptr);
+
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		if (gameObjects[i] == o)
+		{
+			delete gameObjects[i];
+			gameObjects.erase(gameObjects.begin() + i);
+			o = nullptr;
+		}
+	}
 }
 
 void GameWorld::GetObjectIterators(
@@ -71,8 +107,11 @@ int GameWorld::GetObjectCount(){
 	return gameObjects.size();
 }
 
-void GameWorld::UpdateWorld(float dt) {
+void GameWorld::UpdateWorld(float dt) 
+{
+	UpdateGameObjects();
 	UpdateTransforms();
+	LateUpdateGameObjects();
 
 	if (shuffleObjects) {
 		std::random_shuffle(gameObjects.begin(), gameObjects.end());
@@ -92,7 +131,7 @@ vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
 	{
 		if (i->IsParent(obj->GetRenderObject()->GetTransform()))
 		{
-			temp.push_back(i);
+			temp.emplace_back(i);
 		}
 	}
 
@@ -109,7 +148,7 @@ vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj,LayerAn
 	{
 		if (i->CompareTag(tag) && i->IsParent(obj->GetRenderObject()->GetTransform()))
 		{
-			temp.push_back(i);
+			temp.emplace_back(i);
 		}
 	}
 
