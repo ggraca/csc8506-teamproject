@@ -9,6 +9,7 @@
 #include "../GameTechCommon/NavigationGrid.h"
 #include "Console.h"
 #include "DebugMenu.h"
+#include "HUD.h"
 
 namespace NCL {
     namespace CSC8503 {
@@ -22,6 +23,7 @@ namespace NCL {
 			void DebugScene(float dt);
 
 			DebugMenu debugMenu;
+			HUD hud;
 			Console console;
 
             /*

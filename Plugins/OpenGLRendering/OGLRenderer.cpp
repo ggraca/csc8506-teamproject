@@ -178,6 +178,18 @@ void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const V
 	debugStrings.emplace_back(s);
 }
 
+void OGLRenderer::DrawHUDString(const std::string& text, const Vector2&pos, const Vector4& colour, const float& size) {
+	DebugString s;
+	s.colour = colour;
+	s.ndcPos = (pos / Vector2((float)currentWidth, (float)currentHeight));
+
+	s.ndcPos.x = (s.ndcPos.x * 2.0f) - 1.0f;
+	s.ndcPos.y = (s.ndcPos.y * 2.0f) - 1.0f;
+	s.size = size;
+	s.text = text;
+	debugStrings.emplace_back(s);
+}
+
 void OGLRenderer::DrawLine(const Vector3& start, const Vector3& end, const Vector4& colour) {
 	DebugLine l;
 	l.start		= start;
