@@ -33,6 +33,9 @@ GameTechRenderer::~GameTechRenderer()	{
 }
 
 void GameTechRenderer::GenBuffers() {
+	#pragma region ShadowFBORegion
+
+	//Generate shadow texture and assign texture parameters
 	glGenTextures(1, &shadowTex);
 	glBindTexture(GL_TEXTURE_2D, shadowTex);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -45,13 +48,49 @@ void GameTechRenderer::GenBuffers() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	//Generate Shadow FBO
 	glGenFramebuffers(1, &shadowFBO);
+
+	//Attach shadow texture to FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowTex, 0);
 	glDrawBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); 
 
+	#pragma endregion
 
+	#pragma region MyRegion
+
+	//Generate G-Buffer FBO
+	glGenFramebuffers(1, &gBufferFBO);
+
+	GLenum GBuffer[3]; // was 5, texting if it breaks as shaders only draw to 3 colour attachments
+	GBuffer[0] = GL_COLOR_ATTACHMENT0;
+	GBuffer[1] = GL_COLOR_ATTACHMENT1;
+	GBuffer[2] = GL_COLOR_ATTACHMENT2;
+	//GBuffer[3] = GL_COLOR_ATTACHMENT3;
+	//GBuffer[4] = GL_COLOR_ATTACHMENT4;
+
+	//Generate G-Buffer textures
+	GenerateScreenTexture(gBufferDepthTex, true);
+	GenerateScreenTexture(gBufferColourTex);
+	GenerateScreenTexture(gBufferNormalTex);
+	GenerateScreenTexture(gBufferSpecularTex);
+
+	// And G-Buffer Textures to G-Buffer FBO
+	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+		GL_TEXTURE_2D, gBufferColourTex, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
+		GL_TEXTURE_2D, gBufferNormalTex, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2,
+		GL_TEXTURE_2D, gBufferSpecularTex, 0);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+		GL_TEXTURE_2D, gBufferDepthTex, 0);
+	glDrawBuffers(3, GBuffer);
+
+	#pragma endregion
 }
 
 void GameTechRenderer::GenerateScreenTexture(GLuint & into, bool depth) {
