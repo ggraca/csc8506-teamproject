@@ -59,12 +59,12 @@ void GameTechRenderer::GenBuffers() {
 
 	#pragma endregion
 
-	#pragma region MyRegion
+	#pragma region GBufferFBORegion
 
 	//Generate G-Buffer FBO
 	glGenFramebuffers(1, &gBufferFBO);
 
-	GLenum GBuffer[3]; // was 5, texting if it breaks as shaders only draw to 3 colour attachments
+	GLenum GBuffer[3]; // was 5, testing if it breaks as shaders only draw to 3 colour attachments
 	GBuffer[0] = GL_COLOR_ATTACHMENT0;
 	GBuffer[1] = GL_COLOR_ATTACHMENT1;
 	GBuffer[2] = GL_COLOR_ATTACHMENT2;
@@ -77,7 +77,7 @@ void GameTechRenderer::GenBuffers() {
 	GenerateScreenTexture(gBufferNormalTex);
 	GenerateScreenTexture(gBufferSpecularTex);
 
-	// And G-Buffer Textures to G-Buffer FBO
+	// Add G-Buffer textures to G-Buffer FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 		GL_TEXTURE_2D, gBufferColourTex, 0);
@@ -91,6 +91,30 @@ void GameTechRenderer::GenBuffers() {
 	glDrawBuffers(3, GBuffer);
 
 	#pragma endregion
+
+	#pragma region LightFBORegion
+	
+	//Generate Light FBO
+	glGenFramebuffers(1, &lightFBO);
+
+	GLenum lightBuffer[2];
+	lightBuffer[0] = GL_COLOR_ATTACHMENT0;
+	lightBuffer[1] = GL_COLOR_ATTACHMENT1;
+
+	//Generate light buffer textures
+	GenerateScreenTexture(lightEmissiveTex);
+	GenerateScreenTexture(lightSpecularTex);
+
+	//Add light textures to the light FBO
+	glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+		GL_TEXTURE_2D, lightEmissiveTex, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
+		GL_TEXTURE_2D, lightSpecularTex, 0);
+	glDrawBuffers(2, lightBuffer);
+
+	#pragma endregion
+
 }
 
 void GameTechRenderer::GenerateScreenTexture(GLuint & into, bool depth) {
