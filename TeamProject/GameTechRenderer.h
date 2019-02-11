@@ -44,6 +44,12 @@ namespace NCL {
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
+			GLuint gBufferFBO; // FBO for our G- Buffer pass
+			GLuint gBufferDepthTex; // Depth goes here
+			GLuint gBufferColourTex; // Albedo goes here
+			GLuint gBufferNormalTex; // Normals go here
+			GLuint gBufferSpecularTex; // Specular goes here
+
 			Vector4		lightColour;
 			float		lightRadius;
 			Vector3		lightPosition;
