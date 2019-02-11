@@ -166,19 +166,19 @@ void OGLRenderer::BindTextureToShader(const TextureBase*t, const std::string& un
 	glUniform1i(slot, texUnit);
 }
 
-void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const Vector4& colour) {
-	DebugString s;
-	s.colour = colour;
-	s.ndcPos = (pos / Vector2((float)currentWidth, (float)currentHeight));
-	
-	s.ndcPos.x = (s.ndcPos.x * 2.0f) - 1.0f;
-	s.ndcPos.y = (s.ndcPos.y * 2.0f) - 1.0f;
-	s.size = 1.0f;
-	s.text = text;
-	debugStrings.emplace_back(s);
-}
+//void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const Vector4& colour) {
+//	DebugString s;
+//	s.colour = colour;
+//	s.ndcPos = (pos / Vector2((float)currentWidth, (float)currentHeight));
+//	
+//	s.ndcPos.x = (s.ndcPos.x * 2.0f) - 1.0f;
+//	s.ndcPos.y = (s.ndcPos.y * 2.0f) - 1.0f;
+//	s.size = 1.0f;
+//	s.text = text;
+//	debugStrings.emplace_back(s);
+//}
 
-void OGLRenderer::DrawHUDString(const std::string& text, const Vector2&pos, const Vector4& colour, const float& size) {
+void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const Vector4& colour, const float& size) {
 	DebugString s;
 	s.colour = colour;
 	s.ndcPos = (pos / Vector2((float)currentWidth, (float)currentHeight));
@@ -223,7 +223,7 @@ void OGLRenderer::DrawDebugStrings() {
 	vector<Vector4> vertColours;
 
 	for (DebugString&s : debugStrings) {
-		font->BuildVerticesForString(s.text, s.ndcPos, s.colour, vertPos, vertTex, vertColours);
+		font->BuildVerticesForString(s.text, s.ndcPos, s.colour, vertPos, vertTex, vertColours, s.size);
 	}
 
 	OGLMesh textMesh = OGLMesh();
