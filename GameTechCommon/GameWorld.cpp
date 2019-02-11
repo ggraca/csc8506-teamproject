@@ -36,76 +36,63 @@ void GameWorld::ClearAndErase() {
 
 
 
-void NCL::CSC8503::GameWorld::UpdateGameObjects()
+void GameWorld::UpdateGameObjects()
 {
 	for (auto&i : gameObjects) 
-	{
-		if (i->HasOtherScriptsAttached())
-		{
-			i->UpdateAttachedScripts();
-		}
+	{	
+		i->UpdateAttachedScripts();
 	}
 }
 
-void NCL::CSC8503::GameWorld::LateUpdateGameObjects()
+void GameWorld::LateUpdateGameObjects()
 {
 	for (auto&i : gameObjects)
 	{
-		
-		if (i->HasOtherScriptsAttached())
-		{
-			i->LateUpdateAttachedScripts();
-		}
+		i->LateUpdateAttachedScripts();
 	}
 }
 
 void GameWorld::AddGameObject(GameObject* o)
 {
-	if (o)
-	{
-		CallInitialObjectFunctions(o);
-		gameObjects.push_back(o);
-	}
+	if (!o) { return; }
+	
+	CallInitialObjectFunctions(o);
+	gameObjects.push_back(o);
+	
 }
 
-void NCL::CSC8503::GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
+void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 {
-	if (o)
-	{
-		o->SetIsAddedToWorld(true);
-		o->SetUpInitialScripts();
-	}
+	if (!o) { return; }
+
+	o->SetIsAddedToWorld(true);
+	o->SetUpInitialScripts();
+	
 }
 
 void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
 {
-	if (o)
-	{
-		o->SetParent(parent);
-		CallInitialObjectFunctions(o);
-		gameObjects.push_back(o);
-	}
+	if (!o) { return; }
+
+	o->SetParent(parent);
+	AddGameObject(o);
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 
 {
-	if (o)
-	{
-		o->SetParent(nullptr);
+	if (!o) { return; }
 
-		for (int i = 0; i < gameObjects.size(); i++)
+	o->SetParent(nullptr);
+
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		if (gameObjects[i] == o)
 		{
-			if (gameObjects[i] == o)
-			{
-				delete gameObjects[i];
-				gameObjects.erase(gameObjects.begin() + i);
-				o = nullptr;
-			}
+			delete gameObjects[i];
+			gameObjects.erase(gameObjects.begin() + i);
+			o = nullptr;
 		}
 	}
-
-	
-
 }
 
 void GameWorld::GetObjectIterators(

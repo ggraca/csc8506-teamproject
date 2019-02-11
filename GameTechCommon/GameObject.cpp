@@ -45,23 +45,23 @@ bool GameObject::InsideAABB(const Vector3& boxPos, const Vector3& halfSize) {
 	return CollisionDetection::AABBTest(transform, *boundingVolume, boxPos, halfSize);
 }
 
-void NCL::CSC8503::GameObject::AddScript(ScriptObject * obj)
+void GameObject::AddScript(ScriptObject * obj)
 {
-	if (obj)
+	if (!obj) { return; }
+	
+	scripts.push_back(obj);
+
+	if (isAddedToWorld)
 	{
-		scripts.push_back(obj);
-
-		if (isAddedToWorld)
-		{
-			obj->Awake();
-			obj->Start();
-		}
-
+		obj->Awake();
+		obj->Start();
 	}
+
+	
 }
 
 
-void NCL::CSC8503::GameObject::SetUpInitialScripts()
+void GameObject::SetUpInitialScripts()
 {
 	for (auto&i : scripts)
 	{
@@ -72,6 +72,8 @@ void NCL::CSC8503::GameObject::SetUpInitialScripts()
 
 void GameObject::UpdateAttachedScripts()
 {
+	if (!HasOtherScriptsAttached()) { return; }
+
 	for (auto&i : scripts)
 	{
 		i->Update();
@@ -80,6 +82,8 @@ void GameObject::UpdateAttachedScripts()
 
 void GameObject::LateUpdateAttachedScripts()
 {
+	if (!HasOtherScriptsAttached()) { return; }
+	
 	for (auto&i : scripts)
 	{
 		i->LateUpdate();
@@ -87,13 +91,13 @@ void GameObject::LateUpdateAttachedScripts()
 }
 
 
-NCL::CSC8503::ScriptObject::ScriptObject()
+ScriptObject::ScriptObject()
 {
 	gameObject = nullptr;
 }
 
 ///////////////////////////////////Script Object
-NCL::CSC8503::ScriptObject::ScriptObject(GameObject * go)
+ScriptObject::ScriptObject(GameObject * go)
 {
 	this->gameObject = go;
 }
