@@ -9,6 +9,7 @@
 #include "../Common/Assets.h"
 
 #include <fstream>
+#include <string>
 
 
 using namespace NCL;
@@ -51,6 +52,8 @@ void ExampleScene::UpdateGame(float dt) {
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
   console.Update();
+  hud.Update(dt, renderer);
+  
 
   //Might want moved into a seperate function that handles input
   if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {

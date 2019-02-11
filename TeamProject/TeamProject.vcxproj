@@ -150,6 +150,7 @@
     <ClCompile Include="DebugMenu.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="ExampleScene.h" />
     <ClInclude Include="GameTechRenderer.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
