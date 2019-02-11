@@ -14,7 +14,7 @@ Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
   physics = new BulletPhysics(*world);
-  physics->gravity = Vector3(4, -18.81, 0);
+  physics->gravity = Vector3(5, -98.81, 0);
 
   Debug::SetRenderer(renderer);
 
@@ -26,7 +26,7 @@ void Scene::InitialiseAssets() {
   cubeMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   cubeMesh->UploadToGPU();
 
-  sphereMesh = new OGLMesh("sphere.msh");
+  sphereMesh = new OGLMesh("sphere.obj");
   sphereMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   sphereMesh->UploadToGPU();
 
@@ -176,19 +176,17 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
 }
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
-	float sphereRadius = 3.0 * (rand() % 100) / (float)100;
-	float x = 10.0 * (rand() % 100) / (float)100;
-	srand(time(NULL));
-	float y = 10.0 * (rand() % 100) / (float)100;
-	srand(time(NULL));
-	float z = 10.0 * (rand() % 100) / (float)100;
-	srand(time(NULL));
-	Vector3 cubeDims = Vector3(x, y, z);
+	
 
-	for (int x = 0; x < numCols; ++x) {
-		for (int z = 0; z < numRows; ++z) {
+	for (int i = 0; i < numCols; ++i) {
+		for (int j = 0; j < numRows; ++j) {
+			float sphereRadius = 3.0 * (rand() % 100) / (float)100;
+			float x = 10.0 * (rand() % 100) / (float)100;
+			float y = 10.0 * (rand() % 100) / (float)100;
+			float z = 10.0 * (rand() % 100) / (float)100;
+			Vector3 cubeDims = Vector3(x, y, z);
 			cout << (rand() % 100) / (float)100 << endl;
-			Vector3 position = Vector3(x * colSpacing, positiony.y * ((rand() % 100) / (float)100), z * rowSpacing);
+			Vector3 position = Vector3(i * colSpacing, positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
 			if (rand() % 2) {
 				AddCubeToWorld(position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims);
 			}

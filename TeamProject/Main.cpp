@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 	srand(time(NULL));
 
 	//Window*w = Window::CreateGameWindow("Team Project!", 1280, 720);
-	Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, false);
+	Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, true);
 	if (!w->HasInitialised()) return -1;
 
 	w->ShowOSPointer(false);
