@@ -77,31 +77,7 @@ void Scene::UpdateGame(float dt) {
 }
 
 void Scene::UpdateKeys() {
-	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_J)) {
-	//	Vector3 gravity = physics->gravity;
-	//	physics->gravity = Vector3(gravity.x - 1, gravity.y, gravity.z);
-	////	physics->gravity = Vector3(0, 0, 0);
-	//}
-	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_L)) {
-	//	Vector3 gravity = physics->gravity;
-	//	physics->gravity = Vector3(gravity.x + 1, gravity.y, gravity.z);
-	//}
-	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_J)) {
-	//	Vector3 gravity = physics->gravity;
-	//	physics->gravity = Vector3(gravity.x, gravity.y, gravity.z - 1);
-	//}
-	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_L)) {
-	//	Vector3 gravity = physics->gravity;
-	//	physics->gravity = Vector3(gravity.x, gravity.y, gravity.z + 1);
-	//}
-	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_P)) {
-	//	Vector3 gravity = physics->gravity;
-	//	physics->gravity = Vector3(gravity.x, gravity.y + 1, gravity.z - 1);
-	//}
-	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
-	//	Vector3 gravity = physics->gravity;
-	//	physics->gravity = Vector3(gravity.x, gravity.y - 1, gravity.z + 1);
-	//}
+
 }
 
 void Scene::InitCamera() {
@@ -176,8 +152,6 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
 }
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
-	
-
 	for (int i = 0; i < numCols; ++i) {
 		for (int j = 0; j < numRows; ++j) {
 			float sphereRadius = 3.0 * (rand() % 100) / (float)100;

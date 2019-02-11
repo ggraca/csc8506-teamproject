@@ -8,7 +8,6 @@
 #include "../GameTechCommon/PositionConstraint.h"
 #include "../Common/Assets.h"
 #include <fstream>
-#include "btBulletDynamicsCommon.h"
 
 using namespace NCL;
 using namespace CSC8503;

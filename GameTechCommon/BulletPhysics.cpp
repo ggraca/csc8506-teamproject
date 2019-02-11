@@ -9,7 +9,7 @@ BulletPhysics::BulletPhysics(GameWorld& g) : gameWorld(g)
 	solver = new btSequentialImpulseConstraintSolver;
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);;
 	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
-	collisionShapes.clear();
+	collisionShapes.clear(); //TODO Delete this, as not strictly necessary?
 }
 
 BulletPhysics::~BulletPhysics()
@@ -41,7 +41,7 @@ BulletPhysics::~BulletPhysics()
 }
 
 void BulletPhysics::Update(float dt) {
-	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
+	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));  //TODO Eventually remove this?
 	const float iterationDt = 1.0f / 120.0f; 
 	dTOffset += dt;
 	int iterationCount = (int)(dTOffset / iterationDt);
@@ -55,9 +55,10 @@ void BulletPhysics::UpdateBulletPositions(float dt, int iterations) {
 	std::vector<GameObject*>::const_iterator first;
 	std::vector<GameObject*>::const_iterator last;
 	gameWorld.GetObjectIterators(first, last);
+
 	int j = 0;
 	for (auto i = first; i != last; i++) {
-		
+
 		/*PhysicsObject* object = (*i)->GetPhysicsObject();
 		if (object == nullptr) continue;*/
 

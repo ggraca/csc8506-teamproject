@@ -1,7 +1,6 @@
 #pragma once
 #include "GameTechRenderer.h"
 
-#include "../GameTechCommon/PhysicsSystem.h"
 #include "../GameTechCommon/BulletPhysics.h"
 
 namespace NCL {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../GameTechCommon/GameWorld.h"
-#include "..\Plugins\Bullet\src\btBulletDynamicsCommon.h"
+#include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 class BulletPhysics
 {
@@ -14,7 +14,7 @@ public:
 	void UpdateBulletPositions(float dt, int iterations);
 	Vector3 gravity;
 
-protected:
+private:
 	GameWorld& gameWorld;
 	float dTOffset;
 	btDefaultCollisionConfiguration* collisionConfiguration;
