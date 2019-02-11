@@ -35,6 +35,7 @@ namespace NCL {
 			void BuildObjectList();
 			void SortObjectList();
 			void RenderShadowMap();
+			void RenderSkybox();
 			void RenderCamera(); 
 
 			void SetupDebugMatrix(OGLShader*s) override;
@@ -46,6 +47,10 @@ namespace NCL {
 			GLuint		shadowTex;
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
+
+			OGLShader* skyBoxShader;
+			//Skybox needs to be loaded into the texture library
+			GLuint skybox;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			GLuint gBufferDepthTex; // Depth goes here

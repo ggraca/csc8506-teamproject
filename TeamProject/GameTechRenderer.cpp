@@ -16,6 +16,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	glEnable(GL_DEPTH_TEST);
 
 	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
+	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
 
 	GenBuffers();
 
@@ -138,6 +139,7 @@ void GameTechRenderer::RenderFrame() {
 	BuildObjectList();
 	SortObjectList();
 	RenderShadowMap();
+	//RenderSkybox(); Don't call for now
 	RenderCamera();
 	glDisable(GL_CULL_FACE); //Todo - text indices are going the wrong way...
 }
@@ -198,6 +200,54 @@ void GameTechRenderer::RenderShadowMap() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glCullFace(GL_BACK);
+}
+
+void GameTechRenderer::RenderSkybox() {
+	float screenAspect = (float)currentWidth / (float)currentHeight;
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+
+	glDepthMask(GL_FALSE);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
+	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+	BindShader(skyBoxShader);
+
+	glUniform3fv(glGetUniformLocation(skyBoxShader->GetProgramID(),
+		"cameraPos"), 1, (float *)& gameWorld.GetMainCamera()->GetPosition());
+	glUniform1i(glGetUniformLocation(skyBoxShader->GetProgramID(),
+		"cubeTex"), 2);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox);
+
+	Matrix4 identity;
+	identity.ToIdentity();
+
+	glUniformMatrix4fv(glGetUniformLocation(skyBoxShader->GetProgramID(),
+		"modelMatrix"), 1, false, (float*)&identity);
+	glUniformMatrix4fv(glGetUniformLocation(skyBoxShader->GetProgramID(),
+		"viewMatrix"), 1, false, (float*)&viewMatrix);
+	glUniformMatrix4fv(glGetUniformLocation(skyBoxShader->GetProgramID(),
+		"projMatrix"), 1, false, (float*)&projMatrix);
+	glUniformMatrix4fv(glGetUniformLocation(skyBoxShader->GetProgramID(),
+		"textureMatrix"), 1, false, (float*)&identity);
+	
+	//Need a way to import a quad and render the skybox to this quad
+	//The quad should be the size of the screen
+	//screen->Draw();
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+	glUseProgram(0);
+	glDepthMask(GL_TRUE);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glEnable(GL_CULL_FACE);
 }
 
 void GameTechRenderer::RenderCamera() {
