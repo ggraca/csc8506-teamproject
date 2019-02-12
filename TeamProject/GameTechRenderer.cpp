@@ -268,6 +268,7 @@ void GameTechRenderer::RenderCamera() {
 	int projLocation	= 0;
 	int viewLocation	= 0;
 	int modelLocation	= 0;
+	int textureLocation = 0;
 	int colourLocation  = 0;
 
 	int cameraLocation = 0;
@@ -288,6 +289,7 @@ void GameTechRenderer::RenderCamera() {
 			projLocation	= glGetUniformLocation(shader->GetProgramID(), "projMatrix");
 			viewLocation	= glGetUniformLocation(shader->GetProgramID(), "viewMatrix");
 			modelLocation	= glGetUniformLocation(shader->GetProgramID(), "modelMatrix");
+			textureLocation = glGetUniformLocation(shader->GetProgramID(), "textureMatrix");
 			//shadowLocation  = glGetUniformLocation(shader->GetProgramID(), "shadowMatrix");
 			colourLocation  = glGetUniformLocation(shader->GetProgramID(), "objectColour");
 
@@ -305,6 +307,10 @@ void GameTechRenderer::RenderCamera() {
 
 		Matrix4 modelMatrix = (*i).GetTransform()->GetWorldMatrix();
 		glUniformMatrix4fv(modelLocation, 1, false, (float*)&modelMatrix);
+
+		Matrix4 textureMatrix;
+		textureMatrix.ToIdentity();
+		glUniformMatrix4fv(textureLocation, 1, false, (float*)&textureMatrix);
 
 		//Matrix4 fullShadowMat = shadowMatrix * modelMatrix;
 		//glUniformMatrix4fv(shadowLocation, 1, false, (float*)&fullShadowMat);
