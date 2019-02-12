@@ -108,12 +108,24 @@ namespace NCL {
 
 			virtual void OnCollisionBegin(GameObject* otherObject) 
 			{
-				
+				if (HasOtherScriptsAttached())
+				{
+					for (auto&i : scripts)
+					{
+						i->OnCollisionBegin(otherObject);
+					}
+				}
 			}
 
 			virtual void OnCollisionEnd(GameObject* otherObject) 
 			{
-				
+				if (HasOtherScriptsAttached())
+				{
+					for (auto&i : scripts)
+					{
+						i->OnCollisionEnd(otherObject);
+					}
+				}
 			}
 
 			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
@@ -188,6 +200,8 @@ namespace NCL {
 
 			void UpdateAttachedScripts();
 			void LateUpdateAttachedScripts();
+
+			
 			
 		protected:
 			Transform			transform;
@@ -226,46 +240,13 @@ namespace NCL {
 			virtual void Start() { }
 			virtual void Update() {}
 			virtual void LateUpdate() {}
-
+			virtual void OnCollisionBegin(GameObject* otherObject) {}
+			virtual void OnCollisionEnd(GameObject* otherObject) {}
 		protected:
 
 			GameObject * gameObject;
 
 		};
-		
-		//I am keeping those for example templates for scripts
-
-		class Player :  virtual public ScriptObject
-		{
-		public:
-
-			Player(GameObject * obj) :ScriptObject(obj)
-			{
-
-			}
-			virtual ~Player() {}
-
-			void Awake() override{  }
-			void Start() override {  }
-			void Update() override { }
-			void LateUpdate() override {}
-		};
-
-		class Enemy : virtual public ScriptObject
-		{
-		public:
-
-			Enemy(GameObject * obj) :ScriptObject(obj)
-			{
-
-			}
-			virtual ~Enemy() {}
-
-			void Awake() override {}
-			void Start() override {}
-			void Update() override {}
-			void LateUpdate() override {}
-		};
-		
-}
+	
+	}
 }

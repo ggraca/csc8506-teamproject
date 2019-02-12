@@ -90,13 +90,13 @@ void GameObject::LateUpdateAttachedScripts()
 	}
 }
 
-
+///////////////////////////////////Script Object
 ScriptObject::ScriptObject()
 {
 	gameObject = nullptr;
 }
 
-///////////////////////////////////Script Object
+
 ScriptObject::ScriptObject(GameObject * go)
 {
 	this->gameObject = go;
