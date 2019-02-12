@@ -28,6 +28,9 @@
     <Filter Include="Pathfinding">
       <UniqueIdentifier>{84f869c2-c73b-4eb0-ace4-ff4d685ef4ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{5da5cdef-08b4-4177-ae5e-7ab69f87d789}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWorld.h">
@@ -129,6 +132,18 @@
     <ClInclude Include="LayerAndTag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Destructable.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameWorld.cpp">
@@ -202,6 +217,18 @@
     </ClCompile>
     <ClCompile Include="LayerAndTag.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Destructable.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
