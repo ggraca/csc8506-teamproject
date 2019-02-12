@@ -39,6 +39,7 @@ void Scene::InitialiseAssets() {
   sphereMesh = new OGLMesh("sphere.msh");
   sphereMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   sphereMesh->UploadToGPU();
+  renderer->SetLightMesh(sphereMesh);
 
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");

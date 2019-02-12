@@ -17,6 +17,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
+	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
 
 	GenBuffers();
 
@@ -327,7 +328,91 @@ void GameTechRenderer::RenderCamera() {
 }
 
 void GameTechRenderer::RenderLights() {
+	glUseProgram(lightShader->GetProgramID());
+	glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
 
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glBlendFunc(GL_ONE, GL_ONE);
+
+	float screenAspect = (float)currentWidth / (float)currentHeight;
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+
+	glUniform1i(glGetUniformLocation(lightShader->GetProgramID(), "depthTex"), 3);
+	glUniform1i(glGetUniformLocation(lightShader->GetProgramID(), "normTex"), 4);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, gBufferDepthTex);
+
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, gBufferNormalTex);
+
+	glUniform3fv(glGetUniformLocation(lightShader->GetProgramID(), "cameraPos"), 1, (float *)&gameWorld.GetMainCamera()->GetPosition());
+
+	glUniform2f(glGetUniformLocation(lightShader->GetProgramID(), "pixelSize"),
+		1.0f / currentWidth, 1.0f / currentHeight);
+
+	for (int x = 0; x < 1; ++x) {
+		float radius = lightRadius;
+
+		Matrix4 tempModelMatrix = Matrix4::Translation(lightPosition) * Matrix4::Scale(Vector3(radius, radius, radius));
+		lightPosition = tempModelMatrix.GetPositionVector();
+
+		glUniform3fv(glGetUniformLocation(lightShader->GetProgramID(),
+			"lightPos"), 1, (float*)&lightPosition);
+		glUniform4fv(glGetUniformLocation(lightShader->GetProgramID(),
+			"lightColour"), 1, (float*)&lightColour);
+		glUniform1f(glGetUniformLocation(lightShader->GetProgramID(),
+			"lightRadius"), radius);
+		glUniform1f(glGetUniformLocation(lightShader->GetProgramID(),
+			"lightBrightness"), lightBrightness);
+
+		Matrix4 identity;
+		identity.ToIdentity();
+
+		glUniformMatrix4fv(glGetUniformLocation(lightShader->GetProgramID(),
+			"modelMatrix"), 1, false, (float*)&tempModelMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(lightShader->GetProgramID(),
+			"viewMatrix"), 1, false, (float*)&viewMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(lightShader->GetProgramID(),
+			"projMatrix"), 1, false, (float*)&projMatrix);
+		glUniformMatrix4fv(glGetUniformLocation(lightShader->GetProgramID(),
+			"textureMatrix"), 1, false, (float*)&identity);
+		glUniformMatrix4fv(glGetUniformLocation(lightShader->GetProgramID(),
+			"shadowMatrix"), 1, false, (float*)&shadowMatrix);
+
+		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
+			"shadowTex"), 20);
+		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
+			"drawShadows"), true);
+		glActiveTexture(GL_TEXTURE20);
+		glBindTexture(GL_TEXTURE_2D, shadowTex);
+
+		float dist = (lightPosition - gameWorld.GetMainCamera->GetPosition()).Length();
+		if (dist < radius) {// camera is inside the light volume !
+			glCullFace(GL_FRONT);
+		}
+		else {
+			glCullFace(GL_BACK);
+		}
+
+		BindMesh(lightSphere);
+
+		//Calculates how many vertices are drawn per frame
+		vertsDrawn += lightSphere->GetVertexCount();
+
+		DrawBoundMesh();
+	}
+
+	glCullFace(GL_BACK);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glClearColor(0.2f, 0.2f, 0.2f, 1);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(0);
 }
 
 void GameTechRenderer::CombineBuffers() {

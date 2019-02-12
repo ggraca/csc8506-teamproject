@@ -22,6 +22,8 @@ namespace NCL {
 			int GetVertsDrawn() const { return vertsDrawn; }
 			int GetShadowCasters() const { return shadowCasters; }
 
+			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
+
 			void GenerateScreenTexture(GLuint & into, bool depth = false);
 
 		protected:
@@ -64,9 +66,13 @@ namespace NCL {
 			GLuint lightEmissiveTex; // emissive lighting
 			GLuint lightSpecularTex; // specular lighting
 
+			OGLShader* lightShader;
+			OGLMesh* lightSphere;
+
 			Vector4		lightColour;
 			float		lightRadius;
 			Vector3		lightPosition;
+			float lightBrightness = 1.0f;
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
