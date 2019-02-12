@@ -18,6 +18,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
 	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
+	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
 
 	GenBuffers();
 
@@ -416,7 +417,65 @@ void GameTechRenderer::RenderLights() {
 }
 
 void GameTechRenderer::CombineBuffers() {
+	glUseProgram(combineShader->GetProgramID());
 
+	////Keep this here for now ready for when post processes are to be implemented
+	//glBindFramebuffer(GL_FRAMEBUFFER, postProcessFBO);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+	//	GL_TEXTURE_2D, postProcessTex[1], 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT |
+		GL_STENCIL_BUFFER_BIT);
+
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
+	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
+
+	Matrix4 identity;
+	identity.ToIdentity();
+
+	glUniformMatrix4fv(glGetUniformLocation(combineShader->GetProgramID(),
+		"modelMatrix"), 1, false, (float*)&identity);
+	glUniformMatrix4fv(glGetUniformLocation(combineShader->GetProgramID(),
+		"viewMatrix"), 1, false, (float*)&viewMatrix);
+	glUniformMatrix4fv(glGetUniformLocation(combineShader->GetProgramID(),
+		"projMatrix"), 1, false, (float*)&tempProjMatrix);
+	glUniformMatrix4fv(glGetUniformLocation(combineShader->GetProgramID(),
+		"textureMatrix"), 1, false, (float*)&identity);
+
+	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "diffuseTex"), 2);
+	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "depthTex"), 3);
+	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "normTex"), 4);
+	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "specularTex"), 5);
+	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "emissiveTex"), 6);
+	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "lightSpecularTex"), 7);
+
+
+	glUniform3f(glGetUniformLocation(combineShader->GetProgramID(),
+		"ambientColour"), ambientColour.x, ambientColour.y, ambientColour.z);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, gBufferColourTex);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, gBufferDepthTex);
+
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, gBufferNormalTex);
+
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, gBufferSpecularTex);
+
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, lightEmissiveTex);
+
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, lightSpecularTex);
+
+	// Needs a quad to draw to!!!
+	//screen->Draw();
+
+	glUseProgram(0);
 }
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {

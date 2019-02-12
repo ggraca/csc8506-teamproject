@@ -66,6 +66,7 @@ namespace NCL {
 			GLuint lightEmissiveTex; // emissive lighting
 			GLuint lightSpecularTex; // specular lighting
 
+			OGLShader* combineShader;
 			OGLShader* lightShader;
 			OGLMesh* lightSphere;
 
@@ -73,6 +74,7 @@ namespace NCL {
 			float		lightRadius;
 			Vector3		lightPosition;
 			float lightBrightness = 1.0f;
+			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
