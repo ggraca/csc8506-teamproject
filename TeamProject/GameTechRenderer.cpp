@@ -326,6 +326,14 @@ void GameTechRenderer::RenderCamera() {
 	}
 }
 
+void GameTechRenderer::RenderLights() {
+
+}
+
+void GameTechRenderer::CombineBuffers() {
+
+}
+
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();

@@ -36,7 +36,9 @@ namespace NCL {
 			void SortObjectList();
 			void RenderShadowMap();
 			void RenderSkybox();
-			void RenderCamera(); 
+			void RenderCamera();
+			void RenderLights();
+			void CombineBuffers();
 
 			void SetupDebugMatrix(OGLShader*s) override;
 
