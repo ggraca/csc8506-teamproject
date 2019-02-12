@@ -22,6 +22,10 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	GenBuffers();
 
+	screenQuad = OGLMesh::GenerateQuad();
+	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
+	screenQuad->UploadToGPU();
+
 	glClearColor(1, 1, 1, 1);
 
 	//Set up the light properties
@@ -152,6 +156,8 @@ void GameTechRenderer::RenderFrame() {
 	RenderShadowMap();
 	//RenderSkybox(); Don't call for now
 	RenderCamera();
+	RenderLights();
+	CombineBuffers();
 	glDisable(GL_CULL_FACE); //Todo - text indices are going the wrong way...
 }
 

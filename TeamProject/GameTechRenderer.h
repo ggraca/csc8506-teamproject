@@ -69,6 +69,7 @@ namespace NCL {
 			OGLShader* combineShader;
 			OGLShader* lightShader;
 			OGLMesh* lightSphere;
+			OGLMesh* screenQuad;
 
 			Vector4		lightColour;
 			float		lightRadius;
