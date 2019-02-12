@@ -29,7 +29,16 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 }
 
 GameTechRenderer::~GameTechRenderer()	{
+	glDeleteTextures(1, &gBufferDepthTex);
+	glDeleteTextures(1, &gBufferColourTex);
+	glDeleteTextures(1, &gBufferNormalTex);
+	glDeleteTextures(1, &gBufferSpecularTex);
+	glDeleteTextures(1, &lightEmissiveTex);
+	glDeleteTextures(1, &lightSpecularTex);
 	glDeleteTextures(1, &shadowTex);
+
+	glDeleteFramebuffers(1, &gBufferFBO);
+	glDeleteFramebuffers(1, &lightFBO);
 	glDeleteFramebuffers(1, &shadowFBO);
 }
 
