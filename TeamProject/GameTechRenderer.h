@@ -74,7 +74,7 @@ namespace NCL {
 			Vector4		lightColour;
 			float		lightRadius;
 			Vector3		lightPosition;
-			float lightBrightness = 1.0f;
+			float lightBrightness = 16.0f;
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;

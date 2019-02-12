@@ -30,7 +30,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	//Set up the light properties
 	lightColour = Vector4(1.0f, 1.0f, 0.5f, 1.0f);
-	lightRadius = 8000.0f;
+	lightRadius = 4000.0f;
 	lightPosition = Vector3(-2000.0f, 2500.0f, -2000.0f);
 }
 
@@ -268,6 +268,9 @@ void GameTechRenderer::RenderSkybox() {
 }
 
 void GameTechRenderer::RenderCamera() {
+	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
 	float screenAspect = (float)currentWidth / (float)currentHeight;
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
 	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
@@ -332,6 +335,8 @@ void GameTechRenderer::RenderCamera() {
 
 		DrawBoundMesh();
 	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void GameTechRenderer::RenderLights() {
@@ -397,7 +402,7 @@ void GameTechRenderer::RenderLights() {
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
-		float dist = (lightPosition - gameWorld.GetMainCamera->GetPosition()).Length();
+		float dist = (lightPosition - gameWorld.GetMainCamera()->GetPosition()).Length();
 		if (dist < radius) {// camera is inside the light volume !
 			glCullFace(GL_FRONT);
 		}
@@ -478,8 +483,8 @@ void GameTechRenderer::CombineBuffers() {
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, lightSpecularTex);
 
-	// Needs a quad to draw to!!!
-	//screen->Draw();
+	BindMesh(screenQuad);
+	DrawBoundMesh();
 
 	glUseProgram(0);
 }
