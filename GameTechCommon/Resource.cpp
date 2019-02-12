@@ -11,6 +11,7 @@ Resource::~Resource()
 {
 }
 
+
 void Resource::Awake()
 {
 }
@@ -19,11 +20,11 @@ void Resource::Start()
 {
 }
 
-void Resource::Update()
+void Resource::Update(float dt)
 {
 }
 
-void Resource::LateUpdate()
+void Resource::LateUpdate(float dt)
 {
 }
 

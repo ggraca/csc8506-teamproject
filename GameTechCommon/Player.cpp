@@ -15,11 +15,11 @@ void Player::Start()
 {
 }
 
-void Player::Update()
+void Player::Update(float dt)
 {
 }
 
-void Player::LateUpdate()
+void Player::LateUpdate(float dt)
 {
 }
 
@@ -28,10 +28,5 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 }
 
 void Player::OnCollisionEnd(GameObject * otherObject)
-{
-}
-
-
-Player::~Player()
 {
 }

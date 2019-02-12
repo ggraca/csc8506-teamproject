@@ -106,27 +106,13 @@ namespace NCL {
 				return (this->tag == other.tag);
 			}
 
-			virtual void OnCollisionBegin(GameObject* otherObject) 
-			{
-				if (HasOtherScriptsAttached())
-				{
-					for (auto&i : scripts)
-					{
-						i->OnCollisionBegin(otherObject);
-					}
-				}
-			}
+			virtual void OnCollisionBegin(GameObject* otherObject);
+			
 
-			virtual void OnCollisionEnd(GameObject* otherObject) 
-			{
-				if (HasOtherScriptsAttached())
-				{
-					for (auto&i : scripts)
-					{
-						i->OnCollisionEnd(otherObject);
-					}
-				}
-			}
+			virtual void OnCollisionEnd(GameObject* otherObject);
+			
+				
+			
 
 			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
 			
@@ -157,10 +143,7 @@ namespace NCL {
 			{
 				child->SetParent(this);
 			}
-			
-			
 
-			
 			void AddScript(ScriptObject* obj);
 			
 
@@ -198,8 +181,8 @@ namespace NCL {
 
 			bool HasOtherScriptsAttached() { return (scripts.size() > 0); }
 
-			void UpdateAttachedScripts();
-			void LateUpdateAttachedScripts();
+			void UpdateAttachedScripts(float dt);
+			void LateUpdateAttachedScripts(float dt);
 
 			
 			
@@ -231,17 +214,16 @@ namespace NCL {
 			ScriptObject(GameObject * go);
 
 
-			virtual ~ScriptObject()
-			{
-				//don"t delete gameobject as it may still meant to live after script is detached
-			}
+			virtual ~ScriptObject();
+			
 
-			virtual void Awake() {}
-			virtual void Start() { }
-			virtual void Update() {}
-			virtual void LateUpdate() {}
-			virtual void OnCollisionBegin(GameObject* otherObject) {}
-			virtual void OnCollisionEnd(GameObject* otherObject) {}
+			virtual void Awake();
+			virtual void Start();
+			virtual void Update(float dt);
+			virtual void LateUpdate(float dt);
+			virtual void OnCollisionBegin(GameObject* otherObject);
+			virtual void OnCollisionEnd(GameObject* otherObject);
+
 		protected:
 
 			GameObject * gameObject;

@@ -13,8 +13,8 @@ public:
 
 	void Awake() override;
 	void Start() override;
-	void Update() override;
-	void LateUpdate() override;
+	void Update(float dt) override;
+	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
 };

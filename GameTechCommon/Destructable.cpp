@@ -8,9 +8,6 @@ Destructable::Destructable(GameObject * gameObject):ScriptObject(gameObject)
 {
 }
 
-Destructable::~Destructable()
-{
-}
 
 void Destructable::Awake()
 {
@@ -20,11 +17,11 @@ void Destructable::Start()
 {
 }
 
-void Destructable::Update()
+void Destructable::Update(float dt)
 {
 }
 
-void Destructable::LateUpdate()
+void Destructable::LateUpdate(float dt)
 {
 }
 

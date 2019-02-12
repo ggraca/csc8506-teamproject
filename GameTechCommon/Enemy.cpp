@@ -15,11 +15,11 @@ void Enemy::Start()
 {
 }
 
-void Enemy::Update()
+void Enemy::Update(float dt)
 {
 }
 
-void Enemy::LateUpdate()
+void Enemy::LateUpdate(float dt)
 {
 }
 
@@ -28,10 +28,5 @@ void Enemy::OnCollisionBegin(GameObject * otherObject)
 }
 
 void Enemy::OnCollisionEnd(GameObject * otherObject)
-{
-}
-
-
-Enemy::~Enemy()
 {
 }
