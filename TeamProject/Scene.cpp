@@ -14,7 +14,7 @@ Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
   physics = new BulletPhysics(*world);
-  physics->gravity = Vector3(5, -98.81, 0);
+  physics->SetGravity(Vector3(-6, -28.81, 0));
 
   Debug::SetRenderer(renderer);
 
@@ -63,10 +63,9 @@ void Scene::UpdateGame(float dt) {
     world->GetMainCamera()->UpdateCamera(dt);
   }
 
-  UpdateKeys();
-
-  SelectObject();
-  MoveSelectedObject();
+  //UpdateKeys();
+  //SelectObject();
+  //MoveSelectedObject();
 
   world->UpdateWorld(dt);
   renderer->Update(dt);
@@ -109,6 +108,10 @@ void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& p
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	physics->dynamicsWorld->addRigidBody(body);
+	body->setFriction(0.4); //TODO Now physical properties can be set per object by passing parameters to this function from AddSphereToWorld/AddCubeToWorld, with default values when omitted. Will sort this v. soon!
+	body->setRestitution(0.9);
+	body->setRollingFriction(0.9);
+	body->setSpinningFriction(0.3);
 }
 
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass) {

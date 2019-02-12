@@ -24,7 +24,7 @@ ExampleScene::ExampleScene() : Scene() {
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
 
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(1, 0, 0), 0), Vector3(500, 10, 500), 0); //TODO Do these need to be deleted in destructor?!?!?!
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0); //TODO Do these need to be deleted in destructor?!?!?!
   AddCubeToWorld(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), 45), Vector3(2, 2, 2), 1);
   AddCubeToWorld(Vector3(3.5, 130, 1), Quaternion::AxisAngleToQuaterion(Vector3(1, 1, 1), 45), Vector3(20, 20, 20), 0.05);
   AddSphereToWorld(Vector3(40, 100, 20), 1, 1);
@@ -41,7 +41,6 @@ void ExampleScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   renderer->Update(dt);
-
   physics->Update(dt);
 
   Debug::FlushRenderables();

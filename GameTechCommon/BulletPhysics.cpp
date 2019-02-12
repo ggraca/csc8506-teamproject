@@ -2,14 +2,12 @@
 
 BulletPhysics::BulletPhysics(GameWorld& g) : gameWorld(g)
 {
-	gravity = Vector3(0, -9.81, 0);
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);
 	overlappingPairCache = new btDbvtBroadphase();
 	solver = new btSequentialImpulseConstraintSolver;
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);;
-	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
-	collisionShapes.clear(); //TODO Delete this, as not strictly necessary?
+	dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
 }
 
 BulletPhysics::~BulletPhysics()
@@ -41,15 +39,19 @@ BulletPhysics::~BulletPhysics()
 }
 
 void BulletPhysics::Update(float dt) {
-	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));  //TODO Eventually remove this?
 	const float iterationDt = 1.0f / 120.0f; 
 	dTOffset += dt;
 	int iterationCount = (int)(dTOffset / iterationDt);
-	UpdateBulletPositions(dTOffset, iterationCount);
+	UpdateBullet(dTOffset, iterationCount);
 	dTOffset -= iterationDt * iterationCount;
 }
 
-void BulletPhysics::UpdateBulletPositions(float dt, int iterations) {
+void BulletPhysics::SetGravity(Vector3 gravity)
+{
+	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
+}
+
+void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	dynamicsWorld->stepSimulation(dt, iterations);
 
 	std::vector<GameObject*>::const_iterator first;
@@ -65,10 +67,6 @@ void BulletPhysics::UpdateBulletPositions(float dt, int iterations) {
 		Transform& transform = (*i)->GetTransform();
 
 		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j]; //TODO This will only work if all gameWorld objects are physics objects!
-		obj->setFriction(0.4);
-		obj->setRestitution(0.9);
-		obj->setRollingFriction(0.9);
-		obj->setSpinningFriction(0.3);
 		btRigidBody* body = btRigidBody::upcast(obj);
 		btTransform trans;
 		if (body && body->getMotionState())

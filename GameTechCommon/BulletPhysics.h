@@ -11,8 +11,8 @@ public:
 	btDiscreteDynamicsWorld* dynamicsWorld;
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	void Update(float dt);
-	void UpdateBulletPositions(float dt, int iterations);
-	Vector3 gravity;
+	void UpdateBullet(float dt, int iterations);
+	void SetGravity(Vector3 gravity);
 
 private:
 	GameWorld& gameWorld;
