@@ -10,6 +10,9 @@
 #include "Console.h"
 #include "DebugMenu.h"
 #include "HUD.h"
+//#include "InputManager.h"
+//
+//class InputManager;
 
 namespace NCL {
     namespace CSC8503 {
@@ -18,6 +21,7 @@ namespace NCL {
             ExampleScene();
             ~ExampleScene();
             void UpdateGame(float dt);
+			InputManager* GetInputManager() const;
         protected:
             void ResetWorld();
 			void RegisterConsoleCommands();
@@ -25,6 +29,7 @@ namespace NCL {
 			DebugMenu debugMenu;
 			HUD hud;
 			Console console;
+			InputManager * inputManager;
 
             /*
             GameServer* server;

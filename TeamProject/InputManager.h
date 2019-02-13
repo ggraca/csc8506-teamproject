@@ -1,9 +1,10 @@
 #pragma once
-#include "ExampleScene.h"
+#include "ExampleScene"
 #include <vector>
 
 using namespace NCL;
 using namespace CSC8503;
+
 
 class InputManager
 {

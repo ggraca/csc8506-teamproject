@@ -1,7 +1,8 @@
 #include "GameObject.h"
 #include "CollisionDetection.h"
 
-using namespace NCL::CSC8503;
+using namespace NCL;
+using namespace CSC8503;
 
 GameObject::GameObject(string objectName)	
 {

@@ -21,7 +21,7 @@ ExampleScene::ExampleScene() : Scene() {
   physics->UseGravity(false);
   world->ShuffleConstraints(true);
   world->ShuffleObjects(true);
-
+  inputManager = new InputManager();
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
 
@@ -40,6 +40,7 @@ void ExampleScene::ResetWorld() {
 }
 
 ExampleScene::~ExampleScene() {
+	delete inputManager;
 }
 
 void ExampleScene::UpdateGame(float dt) {
@@ -63,6 +64,12 @@ void ExampleScene::UpdateGame(float dt) {
 
   renderer->Render();
 }
+
+InputManager * NCL::CSC8503::ExampleScene::GetInputManager() const
+{
+	return inputManager;
+}
+
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 	float x = stof(commandParams[1]);

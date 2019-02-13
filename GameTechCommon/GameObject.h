@@ -6,10 +6,12 @@
 #include "RenderObject.h"
 #include "NetworkObject.h"
 #include "LayerAndTag.h"
+//#include "../TeamProject/InputManager.h"
 
 #include <vector>
 
 using std::vector;
+
 
 namespace NCL {
 	namespace CSC8503 {
