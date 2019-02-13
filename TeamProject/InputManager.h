@@ -1,5 +1,5 @@
 #pragma once
-#include "ExampleScene"
+#include "ExampleScene.h"
 #include <vector>
 
 using namespace NCL;

@@ -10,9 +10,9 @@
 #include "Console.h"
 #include "DebugMenu.h"
 #include "HUD.h"
-//#include "InputManager.h"
-//
-//class InputManager;
+#include "InputManager.h"
+
+class InputManager;
 
 namespace NCL {
     namespace CSC8503 {

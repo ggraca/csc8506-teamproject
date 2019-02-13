@@ -24,7 +24,7 @@ int main() {
 		if (dt > 1.0f) {
 			continue; //must have hit a breakpoint or something to have a 1 second frame time!
 		}
-		//if (g->GetInputManager()->IsButtonPressed(InputManager::FORWARD)) {cout<<"Forward pressed"<<endl;}
+		if (g->GetInputManager()->IsButtonPressed(InputManager::FORWARD)) {cout<<"Forward pressed"<<endl;}
 
 		g->UpdateGame(dt);
 	}
