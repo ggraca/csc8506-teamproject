@@ -36,19 +36,19 @@ void GameWorld::ClearAndErase() {
 
 
 
-void GameWorld::UpdateGameObjects()
+void GameWorld::UpdateGameObjects(float dt)
 {
 	for (auto&i : gameObjects) 
 	{	
-		i->UpdateAttachedScripts();
+		i->UpdateAttachedScripts(dt);
 	}
 }
 
-void GameWorld::LateUpdateGameObjects()
+void GameWorld::LateUpdateGameObjects(float dt)
 {
 	for (auto&i : gameObjects)
 	{
-		i->LateUpdateAttachedScripts();
+		i->LateUpdateAttachedScripts(dt);
 	}
 }
 
@@ -109,9 +109,9 @@ int GameWorld::GetObjectCount(){
 
 void GameWorld::UpdateWorld(float dt) 
 {
-	UpdateGameObjects();
+	UpdateGameObjects(dt);
 	UpdateTransforms();
-	LateUpdateGameObjects();
+	LateUpdateGameObjects(dt);
 
 	if (shuffleObjects) {
 		std::random_shuffle(gameObjects.begin(), gameObjects.end());
