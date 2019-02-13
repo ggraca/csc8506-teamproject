@@ -398,7 +398,7 @@ void GameTechRenderer::RenderLights() {
 		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
 			"shadowTex"), 20);
 		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
-			"drawShadows"), true);
+			"drawShadows"), false);
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
