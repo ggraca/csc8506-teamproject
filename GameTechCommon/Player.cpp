@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include "../TeamProject/InputManager.h"
 
 
 Player::Player(GameObject * obj) : ScriptObject(obj)
@@ -21,6 +21,7 @@ void Player::Start()
 
 void Player::Update(float dt)
 {
+
 }
 
 void Player::LateUpdate(float dt)

@@ -8,6 +8,7 @@ class Resource:ScriptObject
 {
 public:
 	Resource(GameObject * gameObject);
+	Resource(GameObject* gameObject, InputManager *im);
 	virtual ~Resource();
 
 	void Awake() override;

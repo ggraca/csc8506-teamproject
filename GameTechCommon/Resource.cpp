@@ -1,9 +1,12 @@
 #include "Resource.h"
-
-
+#include "../TeamProject/InputManager.h"
 
 
 Resource::Resource(GameObject * gameObject):ScriptObject(gameObject)
+{
+}
+
+Resource::Resource(GameObject * gameObject, InputManager * im):ScriptObject(gameObject,im)
 {
 }
 

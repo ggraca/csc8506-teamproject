@@ -150,10 +150,7 @@ void ScriptObject::Start()
 void ScriptObject::Update(float dt)
 {
 
-	if (inputManager->IsButtonPressed(InputManager::ActionButton::FORWARD))
-	{
-		std::cout << "Forward pressed" << std::endl;
-	}
+	
 }
 
 void ScriptObject::LateUpdate(float dt)

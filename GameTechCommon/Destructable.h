@@ -9,6 +9,7 @@ class Destructable:ScriptObject
 {
 public:
 	Destructable(GameObject * gameObject);
+	Destructable(GameObject * gameObject,InputManager * im);
 	~Destructable();
 
 	void Awake() override;

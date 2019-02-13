@@ -2,10 +2,8 @@
 #include "GameTechRenderer.h"
 #include "Scene.h"
 #include "../GameTechCommon/PhysicsSystem.h"
-
 #include "../GameTechCommon/GameServer.h"
 #include "../GameTechCommon/GameClient.h"
-
 #include "../GameTechCommon/NavigationGrid.h"
 #include "Console.h"
 #include "DebugMenu.h"

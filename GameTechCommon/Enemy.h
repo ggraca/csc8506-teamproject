@@ -9,6 +9,7 @@ class Enemy : virtual public ScriptObject
 public:
 
 	Enemy(GameObject * obj);
+	Enemy(GameObject*obj, InputManager* im);
 	virtual ~Enemy() {}
 
 	void Awake() override;

@@ -36,8 +36,8 @@ void ExampleScene::ResetWorld() {
   physics->Clear();
 
   // Floor
-  auto floor = AddFloorToWorld(Vector3(200, 0, 200));
-  //floor->AddScript(new ScriptObject(floor,inputManager));
+  AddFloorToWorld(Vector3(200, 0, 200));
+  
 }
 
 ExampleScene::~ExampleScene() {

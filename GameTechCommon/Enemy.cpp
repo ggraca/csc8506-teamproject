@@ -1,10 +1,13 @@
 #include "Enemy.h"
-
-
+#include "../TeamProject/InputManager.h"
 
 Enemy::Enemy(GameObject * obj) :ScriptObject(obj)
 {
 
+}
+
+Enemy::Enemy(GameObject * obj, InputManager * im):ScriptObject(obj,im)
+{
 }
 
 void Enemy::Awake()
