@@ -10,5 +10,6 @@ node {
 
 	stage 'Archive'
 		archive 'TeamProject/bin/Release/**'
+		archive 'TeamProject/bin/Debug/**'
 
 }
