@@ -4,11 +4,13 @@
 using namespace NCL;
 using namespace CSC8503;
 
+
 class Player : virtual public ScriptObject
 {
 public:
 
 	Player(GameObject * obj);
+	Player(GameObject * obj,InputManager *im);
 	virtual ~Player() {}
 
 	void Awake() override;

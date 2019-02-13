@@ -6,7 +6,7 @@
 #include "RenderObject.h"
 #include "NetworkObject.h"
 #include "LayerAndTag.h"
-//#include "../TeamProject/InputManager.h"
+
 
 #include <vector>
 
@@ -16,6 +16,7 @@ using std::vector;
 namespace NCL {
 	namespace CSC8503 {
 		class NetworkObject;
+		class InputManager;
 		class ScriptObject;
 		
 
@@ -206,6 +207,7 @@ namespace NCL {
 			
 		};
 
+		
 		class ScriptObject
 		{
 		public:
@@ -214,7 +216,7 @@ namespace NCL {
 
 
 			ScriptObject(GameObject * go);
-
+			ScriptObject(GameObject * go,InputManager* im);
 
 			virtual ~ScriptObject();
 			
@@ -229,6 +231,7 @@ namespace NCL {
 		protected:
 
 			GameObject * gameObject;
+			InputManager * inputManager;
 
 		};
 	

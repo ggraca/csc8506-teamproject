@@ -12,10 +12,11 @@
 #include "HUD.h"
 #include "InputManager.h"
 
-class InputManager;
+
 
 namespace NCL {
     namespace CSC8503 {
+		
         class ExampleScene : public Scene/*, public PacketReceiver*/ {
         public:
             ExampleScene();

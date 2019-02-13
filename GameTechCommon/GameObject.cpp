@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "CollisionDetection.h"
+#include "../TeamProject/InputManager.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -117,12 +118,20 @@ void GameObject::LateUpdateAttachedScripts(float dt)
 ScriptObject::ScriptObject()
 {
 	gameObject = nullptr;
+	inputManager = nullptr;
 }
 
 
 ScriptObject::ScriptObject(GameObject * go)
 {
 	this->gameObject = go;
+	this->inputManager = nullptr;
+}
+
+ScriptObject::ScriptObject(GameObject * go, InputManager * im)
+{
+	this->gameObject = go;
+	this->inputManager = im;
 }
 
 ScriptObject::~ScriptObject()
@@ -140,6 +149,11 @@ void ScriptObject::Start()
 
 void ScriptObject::Update(float dt)
 {
+
+	if (inputManager->IsButtonPressed(InputManager::ActionButton::FORWARD))
+	{
+		std::cout << "Forward pressed" << std::endl;
+	}
 }
 
 void ScriptObject::LateUpdate(float dt)

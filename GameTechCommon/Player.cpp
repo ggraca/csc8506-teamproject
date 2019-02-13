@@ -7,6 +7,10 @@ Player::Player(GameObject * obj) : ScriptObject(obj)
 
 }
 
+Player::Player(GameObject * obj, InputManager * im):ScriptObject(obj,im)
+{
+}
+
 void Player::Awake()
 {
 }

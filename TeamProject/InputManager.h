@@ -5,42 +5,48 @@
 using namespace NCL;
 using namespace CSC8503;
 
-
-class InputManager
+namespace NCL
 {
-public:
-	static enum ActionButton
+	namespace CSC8503
 	{
-		FORWARD,
-		BACKWARD,
-		LEFT,
-		RIGHT,
-		FIRE,
-		MAX
-	};
+		class InputManager
+		{
+		public:
+			static enum ActionButton
+			{
+				FORWARD,
+				BACKWARD,
+				LEFT,
+				RIGHT,
+				FIRE,
+				MAX
+			};
 
-	InputManager();
-	~InputManager();
+			InputManager();
+			~InputManager();
 
-	
-	bool IsButtonPressed(ActionButton actionButton);
-	bool IsButtonHeld(ActionButton actionButton);
-	bool IsButtonDown(ActionButton actionButton);
-	bool IsDoubleClicked(ActionButton actionButton);
 
-private:
+			bool IsButtonPressed(ActionButton actionButton);
+			bool IsButtonHeld(ActionButton actionButton);
+			bool IsButtonDown(ActionButton actionButton);
+			bool IsDoubleClicked(ActionButton actionButton);
 
-	struct ButtonRelation
-	{
-		std::vector<NCL::KeyboardKeys> relatedKeyboardKeys;
-		std::vector<NCL::MouseButtons> relatedMouseKeys;
-	};
+		private:
 
-	void InitializeButtonRelations();
+			struct ButtonRelation
+			{
+				std::vector<NCL::KeyboardKeys> relatedKeyboardKeys;
+				std::vector<NCL::MouseButtons> relatedMouseKeys;
+			};
 
-protected:
+			void InitializeButtonRelations();
 
-	ButtonRelation * registeredActionButtons;
+		protected:
 
-};
+			ButtonRelation * registeredActionButtons;
+
+		};
+
+	}
+}
 
