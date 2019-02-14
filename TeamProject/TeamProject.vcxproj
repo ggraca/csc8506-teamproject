@@ -149,7 +149,7 @@
     <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
-    <ClCompile Include="ExampleScene.cpp" />
+    <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -159,7 +159,7 @@
     <ClInclude Include="..\GameTechCommon\BulletPhysics.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DebugMenu.h" />
-    <ClInclude Include="ExampleScene.h" />
+    <ClInclude Include="PhysicsScene.h" />
     <ClInclude Include="GameTechRenderer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="utils.h" />

@@ -1,7 +1,7 @@
 #include <time.h>
 
 #include "../Common/Window.h"
-#include "ExampleScene.h"
+#include "PhysicsScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 	w->LockMouseToWindow(true);
     w->ShowConsole(true);
 
-	ExampleScene* g = new ExampleScene();
+	PhysicsScene* g = new PhysicsScene();
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;

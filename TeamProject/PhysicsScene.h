@@ -12,10 +12,10 @@
 
 namespace NCL {
     namespace CSC8503 {
-        class ExampleScene : public Scene/*, public PacketReceiver*/ {
+        class PhysicsScene : public Scene/*, public PacketReceiver*/ {
         public:
-            ExampleScene();
-            ~ExampleScene();
+            PhysicsScene();
+            ~PhysicsScene();
             void UpdateGame(float dt);
         protected:
             void ResetWorld();
