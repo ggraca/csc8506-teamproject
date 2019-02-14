@@ -221,12 +221,12 @@ namespace NCL {
 			virtual ~ScriptObject();
 			
 
-			virtual void Awake();
-			virtual void Start();
-			virtual void Update(float dt);
-			virtual void LateUpdate(float dt);
-			virtual void OnCollisionBegin(GameObject* otherObject);
-			virtual void OnCollisionEnd(GameObject* otherObject);
+			virtual void Awake() =0;
+			virtual void Start()=0;
+			virtual void Update(float dt)=0;
+			virtual void LateUpdate(float dt)=0;
+			virtual void OnCollisionBegin(GameObject* otherObject)=0;
+			virtual void OnCollisionEnd(GameObject* otherObject)=0;
 
 		protected:
 
