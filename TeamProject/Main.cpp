@@ -10,16 +10,16 @@ using namespace CSC8503;
 int main(int argc, char** argv) {
 	srand(time(NULL));
 
-	Window*w = Window::CreateGameWindow("Team Project!", 1280, 720);
-	//Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, true);
+	//Window*w = Window::CreateGameWindow("Team Project!", 1280, 720);
+	Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, true);
 	if (!w->HasInitialised()) return -1;
 
 	w->ShowOSPointer(false);
 	w->LockMouseToWindow(true);
-  w->ShowConsole(true);
+    w->ShowConsole(true);
 
-	Scene* scene = new ExampleScene();
-  // Scene* scene = new PhysicsScene();
+	//Scene* scene = new ExampleScene();
+    Scene* scene = new PhysicsScene();
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;

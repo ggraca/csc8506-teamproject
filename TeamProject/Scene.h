@@ -26,8 +26,8 @@ namespace NCL {
 
 			void SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, float restitution, float friction, Quaternion orientation = Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0));
 
-			GameObject* AddSphereToWorld(const Vector3& position, float radius, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
-			GameObject* AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
+			GameObject* AddSphereToWorld(OGLTexture* sphereTex, const Vector3& position, float radius, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
+			GameObject* AddCubeToWorld(OGLTexture* cubeTex, const Vector3& position, const Quaternion& orient, Vector3 dimension, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
 			/*GameObject* AddCylinderToWorld(const Vector3& position, Vector3 dimensions, float inverseMass = 10.0f);*/
 
 			GameTechRenderer*	renderer;
@@ -46,8 +46,11 @@ namespace NCL {
 			OGLMesh*	cylinderMesh = nullptr;
 			OGLTexture* basicTex	= nullptr;
 			OGLTexture* woodTex	= nullptr;
+			OGLTexture* wood2Tex = nullptr;
 			OGLTexture* grassTex	= nullptr;
 			OGLTexture* ballTex	= nullptr;
+			OGLTexture* dogTex = nullptr;
+			OGLTexture* tempTex = nullptr;
 			OGLShader*	basicShader = nullptr;
 		};
 	}

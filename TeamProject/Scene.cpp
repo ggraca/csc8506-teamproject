@@ -36,8 +36,10 @@ void Scene::InitialiseAssets() {
 
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
+  wood2Tex = (OGLTexture*)TextureLoader::LoadAPITexture("wood2.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
+  dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
   basicShader = new OGLShader("GameTechVert.glsl", "GameTechFrag.glsl");
 
   InitCamera();
@@ -114,7 +116,7 @@ void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& p
 	body->setSpinningFriction(0.3);
 }
 
-GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass, float restitution, float friction) {
+GameObject* Scene::AddSphereToWorld(OGLTexture* sphereTex, const Vector3& position, float radius, float inverseMass, float restitution, float friction) {
   GameObject* sphere = new GameObject();
 
   btCollisionShape* Shape = new btSphereShape(btScalar(radius));
@@ -127,14 +129,14 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   Vector3 sphereSize = Vector3(radius, radius, radius);
   sphere->GetTransform().SetWorldScale(sphereSize);
   sphere->GetTransform().SetWorldPosition(position);
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, ballTex, basicShader));
+  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, sphereTex, basicShader));
 
   world->AddGameObject(sphere);
 
   return sphere;
 }
 
-GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass, float restitution, float friction) {
+GameObject* Scene::AddCubeToWorld(OGLTexture* cubeTex, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass, float restitution, float friction) {
   GameObject* cube = new GameObject();
 
   btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
@@ -147,7 +149,7 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetLocalOrientation(orient);
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetWorldScale(dimensions);
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
+  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, cubeTex, basicShader));
   cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
 
   cube->GetPhysicsObject()->SetInverseMass(inverseMass);
@@ -169,10 +171,16 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 			Vector3 cubeDims = Vector3(x, y, z);
 			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
 			if (rand() % 2) {
-				AddCubeToWorld(position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, 10.0 * (rand() % 100) / (float)100);
+				tempTex = wood2Tex;
 			}
 			else {
-				AddSphereToWorld(position, sphereRadius, 10, 10.0 * (rand() % 100) / (float)100, 10.0 * (rand() % 100) / (float)100);
+				tempTex = dogTex;
+			}
+			if (rand() % 2) {
+				AddCubeToWorld(tempTex, position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, 10.0 * (rand() % 100) / (float)100);
+			}
+			else {
+				AddSphereToWorld(ballTex, position, sphereRadius, 10, 10.0 * (rand() % 100) / (float)100, 10.0 * (rand() % 100) / (float)100);
 			}
 		}
 	}
