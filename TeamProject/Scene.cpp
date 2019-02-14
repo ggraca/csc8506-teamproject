@@ -111,8 +111,6 @@ GameObject* Scene::AddFloorToWorld(const Vector3& position) {
   floor->SetBoundingVolume((CollisionVolume*)volume);
   floor->GetTransform().SetWorldScale(floorSize);
   floor->GetTransform().SetWorldPosition(position);
-  floor->GetTransform().SetLocalOrientation(Quaternion(Vector3(0,1,0),1));
-  floor->GetTransform().UpdateMatrices();
 
   floor->SetRenderObject(new RenderObject(&floor->GetTransform(), cubeMesh, grassTex, basicShader));
   floor->SetPhysicsObject(new PhysicsObject(&floor->GetTransform(), floor->GetBoundingVolume()));

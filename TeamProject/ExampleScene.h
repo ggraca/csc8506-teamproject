@@ -26,8 +26,8 @@ namespace NCL {
 			DebugMenu debugMenu;
 			HUD hud;
 			Console console;
-			GameObject * dummy;
-			Animation * anim;
+			
+			
 			
 
             /*
