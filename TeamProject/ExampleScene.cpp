@@ -18,8 +18,6 @@ using namespace CSC8503;
 
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
-  world->ShuffleConstraints(true);
-  world->ShuffleObjects(true);
   inputManager = new InputManager();
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
