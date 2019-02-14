@@ -128,7 +128,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   sphere->GetTransform().SetWorldScale(sphereSize);
   sphere->GetTransform().SetWorldPosition(position);
   sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, ballTex, basicShader));
- 
+
   world->AddGameObject(sphere);
 
   return sphere;
@@ -143,13 +143,18 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   //AABBVolume* volume = new AABBVolume(dimensions);
   //cube->SetBoundingVolume((CollisionVolume*)volume);
   //cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume())); //TODO These 3 lines may still required until we find some better way of linking render objects to physics objects
-  
+
   cube->GetTransform().SetLocalOrientation(orient);
-  cube->GetTransform().SetWorldPosition(position); 
+  cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetWorldScale(dimensions);
   cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
-  
+  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
+
+  cube->GetPhysicsObject()->SetInverseMass(inverseMass);
+  cube->GetPhysicsObject()->InitCubeInertia();
+
   world->AddGameObject(cube);
+
 
   return cube;
 }

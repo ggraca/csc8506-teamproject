@@ -7,18 +7,25 @@
 #include "NetworkObject.h"
 #include "LayerAndTag.h"
 
+
 #include <vector>
 
 using std::vector;
 
+
 namespace NCL {
 	namespace CSC8503 {
 		class NetworkObject;
+		class InputManager;
+		class ScriptObject;
+		
 
 		class GameObject	{
 		public:
 			GameObject(string name = "");
-			~GameObject();
+			virtual ~GameObject();
+
+			void ClearScripts();
 
 			void SetBoundingVolume(CollisionVolume* vol) {
 				boundingVolume = vol;
@@ -88,6 +95,9 @@ namespace NCL {
 				return this->tag;
 			}
 
+			void SetIsAddedToWorld(bool status) { isAddedToWorld = status; }
+			bool GetIsAddedToWorld() const { return isAddedToWorld; }
+
 			bool CompareTag(LayerAndTag::Tags t)
 			{
 				return (this->tag == t);
@@ -99,13 +109,13 @@ namespace NCL {
 				return (this->tag == other.tag);
 			}
 
-			virtual void OnCollisionBegin(GameObject* otherObject) {
-				
-			}
+			virtual void OnCollisionBegin(GameObject* otherObject);
+			
 
-			virtual void OnCollisionEnd(GameObject* otherObject) {
+			virtual void OnCollisionEnd(GameObject* otherObject);
+			
 				
-			}
+			
 
 			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
 			
@@ -136,6 +146,47 @@ namespace NCL {
 			{
 				child->SetParent(this);
 			}
+
+			void AddScript(ScriptObject* obj);
+			
+
+			template<class T>
+			void RemoveScript()
+			{
+
+				for (int i = 0; i < scripts.size();i++)
+				{
+					if (dynamic_cast<T>(scripts[i]))
+					{
+						delete scripts[i];
+						scripts.erase(scripts.begin()+i);
+
+						return;
+					}
+				}
+			}
+
+			template<class T>
+			T GetScript()
+			{
+				for (auto& i : scripts)
+				{
+					if (dynamic_cast<T>(i))
+					{
+						return dynamic_cast<T>(i);
+					}
+				}
+
+				return nullptr;
+			}
+
+			void SetUpInitialScripts();
+
+			bool HasOtherScriptsAttached() { return (scripts.size() > 0); }
+
+			void UpdateAttachedScripts(float dt);
+			void LateUpdateAttachedScripts(float dt);
+
 			
 			
 		protected:
@@ -147,11 +198,42 @@ namespace NCL {
 			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
+			std::vector<ScriptObject*> scripts;
 			
 
 			bool	isActive;
-			string	name;
+			bool	isAddedToWorld;
+			string	name;	
 			
 		};
+
+		
+		class ScriptObject
+		{
+		public:
+
+			ScriptObject();
+
+
+			ScriptObject(GameObject * go);
+			ScriptObject(GameObject * go,InputManager* im);
+
+			virtual ~ScriptObject();
+			
+
+			virtual void Awake() =0;
+			virtual void Start()=0;
+			virtual void Update(float dt)=0;
+			virtual void LateUpdate(float dt)=0;
+			virtual void OnCollisionBegin(GameObject* otherObject)=0;
+			virtual void OnCollisionEnd(GameObject* otherObject)=0;
+
+		protected:
+
+			GameObject * gameObject;
+			InputManager * inputManager;
+
+		};
+	
 	}
 }

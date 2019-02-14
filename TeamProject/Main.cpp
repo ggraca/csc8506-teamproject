@@ -25,6 +25,7 @@ int main(int argc, char** argv) {
 		if (dt > 1.0f) {
 			continue; //must have hit a breakpoint or something to have a 1 second frame time!
 		}
+		
 
 		g->UpdateGame(dt);
 	}

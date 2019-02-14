@@ -35,6 +35,7 @@ void Debug::AddStringToDebugMenu(const std::string &text) {
 	newEntry.data = text;
 	newEntry.position = Vector2(0, 0);
 	newEntry.colour = Vector4(1, 1, 1, 1);
+	newEntry.size = 0.5f;
 
 	DebugMenu.emplace_back(newEntry);
 }
@@ -53,7 +54,7 @@ void Debug::FlushRenderables() {
 
 	for (int i = 0; i < DebugMenu.size(); i++)
 	{
-		renderer->DrawString(DebugMenu[i].data, Vector2(20, (DebugMenu.size() - i) * 20));
+		renderer->DrawString(DebugMenu[i].data, Vector2(20, (DebugMenu.size() - i) * 20), Vector4(1, 1, 1, 1), DebugMenu[i].size);
 	}
 
 	DebugMenu.clear();
