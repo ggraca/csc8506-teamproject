@@ -71,7 +71,6 @@ void Animation::UpdateAnimation(GameObject * obj, float dt)
 
 	UpdateObjectTransform(obj);
 
-
 	currentTime += dt;
 }
 
@@ -79,7 +78,10 @@ void Animation::UpdateObjectTransform(GameObject * obj)
 {
 	obj->GetTransform().SetLocalScale(obj->GetTransform().GetLocalScale()+interpolation->localScale);
 	obj->GetTransform().SetLocalPosition(obj->GetTransform().GetLocalPosition()+interpolation->localPosition);
-	obj->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(interpolation->localRotation.x, interpolation->localRotation.y, interpolation->localRotation.z));
+	auto currentRotation = obj->GetTransform().GetLocalOrientation().ToEuler();
+	currentRotation += interpolation->localRotation;
+	obj->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(currentRotation.x, currentRotation.y, currentRotation.z));
+	obj->GetTransform().UpdateMatrices();
 }
 
 void Animation::CalculateInterpolation()
@@ -95,6 +97,7 @@ void Animation::CalculateInterpolation()
 	Vector3 positionDifferencePerFrame = (nextFrame->localPosition - currentFrame->localPosition) / frameCountDifference;
 	Vector3 scaleDifferencePerFrame = (nextFrame->localScale - currentFrame->localScale) / frameCountDifference;
 	Vector3 rotationDifferencePerFrame = (nextFrame->localRotation - currentFrame->localRotation) / frameCountDifference;
+
 
 	interpolation->localPosition = positionDifferencePerFrame;
 	interpolation->localScale = scaleDifferencePerFrame;

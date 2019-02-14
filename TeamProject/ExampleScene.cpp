@@ -18,6 +18,12 @@ using namespace NCL;
 using namespace CSC8503;
 
 
+void ChangeColour(GameObject* obj)
+{
+	obj->GetRenderObject()->SetColour(Vector4(255,255, 255, 255));
+	obj->SetName("Something");
+}
+
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
   physics->UseGravity(false);
@@ -33,17 +39,13 @@ ExampleScene::ExampleScene() : Scene() {
   RegisterConsoleCommands();
 
   anim = new Animation(60);
-  KeyFrame* f1 = new KeyFrame();
-  f1->time = 5;
-  f1->localPosition = Vector3(100, 100, 100);
-  f1->localRotation = dummy->GetTransform().GetLocalOrientation().ToEuler();
-  f1->localScale = dummy->GetTransform().GetLocalScale();
-  anim->AddKeyFrame(f1);
+
   KeyFrame* f2 = new KeyFrame();
   f2->time = 10;
   f2->localPosition = Vector3(200, 0, 200);
   f2->localRotation = dummy->GetTransform().GetLocalOrientation().ToEuler();
   f2->localScale = Vector3(1,1,1);
+  f2->keyFunction = ChangeColour;
   anim->AddKeyFrame(f2);
   KeyFrame* f3 = new KeyFrame();
   f3->time = 15;
@@ -56,23 +58,26 @@ ExampleScene::ExampleScene() : Scene() {
   f4->localPosition = Vector3(200, 0, 200);
   f4->localRotation = dummy->GetTransform().GetLocalOrientation().ToEuler();
   f4->localScale = Vector3(5, 5, 5);
+  anim->AddKeyFrame(f4);
   KeyFrame* f5 = new KeyFrame();
   f5->time = 25;
   f5->localPosition = Vector3(200, 0, 200);
-  f5->localRotation = Vector3(0,180,360);
-  f5->localScale = Vector3(5, 5, 5);
+  f5->localRotation = Vector3(0,1080,0);
+  f5->localScale = Vector3(10, 1, 10);
   anim->AddKeyFrame(f5);
-
+  
   anim->Play();
 }
+
 
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
   physics->Clear();
 
   // Floor
+  auto cube = AddCubeToWorld(Vector3(0, 0, 0), Vector3(1, 1, 1));
   dummy = AddFloorToWorld(Vector3(200, 0, 200));
-  
+  dummy->SetParent(cube);
 }
 
 ExampleScene::~ExampleScene() {
@@ -98,6 +103,7 @@ void ExampleScene::UpdateGame(float dt) {
   }
 
   renderer->Render();
+  cout << dummy->GetName() << endl;
 }
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {
