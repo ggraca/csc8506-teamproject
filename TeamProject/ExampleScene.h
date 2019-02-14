@@ -10,6 +10,7 @@
 #include "Console.h"
 #include "DebugMenu.h"
 #include "HUD.h"
+#include "Animation.h"
 
 namespace NCL {
     namespace CSC8503 {
@@ -25,6 +26,9 @@ namespace NCL {
 			DebugMenu debugMenu;
 			HUD hud;
 			Console console;
+			GameObject * dummy;
+			Animation * anim;
+			
 
             /*
             GameServer* server;

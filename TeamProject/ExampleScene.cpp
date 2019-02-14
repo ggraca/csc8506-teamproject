@@ -12,6 +12,8 @@
 #include <string>
 
 
+
+
 using namespace NCL;
 using namespace CSC8503;
 
@@ -29,6 +31,39 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
+
+  anim = new Animation(60);
+  KeyFrame* f1 = new KeyFrame();
+  f1->time = 5;
+  f1->localPosition = Vector3(100, 100, 100);
+  f1->localRotation = dummy->GetTransform().GetLocalOrientation().ToEuler();
+  f1->localScale = dummy->GetTransform().GetLocalScale();
+  anim->AddKeyFrame(f1);
+  KeyFrame* f2 = new KeyFrame();
+  f2->time = 10;
+  f2->localPosition = Vector3(200, 0, 200);
+  f2->localRotation = dummy->GetTransform().GetLocalOrientation().ToEuler();
+  f2->localScale = Vector3(1,1,1);
+  anim->AddKeyFrame(f2);
+  KeyFrame* f3 = new KeyFrame();
+  f3->time = 15;
+  f3->localPosition = Vector3(200, 0, 200);
+  f3->localRotation = dummy->GetTransform().GetLocalOrientation().ToEuler();
+  f3->localScale = Vector3(10, 10, 10);
+  anim->AddKeyFrame(f3);
+  KeyFrame* f4 = new KeyFrame();
+  f4->time = 17;
+  f4->localPosition = Vector3(200, 0, 200);
+  f4->localRotation = dummy->GetTransform().GetLocalOrientation().ToEuler();
+  f4->localScale = Vector3(5, 5, 5);
+  KeyFrame* f5 = new KeyFrame();
+  f5->time = 25;
+  f5->localPosition = Vector3(200, 0, 200);
+  f5->localRotation = Vector3(0,180,360);
+  f5->localScale = Vector3(5, 5, 5);
+  anim->AddKeyFrame(f5);
+
+  anim->Play();
 }
 
 void ExampleScene::ResetWorld() {
@@ -36,7 +71,8 @@ void ExampleScene::ResetWorld() {
   physics->Clear();
 
   // Floor
-  AddFloorToWorld(Vector3(200, 0, 200));
+  dummy = AddFloorToWorld(Vector3(200, 0, 200));
+  
 }
 
 ExampleScene::~ExampleScene() {
@@ -53,7 +89,7 @@ void ExampleScene::UpdateGame(float dt) {
   debugMenu.Update(dt, renderer);
   console.Update();
   hud.Update(dt, renderer);
-  
+  anim->UpdateAnimation(dummy,dt);
 
   //Might want moved into a seperate function that handles input
   if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {

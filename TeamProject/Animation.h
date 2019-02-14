@@ -19,7 +19,7 @@ struct KeyFrame
 class Animation
 {
 public:
-	Animation(int fps = 60);
+	Animation(int fps);
 	~Animation();
 	void AddKeyFrame(KeyFrame* keyFrame);
 	void Play();

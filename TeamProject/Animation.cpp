@@ -17,10 +17,10 @@ Animation::~Animation()
 {
 	if (currentFrame) { delete currentFrame; currentFrame = nullptr; }
 	if (nextFrame)	  { delete nextFrame;nextFrame = nullptr; }
+	if(interpolation) { delete interpolation;interpolation = nullptr; }
 
-	delete currentFrame;
-	delete nextFrame;
 	delete interpolation;
+	ClearKeyFrames();
 }
 
 void Animation::AddKeyFrame(KeyFrame * keyFrame)
@@ -30,8 +30,11 @@ void Animation::AddKeyFrame(KeyFrame * keyFrame)
 		if (keyFrames[i]->time > keyFrame->time)
 		{
 			keyFrames.insert(keyFrames.begin() + i, keyFrame);
+			return;
 		}
 	}
+
+	keyFrames.push_back(keyFrame);
 }
 
 void Animation::Play()
@@ -60,7 +63,7 @@ void Animation::UpdateAnimation(GameObject * obj, float dt)
 	{
 		currentIndex++;
 
-		if (keyFrames.size() == currentIndex + 1) { hasAnimationFinished = true; return; }
+		if (keyFrames.size() <= currentIndex+1) { hasAnimationFinished = true; return; }
 
 		ShiftFrames(obj);
 		CalculateInterpolation();
@@ -74,8 +77,8 @@ void Animation::UpdateAnimation(GameObject * obj, float dt)
 
 void Animation::UpdateObjectTransform(GameObject * obj)
 {
-	obj->GetTransform().SetLocalScale(interpolation->localScale);
-	obj->GetTransform().SetLocalPosition(interpolation->localPosition);
+	obj->GetTransform().SetLocalScale(obj->GetTransform().GetLocalScale()+interpolation->localScale);
+	obj->GetTransform().SetLocalPosition(obj->GetTransform().GetLocalPosition()+interpolation->localPosition);
 	obj->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(interpolation->localRotation.x, interpolation->localRotation.y, interpolation->localRotation.z));
 }
 
