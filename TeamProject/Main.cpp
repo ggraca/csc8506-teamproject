@@ -24,6 +24,7 @@ int main() {
 		if (dt > 1.0f) {
 			continue; //must have hit a breakpoint or something to have a 1 second frame time!
 		}
+		
 
 		g->UpdateGame(dt);
 	}
