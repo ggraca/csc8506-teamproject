@@ -19,7 +19,6 @@ Animation::~Animation()
 	if (nextFrame)	  { delete nextFrame;nextFrame = nullptr; }
 	if(interpolation) { delete interpolation;interpolation = nullptr; }
 
-	delete interpolation;
 	ClearKeyFrames();
 }
 
