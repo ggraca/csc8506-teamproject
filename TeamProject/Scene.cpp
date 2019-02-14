@@ -14,7 +14,7 @@ Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
   physics = new BulletPhysics(*world);
-  physics->SetGravity(Vector3(-6, -28.81, 0));
+  physics->SetGravity(Vector3(-4, -60.81, 0));
 
   Debug::SetRenderer(renderer);
 
@@ -82,8 +82,8 @@ void Scene::UpdateKeys() {
 void Scene::InitCamera() {
   world->GetMainCamera()->SetNearPlane(3.0f);
   world->GetMainCamera()->SetFarPlane(4200.0f);
-  world->GetMainCamera()->SetPitch(-35.0f);
-  world->GetMainCamera()->SetYaw(320.0f);
+  world->GetMainCamera()->SetPitch(-10.0f);
+  world->GetMainCamera()->SetYaw(250.0f);
   world->GetMainCamera()->SetPosition(Vector3(-50, 120, 200));
 }
 
@@ -91,7 +91,7 @@ void Scene::InitWorld() {
   world->ClearAndErase();
 }
 
-void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, Quaternion orientation)
+void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, float restitution, float friction, Quaternion orientation)
 {
 	physics->collisionShapes.push_back(Shape);
 	btTransform Transform;
@@ -114,11 +114,11 @@ void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& p
 	body->setSpinningFriction(0.3);
 }
 
-GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass) {
+GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass, float restitution, float friction) {
   GameObject* sphere = new GameObject();
 
   btCollisionShape* Shape = new btSphereShape(btScalar(radius));
-  SetBulletPhysicsParameters(Shape, position, inverseMass);
+  SetBulletPhysicsParameters(Shape, position, inverseMass, restitution, friction);
 
   //SphereVolume* volume = new SphereVolume(radius);
   //sphere->SetBoundingVolume((CollisionVolume*)volume);
@@ -134,11 +134,11 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   return sphere;
 }
 
-GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass) {
+GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass, float restitution, float friction) {
   GameObject* cube = new GameObject();
 
   btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
-  SetBulletPhysicsParameters(Shape, position, inverseMass, orient);
+  SetBulletPhysicsParameters(Shape, position, inverseMass, restitution, friction, orient);
 
   //AABBVolume* volume = new AABBVolume(dimensions);
   //cube->SetBoundingVolume((CollisionVolume*)volume);
@@ -157,18 +157,17 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
 	for (int i = 0; i < numCols; ++i) {
 		for (int j = 0; j < numRows; ++j) {
-			float sphereRadius = 3.0 * (rand() % 100) / (float)100;
-			float x = 10.0 * (rand() % 100) / (float)100;
-			float y = 10.0 * (rand() % 100) / (float)100;
-			float z = 10.0 * (rand() % 100) / (float)100;
+			float sphereRadius = 0.5 + 3.0 * (rand() % 100) / (float)100;
+			float x = 1 + 10.0 * (rand() % 100) / (float)100;
+			float y = 1 + 10.0 * (rand() % 100) / (float)100;
+			float z = 1 + 10.0 * (rand() % 100) / (float)100;
 			Vector3 cubeDims = Vector3(x, y, z);
-			cout << (rand() % 100) / (float)100 << endl;
-			Vector3 position = Vector3(i * colSpacing, positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
+			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
 			if (rand() % 2) {
-				AddCubeToWorld(position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims);
+				AddCubeToWorld(position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, 10.0 * (rand() % 100) / (float)100);
 			}
 			else {
-				AddSphereToWorld(position, sphereRadius);
+				AddSphereToWorld(position, sphereRadius, 10, 10.0 * (rand() % 100) / (float)100, 10.0 * (rand() % 100) / (float)100);
 			}
 		}
 	}
