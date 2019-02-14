@@ -1,11 +1,16 @@
 #pragma once
+
 #include "../GameTechCommon/GameWorld.h"
 #include <set>
+#include "..\Plugins\Bullet\src\btBulletDynamicsCommon.h"
+
+#include "BulletPhysics.h"
 
 namespace NCL {
 	namespace CSC8503 {
 		class PhysicsSystem	{
 		public:
+			
 			PhysicsSystem(GameWorld& g);
 			~PhysicsSystem();
 
@@ -26,7 +31,18 @@ namespace NCL {
 			static const float UNIT_MULTIPLIER;
 			static const float UNIT_RECIPROCAL;
 
+			BulletPhysics*      bulletPhysics;
+
+			void UpdateBulletPositions(float dt, int iterations);
+
+		private:
+		
 		protected:
+
+			
+
+			
+
 			void BasicCollisionDetection();
 			void BroadPhase();
 			void NarrowPhase();

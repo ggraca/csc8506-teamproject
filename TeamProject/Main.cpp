@@ -1,15 +1,17 @@
 #include <time.h>
 
 #include "../Common/Window.h"
+#include "PhysicsScene.h"
 #include "ExampleScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
 
-int main() {
-  srand(time(NULL));
+int main(int argc, char** argv) {
+	srand(time(NULL));
 
 	Window*w = Window::CreateGameWindow("Team Project!", 1280, 720);
+	//Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, true);
 	if (!w->HasInitialised()) return -1;
 
 	w->ShowOSPointer(false);
@@ -24,7 +26,6 @@ int main() {
 		if (dt > 1.0f) {
 			continue; //must have hit a breakpoint or something to have a 1 second frame time!
 		}
-		
 
 		g->UpdateGame(dt);
 	}
