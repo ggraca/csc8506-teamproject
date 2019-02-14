@@ -55,5 +55,5 @@ void main (void) {
 	}
 	
 	fragColour [0] = finalCol;
-	fragColour [1] = vec4(lightColour.xyz * sFactor * atten * 0.33, 1.0);
+	fragColour [1] = vec4(lightColour.xyz * sFactor * atten, 1.0);
 }
