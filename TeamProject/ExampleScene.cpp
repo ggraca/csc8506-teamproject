@@ -18,7 +18,6 @@ using namespace CSC8503;
 
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
-  physics->UseGravity(false);
   world->ShuffleConstraints(true);
   world->ShuffleObjects(true);
   inputManager = new InputManager();
@@ -33,10 +32,9 @@ ExampleScene::ExampleScene() : Scene() {
 
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
-  physics->Clear();
 
   // Floor
-  AddFloorToWorld(Vector3(200, 0, 200));
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0);
   
 }
 

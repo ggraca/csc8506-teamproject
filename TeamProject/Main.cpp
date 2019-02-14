@@ -2,6 +2,7 @@
 
 #include "../Common/Window.h"
 #include "PhysicsScene.h"
+#include "ExampleScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -17,7 +18,7 @@ int main(int argc, char** argv) {
 	w->LockMouseToWindow(true);
     w->ShowConsole(true);
 
-	PhysicsScene* g = new PhysicsScene();
+	ExampleScene* g = new ExampleScene();
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;
@@ -25,7 +26,6 @@ int main(int argc, char** argv) {
 		if (dt > 1.0f) {
 			continue; //must have hit a breakpoint or something to have a 1 second frame time!
 		}
-		
 
 		g->UpdateGame(dt);
 	}
