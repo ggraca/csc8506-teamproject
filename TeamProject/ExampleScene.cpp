@@ -21,10 +21,9 @@ using namespace CSC8503;
 
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
-  physics->UseGravity(false);
   world->ShuffleConstraints(true);
   world->ShuffleObjects(true);
-
+  inputManager = new InputManager();
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
 
@@ -37,13 +36,14 @@ ExampleScene::ExampleScene() : Scene() {
 
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
-  physics->Clear();
 
   // Floor
-  AddFloorToWorld(Vector3(200, 0, 200));
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0);
+  
 }
 
 ExampleScene::~ExampleScene() {
+	delete inputManager;
 }
 
 void ExampleScene::UpdateGame(float dt) {
@@ -68,6 +68,12 @@ void ExampleScene::UpdateGame(float dt) {
   renderer->Render();
   
 }
+
+InputManager * NCL::CSC8503::ExampleScene::GetInputManager() const
+{
+	return inputManager;
+}
+
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 	float x = stof(commandParams[1]);
