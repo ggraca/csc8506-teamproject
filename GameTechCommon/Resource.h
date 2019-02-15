@@ -17,5 +17,8 @@ public:
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
+	void Aquire(GameObject * gameObject);
+	
+	GameObject * Dummy = nullptr;
 };
 
