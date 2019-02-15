@@ -5,7 +5,6 @@
 #include "../Common/TextureLoader.h"
 
 #include "../GameTechCommon/GameWorld.h"
-#include "../GameTechCommon/PositionConstraint.h"
 
 using namespace NCL;
 using namespace CSC8503;

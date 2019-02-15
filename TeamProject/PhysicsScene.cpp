@@ -5,7 +5,6 @@
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
 
-#include "../GameTechCommon/PositionConstraint.h"
 #include "../Common/Assets.h"
 #include <fstream>
 
