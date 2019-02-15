@@ -5,6 +5,8 @@
 using namespace NCL;
 using namespace CSC8503;
 
+GameWorld * GameObject::gameWorld = nullptr;
+
 GameObject::GameObject(string objectName)	
 {
 	

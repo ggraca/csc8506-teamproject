@@ -6,6 +6,7 @@
 #include "RenderObject.h"
 #include "NetworkObject.h"
 #include "LayerAndTag.h"
+//#include "GameWorld.h"
 
 
 #include <vector>
@@ -18,7 +19,7 @@ namespace NCL {
 		class NetworkObject;
 		class InputManager;
 		class ScriptObject;
-		
+		class GameWorld;
 
 		class GameObject	{
 		public:
@@ -188,7 +189,7 @@ namespace NCL {
 			void LateUpdateAttachedScripts(float dt);
 
 			
-			
+			static GameWorld *gameWorld;
 		protected:
 			Transform			transform;
 
