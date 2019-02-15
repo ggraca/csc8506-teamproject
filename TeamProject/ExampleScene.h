@@ -4,8 +4,8 @@
 #include "Console.h"
 #include "DebugMenu.h"
 #include "HUD.h"
+#include "Animation.h"
 #include "InputManager.h"
-
 
 
 namespace NCL {

@@ -11,8 +11,11 @@
 #include <string>
 
 
+
+
 using namespace NCL;
 using namespace CSC8503;
+
 
 
 ExampleScene::ExampleScene() : Scene() {
@@ -27,6 +30,7 @@ ExampleScene::ExampleScene() : Scene() {
   RegisterConsoleCommands();
   GameObject::SetGameWorld(world);
 }
+
 
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
@@ -60,6 +64,7 @@ void ExampleScene::UpdateGame(float dt) {
   }
 
   renderer->Render();
+  
 }
 
 InputManager * ExampleScene::GetInputManager() const
