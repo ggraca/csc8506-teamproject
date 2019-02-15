@@ -1,7 +1,9 @@
 #include "GameObject.h"
 #include "CollisionDetection.h"
+#include "../TeamProject/InputManager.h"
 
-using namespace NCL::CSC8503;
+using namespace NCL;
+using namespace CSC8503;
 
 GameObject::GameObject(string objectName)	
 {
@@ -38,6 +40,27 @@ void GameObject::ClearScripts()
 	scripts.clear();
 }
 
+void GameObject::OnCollisionBegin(GameObject * otherObject)
+{
+	if (!HasOtherScriptsAttached()) { return; }
+	
+	for (auto&i : scripts)
+	{
+		i->OnCollisionBegin(otherObject);
+	}
+}
+
+void GameObject::OnCollisionEnd(GameObject * otherObject)
+{
+	if (!HasOtherScriptsAttached()) { return; }
+
+	for (auto&i : scripts)
+	{
+		i->OnCollisionEnd(otherObject);
+	}
+	
+}
+
 bool GameObject::InsideAABB(const Vector3& boxPos, const Vector3& halfSize) {
 	if (!boundingVolume) {
 		return false;
@@ -70,34 +93,49 @@ void GameObject::SetUpInitialScripts()
 	}
 }
 
-void GameObject::UpdateAttachedScripts()
+void GameObject::UpdateAttachedScripts(float dt)
 {
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)
 	{
-		i->Update();
+		i->Update(dt);
 	}
 }
 
-void GameObject::LateUpdateAttachedScripts()
+void GameObject::LateUpdateAttachedScripts(float dt)
 {
 	if (!HasOtherScriptsAttached()) { return; }
 	
 	for (auto&i : scripts)
 	{
-		i->LateUpdate();
+		i->LateUpdate(dt);
 	}
 }
 
-
+///////////////////////////////////Script Object
 ScriptObject::ScriptObject()
 {
 	gameObject = nullptr;
+	inputManager = nullptr;
 }
 
-///////////////////////////////////Script Object
+
 ScriptObject::ScriptObject(GameObject * go)
 {
 	this->gameObject = go;
+	this->inputManager = nullptr;
 }
+
+ScriptObject::ScriptObject(GameObject * go, InputManager * im)
+{
+	this->gameObject = go;
+	this->inputManager = im;
+}
+
+ScriptObject::~ScriptObject()
+{
+	//don"t delete gameobject as it may still meant to live after script is detached
+}
+
+

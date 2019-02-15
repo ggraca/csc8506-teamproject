@@ -455,18 +455,19 @@ void GameTechRenderer::CombineBuffers() {
 	BindShader(combineShader);
 
 	int modelLocation = 0;
-		int viewLocation = 0;
-		int projLocation = 0;
-		int textureLocation = 0;
+	int viewLocation = 0;
+	int projLocation = 0;
+	int textureLocation = 0;
+  int ambientLocation = 0;
 
 	Matrix4 identity;
 	identity.ToIdentity();
 
-	int modelLocation = glGetUniformLocation(lightShader->GetProgramID(), "modelMatrix");
-	int viewLocation = glGetUniformLocation(lightShader->GetProgramID(), "viewMatrix");
-	int projLocation = glGetUniformLocation(lightShader->GetProgramID(), "projMatrix");
-	int textureLocation = glGetUniformLocation(lightShader->GetProgramID(), "textureMatrix");
-	int ambientLocation = glGetUniformLocation(combineShader->GetProgramID(), "ambientColour");
+	modelLocation = glGetUniformLocation(combineShader->GetProgramID(), "modelMatrix");
+	viewLocation = glGetUniformLocation(combineShader->GetProgramID(), "viewMatrix");
+	projLocation = glGetUniformLocation(combineShader->GetProgramID(), "projMatrix");
+	textureLocation = glGetUniformLocation(combineShader->GetProgramID(), "textureMatrix");
+	ambientLocation = glGetUniformLocation(combineShader->GetProgramID(), "ambientColour");
 
 	glUniformMatrix4fv(modelLocation, 1, false, (float*)&identity);
 	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
