@@ -13,7 +13,12 @@ public:
 	static enum Tags
 	{
 		Untagged,
-		Player
+		Player,
+		SmallWall,
+		BigWall,
+		Tower,
+		Turret,
+		Resource
 	};
 
 	LayerAndTag()

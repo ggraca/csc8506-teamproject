@@ -18,5 +18,10 @@ public:
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
+
+
+private:
+	int objectHealth;
+	int playerDamage;
 };
 

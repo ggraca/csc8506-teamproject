@@ -21,6 +21,7 @@ void Resource::Awake()
 
 void Resource::Start()
 {
+	
 }
 
 void Resource::Update(float dt)

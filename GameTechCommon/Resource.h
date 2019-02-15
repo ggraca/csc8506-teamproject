@@ -18,4 +18,3 @@ public:
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
 };
-
