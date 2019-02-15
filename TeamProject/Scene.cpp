@@ -152,23 +152,14 @@ void Scene::AddSphereToWorld(OGLTexture* sphereTex, const Vector3& position, flo
 void Scene::AddCubeToWorld(OGLTexture* cubeTex, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction, Vector4 colour) {
   GameObject* cube = new GameObject();
 
-  btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
-  SetBulletPhysicsParameters(Shape, position, mass, restitution, friction, orient);
-
-  //AABBVolume* volume = new AABBVolume(dimensions);
-  //cube->SetBoundingVolume((CollisionVolume*)volume);
-  //cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume())); //TODO These 3 lines may still required until we find some better way of linking render objects to physics objects
-
   cube->GetTransform().SetLocalOrientation(orient);
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetWorldScale(dimensions);
+
   cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, cubeTex, basicShader));
-  /*cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));*/
-  cube->GetRenderObject()->SetColour(colour);
+  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
 
   world->AddGameObject(cube);
-
-  //return cube;
 }
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {

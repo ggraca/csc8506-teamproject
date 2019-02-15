@@ -19,7 +19,7 @@ namespace NCL {
         public:
             ExampleScene();
             ~ExampleScene();
-            void UpdateGame(float dt);
+            virtual void UpdateGame(float dt);
 			InputManager* GetInputManager() const;
         protected:
             void ResetWorld();

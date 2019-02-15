@@ -59,7 +59,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	//int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
 	//int numCollisions = dynamicsWorld->getNumCollisionObjects();
 	//cout << numManifolds << ' ' << numCollisions << endl;
-
+	
 	objectsCollisions.clear();
 	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
 	for (int i = 0; i < numManifolds; i++) {
@@ -93,7 +93,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	for (auto i = first; i != last; i++) {
 		/*PhysicsObject* object = (*i)->GetPhysicsObject();
 		if (object == nullptr) continue;*/
-
+		(*i)->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
 		Transform& transform = (*i)->GetTransform();
 
 		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j]; //TODO This will only work if all gameWorld objects are physics objects!
@@ -115,7 +115,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 
 		auto& manifoldPoints = objectsCollisions[body];
 		if (!manifoldPoints.empty()) {
-			(*i)->GetRenderObject()->SetColour(Vector4(1,1,1,1));
+//			(*i)->GetRenderObject()->SetColour(Vector4(1,0,0,1));
 		}
 		j++;
 	}
