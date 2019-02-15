@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp" />
+    <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
     <ClCompile Include="Destructable.cpp" />
@@ -167,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameTechCommon\BulletPhysics.h" />
+    <ClInclude Include="CameraControl.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="Destructable.h" />

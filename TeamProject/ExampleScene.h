@@ -9,6 +9,7 @@
 #include "DebugMenu.h"
 #include "HUD.h"
 #include "InputManager.h"
+#include "CameraControl.h"
 
 
 

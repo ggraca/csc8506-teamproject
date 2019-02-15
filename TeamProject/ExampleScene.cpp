@@ -33,7 +33,12 @@ void ExampleScene::ResetWorld() {
   world->ClearAndErase();
 
   // Floor
-  AddFloorToWorld(Vector3(200, 0, 200));
+  //AddFloorToWorld(Vector3(200, 0, 200));
+
+  //GameObject * cameraDummy = new GameObject("Camera");
+  ////Put some transform to it
+  //CameraControl * cameraControl = new CameraControl(cameraDummy,inputManager);
+  //cameraDummy->AddScript((ScriptObject*)cameraControl);
 }
 
 ExampleScene::~ExampleScene() {
