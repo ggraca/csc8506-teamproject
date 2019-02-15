@@ -3,8 +3,8 @@
 #include "../Common/Camera.h"
 #include "../Common/Plane.h"
 
-#include "Transform.h"
-#include "GameObject.h"
+#include "../TeamProject/Transform.h"
+#include "../TeamProject/GameObject.h"
 
 #include "AABBVolume.h"
 #include "OBBVolume.h"

@@ -1,6 +1,6 @@
 #include "GameWorld.h"
-#include "GameObject.h"
-#include "CollisionDetection.h"
+#include "../TeamProject/GameObject.h"
+#include "../GameTechCommon/CollisionDetection.h"
 #include "../Common/Camera.h"
 #include <algorithm>
 

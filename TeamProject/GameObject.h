@@ -1,10 +1,10 @@
 #pragma once
 #include "Transform.h"
-#include "CollisionVolume.h"
+#include "../GameTechCommon/CollisionVolume.h"
 
-#include "PhysicsObject.h"
-#include "RenderObject.h"
-#include "NetworkObject.h"
+#include "../GameTechCommon/PhysicsObject.h"
+#include "../GameTechCommon/RenderObject.h"
+#include "../GameTechCommon/NetworkObject.h"
 #include "LayerAndTag.h"
 //#include "GameWorld.h"
 

@@ -1,6 +1,6 @@
 #include "GameObject.h"
-#include "CollisionDetection.h"
-#include "../TeamProject/InputManager.h"
+#include "../GameTechCommon/CollisionDetection.h"
+#include "InputManager.h"
 
 using namespace NCL;
 using namespace CSC8503;

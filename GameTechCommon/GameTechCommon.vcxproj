@@ -133,9 +133,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AABBVolume.h" />
-    <ClInclude Include="Destructable.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="LayerAndTag.h" />
     <ClInclude Include="NavigationGrid.h" />
     <ClInclude Include="NavigationMap.h" />
     <ClInclude Include="NavigationMesh.h" />
@@ -143,17 +140,13 @@
     <ClInclude Include="NetworkObject.h" />
     <ClInclude Include="NetworkState.h" />
     <ClInclude Include="OBBVolume.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="SphereVolume.h" />
     <ClInclude Include="CollisionVolume.h" />
     <ClInclude Include="CollisionDetection.h" />
     <ClInclude Include="Constraint.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="GameClient.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameServer.h" />
-    <ClInclude Include="GameWorld.h" />
     <ClInclude Include="GJKAlgorithm.h" />
     <ClInclude Include="NetworkBase.h" />
     <ClInclude Include="PhysicsObject.h" />
@@ -168,37 +161,28 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="StateTransition.h" />
-    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionDetection.cpp" />
     <ClCompile Include="Debug.cpp" />
-    <ClCompile Include="Destructable.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameClient.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameServer.cpp" />
-    <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="GJKAlgorithm.cpp" />
-    <ClCompile Include="LayerAndTag.cpp" />
     <ClCompile Include="NavigationGrid.cpp" />
     <ClCompile Include="NavigationMesh.cpp" />
     <ClCompile Include="NetworkBase.cpp" />
     <ClCompile Include="NetworkObject.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PositionConstraint.cpp" />
     <ClCompile Include="PushdownMachine.cpp" />
     <ClCompile Include="PushdownState.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RenderObject.cpp" />
-    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Simplex.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="StateTransition.cpp" />
-    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

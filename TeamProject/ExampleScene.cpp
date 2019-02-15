@@ -1,5 +1,5 @@
 #include "ExampleScene.h"
-#include "../GameTechCommon/GameWorld.h"
+#include "GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
