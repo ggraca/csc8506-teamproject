@@ -156,6 +156,13 @@ vector<GameObject*> GameObject::GetChildrenOfObject(const GameObject * obj, Laye
 	return gameWorld->GetChildrenOfObject(obj,tag);
 }
 
+void GameObject::Destroy(GameObject * obj)
+{
+	if (!gameWorld) { return; }
+
+	return gameWorld->Destroy(obj);
+}
+
 ///////////////////////////////////Script Object
 ScriptObject::ScriptObject()
 {

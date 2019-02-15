@@ -52,6 +52,18 @@ vector<GameObject*> GameWorld::FindGameObjectsWithTag(LayerAndTag::Tags tag)
 	return temp;
 }
 
+void GameWorld::Destroy(GameObject * obj)
+{
+	auto children = GetChildrenOfObject(obj);
+
+	for (auto&i : children)
+	{
+		Destroy(i);
+	}
+
+	RemoveGameObject(obj);
+}
+
 void GameWorld::Clear() {
 	gameObjects.clear();
 	constraints.clear();

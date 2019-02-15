@@ -195,6 +195,7 @@ namespace NCL {
 			static vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
 			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
 			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+			static  void Destroy(GameObject * obj);
 
 		protected:
 			static GameWorld *gameWorld;
