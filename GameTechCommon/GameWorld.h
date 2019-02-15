@@ -20,6 +20,11 @@ namespace NCL {
 			GameWorld();
 			~GameWorld();
 
+			GameObject * Find(string name);
+			GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
+			vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
+
+
 			void Clear();
 			void ClearAndErase();
 

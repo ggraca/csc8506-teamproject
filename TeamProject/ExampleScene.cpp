@@ -29,7 +29,7 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
-  if (!GameObject::gameWorld) { GameObject::gameWorld = world; }
+  GameObject::SetGameWorld(world);
 }
 
 void ExampleScene::ResetWorld() {

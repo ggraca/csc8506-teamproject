@@ -189,10 +189,16 @@ namespace NCL {
 			void LateUpdateAttachedScripts(float dt);
 
 			
-			static GameWorld *gameWorld;
-		protected:
-			Transform			transform;
+			static void SetGameWorld(GameWorld * world);
+			static GameObject * Find(string name);
+			static GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
+			static vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
+			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
+			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
 
+		protected:
+			static GameWorld *gameWorld;
+			Transform			transform;
 			CollisionVolume*	boundingVolume;
 			PhysicsObject*		physicsObject;
 			RenderObject*		renderObject;

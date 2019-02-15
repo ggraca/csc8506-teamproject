@@ -116,6 +116,46 @@ void GameObject::LateUpdateAttachedScripts(float dt)
 	}
 }
 
+void GameObject::SetGameWorld(GameWorld * world)
+{
+	gameWorld = world;
+}
+
+GameObject * GameObject::Find(string name)
+{
+	if (!gameWorld) { return nullptr; }
+
+	return gameWorld->Find(name);
+}
+
+GameObject * GameObject::FindGameObjectWithTag(LayerAndTag::Tags tag)
+{
+	if (!gameWorld) { return nullptr; }
+
+	return gameWorld->FindGameObjectWithTag(tag);
+}
+
+vector<GameObject*> GameObject::FindGameObjectsWithTag(LayerAndTag::Tags tag)
+{
+	if (!gameWorld) { return vector<GameObject*>(); }
+
+	return gameWorld->FindGameObjectsWithTag(tag);
+}
+
+vector<GameObject*> GameObject::GetChildrenOfObject(const GameObject * obj)
+{
+	if (!gameWorld) { return vector<GameObject*>(); }
+
+	return gameWorld->GetChildrenOfObject(obj);
+}
+
+vector<GameObject*> GameObject::GetChildrenOfObject(const GameObject * obj, LayerAndTag::Tags tag)
+{
+	if (!gameWorld) { return vector<GameObject*>(); }
+
+	return gameWorld->GetChildrenOfObject(obj,tag);
+}
+
 ///////////////////////////////////Script Object
 ScriptObject::ScriptObject()
 {
