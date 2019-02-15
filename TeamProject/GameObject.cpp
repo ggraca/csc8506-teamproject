@@ -163,6 +163,20 @@ void GameObject::Destroy(GameObject * obj)
 	return gameWorld->Destroy(obj);
 }
 
+void GameObject::AddObjectToWorld(GameObject * obj)
+{
+	if (!gameWorld) { return; }
+	
+	gameWorld->AddGameObject(obj);
+}
+
+void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
+{
+	if (!gameWorld) { return; }
+
+	gameWorld->AddGameObject(obj, parent);
+}
+
 ///////////////////////////////////Script Object
 ScriptObject::ScriptObject()
 {
