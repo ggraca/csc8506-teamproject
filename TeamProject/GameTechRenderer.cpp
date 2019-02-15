@@ -8,7 +8,7 @@ using namespace NCL;
 using namespace Rendering;
 using namespace CSC8503;
 
-#define SHADOWSIZE 4096
+#define SHADOWSIZE 8192
 
 Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
@@ -92,7 +92,7 @@ void GameTechRenderer::RenderShadowMap() {
 	int mvpLocation = glGetUniformLocation(shadowShader->GetProgramID(), "mvpMatrix");
 
 	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(lightPosition, Vector3(0, 0, 0));
-	Matrix4 shadowProjMatrix = Matrix4::Perspective(1800.0f, 5000.0f, 1, 45.0f);
+	Matrix4 shadowProjMatrix = Matrix4::Perspective(2300.0f, 5000.0f, 1, 45.0f);
 
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
 

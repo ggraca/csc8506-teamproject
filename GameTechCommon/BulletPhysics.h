@@ -8,8 +8,8 @@ class BulletPhysics
 public:
 	BulletPhysics(GameWorld& g);
 	~BulletPhysics();
-	btDiscreteDynamicsWorld* dynamicsWorld;
-	btAlignedObjectArray<btCollisionShape*> collisionShapes;
+	btDiscreteDynamicsWorld* dynamicsWorld; //TODO Make this private???
+	btAlignedObjectArray<btCollisionShape*> collisionShapes; //TODO Make this private???
 	void Update(float dt);
 	void UpdateBullet(float dt, int iterations);
 	void SetGravity(Vector3 gravity);
@@ -21,4 +21,6 @@ private:
 	btCollisionDispatcher* dispatcher;
 	btBroadphaseInterface* overlappingPairCache;
 	btSequentialImpulseConstraintSolver* solver;
+
+	std::map<const btCollisionObject*, std::vector<btManifoldPoint*>> objectsCollisions;
 };
