@@ -1,5 +1,5 @@
 #pragma once
-#include "../GameTechCommon/GameObject.h"
+#include "GameObject.h"
 #include <vector>
 
 using namespace NCL;

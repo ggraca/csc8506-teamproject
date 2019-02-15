@@ -47,9 +47,6 @@
     <ClCompile Include="Destructable.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -89,6 +86,9 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>GameplayTools</Filter>
     </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>GameplayTools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTechRenderer.h">
@@ -97,19 +97,10 @@
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LayerAndTag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
@@ -150,6 +141,15 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerAndTag.h">
+      <Filter>GameplayTools</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>GameplayTools</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>GameplayTools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
