@@ -44,24 +44,23 @@ void GameObject::ClearScripts()
 
 void GameObject::OnCollisionBegin(GameObject * otherObject)
 {
-	if (HasOtherScriptsAttached())
+	if (!HasOtherScriptsAttached()) { return; }
+	
+	for (auto&i : scripts)
 	{
-		for (auto&i : scripts)
-		{
-			i->OnCollisionBegin(otherObject);
-		}
+		i->OnCollisionBegin(otherObject);
 	}
 }
 
 void GameObject::OnCollisionEnd(GameObject * otherObject)
 {
-	if (HasOtherScriptsAttached())
+	if (!HasOtherScriptsAttached()) { return; }
+
+	for (auto&i : scripts)
 	{
-		for (auto&i : scripts)
-		{
-			i->OnCollisionEnd(otherObject);
-		}
+		i->OnCollisionEnd(otherObject);
 	}
+	
 }
 
 bool GameObject::InsideAABB(const Vector3& boxPos, const Vector3& halfSize) {
@@ -202,28 +201,4 @@ ScriptObject::~ScriptObject()
 	//don"t delete gameobject as it may still meant to live after script is detached
 }
 
-void ScriptObject::Awake()
-{
-}
 
-void ScriptObject::Start()
-{
-}
-
-void ScriptObject::Update(float dt)
-{
-
-	
-}
-
-void ScriptObject::LateUpdate(float dt)
-{
-}
-
-void ScriptObject::OnCollisionBegin(GameObject * otherObject)
-{
-}
-
-void ScriptObject::OnCollisionEnd(GameObject * otherObject)
-{
-}

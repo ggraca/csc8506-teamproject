@@ -1,10 +1,8 @@
 #pragma once
 #include "Transform.h"
 #include "../GameTechCommon/CollisionVolume.h"
-
 #include "../GameTechCommon/PhysicsObject.h"
 #include "../GameTechCommon/RenderObject.h"
-#include "../GameTechCommon/NetworkObject.h"
 #include "LayerAndTag.h"
 //#include "GameWorld.h"
 
@@ -106,20 +104,20 @@ namespace NCL {
 
 			bool CompareTag(const GameObject& other)
 			{
-				
+
 				return (this->tag == other.tag);
 			}
 
 			virtual void OnCollisionBegin(GameObject* otherObject);
-			
+
 
 			virtual void OnCollisionEnd(GameObject* otherObject);
-			
-				
-			
+
+
+
 
 			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
-			
+
 			void SetParent(const GameObject * parent)
 			{
 				if (parent)
@@ -149,7 +147,7 @@ namespace NCL {
 			}
 
 			void AddScript(ScriptObject* obj);
-			
+
 
 			template<class T>
 			void RemoveScript()
@@ -188,7 +186,7 @@ namespace NCL {
 			void UpdateAttachedScripts(float dt);
 			void LateUpdateAttachedScripts(float dt);
 
-			
+
 			static void SetGameWorld(GameWorld * world);
 			static GameObject * Find(string name);
 			static GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
@@ -209,15 +207,15 @@ namespace NCL {
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
 			std::vector<ScriptObject*> scripts;
-			
+
 
 			bool	isActive;
 			bool	isAddedToWorld;
-			string	name;	
-			
+			string	name;
+
 		};
 
-		
+
 		class ScriptObject
 		{
 		public:
@@ -229,14 +227,14 @@ namespace NCL {
 			ScriptObject(GameObject * go,InputManager* im);
 
 			virtual ~ScriptObject();
-			
 
-			virtual void Awake();
-			virtual void Start();
-			virtual void Update(float dt);
-			virtual void LateUpdate(float dt);
-			virtual void OnCollisionBegin(GameObject* otherObject);
-			virtual void OnCollisionEnd(GameObject* otherObject);
+
+			virtual void Awake() =0;
+			virtual void Start()=0;
+			virtual void Update(float dt)=0;
+			virtual void LateUpdate(float dt)=0;
+			virtual void OnCollisionBegin(GameObject* otherObject)=0;
+			virtual void OnCollisionEnd(GameObject* otherObject)=0;
 
 		protected:
 
@@ -244,6 +242,6 @@ namespace NCL {
 			InputManager * inputManager;
 
 		};
-	
+
 	}
 }
