@@ -34,17 +34,24 @@ void Resource::LateUpdate(float dt)
 
 void Resource::OnCollisionBegin(GameObject * otherObject)
 {
-	if(otherObject->CompareTag(LayerAndTag::Player))
-	{
-		//TODO Acquire resource
-	}
+	
 }
 
 void Resource::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
-void Resource::Aquire(GameObject * gameObject) {
-	Dummy = new GameObject;
-	gameObject->GameObject::SetParent(Dummy);
+void Resource::Aquire(GameObject * obj) 
+{
+	GameObject * captures = GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Captures);
+	gameObject->GameObject::SetParent(captures);
+	gameObject->GetRenderObject()->SetColour(obj->GetRenderObject()->GetColour()); 
+	gameObject->SetTag(LayerAndTag::Tags::Occupied);
+	//set target
+}
+
+
+void Resource::Reset() 
+{
+	gameObject->SetTag(LayerAndTag::Tags::Resources);
 }

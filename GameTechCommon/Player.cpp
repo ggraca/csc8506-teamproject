@@ -29,6 +29,7 @@ void Player::LateUpdate(float dt)
 
 void Player::OnCollisionBegin(GameObject * otherObject)
 {
+	
 }
 
 void Player::OnCollisionEnd(GameObject * otherObject)
