@@ -51,5 +51,4 @@ void PhysicsScene::UpdateGame(float dt) {
 }
 
 void PhysicsScene::DebugScene(float dt) {
-
 }

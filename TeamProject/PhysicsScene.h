@@ -3,16 +3,12 @@
 #include "Scene.h"
 #include "../GameTechCommon/PhysicsSystem.h"
 
-#include "../GameTechCommon/GameServer.h"
-#include "../GameTechCommon/GameClient.h"
-
-#include "../GameTechCommon/NavigationGrid.h"
 #include "Console.h"
 #include "DebugMenu.h"
 
 namespace NCL {
   namespace CSC8503 {
-    class PhysicsScene : public Scene/*, public PacketReceiver*/ {
+    class PhysicsScene : public Scene {
     public:
       PhysicsScene();
       ~PhysicsScene();

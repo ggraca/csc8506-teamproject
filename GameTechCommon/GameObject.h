@@ -4,7 +4,6 @@
 
 #include "PhysicsObject.h"
 #include "RenderObject.h"
-#include "NetworkObject.h"
 #include "LayerAndTag.h"
 
 
