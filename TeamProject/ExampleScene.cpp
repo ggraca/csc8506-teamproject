@@ -29,6 +29,7 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
+  GameObject::SetGameWorld(world);
 }
 
 void ExampleScene::ResetWorld() {
@@ -37,7 +38,6 @@ void ExampleScene::ResetWorld() {
 
   // Floor
   AddFloorToWorld(Vector3(200, 0, 200));
-  
 }
 
 ExampleScene::~ExampleScene() {
@@ -66,7 +66,7 @@ void ExampleScene::UpdateGame(float dt) {
   renderer->Render();
 }
 
-InputManager * NCL::CSC8503::ExampleScene::GetInputManager() const
+InputManager * ExampleScene::GetInputManager() const
 {
 	return inputManager;
 }
