@@ -1,7 +1,7 @@
 #include "GJKAlgorithm.h"
 #include "Simplex.h"
 #include "../Common/Vector3.h"
-#include "Transform.h"
+#include "../TeamProject/Transform.h"
 #include "Debug.h"
 using namespace NCL;
 using namespace Maths;

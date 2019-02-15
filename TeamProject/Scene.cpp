@@ -3,9 +3,7 @@
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
-
-#include "../GameTechCommon/GameWorld.h"
-#include "../GameTechCommon/PositionConstraint.h"
+#include "GameWorld.h"
 
 using namespace NCL;
 using namespace CSC8503;

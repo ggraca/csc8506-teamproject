@@ -1,5 +1,5 @@
 #include "Destructable.h"
-#include "../TeamProject/InputManager.h"
+#include "InputManager.h"
 
 Destructable::Destructable(GameObject * gameObject):ScriptObject(gameObject)
 {
