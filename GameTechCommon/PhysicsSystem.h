@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../GameTechCommon/GameWorld.h"
+#include "../TeamProject/GameWorld.h"
 #include <set>
 #include "..\Plugins\Bullet\src\btBulletDynamicsCommon.h"
 

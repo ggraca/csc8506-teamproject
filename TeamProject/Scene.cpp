@@ -4,7 +4,7 @@
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
 
-#include "../GameTechCommon/GameWorld.h"
+#include "GameWorld.h"
 #include "../GameTechCommon/PositionConstraint.h"
 
 using namespace NCL;

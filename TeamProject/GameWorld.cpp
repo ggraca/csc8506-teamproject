@@ -1,6 +1,6 @@
 #include "GameWorld.h"
-#include "GameObject.h"
-#include "CollisionDetection.h"
+#include "../TeamProject/GameObject.h"
+#include "../GameTechCommon/CollisionDetection.h"
 #include "../Common/Camera.h"
 #include <algorithm>
 
@@ -17,6 +17,51 @@ GameWorld::GameWorld()	{
 }
 
 GameWorld::~GameWorld()	{
+}
+
+GameObject * GameWorld::Find(string name)
+{
+
+	for (auto&i : gameObjects)
+	{
+		if (i->GetName() == name) { return i; }
+	}
+
+	return nullptr;
+}
+
+GameObject * GameWorld::FindGameObjectWithTag(LayerAndTag::Tags tag)
+{
+	for (auto&i : gameObjects)
+	{
+		if (i->CompareTag(tag)) { return i; }
+	}
+
+	return nullptr;
+}
+
+vector<GameObject*> GameWorld::FindGameObjectsWithTag(LayerAndTag::Tags tag)
+{
+	vector<GameObject*> temp;
+
+	for (auto&i : gameObjects)
+	{
+		if (i->CompareTag(tag)) { temp.push_back(i); }
+	}
+
+	return temp;
+}
+
+void GameWorld::Destroy(GameObject * obj)
+{
+	auto children = GetChildrenOfObject(obj);
+
+	for (auto&i : children)
+	{
+		Destroy(i);
+	}
+
+	RemoveGameObject(obj);
 }
 
 void GameWorld::Clear() {

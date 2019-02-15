@@ -1,11 +1,12 @@
 #pragma once
 #include "Transform.h"
-#include "CollisionVolume.h"
+#include "../GameTechCommon/CollisionVolume.h"
 
-#include "PhysicsObject.h"
-#include "RenderObject.h"
-#include "NetworkObject.h"
+#include "../GameTechCommon/PhysicsObject.h"
+#include "../GameTechCommon/RenderObject.h"
+#include "../GameTechCommon/NetworkObject.h"
 #include "LayerAndTag.h"
+//#include "GameWorld.h"
 
 
 #include <vector>
@@ -18,7 +19,7 @@ namespace NCL {
 		class NetworkObject;
 		class InputManager;
 		class ScriptObject;
-		
+		class GameWorld;
 
 		class GameObject	{
 		public:
@@ -188,10 +189,17 @@ namespace NCL {
 			void LateUpdateAttachedScripts(float dt);
 
 			
-			
-		protected:
-			Transform			transform;
+			static void SetGameWorld(GameWorld * world);
+			static GameObject * Find(string name);
+			static GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
+			static vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
+			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
+			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+			static  void Destroy(GameObject * obj);
 
+		protected:
+			static GameWorld *gameWorld;
+			Transform			transform;
 			CollisionVolume*	boundingVolume;
 			PhysicsObject*		physicsObject;
 			RenderObject*		renderObject;

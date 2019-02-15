@@ -1,5 +1,5 @@
 #include "ExampleScene.h"
-#include "../GameTechCommon/GameWorld.h"
+#include "GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
@@ -26,14 +26,14 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
+  GameObject::SetGameWorld(world);
 }
 
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
 
   // Floor
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0);
-  
+  AddFloorToWorld(Vector3(200, 0, 200));
 }
 
 ExampleScene::~ExampleScene() {
@@ -62,7 +62,7 @@ void ExampleScene::UpdateGame(float dt) {
   renderer->Render();
 }
 
-InputManager * NCL::CSC8503::ExampleScene::GetInputManager() const
+InputManager * ExampleScene::GetInputManager() const
 {
 	return inputManager;
 }

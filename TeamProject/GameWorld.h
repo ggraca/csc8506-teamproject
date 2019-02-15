@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
-#include "Ray.h"
-#include "CollisionDetection.h"
-#include "QuadTree.h"
-#include "LayerAndTag.h"
+#include "../GameTechCommon/Ray.h"
+#include "../GameTechCommon/CollisionDetection.h"
+#include "../GameTechCommon/QuadTree.h"
+#include "../TeamProject/LayerAndTag.h"
 
 
 namespace NCL {
@@ -19,6 +19,12 @@ namespace NCL {
 			
 			GameWorld();
 			~GameWorld();
+
+			GameObject * Find(string name);
+			GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
+			vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
+			void Destroy(GameObject * obj);
+
 
 			void Clear();
 			void ClearAndErase();

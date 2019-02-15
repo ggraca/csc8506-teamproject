@@ -33,15 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionDetection.h">
       <Filter>CollisionDetection</Filter>
     </ClInclude>
@@ -129,32 +120,8 @@
     <ClInclude Include="NetworkObject.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="LayerAndTag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Destructable.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameWorld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionDetection.cpp">
       <Filter>CollisionDetection</Filter>
     </ClCompile>
@@ -214,21 +181,6 @@
     </ClCompile>
     <ClCompile Include="NetworkObject.cpp">
       <Filter>Networking</Filter>
-    </ClCompile>
-    <ClCompile Include="LayerAndTag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="Destructable.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

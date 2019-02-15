@@ -149,25 +149,39 @@
     <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
+    <ClCompile Include="Destructable.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
-    <ClCompile Include="PhysicsScene.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LayerAndTag.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameTechCommon\BulletPhysics.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DebugMenu.h" />
+    <ClInclude Include="Destructable.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="ExampleScene.h" />
-    <ClInclude Include="PhysicsScene.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTechRenderer.h" />
+    <ClInclude Include="GameWorld.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LayerAndTag.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

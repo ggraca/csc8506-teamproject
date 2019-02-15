@@ -1,6 +1,6 @@
 #include "PhysicsSystem.h"
 #include "PhysicsObject.h"
-#include "GameObject.h"
+#include "../TeamProject/GameObject.h"
 #include "CollisionDetection.h"
 #include "../Common/Quaternion.h"
 

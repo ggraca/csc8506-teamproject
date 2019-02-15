@@ -1,6 +1,6 @@
 #include "PhysicsObject.h"
 #include "PhysicsSystem.h"
-#include "../GameTechCommon/Transform.h"
+#include "../TeamProject/Transform.h"
 using namespace NCL;
 using namespace CSC8503;
 

@@ -4,7 +4,7 @@
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 
-#include "../GameTechCommon/GameWorld.h"
+#include "GameWorld.h"
 
 namespace NCL {
 	class Maths::Vector3;
