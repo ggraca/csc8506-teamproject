@@ -27,6 +27,7 @@ void Scene::InitialiseAssets() {
   sphereMesh = new OGLMesh("sphere2.msh");
   sphereMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   sphereMesh->UploadToGPU();
+  renderer->SetLightMesh(sphereMesh);
 
   /*cylinderMesh = new OGLMesh("cylinder.msh");
   cylinderMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
@@ -35,8 +36,8 @@ void Scene::InitialiseAssets() {
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
-  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
-  basicShader = new OGLShader("GameTechVert.glsl", "GameTechFrag.glsl");
+  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
+  basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
   InitCamera();
   InitWorld();

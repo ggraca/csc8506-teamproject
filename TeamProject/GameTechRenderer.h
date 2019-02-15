@@ -22,8 +22,13 @@ namespace NCL {
 			int GetVertsDrawn() const { return vertsDrawn; }
 			int GetShadowCasters() const { return shadowCasters; }
 
+			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
+
+			void GenerateScreenTexture(GLuint & into, bool depth = false);
+
 		protected:
 			void RenderFrame()	override;
+			void GenBuffers();
 
 			OGLShader*		defaultShader;
 
@@ -32,7 +37,10 @@ namespace NCL {
 			void BuildObjectList();
 			void SortObjectList();
 			void RenderShadowMap();
-			void RenderCamera(); 
+			void RenderSkybox();
+			void RenderCamera();
+			void RenderLights();
+			void CombineBuffers();
 
 			void SetupDebugMatrix(OGLShader*s) override;
 
@@ -44,9 +52,30 @@ namespace NCL {
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
+			OGLShader* skyBoxShader;
+			//Skybox needs to be loaded into the texture library
+			GLuint skybox;
+
+			GLuint gBufferFBO; // FBO for our G- Buffer pass
+			GLuint gBufferDepthTex; // Depth goes here
+			GLuint gBufferColourTex; // Albedo goes here
+			GLuint gBufferNormalTex; // Normals go here
+			GLuint gBufferSpecularTex; // Specular goes here
+
+			GLuint lightFBO; // FBO for our lighting pass
+			GLuint lightEmissiveTex; // emissive lighting
+			GLuint lightSpecularTex; // specular lighting
+
+			OGLShader* combineShader;
+			OGLShader* lightShader;
+			OGLMesh* lightSphere;
+			OGLMesh* screenQuad;
+
 			Vector4		lightColour;
 			float		lightRadius;
 			Vector3		lightPosition;
+			float lightBrightness = 16.0f;
+			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
