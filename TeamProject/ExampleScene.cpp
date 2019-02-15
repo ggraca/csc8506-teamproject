@@ -1,11 +1,10 @@
 #include "ExampleScene.h"
-#include "../GameTechCommon/GameWorld.h"
+#include "GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
 
-#include "../GameTechCommon/PositionConstraint.h"
 #include "../Common/Assets.h"
 
 #include <fstream>
@@ -21,8 +20,6 @@ using namespace CSC8503;
 
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
-  world->ShuffleConstraints(true);
-  world->ShuffleObjects(true);
   inputManager = new InputManager();
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
@@ -31,6 +28,7 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
+  GameObject::SetGameWorld(world);
 }
 
 
@@ -39,7 +37,7 @@ void ExampleScene::ResetWorld() {
 
   // Floor
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0);
-  
+
 }
 
 ExampleScene::~ExampleScene() {
@@ -57,7 +55,7 @@ void ExampleScene::UpdateGame(float dt) {
   debugMenu.Update(dt, renderer);
   console.Update();
   hud.Update(dt, renderer);
-  
+
 
   //Might want moved into a seperate function that handles input
   if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
@@ -69,7 +67,7 @@ void ExampleScene::UpdateGame(float dt) {
   
 }
 
-InputManager * NCL::CSC8503::ExampleScene::GetInputManager() const
+InputManager * ExampleScene::GetInputManager() const
 {
 	return inputManager;
 }

@@ -1,11 +1,10 @@
 #include "PhysicsScene.h"
-#include "../GameTechCommon/GameWorld.h"
+#include "GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
 
-#include "../GameTechCommon/PositionConstraint.h"
 #include "../Common/Assets.h"
 #include <fstream>
 
@@ -51,5 +50,4 @@ void PhysicsScene::UpdateGame(float dt) {
 }
 
 void PhysicsScene::DebugScene(float dt) {
-
 }

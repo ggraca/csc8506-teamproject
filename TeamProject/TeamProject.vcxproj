@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link />
@@ -103,7 +103,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -118,7 +118,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\Bullet\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Networking-ENet\include;$(SolutionDir)Plugins\Bullet\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -150,13 +150,21 @@
     <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
+    <ClCompile Include="Destructable.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
-    <ClCompile Include="PhysicsScene.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LayerAndTag.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PhysicsScene.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,12 +172,20 @@
     <ClInclude Include="..\GameTechCommon\BulletPhysics.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DebugMenu.h" />
+    <ClInclude Include="Destructable.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="ExampleScene.h" />
-    <ClInclude Include="PhysicsScene.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTechRenderer.h" />
+    <ClInclude Include="GameWorld.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LayerAndTag.h" />
+    <ClInclude Include="PhysicsScene.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

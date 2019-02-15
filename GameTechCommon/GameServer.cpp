@@ -1,5 +1,5 @@
 #include "GameServer.h"
-#include "GameWorld.h"
+#include "../TeamProject/GameWorld.h"
 #include <iostream>
 
 using namespace NCL;

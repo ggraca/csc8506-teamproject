@@ -21,7 +21,6 @@ void Player::Start()
 
 void Player::Update(float dt)
 {
-
 }
 
 void Player::LateUpdate(float dt)

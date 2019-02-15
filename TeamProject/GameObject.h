@@ -1,11 +1,10 @@
 #pragma once
 #include "Transform.h"
-#include "CollisionVolume.h"
-
-#include "PhysicsObject.h"
-#include "RenderObject.h"
-#include "NetworkObject.h"
+#include "../GameTechCommon/CollisionVolume.h"
+#include "../GameTechCommon/PhysicsObject.h"
+#include "../GameTechCommon/RenderObject.h"
 #include "LayerAndTag.h"
+//#include "GameWorld.h"
 
 
 #include <vector>
@@ -18,7 +17,7 @@ namespace NCL {
 		class NetworkObject;
 		class InputManager;
 		class ScriptObject;
-		
+		class GameWorld;
 
 		class GameObject	{
 		public:
@@ -105,20 +104,20 @@ namespace NCL {
 
 			bool CompareTag(const GameObject& other)
 			{
-				
+
 				return (this->tag == other.tag);
 			}
 
 			virtual void OnCollisionBegin(GameObject* otherObject);
-			
+
 
 			virtual void OnCollisionEnd(GameObject* otherObject);
-			
-				
-			
+
+
+
 
 			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
-			
+
 			void SetParent(const GameObject * parent)
 			{
 				if (parent)
@@ -148,7 +147,7 @@ namespace NCL {
 			}
 
 			void AddScript(ScriptObject* obj);
-			
+
 
 			template<class T>
 			void RemoveScript()
@@ -187,11 +186,20 @@ namespace NCL {
 			void UpdateAttachedScripts(float dt);
 			void LateUpdateAttachedScripts(float dt);
 
-			
-			
-		protected:
-			Transform			transform;
 
+			static void SetGameWorld(GameWorld * world);
+			static GameObject * Find(string name);
+			static GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
+			static vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
+			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
+			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+			static  void Destroy(GameObject * obj);
+			static void AddObjectToWorld(GameObject * obj);
+			static void AddObjectToWorld(GameObject * obj,GameObject * parent);
+
+		protected:
+			static GameWorld *gameWorld;
+			Transform			transform;
 			CollisionVolume*	boundingVolume;
 			PhysicsObject*		physicsObject;
 			RenderObject*		renderObject;
@@ -199,15 +207,15 @@ namespace NCL {
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
 			std::vector<ScriptObject*> scripts;
-			
+
 
 			bool	isActive;
 			bool	isAddedToWorld;
-			string	name;	
-			
+			string	name;
+
 		};
 
-		
+
 		class ScriptObject
 		{
 		public:
@@ -219,7 +227,7 @@ namespace NCL {
 			ScriptObject(GameObject * go,InputManager* im);
 
 			virtual ~ScriptObject();
-			
+
 
 			virtual void Awake() =0;
 			virtual void Start()=0;
@@ -234,6 +242,6 @@ namespace NCL {
 			InputManager * inputManager;
 
 		};
-	
+
 	}
 }

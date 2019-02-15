@@ -1,5 +1,5 @@
 #include "GameTechRenderer.h"
-#include "../GameTechCommon/GameObject.h"
+#include "../TeamProject/GameObject.h"
 #include "../Common/Camera.h"
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
