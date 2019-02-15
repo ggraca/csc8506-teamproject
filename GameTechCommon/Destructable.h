@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Resource.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -22,6 +23,6 @@ public:
 
 private:
 	int objectHealth;
-	int playerDamage;
+	int resources;
 };
 

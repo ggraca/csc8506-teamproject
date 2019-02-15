@@ -3,7 +3,7 @@
 
 Destructable::Destructable(GameObject * gameObject):ScriptObject(gameObject)
 {
-	
+	//tags set when object is created
 }
 
 Destructable::Destructable(GameObject * gameObject, InputManager * im):ScriptObject(gameObject,im)
@@ -22,30 +22,36 @@ void Destructable::Awake()
 
 void Destructable::Start()
 {
-	if (gameObject->CompareTag(LayerAndTag::SmallWall))
+
+	switch (gameObject->GetTag)
 	{
-		objectHealth = 10;
-	}
-	if (gameObject->CompareTag(LayerAndTag::BigWall))
-	{
-		objectHealth = 20;
-	}
-	if (gameObject->CompareTag(LayerAndTag::Tower))
-	{
-		objectHealth = 15;
-	}
-	if (gameObject->CompareTag(LayerAndTag::Turret))
-	{
-		objectHealth = 5;
+	case LayerAndTag::SmallWall: objectHealth = 10;
+	case LayerAndTag::BigWall: objectHealth = 20;
+	case LayerAndTag::Tower: objectHealth = 15;
+	case LayerAndTag::Turret: objectHealth = 5;
 	}
 
+	
 	
 }
 
 void Destructable::Update(float dt)
 {
-	//TODO DESTROY OBJECT WHEN HEALTH IS 0 AND CREATE RESOURCES IN ITS POSITION
+	if (objectHealth <= 0)
+	{
+		
+		//create resources
+		
+		//Let's say it has 100 health, spawn 100/25 = 4;
+		
 
+		GameObject * cube = new GameObject();//AddCubeToWorld
+		Resource * r = new Resource(cube, inputManager);
+		cube->AddScript((ScriptObject*)r);
+
+		//TODO Add it to world
+		gameObject->Destroy(gameObject);
+	}
 }
 
 void Destructable::LateUpdate(float dt)
@@ -59,6 +65,7 @@ void Destructable::OnCollisionBegin(GameObject * otherObject)
 		objectHealth--;
 	}
 }
+
 
 void Destructable::OnCollisionEnd(GameObject * otherObject)
 {
