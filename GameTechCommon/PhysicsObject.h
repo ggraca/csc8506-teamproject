@@ -1,6 +1,11 @@
 #pragma once
 #include "../Common/Vector3.h"
 #include "../Common/Matrix3.h"
+#include "../Common/Quaternion.h"
+
+//#include "BulletPhysics.h"
+//#include "C:\Users\Ed\Documents\GitHub\csc8506-teamproject\TeamProject\Scene.h"
+//#include "C:\Users\Ed\Documents\GitHub\csc8506-teamproject\GameTechCommon\Transform.h"
 
 using namespace NCL::Maths;
 
@@ -12,44 +17,34 @@ namespace NCL {
 
 		class PhysicsObject	{
 		public:
-			PhysicsObject(Transform* parentTransform, const CollisionVolume* parentVolume);
+			PhysicsObject(Transform* parentTransform);
 			~PhysicsObject();
 
-			Vector3 GetLinearVelocity() const {
-				return linearVelocity;
+			void SetMass(float mass) {
+				this->mass = mass;
 			}
 
-			Vector3 GetAngularVelocity() const {
-				return angularVelocity;
+			float GetMass() const {
+				return mass;
 			}
 
-			Vector3 GetTorque() const {
-				return torque;
+			void SetRestitution(float restitution) {
+				this->restitution = restitution;
 			}
 
-			Vector3 GetForce() const {
-				return force;
+			float GetRestitution() const {
+				return restitution;
 			}
 
-			void SetInverseMass(float invMass) {
-				inverseMass = invMass;
+			void SetFriction(float friction) {
+				this->friction = friction;
 			}
 
-			float GetInverseMass() const {
-				return inverseMass;
+			float GetFriction() const {
+				return friction;
 			}
 
-			void ApplyAngularImpulse(const Vector3& force);
-			void ApplyLinearImpulse(const Vector3& force);
-			
-			void AddForce(const Vector3& force);
-
-			void AddForceAtPosition(const Vector3& force, const Vector3& position);
-
-			void AddTorque(const Vector3& torque);
-
-
-			void ClearForces();
+	
 
 			void SetLinearVelocity(const Vector3& v) {
 				linearVelocity = v;
@@ -59,32 +54,24 @@ namespace NCL {
 				angularVelocity = v;
 			}
 
-			void InitCubeInertia();
-			void InitSphereInertia();
-
-			void UpdateInertiaTensor();
-
-			Matrix3 GetInertiaTensor() const {
-				return inverseInteriaTensor;
-			}
-
 		protected:
 			const CollisionVolume* volume;
 			Transform*		transform;
 
-			float inverseMass;
-			float elasticity;
+			Vector3 position;
+			Quaternion orientation;
+			Vector3 dimensions;
+			float mass;
+			float restitution;
 			float friction;
 
 			//linear stuff
 			Vector3 linearVelocity;
-			Vector3 force;
+		//	Vector3 force;
 
 			//angular stuff
 			Vector3 angularVelocity;
-			Vector3 torque;
-			Vector3 inverseInertia;
-			Matrix3 inverseInteriaTensor;
+		//	Vector3 torque
 		};
 	}
 }

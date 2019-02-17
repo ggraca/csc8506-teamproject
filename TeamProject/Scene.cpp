@@ -36,7 +36,7 @@ void Scene::InitialiseAssets() {
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
-  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
+  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
   basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
   InitCamera();
@@ -113,11 +113,11 @@ void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& p
 	body->setSpinningFriction(0.3);
 }
 
-GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float inverseMass, float restitution, float friction) {
+GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float mass, float restitution, float friction) {
   GameObject* sphere = new GameObject();
 
   btCollisionShape* Shape = new btSphereShape(btScalar(radius));
-  SetBulletPhysicsParameters(Shape, position, inverseMass, restitution, friction);
+  SetBulletPhysicsParameters(Shape, position, mass, restitution, friction);
 
   //SphereVolume* volume = new SphereVolume(radius);
   //sphere->SetBoundingVolume((CollisionVolume*)volume);
@@ -133,11 +133,11 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   return sphere;
 }
 
-GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass, float restitution, float friction) {
+GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
   GameObject* cube = new GameObject();
 
   btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
-  SetBulletPhysicsParameters(Shape, position, inverseMass, restitution, friction, orient);
+  SetBulletPhysicsParameters(Shape, position, mass, restitution, friction, orient);
 
   //AABBVolume* volume = new AABBVolume(dimensions);
   //cube->SetBoundingVolume((CollisionVolume*)volume);
@@ -147,10 +147,9 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetWorldScale(dimensions);
   cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
-  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
+  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform()));
 
-  cube->GetPhysicsObject()->SetInverseMass(inverseMass);
-  cube->GetPhysicsObject()->InitCubeInertia();
+  cube->GetPhysicsObject()->SetMass(mass);
 
   world->AddGameObject(cube);
 
@@ -168,7 +167,7 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 			Vector3 cubeDims = Vector3(x, y, z);
 			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
 			if (rand() % 2) {
-				AddCubeToWorld(position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, 10.0 * (rand() % 100) / (float)100);
+				AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, 10.0 * (rand() % 100) / (float)100);
 			}
 			else {
 				AddSphereToWorld(position, sphereRadius, 10, 10.0 * (rand() % 100) / (float)100, 10.0 * (rand() % 100) / (float)100);
@@ -238,7 +237,7 @@ void Scene::MoveSelectedObject() {
     RayCollision closestCollision;
     if (world->Raycast(ray, closestCollision, true)) {
       if (closestCollision.node == selectionObject) {
-        selectionObject->GetPhysicsObject()->AddForceAtPosition(ray.GetDirection() * forceMagnitude, closestCollision.collidedAt);
+        //selectionObject->GetPhysicsObject()->AddForceAtPosition(ray.GetDirection() * forceMagnitude, closestCollision.collidedAt);
       }
     }
   }

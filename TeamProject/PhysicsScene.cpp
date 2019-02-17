@@ -23,9 +23,9 @@ PhysicsScene::PhysicsScene() : Scene() {
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0); //TODO Do these need to be deleted in destructor?!?!?!
-  AddCubeToWorld(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaterion(Vector3(0, 1, 0), 45), Vector3(2, 2, 2), 1);
-  AddCubeToWorld(Vector3(3.5, 130, 1), Quaternion::AxisAngleToQuaterion(Vector3(1, 1, 1), 45), Vector3(20, 20, 20), 0.05);
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0); //TODO Do these need to be deleted in destructor?!?!?!
+  AddCubeToWorld(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45), Vector3(2, 2, 2), 1);
+  AddCubeToWorld(Vector3(3.5, 130, 1), Quaternion::AxisAngleToQuaternion(Vector3(1, 1, 1), 45), Vector3(20, 20, 20), 0.05);
   AddSphereToWorld(Vector3(40, 100, 20), 1, 1);
   AddSphereToWorld(Vector3(41, 130, 20), 1, 1);
   InitMixedGridWorld(Vector3(47, 230, 20), 10, 10, 20, 20);
