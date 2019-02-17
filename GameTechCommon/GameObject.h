@@ -117,7 +117,7 @@ namespace NCL {
 				
 			
 
-			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
+			/*bool InsideAABB(const Vector3& pos, const Vector3& halfSize);*/
 			
 			void SetParent(const GameObject * parent)
 			{

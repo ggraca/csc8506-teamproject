@@ -6,7 +6,7 @@
 class BulletPhysics
 {
 public:
-	BulletPhysics(GameWorld& g);
+	BulletPhysics(/*GameWorld& g*/);
 	~BulletPhysics();
 	btDiscreteDynamicsWorld* dynamicsWorld; //TODO Make this private???
 	btAlignedObjectArray<btCollisionShape*> collisionShapes; //TODO Make this private???
@@ -15,7 +15,7 @@ public:
 	void SetGravity(Vector3 gravity);
 
 private:
-	GameWorld& gameWorld;
+	/*GameWorld& gameWorld;*/
 	float dTOffset;
 	btDefaultCollisionConfiguration* collisionConfiguration;
 	btCollisionDispatcher* dispatcher;

@@ -2,7 +2,7 @@
 #include <map>
 #include <vector>
 
-BulletPhysics::BulletPhysics(GameWorld& g) : gameWorld(g)
+BulletPhysics::BulletPhysics(/*GameWorld& g*/) /*: gameWorld(g)*/
 {
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);

@@ -1,13 +1,19 @@
 #pragma once
 #include "../Common/Vector3.h"
 #include "../Common/Matrix3.h"
-#include "../Common/Matrix3.h"
+
+#include "BulletPhysics.h"
+#include "C:\Users\Ed\Documents\GitHub\csc8506-teamproject\TeamProject\Scene.h"
+#include "C:\Users\Ed\Documents\GitHub\csc8506-teamproject\GameTechCommon\Transform.h"
 
 //using namespace NCL::Maths; //TODO Remove this?
 
+class Transform;
+//class Scene;
+
 class PhysicsObject	{
 public:
-	PhysicsObject(Transform* parentTransform);
+	PhysicsObject(NCL::CSC8503::Transform* parentTransform);
 	~PhysicsObject();
 
 	void SetMass(float mass) {
@@ -34,12 +40,15 @@ public:
 		return friction;
 	}
 
-	protected:
-		Transform* transform;
+protected:
+	NCL::CSC8503::Transform* transform;
 
-		float mass;
-		float restitution;
-		float friction;
+	Vector3 position;
+	Quaternion orientation;
+	Vector3 dimensions;
+	float mass;
+	float restitution;
+	float friction;
 };
 
 

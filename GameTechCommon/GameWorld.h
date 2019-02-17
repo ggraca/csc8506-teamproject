@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Ray.h"
-#include "CollisionDetection.h"
+//#include "CollisionDetection.h"
 #include "QuadTree.h"
 #include "LayerAndTag.h"
 
@@ -14,9 +14,7 @@ namespace NCL {
 		class Constraint;
 
 		class GameWorld	{
-		public:
-
-			
+		public:			
 			GameWorld();
 			~GameWorld();
 
@@ -45,7 +43,7 @@ namespace NCL {
 				shuffleObjects = state;
 			}
 
-			bool Raycast(Ray& r, RayCollision& closestCollision, bool closestObject = false) const;
+		//	bool Raycast(Ray& r, RayCollision& closestCollision, bool closestObject = false) const;
 
 			virtual void UpdateWorld(float dt);
 

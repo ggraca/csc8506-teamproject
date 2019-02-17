@@ -121,113 +121,112 @@ void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& p
 
 	body->applyImpulse(btVector3(-1000, 1000, 0), btVector3(0, -5, 0));
 
-
 	body->setFriction(friction);
 	body->setRestitution(restitution);
 	body->setRollingFriction(0.9);
 	body->setSpinningFriction(0.3);
 }
 
-void Scene::AddSphereToWorld(OGLTexture* sphereTex, const Vector3& position, float radius, float mass, float restitution, float friction, Vector4 colour) {
-  GameObject* sphere = new GameObject();
+//void Scene::AddSphereToWorld(OGLTexture* sphereTex, const Vector3& position, float radius, float mass, float restitution, float friction, Vector4 colour) {
+//  GameObject* sphere = new GameObject();
+//
+//  btCollisionShape* Shape = new btSphereShape(btScalar(radius));
+//  SetBulletPhysicsParameters(Shape, position, mass, restitution, friction);
+//
+//  //SphereVolume* volume = new SphereVolume(radius);
+//  //sphere->SetBoundingVolume((CollisionVolume*)volume);
+//  //sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), sphere->GetBoundingVolume())); //TODO These 3 lines may still be required until we find some better way of linking render objects to physics objects
+//
+//  Vector3 sphereSize = Vector3(radius, radius, radius);
+//  sphere->GetTransform().SetWorldScale(sphereSize);
+//  sphere->GetTransform().SetWorldPosition(position);
+//  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, sphereTex, basicShader));
+//  sphere->GetRenderObject()->SetColour(colour);
+//
+//  world->AddGameObject(sphere);
+//
+////  return sphere;
+//}
+//
+//void Scene::AddCubeToWorld(OGLTexture* cubeTex, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction, Vector4 colour) {
+//  GameObject* cube = new GameObject();
+//
+//  cube->GetTransform().SetLocalOrientation(orient);
+//  cube->GetTransform().SetWorldPosition(position);
+//  cube->GetTransform().SetWorldScale(dimensions);
+//
+//  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, cubeTex, basicShader));
+//  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
+//
+//  world->AddGameObject(cube);
+//}
+//
+//void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
+//	for (int i = 0; i < numCols; ++i) {
+//		for (int j = 0; j < numRows; ++j) {
+//			float sphereRadius = 0.5 + 3.0 * (rand() % 100) / (float)100;
+//			float x = 1 + 10.0 * (rand() % 100) / (float)100;
+//			float y = 1 + 10.0 * (rand() % 100) / (float)100;
+//			float z = 1 + 10.0 * (rand() % 100) / (float)100;
+//			Vector3 cubeDims = Vector3(x, y, z);
+//			Vector3 position = Vector3(i * colSpacing, 100 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
+//			if (rand() % 2) {
+//				tempTex = brickTex;
+//			}
+//			else {
+//				tempTex = dogTex;
+//			}
+//			//Vector4 colour = Vector4((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100, 1);
+//			Vector4 colour = Vector4(1,1,1,1);
+//			if (rand() % 2) {
+//				AddCubeToWorld(tempTex, position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, 0.4 + (rand() % 60) / (float)100, (rand() % 100) / (float)100, colour);
+//			}
+//			else {
+//				AddSphereToWorld(ballTex, position, sphereRadius, 10, (rand() % 100) / (float)100, 0.2 + (rand() % 80) / (float)100);
+//			}
+//		}
+//	}
+//}
 
-  btCollisionShape* Shape = new btSphereShape(btScalar(radius));
-  SetBulletPhysicsParameters(Shape, position, mass, restitution, friction);
-
-  //SphereVolume* volume = new SphereVolume(radius);
-  //sphere->SetBoundingVolume((CollisionVolume*)volume);
-  //sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), sphere->GetBoundingVolume())); //TODO These 3 lines may still be required until we find some better way of linking render objects to physics objects
-
-  Vector3 sphereSize = Vector3(radius, radius, radius);
-  sphere->GetTransform().SetWorldScale(sphereSize);
-  sphere->GetTransform().SetWorldPosition(position);
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, sphereTex, basicShader));
-  sphere->GetRenderObject()->SetColour(colour);
-
-  world->AddGameObject(sphere);
-
-//  return sphere;
-}
-
-void Scene::AddCubeToWorld(OGLTexture* cubeTex, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction, Vector4 colour) {
-  GameObject* cube = new GameObject();
-
-  cube->GetTransform().SetLocalOrientation(orient);
-  cube->GetTransform().SetWorldPosition(position);
-  cube->GetTransform().SetWorldScale(dimensions);
-
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, cubeTex, basicShader));
-  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
-
-  world->AddGameObject(cube);
-}
-
-void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
-	for (int i = 0; i < numCols; ++i) {
-		for (int j = 0; j < numRows; ++j) {
-			float sphereRadius = 0.5 + 3.0 * (rand() % 100) / (float)100;
-			float x = 1 + 10.0 * (rand() % 100) / (float)100;
-			float y = 1 + 10.0 * (rand() % 100) / (float)100;
-			float z = 1 + 10.0 * (rand() % 100) / (float)100;
-			Vector3 cubeDims = Vector3(x, y, z);
-			Vector3 position = Vector3(i * colSpacing, 100 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
-			if (rand() % 2) {
-				tempTex = brickTex;
-			}
-			else {
-				tempTex = dogTex;
-			}
-			//Vector4 colour = Vector4((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100, 1);
-			Vector4 colour = Vector4(1,1,1,1);
-			if (rand() % 2) {
-				AddCubeToWorld(tempTex, position, Quaternion::AxisAngleToQuaterion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, 0.4 + (rand() % 60) / (float)100, (rand() % 100) / (float)100, colour);
-			}
-			else {
-				AddSphereToWorld(ballTex, position, sphereRadius, 10, (rand() % 100) / (float)100, 0.2 + (rand() % 80) / (float)100);
-			}
-		}
-	}
-}
-
-bool Scene::SelectObject() {
-  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Q)) {
-    inSelectionMode = !inSelectionMode;
-    if (inSelectionMode) {
-      Window::GetWindow()->ShowOSPointer(true);
-      Window::GetWindow()->LockMouseToWindow(false);
-    }
-    else {
-      Window::GetWindow()->ShowOSPointer(false);
-      Window::GetWindow()->LockMouseToWindow(true);
-    }
-  }
-  if (inSelectionMode) {
-    renderer->DrawString("Press Q to change to camera mode!", Vector2(10, 0));
-
-    if (Window::GetMouse()->ButtonDown(NCL::MouseButtons::MOUSE_LEFT)) {
-      if (selectionObject) {	//set colour to deselected;
-        selectionObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
-        selectionObject = nullptr;
-      }
-
-      Ray ray = CollisionDetection::BuildRayFromMouse(*world->GetMainCamera());
-
-      RayCollision closestCollision;
-      if (world->Raycast(ray, closestCollision, true)) {
-        selectionObject = (GameObject*)closestCollision.node;
-        selectionObject->GetRenderObject()->SetColour(Vector4(0, 1, 0, 1));
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
-  }
-  else {
-    renderer->DrawString("Press Q to change to select mode!", Vector2(10, 0));
-  }
-  return false;
-}
+//bool Scene::SelectObject() {
+//  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Q)) {
+//    inSelectionMode = !inSelectionMode;
+//    if (inSelectionMode) {
+//      Window::GetWindow()->ShowOSPointer(true);
+//      Window::GetWindow()->LockMouseToWindow(false);
+//    }
+//    else {
+//      Window::GetWindow()->ShowOSPointer(false);
+//      Window::GetWindow()->LockMouseToWindow(true);
+//    }
+//  }
+//  if (inSelectionMode) {
+//    renderer->DrawString("Press Q to change to camera mode!", Vector2(10, 0));
+//
+//    if (Window::GetMouse()->ButtonDown(NCL::MouseButtons::MOUSE_LEFT)) {
+//      if (selectionObject) {	//set colour to deselected;
+//        selectionObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
+//        selectionObject = nullptr;
+//      }
+//
+//      Ray ray = CollisionDetection::BuildRayFromMouse(*world->GetMainCamera());
+//
+//      RayCollision closestCollision;
+//      if (world->Raycast(ray, closestCollision, true)) {
+//        selectionObject = (GameObject*)closestCollision.node;
+//        selectionObject->GetRenderObject()->SetColour(Vector4(0, 1, 0, 1));
+//        return true;
+//      }
+//      else {
+//        return false;
+//      }
+//    }
+//  }
+//  else {
+//    renderer->DrawString("Press Q to change to select mode!", Vector2(10, 0));
+//  }
+//  return false;
+//}
 
 /*
 If an object has been clicked, it can be pushed with the right mouse button, by an amount
@@ -236,22 +235,22 @@ added linear motion into our physics system. After the second tutorial, objects 
 line - after the third, they'll be able to twist under torque aswell.
 */
 
-void Scene::MoveSelectedObject() {
-  renderer->DrawString("Click Force:" + std::to_string(forceMagnitude), Vector2(10, 20));
-  forceMagnitude += Window::GetMouse()->GetWheelMovement() * 100.0f;
-
-  if (!selectionObject) {
-    return;//we haven't selected anything!
-  }
-  //Push the selected object!
-  if (Window::GetMouse()->ButtonPressed(NCL::MouseButtons::MOUSE_RIGHT)) {
-    Ray ray = CollisionDetection::BuildRayFromMouse(*world->GetMainCamera());
-
-    RayCollision closestCollision;
-    if (world->Raycast(ray, closestCollision, true)) {
-      if (closestCollision.node == selectionObject) {
-        selectionObject->GetPhysicsObject()->AddForceAtPosition(ray.GetDirection() * forceMagnitude, closestCollision.collidedAt);
-      }
-    }
-  }
-}
+//void Scene::MoveSelectedObject() {
+//  renderer->DrawString("Click Force:" + std::to_string(forceMagnitude), Vector2(10, 20));
+//  forceMagnitude += Window::GetMouse()->GetWheelMovement() * 100.0f;
+//
+//  if (!selectionObject) {
+//    return;//we haven't selected anything!
+//  }
+//  //Push the selected object!
+//  if (Window::GetMouse()->ButtonPressed(NCL::MouseButtons::MOUSE_RIGHT)) {
+//    Ray ray = CollisionDetection::BuildRayFromMouse(*world->GetMainCamera());
+//
+//    RayCollision closestCollision;
+//    if (world->Raycast(ray, closestCollision, true)) {
+//      if (closestCollision.node == selectionObject) {
+//        selectionObject->GetPhysicsObject()->AddForceAtPosition(ray.GetDirection() * forceMagnitude, closestCollision.collidedAt);
+//      }
+//    }
+//  }
+//}
