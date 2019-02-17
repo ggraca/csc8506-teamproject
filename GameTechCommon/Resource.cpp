@@ -54,4 +54,5 @@ void Resource::Aquire(GameObject * obj)
 void Resource::Reset() 
 {
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
+	gameObject->GameObject::IsParent;
 }

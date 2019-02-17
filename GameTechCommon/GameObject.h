@@ -96,6 +96,17 @@ namespace NCL {
 				return this->tag;
 			}
 
+			void SetTarget(GameObject * t) 
+			{
+				this->target = t;
+			}
+
+			GameObject * GetTarget() 
+			{
+				return this->target;
+			}
+
+
 			void SetIsAddedToWorld(bool status) { isAddedToWorld = status; }
 			bool GetIsAddedToWorld() const { return isAddedToWorld; }
 
@@ -207,6 +218,7 @@ namespace NCL {
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
 			std::vector<ScriptObject*> scripts;
+			GameObject  * target;
 			
 
 			bool	isActive;

@@ -19,5 +19,10 @@ public:
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void Aquire(GameObject * obj);
 	void Reset();
+	
+
+private:
+	float speed;
+	
 };
 
