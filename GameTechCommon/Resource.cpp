@@ -26,6 +26,14 @@ void Resource::Start()
 
 void Resource::Update(float dt)
 {
+	if (target!=nullptr &&(gameObject->GetTransform().GetWorldPosition().Length - target->GetTransform().GetWorldPosition().Length) > minDistance)
+	{
+		auto direction = ((target->GetTransform().GetWorldPosition() - gameObject->GetTransform().GetWorldPosition())).Normalised;
+		auto amount = direction * moveSpeed * dt;
+		auto pos = (gameObject->GetTransform().GetWorldPosition());
+		pos += amount;
+		gameObject->GetTransform().GetWorldPosition() = pos;
+	}
 }
 
 void Resource::LateUpdate(float dt)
@@ -47,19 +55,7 @@ void Resource::Aquire(GameObject * obj)
 	gameObject->GameObject::SetParent(captures);
 	gameObject->GetRenderObject()->SetColour(obj->GetRenderObject()->GetColour()); 
 	gameObject->SetTag(LayerAndTag::Tags::Occupied);
-	//set target
-	obj->SetTarget(obj);
-	
-	if ((gameObject->GetTransform().GetLocalPosition().Length - obj->GetTransform().GetLocalPosition()).Length > minDistance)
-	{
-		auto direction = ((obj->GetTransform().GetLocalPosition() - gameObject->GetTransform().GetLocalPosition())).Normalised;
-		auto amount = direction * moveSpeed;
-		auto pos = (gameObject->GetTransform().GetLocalPosition());
-		pos += amount;
-		gameObject->GetTransform().GetLocalPosition() = pos;
-
-	}
-
+	SetTarget(obj);
 }
 
 
@@ -67,5 +63,18 @@ void Resource::Aquire(GameObject * obj)
 void Resource::Reset() 
 {
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
-	gameObject->GameObject::IsParent;
+	gameObject->GameObject::SetParent(gameObject);
+	gameObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
+	target = nullptr;
 }
+
+void Resource::SetTarget(GameObject * t)
+{
+	this->target = t;
+}
+
+const Resource& GetTarget() const
+{
+	return target;
+}
+

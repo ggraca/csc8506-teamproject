@@ -19,11 +19,16 @@ public:
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void Aquire(GameObject * obj);
 	void Reset();
+	void SetTarget(GameObject * t);
+	const Resource& GetTarget() const;
+	
 	
 
 private:
 	float speed;
 	float minDistance;
 	float moveSpeed;
+	GameObject  * target;
 };
+
 
