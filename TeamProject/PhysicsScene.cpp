@@ -36,7 +36,7 @@ void PhysicsScene::ResetWorld() {
   AddObjectToWorld(physOb);
   PhysicsObject physOb2(sphere, Vector3(40, 100, 20), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 1, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
   AddObjectToWorld(physOb);
-  OOInitMixedGridWorld(Vector3(47, 230, 20), 10, 10, 20, 20);
+  OOInitMixedGridWorld(Vector3(47, 230, 20), 50, 40, 20, 20);
 
   // AddCylinderToWorld(Vector3(47, 230, 20), Vector3(2, 2, 2), 1);
 }
@@ -44,10 +44,34 @@ void PhysicsScene::ResetWorld() {
 PhysicsScene::~PhysicsScene() {
 }
 
+void PhysicsScene::UpdateKeys() {
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 100, 0));
+	}
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_J)) {
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(-100, 0, 0));
+	}
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_K)) {
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(100, 0, 0));
+	}
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_N)) {
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, 100));
+	}
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_M)) {
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -100));
+	}
+}
+
 void PhysicsScene::UpdateGame(float dt) {
   world->GetMainCamera()->UpdateCamera(dt);
   world->UpdateWorld(dt);
 
+  UpdateKeys();
   renderer->Update(dt);
   physics->Update(dt);
 

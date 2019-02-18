@@ -110,11 +110,18 @@ void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& p
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(Transform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
 	btRigidBody* body = new btRigidBody(rbInfo);
+
+	//body->setLinearVelocity(btVector3(10, 100, 0));
+	//body->setAngularVelocity(btVector3(0, 10, 0));
+
+	body->applyImpulse(btVector3(-1000, 1000, 0), btVector3(0, -5, 0));
+
+
 	physics->dynamicsWorld->addRigidBody(body);
 	body->setFriction(friction); //TODO Now physical properties can be set per object by passing parameters to this function from AddSphereToWorld/AddCubeToWorld, with default values when omitted. Will sort this v. soon!
 	body->setRestitution(restitution);
 	body->setRollingFriction(0.9);
-	body->setSpinningFriction(0.3);
+	body->setSpinningFriction(0.9);
 }
 
 GameObject* Scene::AddObjectToWorld(const PhysicsObject& object) {
@@ -214,6 +221,12 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 			float z = 1 + 10.0 * (rand() % 100) / (float)100;
 			Vector3 cubeDims = Vector3(x, y, z);
 			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
+		/*	if (rand() % 2) {
+				tempTex = brickTex;
+			}
+			else {
+				tempTex = dogTex;
+			}*/
 			if (rand() % 2) {
 				AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
 			}
