@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include "../GameTechCommon/CollisionDetection.h"
 #include "InputManager.h"
 
 using namespace NCL;
@@ -63,13 +62,6 @@ void GameObject::OnCollisionEnd(GameObject * otherObject)
 	
 }
 
-bool GameObject::InsideAABB(const Vector3& boxPos, const Vector3& halfSize) {
-	if (!boundingVolume) {
-		return false;
-	}
-	return CollisionDetection::AABBTest(transform, *boundingVolume, boxPos, halfSize);
-}
-
 void GameObject::AddScript(ScriptObject * obj)
 {
 	if (!obj) { return; }
@@ -84,7 +76,6 @@ void GameObject::AddScript(ScriptObject * obj)
 
 	
 }
-
 
 void GameObject::SetUpInitialScripts()
 {

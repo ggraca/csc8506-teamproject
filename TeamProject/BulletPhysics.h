@@ -1,8 +1,17 @@
 #pragma once
 
-#include "../TeamProject/GameWorld.h"
-#include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 #include <map>
+
+#include "../Common/Vector3.h"
+#include "../Common/Vector4.h"
+#include "../TeamProject/Transform.h"
+#include "../TeamProject/GameWorld.h"
+#include "../TeamProject/GameObject.h"
+#include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
+
+using namespace NCL;
+using namespace NCL::Maths;
+using namespace NCL::CSC8503;
 
 class BulletPhysics
 {

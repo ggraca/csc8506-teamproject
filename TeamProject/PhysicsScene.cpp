@@ -23,25 +23,17 @@ PhysicsScene::PhysicsScene() : Scene() {
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
-  //AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0); //TODO Do these need to be deleted in destructor?!?!?!
-  //AddCubeToWorld(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45), Vector3(2, 2, 2), 1);
-  //AddCubeToWorld(Vector3(3.5, 130, 1), Quaternion::AxisAngleToQuaternion(Vector3(1, 1, 1), 45), Vector3(20, 20, 20), 0.05);
-  //AddSphereToWorld(Vector3(40, 100, 20), 1, 1);
-  //AddSphereToWorld(Vector3(41, 130, 20), 1, 1);
-  //InitMixedGridWorld(Vector3(47, 230, 20), 10, 10, 20, 20);
-
-  PhysicsObject physOb(cuboid, Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1, 0);
-  AddObjectToWorld(physOb);
-  PhysicsObject physOb1(cuboid, Vector3(3.5, 130, 1), Quaternion::AxisAngleToQuaternion(Vector3(1, 1, 1), 45), Vector3(20, 20, 20), 20, 0.8, 0);
-  AddObjectToWorld(physOb);
-  PhysicsObject physOb2(sphere, Vector3(40, 100, 20), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 1, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
-  AddObjectToWorld(physOb);
-  OOInitMixedGridWorld(Vector3(47, 230, 20), 50, 40, 20, 20);
-
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0); //TODO Do these need to be deleted in destructor?!?!?!
+  AddCubeToWorld(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45), Vector3(2, 2, 2), 1);
+  AddCubeToWorld(Vector3(3.5, 130, 1), Quaternion::AxisAngleToQuaternion(Vector3(1, 1, 1), 45), Vector3(20, 20, 20), 10000);
+  AddSphereToWorld(Vector3(40, 100, 20), 1, 1);
+  AddSphereToWorld(Vector3(41, 130, 20), 1, 1);
+  InitMixedGridWorld(Vector3(47, 230, 20), 50, 40, 20, 20);
   // AddCylinderToWorld(Vector3(47, 230, 20), Vector3(2, 2, 2), 1);
 }
 
 PhysicsScene::~PhysicsScene() {
+	delete tempTex;
 }
 
 void PhysicsScene::UpdateKeys() {

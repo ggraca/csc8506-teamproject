@@ -5,6 +5,7 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 
 #include "GameWorld.h"
+#include "../Common/Matrix4.h"
 
 namespace NCL {
 	class Maths::Vector3;

@@ -1,23 +1,20 @@
 #pragma once
 #include "Transform.h"
-#include "../GameTechCommon/CollisionVolume.h"
-#include "../GameTechCommon/PhysicsObject.h"
-#include "../GameTechCommon/RenderObject.h"
+#include "PhysicsObject.h"
+#include "RenderObject.h"
 #include "LayerAndTag.h"
-//#include "GameWorld.h"
+#include "GameWorld.h"
 
 
 #include <vector>
 
 using std::vector;
 
-
 namespace NCL {
 	namespace CSC8503 {
 		class NetworkObject;
 		class InputManager;
 		class ScriptObject;
-		class GameWorld;
 
 		class GameObject	{
 		public:

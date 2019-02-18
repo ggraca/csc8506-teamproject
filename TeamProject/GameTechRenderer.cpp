@@ -3,6 +3,7 @@
 #include "../Common/Camera.h"
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
+#include "../Common/Matrix4.h"
 
 using namespace NCL;
 using namespace Rendering;

@@ -2,14 +2,11 @@
 #include "../Common/Vector3.h"
 #include "../Common/Matrix3.h"
 #include "../Common/Quaternion.h"
-
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
-//#include "C:\Users\Ed\Documents\GitHub\csc8506-teamproject\TeamProject\Scene.h"
-//#include "C:\Users\Ed\Documents\GitHub\csc8506-teamproject\GameTechCommon\Transform.h"
 
 using namespace NCL::Maths;
 
-enum shape { cuboid, sphere, cylinder, cone, complexMesh };
+enum ShapeType { cube, sphere, cylinder, cone, complexMesh };
 
 namespace NCL {
 	class CollisionVolume;
@@ -20,11 +17,11 @@ namespace NCL {
 		class PhysicsObject	{
 		public:
 			PhysicsObject();
-			PhysicsObject(shape type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction);
-			PhysicsObject(Transform* parentTransform);
+			PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction);
+			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction);
 			~PhysicsObject();
 
-			shape GetType() const {
+			ShapeType GetType() const {
 				return type;
 			}
 
@@ -76,7 +73,15 @@ namespace NCL {
 				return friction;
 			}
 
-	
+			void SetTransform(Transform* transform) {
+				this->transform = transform;
+			}
+
+			Transform* GetTransform() const {
+				return transform;
+			}
+
+
 
 			void SetLinearVelocity(const Vector3& v) {
 				linearVelocity = v;
@@ -86,13 +91,21 @@ namespace NCL {
 				angularVelocity = v;
 			}
 
-//			void SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, float restitution, float friction, Quaternion orientation);
+			void SetBulletPhysicsParameters();
+
+			btCollisionShape* GetShape() {
+				return shape;
+			}
+
+			btRigidBody* GetRigidbody() {
+				return body;
+			}
 
 		protected:
 			const CollisionVolume* volume;
 			Transform*		transform;
 
-			shape type;
+			ShapeType type;
 			Vector3 position;
 			Quaternion orientation;
 			Vector3 dimensions;
@@ -107,6 +120,9 @@ namespace NCL {
 			//angular stuff
 			Vector3 angularVelocity;
 		//	Vector3 torque
+
+			btCollisionShape* shape;
+			btRigidBody* body;
 		};
 	}
 }

@@ -1,5 +1,8 @@
 #include "BulletPhysics.h"
 
+using namespace NCL;
+using namespace CSC8503;
+
 BulletPhysics::BulletPhysics(GameWorld& g) : gameWorld(g)
 {
 	collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -83,7 +86,6 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 		}
 	}
 
-
 	std::vector<GameObject*>::const_iterator first;
 	std::vector<GameObject*>::const_iterator last;
 	gameWorld.GetObjectIterators(first, last);
@@ -91,8 +93,8 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	int j = 0;
 	for (auto i = first; i != last; i++) {
 
-		/*PhysicsObject* object = (*i)->GetPhysicsObject();
-		if (object == nullptr) continue;*/
+		PhysicsObject* object = (*i)->GetPhysicsObject();
+		if (object == nullptr) continue;
 
 		(*i)->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
 		Transform& transform = (*i)->GetTransform();
@@ -116,7 +118,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 
 		auto& manifoldPoints = objectsCollisions[body];
 		if (!manifoldPoints.empty()) {
-			//			(*i)->GetRenderObject()->SetColour(Vector4(1,0,0,1));
+//			(*i)->GetRenderObject()->SetColour(Vector4(1,0,0,1));
 		}
 
 		j++;

@@ -1,22 +1,20 @@
 #pragma once
 #include <vector>
-#include "../GameTechCommon/Ray.h"
-#include "../GameTechCommon/CollisionDetection.h"
-#include "../GameTechCommon/QuadTree.h"
+#include <string>
 #include "../TeamProject/LayerAndTag.h"
 
+using namespace std;
+
+class BulletPhysics;
 
 namespace NCL {
 		class Camera;
-		using Maths::Ray;
 	namespace CSC8503 {
 		class GameObject;
 		class Constraint;
 
 		class GameWorld	{
 		public:
-
-			
 			GameWorld();
 			~GameWorld();
 
@@ -24,7 +22,6 @@ namespace NCL {
 			GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
 			vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
 			void Destroy(GameObject * obj);
-
 
 			void Clear();
 			void ClearAndErase();
@@ -36,22 +33,9 @@ namespace NCL {
 			void AddGameObject(GameObject* o, const GameObject* parent);
 			void RemoveGameObject(GameObject* o);
 
-			void AddConstraint(Constraint* c);
-			void RemoveConstraint(Constraint* c);
-
 			Camera* GetMainCamera() const {
 				return mainCamera;
 			}
-
-			void ShuffleConstraints(bool state) {
-				shuffleConstraints = state;
-			}
-
-			void ShuffleObjects(bool state) {
-				shuffleObjects = state;
-			}
-
-			bool Raycast(Ray& r, RayCollision& closestCollision, bool closestObject = false) const;
 
 			virtual void UpdateWorld(float dt);
 
@@ -64,10 +48,6 @@ namespace NCL {
       
 			int GetObjectCount();
 
-			void GetConstraintIterators(
-				std::vector<Constraint*>::const_iterator& first,
-				std::vector<Constraint*>::const_iterator& last) const;
-
 			void SetLayering(LayerAndTag layer)
 			{
 				this->layering = layer;
@@ -78,21 +58,20 @@ namespace NCL {
 				return this->layering;
 			}
 
+			void SetPhysics(BulletPhysics* bulletPhysics)
+			{
+				physics = bulletPhysics;
+			}
+
 		protected:
 			void UpdateTransforms();
 			void UpdateQuadTree();
 
 			std::vector<GameObject*> gameObjects;
 
-			std::vector<Constraint*> constraints;
-
-			QuadTree<GameObject*>* quadTree;
-
 			Camera* mainCamera;
-
-			bool shuffleConstraints;
-			bool shuffleObjects;
 			LayerAndTag layering;
+			BulletPhysics* physics;
 		};
 	}
 }
