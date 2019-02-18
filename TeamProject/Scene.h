@@ -48,6 +48,7 @@ namespace NCL {
 			OGLTexture* woodTex	= nullptr;
 			OGLTexture* grassTex	= nullptr;
 			OGLTexture* ballTex	= nullptr;
+			OGLTexture* cubeMap = nullptr;
 			OGLShader*	basicShader = nullptr;
 		};
 	}
