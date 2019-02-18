@@ -11,7 +11,8 @@ namespace NCL {
 			~Scene();
 
 			virtual void UpdateGame(float dt);
-
+			void SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, float restitution, float friction, Quaternion orientation = Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0));
+			BulletPhysics*		physics; //TODO Make protected again?
 		protected:
 			void InitialiseAssets();
 
@@ -24,14 +25,13 @@ namespace NCL {
 			void MoveSelectedObject();
 			void InitMixedGridWorld(const Vector3& position, int numRows, int numCols, float rowSpacing, float colSpacing);
 
-			void SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, float restitution, float friction, Quaternion orientation = Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0));
-
+			GameObject* AddObjectToWorld(const PhysicsObject& object);
 			GameObject* AddSphereToWorld(const Vector3& position, float radius, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
 			GameObject* AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
 			/*GameObject* AddCylinderToWorld(const Vector3& position, Vector3 dimensions, float inverseMass = 10.0f);*/
 
 			GameTechRenderer*	renderer;
-			BulletPhysics*		physics;
+			
 			GameWorld*		world;
 
 			bool useGravity;

@@ -107,11 +107,53 @@ void Scene::SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& p
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, Shape, localInertia);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	physics->dynamicsWorld->addRigidBody(body);
-	body->setFriction(0.4); //TODO Now physical properties can be set per object by passing parameters to this function from AddSphereToWorld/AddCubeToWorld, with default values when omitted. Will sort this v. soon!
-	body->setRestitution(0.9);
+	body->setFriction(friction); //TODO Now physical properties can be set per object by passing parameters to this function from AddSphereToWorld/AddCubeToWorld, with default values when omitted. Will sort this v. soon!
+	body->setRestitution(restitution);
 	body->setRollingFriction(0.9);
 	body->setSpinningFriction(0.3);
 }
+
+GameObject* Scene::AddObjectToWorld(const PhysicsObject& object) {
+	GameObject* obj = new GameObject();
+	if (object.GetType() == 0) {		
+		btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(object.GetDimensions().x), btScalar(object.GetDimensions().y), btScalar(object.GetDimensions().z)));
+		SetBulletPhysicsParameters(Shape, object.GetPosition(), object.GetMass(), object.GetRestitution(), object.GetFriction(), object.GetOrientation());
+		obj->GetTransform().SetLocalOrientation(object.GetOrientation());
+		obj->GetTransform().SetWorldPosition(object.GetPosition());
+		obj->GetTransform().SetWorldScale(object.GetDimensions());
+		obj->SetRenderObject(new RenderObject(&obj->GetTransform(), cubeMesh, woodTex, basicShader));
+	}
+	if (object.GetType() == 1) {
+		btCollisionShape* Shape = new btSphereShape(btScalar(object.GetDimensions().x));
+		SetBulletPhysicsParameters(Shape, object.GetPosition(), object.GetMass(), object.GetRestitution(), object.GetFriction());
+		Vector3 sphereSize = object.GetDimensions();
+		obj->GetTransform().SetWorldScale(sphereSize);
+		obj->GetTransform().SetWorldPosition(object.GetPosition());
+		obj->SetRenderObject(new RenderObject(&obj->GetTransform(), sphereMesh, ballTex, basicShader));
+	}
+	world->AddGameObject(obj);
+	return obj;
+}
+
+void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
+	for (int i = 0; i < numCols; ++i) {
+		for (int j = 0; j < numRows; ++j) {
+			float sphereRadius = 0.5 + 3.0 * (rand() % 100) / (float)100;
+			float x = 1 + 10.0 * (rand() % 100) / (float)100;
+			float y = 1 + 10.0 * (rand() % 100) / (float)100;
+			float z = 1 + 10.0 * (rand() % 100) / (float)100;
+			Vector3 cubeDims = Vector3(x, y, z);
+			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
+			if (rand() % 2) {
+				AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+			}
+			else {
+				AddSphereToWorld(position, sphereRadius, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+			}
+		}
+	}
+}
+
 
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float mass, float restitution, float friction) {
   GameObject* sphere = new GameObject();
@@ -167,10 +209,10 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 			Vector3 cubeDims = Vector3(x, y, z);
 			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
 			if (rand() % 2) {
-				AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, 10.0 * (rand() % 100) / (float)100);
+				AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
 			}
 			else {
-				AddSphereToWorld(position, sphereRadius, 10, 10.0 * (rand() % 100) / (float)100, 10.0 * (rand() % 100) / (float)100);
+				AddSphereToWorld(position, sphereRadius, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
 			}
 		}
 	}
