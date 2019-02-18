@@ -24,6 +24,9 @@
     <Filter Include="GameplayTools">
       <UniqueIdentifier>{e45761f4-5c3f-4268-9422-8d0f3f4a26cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{794ac502-dedb-47d1-9138-d83fcb0b244a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -89,6 +92,9 @@
     <ClCompile Include="Animation.cpp">
       <Filter>GameplayTools</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTechRenderer.h">
@@ -150,6 +156,9 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>GameplayTools</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
