@@ -5,6 +5,7 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 
 #include "GameWorld.h"
+#include "CameraControl.h"
 
 namespace NCL {
 	class Maths::Vector3;

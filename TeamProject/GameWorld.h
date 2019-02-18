@@ -4,6 +4,7 @@
 #include "../GameTechCommon/CollisionDetection.h"
 #include "../GameTechCommon/QuadTree.h"
 #include "../TeamProject/LayerAndTag.h"
+#include "CameraControl.h"
 
 
 namespace NCL {
@@ -18,6 +19,7 @@ namespace NCL {
 
 			
 			GameWorld();
+			void InitCamera();
 			~GameWorld();
 
 			GameObject * Find(string name);
@@ -39,7 +41,7 @@ namespace NCL {
 			void AddConstraint(Constraint* c);
 			void RemoveConstraint(Constraint* c);
 
-			Camera* GetMainCamera() const {
+			GameObject* GetMainCamera() const {
 				return mainCamera;
 			}
 
@@ -88,7 +90,7 @@ namespace NCL {
 
 			QuadTree<GameObject*>* quadTree;
 
-			Camera* mainCamera;
+			GameObject* mainCamera;
 
 			bool shuffleConstraints;
 			bool shuffleObjects;

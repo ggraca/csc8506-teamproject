@@ -33,11 +33,11 @@ void ExampleScene::ResetWorld() {
   world->ClearAndErase();
 
   // Floor
-  //AddFloorToWorld(Vector3(200, 0, 200));
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 700),0);
 
   //GameObject * cameraDummy = new GameObject("Camera");
-  ////Put some transform to it
-  //CameraControl * cameraControl = new CameraControl(cameraDummy,inputManager);
+  //////Put some transform to it
+  //CameraControl * cameraControl = new CameraControl(cameraDummy);
   //cameraDummy->AddScript((ScriptObject*)cameraControl);
 }
 
@@ -46,7 +46,7 @@ ExampleScene::~ExampleScene() {
 }
 
 void ExampleScene::UpdateGame(float dt) {
-  world->GetMainCamera()->UpdateCamera(dt);
+  //world->GetMainCamera()->UpdateCamera(dt);
   world->UpdateWorld(dt);
 
   renderer->Update(dt);
@@ -73,15 +73,15 @@ InputManager * ExampleScene::GetInputManager() const
 }
 
 
-void CommandSetCameraPosition(vector<string> commandParams, void* data) {
-	float x = stof(commandParams[1]);
-	float y = stof(commandParams[2]);
-	float z = stof(commandParams[3]);
-
-	GameWorld* world = (GameWorld*)data;
-	world->GetMainCamera()->SetPosition(Vector3(x, y, z));
-}
+//void CommandSetCameraPosition(vector<string> commandParams, void* data) {
+//	float x = stof(commandParams[1]);
+//	float y = stof(commandParams[2]);
+//	float z = stof(commandParams[3]);
+//
+//	GameWorld* world = (GameWorld*)data;
+//	world->GetMainCamera()->SetPosition(Vector3(x, y, z));
+//}
 
 void ExampleScene::RegisterConsoleCommands() {
-	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
+	//console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
 }

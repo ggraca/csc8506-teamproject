@@ -20,8 +20,6 @@ namespace NCL {
 
 			virtual void InitWorld();
 
-			bool SelectObject();
-			void MoveSelectedObject();
 			void InitMixedGridWorld(const Vector3& position, int numRows, int numCols, float rowSpacing, float colSpacing);
 
 			void SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float inverseMass, float restitution, float friction, Quaternion orientation = Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0));

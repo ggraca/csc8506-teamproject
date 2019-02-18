@@ -118,8 +118,8 @@ void GameTechRenderer::RenderShadowMap() {
 
 void GameTechRenderer::RenderCamera() {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	OGLShader* activeShader = nullptr;
 	int projLocation	= 0;
@@ -158,7 +158,7 @@ void GameTechRenderer::RenderCamera() {
 			lightRadiusLocation = glGetUniformLocation(shader->GetProgramID(), "lightRadius");
 
 			cameraLocation = glGetUniformLocation(shader->GetProgramID(), "cameraPos");
-			glUniform3fv(cameraLocation, 1, (float*)&gameWorld.GetMainCamera()->GetPosition());
+			glUniform3fv(cameraLocation, 1, (float*)&gameWorld.GetMainCamera()->GetTransform().GetWorldPosition());//TODO give child position
 
 			glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
 			glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
@@ -192,8 +192,8 @@ void GameTechRenderer::RenderCamera() {
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	Matrix4 vp = projMatrix * viewMatrix;
 

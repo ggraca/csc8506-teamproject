@@ -8,12 +8,18 @@ using namespace NCL;
 using namespace NCL::CSC8503;
 
 GameWorld::GameWorld()	{
-	mainCamera = new Camera();
+	InitCamera();
 
 	quadTree = nullptr;
 	shuffleConstraints	= false;
 	shuffleObjects		= false;
 	layering = LayerAndTag();
+}
+
+void NCL::CSC8503::GameWorld::InitCamera()
+{
+	mainCamera = new GameObject();
+	mainCamera->AddScript((ScriptObject*)new CameraControl(mainCamera));
 }
 
 GameWorld::~GameWorld()	{
@@ -157,14 +163,7 @@ void GameWorld::UpdateWorld(float dt)
 	UpdateGameObjects(dt);
 	UpdateTransforms();
 	LateUpdateGameObjects(dt);
-
-	if (shuffleObjects) {
-		std::random_shuffle(gameObjects.begin(), gameObjects.end());
-	}
-
-	if (shuffleConstraints) {
-		std::random_shuffle(constraints.begin(), constraints.end());
-	}
+	mainCamera->GetScript<CameraControl*>()->Update(dt);
 }
 
 vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
