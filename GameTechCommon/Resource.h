@@ -23,6 +23,7 @@ public:
 
 private:
 	float speed;
-	
+	float minDistance;
+	float moveSpeed;
 };
 

@@ -48,7 +48,20 @@ void Resource::Aquire(GameObject * obj)
 	gameObject->GetRenderObject()->SetColour(obj->GetRenderObject()->GetColour()); 
 	gameObject->SetTag(LayerAndTag::Tags::Occupied);
 	//set target
+	obj->SetTarget(obj);
+	
+	if ((gameObject->GetTransform().GetLocalPosition().Length - obj->GetTransform().GetLocalPosition()).Length > minDistance)
+	{
+		auto direction = ((obj->GetTransform().GetLocalPosition() - gameObject->GetTransform().GetLocalPosition())).Normalised;
+		auto amount = direction * moveSpeed;
+		auto pos = (gameObject->GetTransform().GetLocalPosition());
+		pos += amount;
+		gameObject->GetTransform().GetLocalPosition() = pos;
+
+	}
+
 }
+
 
 
 void Resource::Reset() 
