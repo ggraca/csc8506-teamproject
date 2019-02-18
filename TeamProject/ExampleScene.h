@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "InputManager.h"
 #include "Player.h"
+#include "Resource.h"
 
 
 namespace NCL {

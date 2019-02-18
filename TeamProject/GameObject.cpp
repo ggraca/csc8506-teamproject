@@ -44,6 +44,7 @@ void GameObject::ClearScripts()
 
 void GameObject::OnCollisionBegin(GameObject * otherObject)
 {
+	cout << "Colliding with " << otherObject->GetName() << endl;
 	if (!HasOtherScriptsAttached()) { return; }
 	
 	for (auto&i : scripts)
@@ -180,20 +181,14 @@ void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
 ScriptObject::ScriptObject()
 {
 	gameObject = nullptr;
-	inputManager = nullptr;
+	
 }
 
 
 ScriptObject::ScriptObject(GameObject * go)
 {
 	this->gameObject = go;
-	this->inputManager = nullptr;
-}
-
-ScriptObject::ScriptObject(GameObject * go, InputManager * im)
-{
-	this->gameObject = go;
-	this->inputManager = im;
+	
 }
 
 ScriptObject::~ScriptObject()

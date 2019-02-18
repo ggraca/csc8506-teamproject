@@ -63,9 +63,9 @@ void Resource::Reset()
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::ResourceParent));
 	gameObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
-	moveSpeed = 5.0f;
+	moveSpeed = 15.0f;
+	minDistance = 5.0f;
 	SetTarget(nullptr);
-
 }
 
 void Resource::SetTarget(GameObject * t)

@@ -38,7 +38,20 @@ void ExampleScene::ResetWorld() {
   world->ClearAndErase();
 
   // Floor
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0);
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
+  //Player
+  auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
+  player->GetRenderObject()->SetColour(Vector4(1, 0, 0, 1));
+  player->AddScript((ScriptObject*)new Player(player));
+  player->SetTag(LayerAndTag::Tags::Player);
+
+  auto resource1 = AddCubeToWorld(Vector3(50, 20, 50), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
+  auto resource2 = AddCubeToWorld(Vector3(100, 20, 100), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
+  resource1->SetName("Resource 1");
+  resource2->SetName("Resource 2");
+  resource1->AddScript((ScriptObject*)new Resource(resource1));
+  resource2->AddScript((ScriptObject*)new Resource(resource2));
+
 }
 
 ExampleScene::~ExampleScene() {
