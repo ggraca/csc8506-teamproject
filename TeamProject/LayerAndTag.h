@@ -13,6 +13,10 @@ public:
 	static enum Tags
 	{
 		Untagged,
+		Resources,
+		ResourceParent,
+		CaptureParent,
+		Occupied,
 		Player
 	};
 

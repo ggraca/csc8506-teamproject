@@ -207,7 +207,6 @@ namespace NCL {
 			LayerAndTag::Tags   tag;
 			std::vector<ScriptObject*> scripts;
 
-
 			bool	isActive;
 			bool	isAddedToWorld;
 			string	name;
