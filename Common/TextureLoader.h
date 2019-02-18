@@ -1,8 +1,10 @@
 #pragma once
 #include <map>
+#include <vector>
 #include <functional>
 #include <string>
 using std::map;
+using std::vector;
 
 #include "TextureBase.h"
 
@@ -12,6 +14,8 @@ namespace NCL {
 
 	typedef std::function<Rendering::TextureBase*(const std::string& filename)> APILoadFunction;
 
+	typedef std::function<Rendering::TextureBase*(const std::vector<std::string>& faces)> APILoadFunctionCube;
+
 	class TextureLoader
 	{
 	public:
@@ -20,10 +24,13 @@ namespace NCL {
 
 		static void RegisterTextureLoadFunction(TextureLoadFunction f, const std::string&fileExtension);
 
-
 		static void RegisterAPILoadFunction(APILoadFunction f);
 
+		static void RegisterAPILoadCubeFunction(APILoadFunctionCube f);
+
 		static Rendering::TextureBase* LoadAPITexture(const std::string&filename);
+
+		static Rendering::TextureBase* LoadAPICubeTexture(const std::vector<std::string>& faces);
 
 	protected:
 
@@ -32,6 +39,9 @@ namespace NCL {
 		static std::map<std::string, TextureLoadFunction> fileHandlers;
 
 		static APILoadFunction apiFunction;
+
+		static APILoadFunctionCube apiFunctionCube;
+
 	};
 }
 
