@@ -2,6 +2,7 @@
 
 #include "../TeamProject/GameWorld.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
+#include <map>
 
 class BulletPhysics
 {
@@ -21,4 +22,6 @@ private:
 	btCollisionDispatcher* dispatcher;
 	btBroadphaseInterface* overlappingPairCache;
 	btSequentialImpulseConstraintSolver* solver;
+
+	std::map<const btCollisionObject*, std::vector<btManifoldPoint*>> objectsCollisions;
 };

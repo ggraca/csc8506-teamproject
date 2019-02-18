@@ -24,6 +24,7 @@ namespace NCL {
 			bool SelectObject();
 			void MoveSelectedObject();
 			void InitMixedGridWorld(const Vector3& position, int numRows, int numCols, float rowSpacing, float colSpacing);
+			void OOInitMixedGridWorld(const Vector3& position, int numRows, int numCols, float rowSpacing, float colSpacing);
 
 			GameObject* AddObjectToWorld(const PhysicsObject& object);
 			GameObject* AddSphereToWorld(const Vector3& position, float radius, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
@@ -48,6 +49,9 @@ namespace NCL {
 			OGLTexture* woodTex	= nullptr;
 			OGLTexture* grassTex	= nullptr;
 			OGLTexture* ballTex	= nullptr;
+			OGLTexture* brickTex = nullptr;
+			OGLTexture* dogTex = nullptr;
+			OGLTexture* wood2Tex = nullptr;
 			OGLShader*	basicShader = nullptr;
 		};
 	}

@@ -34,9 +34,13 @@ void Scene::InitialiseAssets() {
   cylinderMesh->UploadToGPU();*/
 
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
+  brickTex = (OGLTexture*)TextureLoader::LoadAPITexture("dogs.jpg");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
+  wood2Tex = (OGLTexture*)TextureLoader::LoadAPITexture("wood2.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
+  dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
+ //basicShader = new OGLShader("GameTechVert.glsl", "GameTechFrag.glsl");
   basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
   InitCamera();
@@ -135,20 +139,22 @@ GameObject* Scene::AddObjectToWorld(const PhysicsObject& object) {
 	return obj;
 }
 
-void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
+void Scene::OOInitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
 	for (int i = 0; i < numCols; ++i) {
-		for (int j = 0; j < numRows; ++j) {
-			float sphereRadius = 0.5 + 3.0 * (rand() % 100) / (float)100;
-			float x = 1 + 10.0 * (rand() % 100) / (float)100;
-			float y = 1 + 10.0 * (rand() % 100) / (float)100;
-			float z = 1 + 10.0 * (rand() % 100) / (float)100;
-			Vector3 cubeDims = Vector3(x, y, z);
+		for (int j = 0; j < numRows; ++j) {		
 			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
 			if (rand() % 2) {
-				AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				float x = 1 + 10.0 * (rand() % 100) / (float)100;
+				float y = 1 + 10.0 * (rand() % 100) / (float)100;
+				float z = 1 + 10.0 * (rand() % 100) / (float)100;
+				Vector3 cubeDims = Vector3(x, y, z);
+				PhysicsObject physOb(cuboid, position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				AddObjectToWorld(physOb);
 			}
 			else {
-				AddSphereToWorld(position, sphereRadius, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				float sphereRadius = 0.5 + 3.0 * (rand() % 100) / (float)100;
+				PhysicsObject physOb(sphere, position, Quaternion::AxisAngleToQuaternion(Vector3(0,0,0), 0), Vector3(sphereRadius, sphereRadius, sphereRadius), 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				AddObjectToWorld(physOb);
 			}
 		}
 	}
