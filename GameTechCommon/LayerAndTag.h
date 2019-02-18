@@ -14,7 +14,8 @@ public:
 	{
 		Untagged,
 		Resources,
-		Captures,
+		ResourceParent,
+		CaptureParent,
 		Occupied,
 		Player
 	};

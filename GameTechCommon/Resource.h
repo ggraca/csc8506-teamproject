@@ -14,13 +14,14 @@ public:
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;
+	void FollowTarget(float &dt);
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void Aquire(GameObject * obj);
 	void Reset();
 	void SetTarget(GameObject * t);
-	const Resource& GetTarget() const;
+	GameObject  * GetTarget() const;
 	
 	
 

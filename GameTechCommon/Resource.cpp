@@ -4,7 +4,7 @@
 
 Resource::Resource(GameObject * gameObject):ScriptObject(gameObject)
 {
-	gameObject->SetTag(LayerAndTag::Tags::Resources);
+	Reset();
 }
 
 Resource::Resource(GameObject * gameObject, InputManager * im):ScriptObject(gameObject,im)
@@ -26,9 +26,14 @@ void Resource::Start()
 
 void Resource::Update(float dt)
 {
-	if (target!=nullptr &&(gameObject->GetTransform().GetWorldPosition().Length - target->GetTransform().GetWorldPosition().Length) > minDistance)
+	FollowTarget(dt);
+}
+
+void Resource::FollowTarget(float &dt)
+{
+	if (target && (gameObject->GetTransform().GetWorldPosition() - target->GetTransform().GetWorldPosition()).Length() > minDistance)
 	{
-		auto direction = ((target->GetTransform().GetWorldPosition() - gameObject->GetTransform().GetWorldPosition())).Normalised;
+		auto direction = ((target->GetTransform().GetWorldPosition() - gameObject->GetTransform().GetWorldPosition())).Normalised();
 		auto amount = direction * moveSpeed * dt;
 		auto pos = (gameObject->GetTransform().GetWorldPosition());
 		pos += amount;
@@ -51,21 +56,18 @@ void Resource::OnCollisionEnd(GameObject * otherObject)
 
 void Resource::Aquire(GameObject * obj) 
 {
-	GameObject * captures = GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Captures);
-	gameObject->GameObject::SetParent(captures);
+	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
 	gameObject->GetRenderObject()->SetColour(obj->GetRenderObject()->GetColour()); 
 	gameObject->SetTag(LayerAndTag::Tags::Occupied);
 	SetTarget(obj);
 }
 
-
-
 void Resource::Reset() 
 {
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
-	gameObject->GameObject::SetParent(gameObject);
+	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::ResourceParent));
 	gameObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
-	target = nullptr;
+	SetTarget(nullptr);
 }
 
 void Resource::SetTarget(GameObject * t)
@@ -73,7 +75,7 @@ void Resource::SetTarget(GameObject * t)
 	this->target = t;
 }
 
-const Resource& GetTarget() const
+GameObject* Resource::GetTarget() const
 {
 	return target;
 }
