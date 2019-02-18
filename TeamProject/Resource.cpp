@@ -6,10 +6,6 @@ Resource::Resource(GameObject * gameObject):ScriptObject(gameObject)
 {
 }
 
-Resource::Resource(GameObject * gameObject, InputManager * im):ScriptObject(gameObject,im)
-{
-}
-
 Resource::~Resource()
 {
 }

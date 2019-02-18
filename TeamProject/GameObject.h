@@ -4,7 +4,6 @@
 #include "../GameTechCommon/PhysicsObject.h"
 #include "../GameTechCommon/RenderObject.h"
 #include "LayerAndTag.h"
-//#include "GameWorld.h"
 
 
 #include <vector>
@@ -221,10 +220,7 @@ namespace NCL {
 		public:
 
 			ScriptObject();
-
-
 			ScriptObject(GameObject * go);
-			ScriptObject(GameObject * go,InputManager* im);
 
 			virtual ~ScriptObject();
 
@@ -239,8 +235,6 @@ namespace NCL {
 		protected:
 
 			GameObject * gameObject;
-			InputManager * inputManager;
-
 		};
 
 	}

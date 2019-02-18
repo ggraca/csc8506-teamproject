@@ -16,11 +16,11 @@
 using namespace NCL;
 using namespace CSC8503;
 
-
+InputManager * ExampleScene::inputManager = nullptr;
 
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
-  inputManager = new InputManager();
+  
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
 
@@ -28,6 +28,8 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
+
+  if(!inputManager){ inputManager = new InputManager(); }//Static guy initializations
   GameObject::SetGameWorld(world);
 }
 
@@ -37,7 +39,6 @@ void ExampleScene::ResetWorld() {
 
   // Floor
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0);
-
 }
 
 ExampleScene::~ExampleScene() {
@@ -67,10 +68,10 @@ void ExampleScene::UpdateGame(float dt) {
   
 }
 
-InputManager * ExampleScene::GetInputManager() const
-{
-	return inputManager;
-}
+//InputManager * ExampleScene::GetInputManager() const
+//{
+//	return inputManager;
+//}
 
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {

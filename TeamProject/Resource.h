@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "ExampleScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -8,7 +9,6 @@ class Resource:ScriptObject
 {
 public:
 	Resource(GameObject * gameObject);
-	Resource(GameObject* gameObject, InputManager *im);
 	virtual ~Resource();
 
 	void Awake() override;

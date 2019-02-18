@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "ExampleScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -10,7 +11,6 @@ class Player : virtual public ScriptObject
 public:
 
 	Player(GameObject * obj);
-	Player(GameObject * obj,InputManager *im);
 	virtual ~Player() {}
 
 	void Awake() override;
@@ -19,5 +19,13 @@ public:
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
+
+	int GetResourceCount() const;
+protected:
+
+	void ResetPlayer();
+	void UpdateResourceCount(int amount);
+
+	int resourceCount;
 };
 

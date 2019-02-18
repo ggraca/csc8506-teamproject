@@ -6,6 +6,7 @@
 #include "HUD.h"
 #include "Animation.h"
 #include "InputManager.h"
+#include "Player.h"
 
 
 namespace NCL {
@@ -16,16 +17,15 @@ namespace NCL {
       ExampleScene();
       ~ExampleScene();
       void UpdateGame(float dt);
-			InputManager* GetInputManager() const;
+	  static InputManager * inputManager;
 
     protected:
       void ResetWorld();
-			void RegisterConsoleCommands();
+	  void RegisterConsoleCommands();
 
-			DebugMenu debugMenu;
-			HUD hud;
-			Console console;
-      InputManager * inputManager;
+	  DebugMenu debugMenu;
+	  HUD hud;
+	  Console console;
     };
   }
 }

@@ -4,11 +4,7 @@
 
 Player::Player(GameObject * obj) : ScriptObject(obj)
 {
-
-}
-
-Player::Player(GameObject * obj, InputManager * im):ScriptObject(obj,im)
-{
+	ResetPlayer();
 }
 
 void Player::Awake()
@@ -33,4 +29,21 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 void Player::OnCollisionEnd(GameObject * otherObject)
 {
+}
+
+int Player::GetResourceCount() const
+{
+	return resourceCount;
+}
+
+void Player::ResetPlayer()
+{
+	resourceCount = 0;
+}
+
+void Player::UpdateResourceCount(int amount)
+{
+	resourceCount += amount;
+
+	if (resourceCount <= 0) resourceCount = 0;
 }
