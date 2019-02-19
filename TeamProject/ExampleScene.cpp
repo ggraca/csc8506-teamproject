@@ -48,6 +48,9 @@ void ExampleScene::ResetWorld() {
     woodTex,
     basicShader
   ));
+  go->SetPhysicsObject(new PhysicsObject(&go->GetTransform(), go->GetBoundingVolume()));
+  btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(1), btScalar(1), btScalar(1)));
+  SetBulletPhysicsParameters(Shape, Vector3(0, 50, 0), 0, 1, 1);
   world->AddGameObject(go);
 }
 
@@ -60,7 +63,7 @@ void ExampleScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   renderer->Update(dt);
-  //physics->Update(dt);
+  physics->Update(dt);
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
