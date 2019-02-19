@@ -51,6 +51,7 @@ void Scene::InitialiseAssets() {
   };
 
   cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
+  renderer->skybox = cubeMap->GetObjectID();
 
   InitCamera();
   InitWorld();

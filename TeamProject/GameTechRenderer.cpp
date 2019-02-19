@@ -151,7 +151,7 @@ void GameTechRenderer::RenderFrame() {
 	BuildObjectList();
 	SortObjectList();
 	RenderShadowMap();
-	//RenderSkybox(); Don't call for now
+	RenderSkybox();
 	RenderCamera();
 	RenderLights();
 	CombineBuffers();
@@ -273,7 +273,7 @@ void GameTechRenderer::RenderSkybox() {
 
 void GameTechRenderer::RenderCamera() {
 	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();

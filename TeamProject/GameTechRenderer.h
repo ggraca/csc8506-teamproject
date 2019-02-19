@@ -26,6 +26,8 @@ namespace NCL {
 
 			void GenerateScreenTexture(GLuint & into, bool depth = false);
 
+			GLuint skybox;
+
 		protected:
 			void RenderFrame()	override;
 			void GenBuffers();
@@ -53,8 +55,6 @@ namespace NCL {
 			Matrix4     shadowMatrix;
 
 			OGLShader* skyBoxShader;
-			//Skybox needs to be loaded into the texture library
-			GLuint skybox;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			GLuint gBufferDepthTex; // Depth goes here
