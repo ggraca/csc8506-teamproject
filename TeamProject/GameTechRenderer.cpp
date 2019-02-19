@@ -3,6 +3,7 @@
 #include "../Common/Camera.h"
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
+#include "OBJMesh.h"
 
 using namespace NCL;
 using namespace Rendering;
@@ -205,6 +206,15 @@ void GameTechRenderer::RenderShadowMap() {
 		glUniformMatrix4fv(mvpLocation, 1, false, (float*)&mvpMatrix);
 		BindMesh((*i).GetMesh());
 		DrawBoundMesh();
+
+    // OGL Meshes have additional meshes as children
+    if (dynamic_cast<OBJMesh*>(i->GetMesh())) {
+      for (auto child : ((OBJMesh*)i->GetMesh())->GetChildren()) {
+        BindMesh(child);
+        vertsDrawn += child->GetVertexCount();
+        DrawBoundMesh();
+      }
+    }
 	}
 
 	// Calculates how many shadow casting lights are currently being renderered
@@ -323,11 +333,18 @@ void GameTechRenderer::RenderCamera() {
 		glUniform4fv(colourLocation, 1, (float*)&i->GetColour());
 
 		BindMesh((*i).GetMesh());
-
-		//Calculates how many vertices are drawn per frame
+		// Calculates how many vertices are drawn per frame
 		vertsDrawn += (*i).GetMesh()->GetVertexCount();
-
 		DrawBoundMesh();
+
+    // OGL Meshes have additional meshes as children
+    if (dynamic_cast<OBJMesh*>(i->GetMesh())) {
+      for (auto child : ((OBJMesh*)i->GetMesh())->GetChildren()) {
+        BindMesh(child);
+        vertsDrawn += child->GetVertexCount();
+        DrawBoundMesh();
+      }
+    }
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

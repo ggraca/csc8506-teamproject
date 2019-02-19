@@ -24,6 +24,9 @@
     <Filter Include="GameplayTools">
       <UniqueIdentifier>{e45761f4-5c3f-4268-9422-8d0f3f4a26cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GraphicsTools">
+      <UniqueIdentifier>{2d1263d3-aa20-49f0-866b-a9c41f7e4747}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -89,6 +92,9 @@
     <ClCompile Include="Animation.cpp">
       <Filter>GameplayTools</Filter>
     </ClCompile>
+    <ClCompile Include="OBJMesh.cpp">
+      <Filter>GraphicsTools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTechRenderer.h">
@@ -150,6 +156,9 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>GameplayTools</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJMesh.h">
+      <Filter>GraphicsTools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

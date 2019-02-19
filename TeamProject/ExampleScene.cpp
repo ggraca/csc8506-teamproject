@@ -6,6 +6,7 @@
 #include "../Common/TextureLoader.h"
 
 #include "../Common/Assets.h"
+#include "../TeamProject/OBJMesh.h"
 
 #include <fstream>
 #include <string>
@@ -37,7 +38,17 @@ void ExampleScene::ResetWorld() {
 
   // Floor
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0);
-
+   
+  // OBJ file example
+  GameObject* go = new GameObject();
+  go->GetTransform().SetLocalPosition(Vector3(0, 50, 0));
+  go->SetRenderObject(new RenderObject(
+    &go->GetTransform(),
+    new OBJMesh(Assets::MESHDIR + "tinker.obj"),
+    woodTex,
+    basicShader
+  ));
+  world->AddGameObject(go);
 }
 
 ExampleScene::~ExampleScene() {
@@ -49,7 +60,7 @@ void ExampleScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   renderer->Update(dt);
-  physics->Update(dt);
+  //physics->Update(dt);
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
