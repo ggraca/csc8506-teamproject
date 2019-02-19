@@ -6,9 +6,9 @@
 
 #include "GameWorld.h"
 
+class Light;
+
 namespace NCL {
-	class Maths::Vector3;
-	class Maths::Vector4;
 	namespace CSC8503 {
 		class RenderObject;
 
@@ -71,10 +71,7 @@ namespace NCL {
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 
-			Vector4		lightColour;
-			float		lightRadius;
-			Vector3		lightPosition;
-			float lightBrightness = 16.0f;
+			Light* directionalLight;
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;

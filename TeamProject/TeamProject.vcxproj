@@ -162,7 +162,6 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LayerAndTag.cpp" />
-    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="Player.cpp" />

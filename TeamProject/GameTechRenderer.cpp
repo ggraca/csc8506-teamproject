@@ -3,6 +3,7 @@
 #include "../Common/Camera.h"
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
+#include "Light.h"
 
 using namespace NCL;
 using namespace Rendering;
@@ -13,8 +14,6 @@ using namespace CSC8503;
 Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
 GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetWindow()), gameWorld(world)	{
-	glEnable(GL_DEPTH_TEST);
-
 	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
 	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
@@ -26,12 +25,9 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	screenQuad->UploadToGPU();
 
-	glClearColor(1, 1, 1, 1);
-
 	//Set up the light properties
-	lightColour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	lightRadius = 2000.0f;
-	lightPosition = Vector3(1000.0f, 1000.0f, 0.0f);
+	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
+		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 6.0f, Quaternion(0, 0, 0, 0));
 }
 
 GameTechRenderer::~GameTechRenderer()	{
@@ -46,6 +42,8 @@ GameTechRenderer::~GameTechRenderer()	{
 	glDeleteFramebuffers(1, &gBufferFBO);
 	glDeleteFramebuffers(1, &lightFBO);
 	glDeleteFramebuffers(1, &shadowFBO);
+
+	delete directionalLight;
 }
 
 void GameTechRenderer::GenBuffers() {
@@ -148,6 +146,7 @@ void GameTechRenderer::GenerateScreenTexture(GLuint & into, bool depth) {
 
 void GameTechRenderer::RenderFrame() {
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.3f, 0.8f, 1, 1);
 	BuildObjectList();
 	SortObjectList();
@@ -192,7 +191,7 @@ void GameTechRenderer::RenderShadowMap() {
 	BindShader(shadowShader);
 	int mvpLocation = glGetUniformLocation(shadowShader->GetProgramID(), "mvpMatrix");
 
-	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(lightPosition, Vector3(0, 0, 0));
+	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(directionalLight->GetPosition(), Vector3(0, 0, 0));
 	Matrix4 shadowProjMatrix = Matrix4::Perspective(100.0f, 5000.0f, 1, 45.0f);
 
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
@@ -356,6 +355,9 @@ void GameTechRenderer::RenderLights() {
 	int projLocation = 0;
 	int textureLocation = 0;
 	int shadowLocation = 0;
+		
+	Matrix4 identity;
+	identity.ToIdentity();
 
 	//TODO: Overload BindTextureToShader to take GLuint as parameter, as above for all textures
 	//BindTextureToShader(gBufferDepthTex, "depthTex", 3);
@@ -371,38 +373,36 @@ void GameTechRenderer::RenderLights() {
 
 	cameraLocation = glGetUniformLocation(lightShader->GetProgramID(), "cameraPos");
 	pixelLocation = glGetUniformLocation(lightShader->GetProgramID(), "pixelSize");
+	viewLocation = glGetUniformLocation(lightShader->GetProgramID(), "viewMatrix");
+	projLocation = glGetUniformLocation(lightShader->GetProgramID(), "projMatrix");
+	textureLocation = glGetUniformLocation(lightShader->GetProgramID(), "textureMatrix");
 
 	glUniform3fv(cameraLocation, 1, (float *)&gameWorld.GetMainCamera()->GetPosition());
 	glUniform2f(pixelLocation, 1.0f / currentWidth, 1.0f / currentHeight);
+	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
+	glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
+	glUniformMatrix4fv(textureLocation, 1, false, (float*)&identity);
 
 	for (int x = 0; x < 1; ++x) {
-		float radius = lightRadius;
+		float radius = directionalLight->GetRadius();
 
-		Matrix4 tempModelMatrix = Matrix4::Translation(lightPosition) * Matrix4::Scale(Vector3(radius, radius, radius));
-		lightPosition = tempModelMatrix.GetPositionVector();
+		Matrix4 tempModelMatrix = Matrix4::Translation(directionalLight->GetPosition()) * Matrix4::Scale(Vector3(radius, radius, radius));
+		directionalLight->SetPosition(tempModelMatrix.GetPositionVector());
 
-		Matrix4 identity;
-		identity.ToIdentity();
 
-		int lightPosLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightPos");
-		int lightColLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightColour");
-		int lightRadiusLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightRadius");
-		int lightBrightnessLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightBrightness");
-		int modelLocation = glGetUniformLocation(lightShader->GetProgramID(), "modelMatrix");
-		int viewLocation = glGetUniformLocation(lightShader->GetProgramID(), "viewMatrix");
-		int projLocation = glGetUniformLocation(lightShader->GetProgramID(), "projMatrix");
-		int textureLocation = glGetUniformLocation(lightShader->GetProgramID(), "textureMatrix");
-		int shadowLocation = glGetUniformLocation(lightShader->GetProgramID(), "shadowMatrix");
+		lightPosLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightPos");
+		lightColLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightColour");
+		lightRadiusLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightRadius");
+		lightBrightnessLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightBrightness");
+		modelLocation = glGetUniformLocation(lightShader->GetProgramID(), "modelMatrix");
+		shadowLocation = glGetUniformLocation(lightShader->GetProgramID(), "shadowMatrix");
 
-		glUniform3fv(lightPosLocation, 1, (float*)&lightPosition);
-		glUniform4fv(lightColLocation, 1, (float*)&lightColour);
+		glUniform3fv(lightPosLocation, 1, (float*)&directionalLight->GetPosition());
+		glUniform4fv(lightColLocation, 1, (float*)&directionalLight->GetColour());
 		glUniform1f(lightRadiusLocation, radius);
-		glUniform1f(lightBrightnessLocation, lightBrightness);
+		glUniform1f(lightBrightnessLocation, directionalLight->GetBrightness());
 
 		glUniformMatrix4fv(modelLocation, 1, false, (float*)&tempModelMatrix);
-		glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
-		glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
-		glUniformMatrix4fv(textureLocation, 1, false, (float*)&identity);
 		glUniformMatrix4fv(shadowLocation, 1, false, (float*)&shadowMatrix);
 
 		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
@@ -415,7 +415,7 @@ void GameTechRenderer::RenderLights() {
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
-		float dist = (lightPosition - gameWorld.GetMainCamera()->GetPosition()).Length();
+		float dist = (directionalLight->GetPosition() - gameWorld.GetMainCamera()->GetPosition()).Length();
 		if (dist < radius) {// camera is inside the light volume !
 			glCullFace(GL_FRONT);
 		}
@@ -458,7 +458,7 @@ void GameTechRenderer::CombineBuffers() {
 	int viewLocation = 0;
 	int projLocation = 0;
 	int textureLocation = 0;
-  int ambientLocation = 0;
+    int ambientLocation = 0;
 
 	Matrix4 identity;
 	identity.ToIdentity();
