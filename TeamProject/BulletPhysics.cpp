@@ -96,11 +96,14 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 		PhysicsObject* object = (*i)->GetPhysicsObject();
 		if (object == nullptr) continue;
 
-		(*i)->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
+	//	(*i)->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
 		Transform& transform = (*i)->GetTransform();
 
-		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j]; //TODO This will only work if all gameWorld objects are physics objects!
+		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
 		btRigidBody* body = btRigidBody::upcast(obj);
+
+//		body->applyForce(btVector3(400, 10, 10), btVector3(0, -10, 0));
+
 		btTransform trans;
 		if (body && body->getMotionState())
 		{

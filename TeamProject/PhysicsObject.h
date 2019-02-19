@@ -81,14 +81,28 @@ namespace NCL {
 				return transform;
 			}
 
-
-
 			void SetLinearVelocity(const Vector3& v) {
+				body->activate();
+				body->setLinearVelocity(btVector3(v.x, v.y, v.z));
 				linearVelocity = v;
 			}
 
 			void SetAngularVelocity(const Vector3& v) {
+				body->activate();
+				body->setAngularVelocity(btVector3(v.x, v.y, v.z));
 				angularVelocity = v;
+			}
+
+			void ApplyForce(const Vector3& f, const Vector3& p) {
+				body->activate();
+				body->applyForce(btVector3(f.x, f.y, f.z), btVector3(p.x, p.y, p.z));
+				force = f;
+			}
+
+			void ApplyTorque(const Vector3& t) {
+				body->activate();
+				body->applyTorque(btVector3(t.x, t.y, t.z));
+				torque = t;
 			}
 
 			void SetBulletPhysicsParameters();
@@ -112,14 +126,12 @@ namespace NCL {
 			float mass;
 			float restitution;
 			float friction;
+			
+			Vector3 linearVelocity; //TODO Remove if not needed
+			Vector3 force;          //TODO Remove if not needed
 
-			//linear stuff
-			Vector3 linearVelocity;
-		//	Vector3 force;
-
-			//angular stuff
-			Vector3 angularVelocity;
-		//	Vector3 torque
+			Vector3 angularVelocity;//TODO Remove if not needed
+			Vector3 torque;         //TODO Remove if not needed
 
 			btCollisionShape* shape;
 			btRigidBody* body;

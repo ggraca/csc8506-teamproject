@@ -30,9 +30,13 @@ void Scene::InitialiseAssets() {
   sphereMesh->UploadToGPU();
   renderer->SetLightMesh(sphereMesh);
 
-  /*cylinderMesh = new OGLMesh("cylinder.msh");
+  cylinderMesh = new OGLMesh("cylinder.obj");
   cylinderMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  cylinderMesh->UploadToGPU();*/
+  cylinderMesh->UploadToGPU();
+
+  coneMesh = new OGLMesh("cone.obj");
+  coneMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+  coneMesh->UploadToGPU();
 
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   brickTex = (OGLTexture*)TextureLoader::LoadAPITexture("brick.png");
@@ -41,7 +45,7 @@ void Scene::InitialiseAssets() {
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
   dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
- //basicShader = new OGLShader("GameTechVert.glsl", "GameTechFrag.glsl");
+//basicShader = new OGLShader("GameTechVert.glsl", "GameTechFrag.glsl");
   basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
   InitCamera();
@@ -51,6 +55,8 @@ void Scene::InitialiseAssets() {
 Scene::~Scene() {
   delete cubeMesh;
   delete sphereMesh;
+  delete cylinderMesh;
+  delete coneMesh;
   delete basicTex;
   delete woodTex;
   delete grassTex;
@@ -96,8 +102,7 @@ void Scene::InitWorld() {
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float mass, float restitution, float friction) {
   GameObject* sphere = new GameObject();
 
-  Vector3 sphereSize = Vector3(radius, radius, radius);
-  sphere->GetTransform().SetWorldScale(sphereSize);
+  sphere->GetTransform().SetWorldScale(Vector3(radius, radius, radius));
   sphere->GetTransform().SetWorldPosition(position);
   sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, ballTex, basicShader));
   sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
@@ -109,14 +114,40 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
   GameObject* cube = new GameObject();
 
-  cube->GetTransform().SetLocalOrientation(orient);
-  cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetWorldScale(dimensions);
+  cube->GetTransform().SetWorldPosition(position);
+  cube->GetTransform().SetLocalOrientation(orient);
   cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
   cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
 
   world->AddGameObject(cube);
   return cube;
+}
+
+GameObject* Scene::AddCylinderToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
+  GameObject* cylinder = new GameObject();
+
+  cylinder->GetTransform().SetWorldScale(dimensions);
+  cylinder->GetTransform().SetWorldPosition(position);
+  cylinder->GetTransform().SetLocalOrientation(orient);
+  cylinder->SetRenderObject(new RenderObject(&cylinder->GetTransform(), cylinderMesh, woodTex, basicShader));
+  cylinder->SetPhysicsObject(new PhysicsObject(&cylinder->GetTransform(), ShapeType::cylinder, mass, restitution, friction));
+
+  world->AddGameObject(cylinder);
+  return cylinder;
+}
+
+GameObject* Scene::AddConeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
+  GameObject* cone = new GameObject();
+
+  cone->GetTransform().SetWorldScale(dimensions);
+  cone->GetTransform().SetWorldPosition(position);
+  cone->GetTransform().SetLocalOrientation(orient);
+  cone->SetRenderObject(new RenderObject(&cone->GetTransform(), coneMesh, woodTex, basicShader));
+  cone->SetPhysicsObject(new PhysicsObject(&cone->GetTransform(), ShapeType::cone, mass, restitution, friction));
+
+  world->AddGameObject(cone);
+  return cone;
 }
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
@@ -136,6 +167,7 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 			}
 			if (rand() % 2) {
 				GameObject* go = AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				go->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));  
 				go->GetRenderObject()->SetDefaultTexture(tempTex);
 			}
 			else {

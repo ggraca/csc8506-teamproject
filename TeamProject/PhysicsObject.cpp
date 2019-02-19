@@ -6,17 +6,17 @@ using namespace NCL;
 using namespace CSC8503;
 
 PhysicsObject::PhysicsObject() {
-	dimensions = Vector3(1, 1, 1);
+	dimensions = Vector3(1, 1, 1); //TODO Make transform from these parameters, or delete constructor
 	orientation = Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0);
 	position = Vector3(0, 0, 0);
 	mass = 1.0f;
-	restitution = 0.8f;
-	friction = 0.8f;
+	restitution = 0.3f;
+	friction = 0.3f;
 }
 
 PhysicsObject::PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction) {
 	this->type = type;
-	this->dimensions = dimensions;
+	this->dimensions = dimensions; //TODO Make transform from these parameters, or delete constructor
 	this->orientation = orientation;
 	this->position = position;
 	this->mass = mass;
@@ -38,6 +38,16 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 	}
 	if (type == sphere) {
 		shape = new btSphereShape(btScalar(dimensions.x));
+	}
+	if (type == cylinder) {
+		shape = new btCylinderShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+	}
+	if (type == cone) {
+		shape = new btConeShape(btScalar(dimensions.x), btScalar(dimensions.y)); //TODO Radius and height
+	}
+	if (type == complexMesh) {
+		//shape = new btTriangleMeshShape(btTriangleMeshShape obj);
+		//data = new btTriangleMeshShapeData();
 	}
 	
 	SetBulletPhysicsParameters();

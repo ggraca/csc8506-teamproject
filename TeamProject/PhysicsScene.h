@@ -19,6 +19,8 @@ namespace NCL {
       void DebugScene(float dt);
 	  void UpdateKeys();
 
+	  GameObject* bestcube;
+
       DebugMenu debugMenu;
       Console console;
     };
