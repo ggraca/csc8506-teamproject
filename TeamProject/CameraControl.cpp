@@ -7,10 +7,6 @@ CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)
 
 }
 
-CameraControl::CameraControl(GameObject * obj, InputManager * im) : ScriptObject(obj, im)
-{
-}
-
 void CameraControl::Awake()
 {
 }
