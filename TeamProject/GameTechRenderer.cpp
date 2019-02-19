@@ -27,7 +27,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	//Set up the light properties
 	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
-		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 6.0f, Quaternion(0, 0, 0, 0));
+		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
 }
 
 GameTechRenderer::~GameTechRenderer()	{
@@ -386,9 +386,9 @@ void GameTechRenderer::RenderLights() {
 	for (int x = 0; x < 1; ++x) {
 		float radius = directionalLight->GetRadius();
 
-		Matrix4 tempModelMatrix = Matrix4::Translation(directionalLight->GetPosition()) * Matrix4::Scale(Vector3(radius, radius, radius));
-		directionalLight->SetPosition(tempModelMatrix.GetPositionVector());
-
+		Matrix4 tempModelMatrix = Matrix4::Translation(directionalLight->GetPosition())
+			* directionalLight->GetOrientation().ToMatrix4()
+			* Matrix4::Scale(Vector3(radius, radius, radius));
 
 		lightPosLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightPos");
 		lightColLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightColour");
@@ -416,14 +416,29 @@ void GameTechRenderer::RenderLights() {
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
 		float dist = (directionalLight->GetPosition() - gameWorld.GetMainCamera()->GetPosition()).Length();
-		if (dist < radius) {// camera is inside the light volume !
-			glCullFace(GL_FRONT);
-		}
-		else {
-			glCullFace(GL_BACK);
-		}
 
-		BindMesh(lightSphere);
+		if (directionalLight->GetType() == LightType::Point) {
+			if (dist < radius) {// camera is inside the light volume !
+				glCullFace(GL_FRONT);
+			}
+			else {
+				glCullFace(GL_BACK);
+			}
+
+			BindMesh(lightSphere);
+		}
+		else if (directionalLight->GetType() == LightType::Spot) {
+			// Different calculation here to determine if inside the cone
+			if (dist < radius) {// camera is inside the light volume !
+				glCullFace(GL_FRONT);
+			}
+			else {
+				glCullFace(GL_BACK);
+			}
+
+			//Change to bind cone.
+			BindMesh(lightSphere);
+		}
 
 		//Calculates how many vertices are drawn per frame
 		vertsDrawn += lightSphere->GetVertexCount();
