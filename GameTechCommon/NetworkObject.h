@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "../TeamProject/GameObject.h"
 #include "NetworkBase.h"
 #include "NetworkState.h"
 namespace NCL {

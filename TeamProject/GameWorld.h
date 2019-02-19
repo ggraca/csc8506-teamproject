@@ -95,6 +95,7 @@ namespace NCL {
 			bool shuffleConstraints;
 			bool shuffleObjects;
 			LayerAndTag layering;
+			Vector3 cameraOffset;
 		};
 	}
 }

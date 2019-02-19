@@ -9,17 +9,22 @@ using namespace NCL::CSC8503;
 
 GameWorld::GameWorld()	{
 	InitCamera();
-
-	quadTree = nullptr;
-	shuffleConstraints	= false;
-	shuffleObjects		= false;
 	layering = LayerAndTag();
 }
 
 void NCL::CSC8503::GameWorld::InitCamera()
 {
+	cameraOffset = Vector3(-100, 30, -100);
+
 	mainCamera = new GameObject();
 	mainCamera->AddScript((ScriptObject*)new CameraControl(mainCamera));
+
+	Transform * child = new Transform();
+	child->SetLocalPosition(cameraOffset);
+	child->SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(-10,-135, 0));
+	child->SetParent(&(mainCamera->GetTransform()));
+
+	mainCamera->GetTransform().AddChild(child);
 }
 
 GameWorld::~GameWorld()	{

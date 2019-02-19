@@ -14,9 +14,9 @@ CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)
 	this->fov = 45.0f;
 	this->nearPlane = 3.0f;
 	this->farPlane = 4200.0f;
-	this->pitch = -10.0f;
-	this->yaw = 250;
-	gameObject->GetTransform().SetWorldPosition(Vector3(-50, 120, 200));
+	this->pitch = 0;
+	this->yaw = 0;
+	gameObject->GetTransform().SetWorldPosition(Vector3(0, 10,0));
 }
 
 
@@ -48,13 +48,20 @@ void CameraControl::UpdateCamera()
 	pitch = min(pitch, 90.0f);
 	pitch = max(pitch, -90.0f);
 
-	if (yaw < 0) {
+	if (yaw < 0) 
+	{
 		yaw += 360.0f;
 	}
-	if (yaw > 360.0f) {
+	if (yaw > 360.0f) 
+	{
 		yaw -= 360.0f;
 	}
 	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(pitch, yaw, roll));
+	gameObject->GetTransform().UpdateMatrices();
+	cout << "Dummy world rotation: " << gameObject->GetTransform().GetWorldOrientation().ToEuler() << endl;
+	cout << "Dummy local rotation: " << gameObject->GetTransform().GetLocalOrientation().ToEuler() << endl;
+	
+	
 }
 
 void CameraControl::LateUpdate(float dt)
@@ -69,14 +76,31 @@ void CameraControl::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
-Matrix4 CameraControl::BuildViewMatrix() const {
+Matrix4 CameraControl::BuildViewMatrix() const 
+{
+	vector<Transform*> children = gameObject->GetTransform().GetChildrenList();
 	
-	return	Matrix4::Rotation(-pitch, Vector3(1, 0, 0)) *
-		Matrix4::Rotation(-yaw, Vector3(0, 1, 0)) *
-		Matrix4::Translation(-gameObject->GetTransform().GetWorldPosition());
+	if (children.size() == 0)
+	{
+		cout << "No camera child has been found" << endl;
+		return	Matrix4::Rotation(-pitch, Vector3(1, 0, 0)) *
+			Matrix4::Rotation(-yaw, Vector3(0, 1, 0)) *
+			Matrix4::Translation(-gameObject->GetTransform().GetWorldPosition());
+	}
+	else
+	{
+		children[0]->UpdateMatrices();
+		Vector3 childRot = children[0]->GetWorldOrientation().ToEuler();
+		cout << "Child world rotation: " << children[0]->GetWorldOrientation().ToEuler() << endl;
+		cout << "Child local rotation: " << children[0]->GetLocalOrientation().ToEuler() << endl;
+		return	Matrix4::Rotation(-childRot.x, Vector3(1, 0, 0)) *
+			Matrix4::Rotation(-childRot.y, Vector3(0, 1, 0)) *
+			Matrix4::Translation(-children[0]->GetWorldPosition());
+	}
 };
 
-Matrix4 CameraControl::BuildProjectionMatrix(float currentAspect) const {
+Matrix4 CameraControl::BuildProjectionMatrix(float currentAspect) const
+{
 	//if (camType == CameraType::Orthographic) {
 	//	return Matrix4::Orthographic(nearPlane, farPlane, right, left, top, bottom);
 	//}
