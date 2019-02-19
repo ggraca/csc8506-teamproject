@@ -54,6 +54,7 @@ void Player::PlayerMovement(float dt)
 
 void Player::LateUpdate(float dt)
 {
+	
 }
 
 void Player::OnCollisionBegin(GameObject * otherObject)
