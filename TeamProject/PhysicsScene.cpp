@@ -29,8 +29,8 @@ void PhysicsScene::ResetWorld() {
   AddSphereToWorld(Vector3(40, 100, 20), 1, 1);
   AddSphereToWorld(Vector3(41, 130, 20), 1, 1);
   InitMixedGridWorld(Vector3(47, 230, 20), 50, 40, 20, 20);
-  // AddCylinderToWorld(Vector3(47, 230, 20), Vector3(2, 2, 2), 1);
-  // AddConeToWorld(Vector3(47, 230, 20), Vector3(2, 2, 2), 1);
+  // AddCylinderToWorld(Vector3(0, 10, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 1);
+  // AddConeToWorld(Vector3(Vector3(0, 10, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 1);
 }
 
 PhysicsScene::~PhysicsScene() {
