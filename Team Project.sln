@@ -41,7 +41,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletHelloWorld", "Plugins
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontBuilder", "Plugins\FontBuilder\FontBuilder.vcxproj", "{F75A977F-2D2B-4D4A-A5E4-72905D38922A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fmod part 2", "Fmod part 2\Fmod part 2.vcxproj", "{7DB5ACD2-3270-4991-BE73-A234BC495969}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fmod part 2", "Plugins\Fmod part 2\Fmod part 2.vcxproj", "{7DB5ACD2-3270-4991-BE73-A234BC495969}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

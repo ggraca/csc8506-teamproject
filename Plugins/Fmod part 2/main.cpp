@@ -32,6 +32,5 @@ void main() {
 			Sleep(10);
 		} while (i < 10000);
 	}
-
 }
 	
