@@ -79,6 +79,8 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 			const btVector3& ptB = pt.getPositionWorldOnB();
 			const btVector3& normalOnB = pt.m_normalWorldOnB;
 
+
+
 			/*btVector3 velA = btRigidBody::upcast(objA)->getVelocityInLocalPoint(ptA - objA->getWorldTransform().getOrigin);
 			btVector3 velB = btRigidBody::upcast(objB)->getVelocityInLocalPoint(ptB - objB->getWorldTransform().getOrigin);
 			Vector3 relVelOfCollision = Vector3(velA.x - velB.x, velA.y - velB.y, velA.z - velB.z);
@@ -96,7 +98,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 		PhysicsObject* object = (*i)->GetPhysicsObject();
 		if (object == nullptr) continue;
 
-	//	(*i)->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
+		(*i)->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
 		Transform& transform = (*i)->GetTransform();
 
 		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
@@ -121,7 +123,8 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 
 		auto& manifoldPoints = objectsCollisions[body];
 		if (!manifoldPoints.empty()) {
-//			(*i)->GetRenderObject()->SetColour(Vector4(1,0,0,1));
+			(*i)->GetRenderObject()->SetColour(Vector4(1,0,0,1));
+			
 		}
 
 		j++;

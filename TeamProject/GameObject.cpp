@@ -107,6 +107,26 @@ void GameObject::LateUpdateAttachedScripts(float dt)
 	}
 }
 
+void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
+{
+	if (!HasOtherScriptsAttached()) { return; }
+
+	for (auto&i : scripts)
+	{
+		i->OnCollisionBegin(otherObject);
+	}
+}
+
+void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
+{
+	if (!HasOtherScriptsAttached()) { return; }
+
+	for (auto&i : scripts)
+	{
+		i->OnCollisionEnd(otherObject);
+	}
+}
+
 void GameObject::SetGameWorld(GameWorld * world)
 {
 	gameWorld = world;
@@ -192,6 +212,30 @@ ScriptObject::ScriptObject(GameObject * go)
 ScriptObject::~ScriptObject()
 {
 	//don"t delete gameobject as it may still meant to live after script is detached
+}
+
+void ScriptObject::Awake()
+{
+}
+
+void ScriptObject::Start()
+{
+}
+
+void ScriptObject::Update(float dt)
+{
+}
+
+void ScriptObject::LateUpdate(float dt)
+{
+}
+
+void ScriptObject::OnCollisionBegin(GameObject * otherObject)
+{
+}
+
+void ScriptObject::OnCollisionEnd(GameObject * otherObject)
+{
 }
 
 

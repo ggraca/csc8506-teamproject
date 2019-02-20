@@ -10,7 +10,7 @@ class CameraControl : virtual public ScriptObject
 public:
 
 	CameraControl(GameObject * obj);
-	virtual ~CameraControl() {}
+	virtual ~CameraControl();
 
 	void Awake() override;
 	void Start() override;

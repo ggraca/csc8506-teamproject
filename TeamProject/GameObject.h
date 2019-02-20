@@ -3,7 +3,7 @@
 #include "PhysicsObject.h"
 #include "RenderObject.h"
 #include "LayerAndTag.h"
-
+//#include "GameWorld.h"
 
 #include <vector>
 
@@ -14,6 +14,7 @@ namespace NCL {
 		class NetworkObject;
 		class InputManager;
 		class ScriptObject;
+		class GameWorld;
 
 		class GameObject	{
 		public:
@@ -110,10 +111,6 @@ namespace NCL {
 			virtual void OnCollisionEnd(GameObject* otherObject);
 
 
-
-
-			bool InsideAABB(const Vector3& pos, const Vector3& halfSize);
-
 			void SetParent(const GameObject * parent)
 			{
 				if (parent)
@@ -181,6 +178,8 @@ namespace NCL {
 
 			void UpdateAttachedScripts(float dt);
 			void LateUpdateAttachedScripts(float dt);
+			void CallOnCollisionEnterForScripts(GameObject * otherObject);
+			void CallOnCollisionEndForScripts(GameObject * otherObject);
 
 
 			static void SetGameWorld(GameWorld * world);
@@ -222,12 +221,12 @@ namespace NCL {
 			virtual ~ScriptObject();
 
 
-			virtual void Awake() =0;
-			virtual void Start()=0;
-			virtual void Update(float dt)=0;
-			virtual void LateUpdate(float dt)=0;
-			virtual void OnCollisionBegin(GameObject* otherObject)=0;
-			virtual void OnCollisionEnd(GameObject* otherObject)=0;
+			virtual void Awake();
+			virtual void Start();
+			virtual void Update(float dt);
+			virtual void LateUpdate(float dt);
+			virtual void OnCollisionBegin(GameObject* otherObject);
+			virtual void OnCollisionEnd(GameObject* otherObject);
 
 		protected:
 

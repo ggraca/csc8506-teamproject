@@ -5,6 +5,10 @@
 
 #include "Console.h"
 #include "DebugMenu.h"
+#include "Player.h"
+#include "Resource.h"
+#include "InputManager.h"
+#include "CameraControl.h"
 
 namespace NCL {
   namespace CSC8503 {
@@ -13,6 +17,8 @@ namespace NCL {
       PhysicsScene();
       ~PhysicsScene();
       void UpdateGame(float dt);
+	  static InputManager * inputManager;
+
 
     protected:
       void ResetWorld();

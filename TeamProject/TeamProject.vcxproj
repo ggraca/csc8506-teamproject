@@ -176,7 +176,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="..\GameTechCommon\BulletPhysics.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
     <ClInclude Include="Console.h" />

@@ -10,6 +10,7 @@
 
 using namespace NCL;
 using namespace CSC8503;
+InputManager * PhysicsScene::inputManager = nullptr;
 
 PhysicsScene::PhysicsScene() : Scene() {
   Window::GetWindow()->ShowOSPointer(false);
@@ -18,19 +19,37 @@ PhysicsScene::PhysicsScene() : Scene() {
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
+
+  GameObject::SetGameWorld(world);
+  if (!inputManager) { inputManager = new InputManager(); }//Static guy initializations
+
 }
 
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0); //TODO Do these need to be deleted in destructor?!?!?!
-  AddCubeToWorld(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45), Vector3(2, 2, 2), 1);
+  /*AddCubeToWorld(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45), Vector3(2, 2, 2), 1);
   bestcube = AddCubeToWorld(Vector3(3.5, 130, 1), Quaternion::AxisAngleToQuaternion(Vector3(1, 1, 1), 45), Vector3(20, 20, 20), 10000);
   AddSphereToWorld(Vector3(40, 100, 20), 1, 1);
   AddSphereToWorld(Vector3(41, 130, 20), 1, 1);
-  InitMixedGridWorld(Vector3(47, 230, 20), 50, 40, 20, 20);
+  InitMixedGridWorld(Vector3(47, 230, 20), 50, 40, 20, 20);*/
   // AddCylinderToWorld(Vector3(0, 10, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 1);
   // AddConeToWorld(Vector3(Vector3(0, 10, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 1);
+   //Player
+  auto player = AddCubeToWorld(Vector3(50, 60, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f);
+  player->GetRenderObject()->SetColour(Vector4(1, 0, 0, 1));
+  player->AddScript((ScriptObject*)new Player(player));
+  player->SetTag(LayerAndTag::Tags::Player);
+  player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+  world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
+
+  auto resource1 = AddCubeToWorld(Vector3(50, 20, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
+  auto resource2 = AddCubeToWorld(Vector3(50, 30, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
+  resource1->SetName("Resource 1");
+  resource2->SetName("Resource 2");
+  resource1->AddScript((ScriptObject*)new Resource(resource1));
+  resource2->AddScript((ScriptObject*)new Resource(resource2));
 }
 
 PhysicsScene::~PhysicsScene() {

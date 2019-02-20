@@ -19,6 +19,10 @@ CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)
 	gameObject->GetTransform().SetWorldPosition(Vector3(0, 10,0));
 }
 
+CameraControl::~CameraControl()
+{
+}
+
 void CameraControl::Awake()
 {
 }

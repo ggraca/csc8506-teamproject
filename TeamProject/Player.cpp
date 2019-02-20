@@ -28,29 +28,35 @@ void Player::PlayerMovement(float dt)
 	if (!GameObject::GetMainCamera()->GetScript<CameraControl*>()->GetCameraType()) { forward *= -1; }
 	Vector3 left = Vector3::Cross(up, forward).Normalised();
 
-	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::FORWARD))
+	if (PhysicsScene::inputManager->IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
 		playerPos += forward *movementSpeed * dt;
 		gameObject->GetTransform().SetWorldPosition(playerPos);
+		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));
 	}
-	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::BACKWARD))
+	if (PhysicsScene::inputManager->IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
 		playerPos -= forward * movementSpeed * dt;
 		gameObject->GetTransform().SetWorldPosition(playerPos);
+		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));
 	}
-	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::LEFT))
+	if (PhysicsScene::inputManager->IsButtonDown(InputManager::ActionButton::LEFT))
 	{
 		playerPos += left * movementSpeed * dt;
 		gameObject->GetTransform().SetWorldPosition(playerPos);
+		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));
 	}
-	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::RIGHT))
+	if (PhysicsScene::inputManager->IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
 		playerPos -= left * movementSpeed * dt;
 		gameObject->GetTransform().SetWorldPosition(playerPos);
+		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));
 	}
-	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::JUMP))
+	if (PhysicsScene::inputManager->IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
-		gameObject->GetPhysicsObject()->AddForce(Vector3(0, 1, 0) * jumpSpeed);
+		cout << "Jump" << endl;
+		gameObject->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
+		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));
 	}
 }
 
@@ -81,7 +87,7 @@ void Player::ResetPlayer()
 {
 	resourceCount = 0;
 	movementSpeed = 50;
-	jumpSpeed = 40;
+	jumpSpeed = 400;
 }
 
 void Player::UpdateResourceCount(int amount)

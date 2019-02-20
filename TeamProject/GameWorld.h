@@ -37,9 +37,6 @@ namespace NCL {
 			void AddGameObject(GameObject* o, const GameObject* parent);
 			void RemoveGameObject(GameObject* o);
 
-			void AddConstraint(Constraint* c);
-			void RemoveConstraint(Constraint* c);
-
 			GameObject* GetMainCamera() const {
 				return mainCamera;
 			}
@@ -69,6 +66,9 @@ namespace NCL {
 			{
 				physics = bulletPhysics;
 			}
+
+			
+
 
 		protected:
 			void UpdateTransforms();
