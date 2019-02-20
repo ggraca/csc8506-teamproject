@@ -291,13 +291,12 @@ void GameTechRenderer::RenderCamera() {
 	vertsDrawn = 0;
 
 	for (const auto&i : activeObjects) {
-		OGLShader* shader = (OGLShader*)(*i).GetMaterial()->GetShader();
+		Material* currentMaterial = (*i).GetMaterial();
+		OGLShader* shader = (OGLShader*)currentMaterial->GetShader();
 		BindShader(shader);
 
-		for (int j = 0; j < (*i).GetMaterial()->GetTextureParameters()->size(); j++)
+		for (int j = 0; j < currentMaterial->GetTextureParameters()->size(); j++)
 		{
-			BindTextureToShader((OGLTexture*)(*((*i).GetMaterial()->GetTextureParameters()))[j].second,
-				(*((*i).GetMaterial()->GetTextureParameters()))[j].first, j);
 			//Gets texture, then gets texture shader param name, and binds it to texture slot = iteration
 			BindTextureToShader((*(currentMaterial->GetTextureParameters()))[j].second,
 				(*(currentMaterial->GetTextureParameters()))[j].first, j);
