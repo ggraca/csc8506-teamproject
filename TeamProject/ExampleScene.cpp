@@ -34,7 +34,7 @@ void ExampleScene::ResetWorld() {
 
   // Floor
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 700),0);
-  AddCubeToWorld(world->GetMainCamera()->GetTransform().GetWorldPosition(), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 0);
+  AddCubeToWorld(world->GetMainCamera()->GetTransform().GetWorldPosition(), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 0)->SetName("Cube");
 
   //GameObject * cameraDummy = new GameObject("Camera");
   //////Put some transform to it
@@ -47,6 +47,15 @@ ExampleScene::~ExampleScene() {
 }
 
 void ExampleScene::UpdateGame(float dt) {
+
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_SPACE)) {
+		world->SwitchToFPS();
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
+		world->SwitchToTPS();
+	}
+
+
   //world->GetMainCamera()->UpdateCamera(dt);
   world->UpdateWorld(dt);
 

@@ -20,6 +20,8 @@ namespace NCL {
 			
 			GameWorld();
 			void InitCamera();
+			void SwitchToFPS();
+			void SwitchToTPS();
 			~GameWorld();
 
 			GameObject * Find(string name);

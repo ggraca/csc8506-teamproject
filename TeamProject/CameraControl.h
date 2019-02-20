@@ -46,6 +46,8 @@ public:
 	void SetPlayer(GameObject * obj);
 	void FollowPlayer();
 	void RotatePlayer();
+	void SetCameraType(bool isTPS);
+	bool GetCameraType() const;
 
 protected:
 	GameObject * player;
@@ -66,6 +68,8 @@ private:
 	float	speedx;
 	float	speedy;
 	float	speedz;
+
+	bool isTPS = true;
 
 };
 

@@ -45,8 +45,17 @@ void CameraControl::UpdateCamera()
 	roll = min(roll, 90.0f);
 	roll = max(roll, -90.0f);
 
-	pitch = min(pitch, 90.0f);
-	pitch = max(pitch, -90.0f);
+	if (isTPS)
+	{
+		pitch = min(pitch, 90.0f);
+		pitch = max(pitch, -10.0f);
+	}
+	else
+	{
+		pitch = min(pitch, 10.0f);
+		pitch = max(pitch, -90.0f);
+	}
+	
 
 	if (yaw < 0) 
 	{
@@ -56,12 +65,12 @@ void CameraControl::UpdateCamera()
 	{
 		yaw -= 360.0f;
 	}
+
 	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(pitch, yaw, roll));
 	gameObject->GetTransform().UpdateMatrices();
-	cout << "Dummy world rotation: " << gameObject->GetTransform().GetWorldOrientation().ToEuler() << endl;
-	cout << "Dummy local rotation: " << gameObject->GetTransform().GetLocalOrientation().ToEuler() << endl;
-	
-	
+
+	GameObject::Find("Cube")->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, yaw, 0));
+	GameObject::Find("Cube")->GetTransform().UpdateMatrices();
 }
 
 void CameraControl::LateUpdate(float dt)
@@ -91,8 +100,7 @@ Matrix4 CameraControl::BuildViewMatrix() const
 	{
 		children[0]->UpdateMatrices();
 		Vector3 childRot = children[0]->GetWorldOrientation().ToEuler();
-		cout << "Child world rotation: " << children[0]->GetWorldOrientation().ToEuler() << endl;
-		cout << "Child local rotation: " << children[0]->GetLocalOrientation().ToEuler() << endl;
+		
 		return	Matrix4::Rotation(-childRot.x, Vector3(1, 0, 0)) *
 			Matrix4::Rotation(-childRot.y, Vector3(0, 1, 0)) *
 			Matrix4::Translation(-children[0]->GetWorldPosition());
@@ -128,6 +136,17 @@ void CameraControl::RotatePlayer()
 	Vector3 playerRot = player->GetTransform().GetLocalOrientation().ToEuler();
 	playerRot.y = gameObject->GetTransform().GetLocalOrientation().ToEuler().y;
 	player->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(playerRot.x,playerRot.y,playerRot.z));
+	//player->GetTransform().UpdateMatrices(); May be needed
+}
+
+void CameraControl::SetCameraType(bool isTPSType)
+{
+	isTPS = isTPSType;
+}
+
+bool CameraControl::GetCameraType() const
+{
+	return isTPS;
 }
 
 

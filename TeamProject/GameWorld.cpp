@@ -12,19 +12,43 @@ GameWorld::GameWorld()	{
 	layering = LayerAndTag();
 }
 
-void NCL::CSC8503::GameWorld::InitCamera()
+void GameWorld::InitCamera()
 {
-	cameraOffset = Vector3(-100, 30, -100);
+	cameraOffset = Vector3(0, 30, -150);
 
 	mainCamera = new GameObject();
 	mainCamera->AddScript((ScriptObject*)new CameraControl(mainCamera));
 
 	Transform * child = new Transform();
 	child->SetLocalPosition(cameraOffset);
-	child->SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(-10,-135, 0));
+	child->SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(-10,-180, 0));
 	child->SetParent(&(mainCamera->GetTransform()));
 
 	mainCamera->GetTransform().AddChild(child);
+}
+
+void GameWorld::SwitchToFPS()
+{
+	cameraOffset = Vector3(0, 0, 10);
+	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
+
+	if (child)
+	{
+		child->SetLocalPosition(cameraOffset);
+		mainCamera->GetScript<CameraControl*>()->SetCameraType(false);
+	}
+}
+
+void GameWorld::SwitchToTPS()
+{
+	cameraOffset = Vector3(0, 30, -150);
+	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
+
+	if (child)
+	{
+		child->SetLocalPosition(cameraOffset);
+		mainCamera->GetScript<CameraControl*>()->SetCameraType(true);
+	}
 }
 
 GameWorld::~GameWorld()	{
