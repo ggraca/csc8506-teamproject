@@ -36,7 +36,7 @@ void Scene::InitialiseAssets() {
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
-  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
+  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("ball.png");
   basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
   InitCamera();

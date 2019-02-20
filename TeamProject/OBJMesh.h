@@ -10,6 +10,8 @@
 #include "../Common/Vector3.h"
 #include "OGLMesh.h"
 #include "../Common/Assets.h"
+#include "../Plugins/OpenGLRendering/OGLTexture.h"
+#include "../Common/TextureLoader.h"
 
 
 #define OBJCOMMENT	"#"			  //The current line of the obj file is a comment
@@ -26,6 +28,7 @@
 
 
 #define MTLNEW			"newmtl"
+#define MTLAMBIENT		"Ka"
 #define MTLDIFFUSE		"Kd"
 #define MTLSPEC			"Ks"
 #define MTLSPECWT		"Ns"
@@ -69,6 +72,7 @@ struct OBJSubMesh {
   int indexOffset;
   string mtlType;
   string mtlSrc;
+  bool triangleStrip = false;
 };
 
 
@@ -76,12 +80,12 @@ struct MTLInfo {
   string bump;
   string diffuse;
 
-  GLuint bumpNum;
-  GLuint diffuseNum;
+  OGLTexture* bumpTex;
+  OGLTexture* diffuseTex;
 
   MTLInfo() {
-    bumpNum = 0;
-    diffuseNum = 0;
+    bumpTex = nullptr;
+    diffuseTex = nullptr;
   }
 };
 
@@ -92,8 +96,6 @@ public:
   OBJMesh(std::string filename) { LoadOBJMesh(filename); };
   ~OBJMesh(void) {};
   bool	LoadOBJMesh(std::string filename);
-
-  virtual void Draw();
 
 protected:
   void	SetTexturesFromMTL(string &mtlFile, string &mtlType);

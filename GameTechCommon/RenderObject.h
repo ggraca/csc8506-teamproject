@@ -49,7 +49,7 @@ namespace NCL {
 			TextureBase*	texture;
 			ShaderBase*		shader;
 			Transform*		transform;
-			Vector4			colour;
+			Vector4			  colour;
 		};
 	}
 }

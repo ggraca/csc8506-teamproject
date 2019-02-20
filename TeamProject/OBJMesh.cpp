@@ -1,12 +1,10 @@
 #include "OBJMesh.h"
 
 
+
 bool	OBJMesh::LoadOBJMesh(std::string filename) {
   std::ifstream f(filename.c_str(), std::ios::in);
-
-  if (!f) {//Oh dear, it can't find the file :(
-    return false;
-  }
+  if (!f) return false;
 
   std::vector<Vector2> inputTexCoords;
   std::vector<Vector3> inputVertices;
@@ -23,17 +21,23 @@ bool	OBJMesh::LoadOBJMesh(std::string filename) {
     std::string lineHeader;
     f >> lineHeader;
 
-    if (lineHeader == OBJCOMMENT) {		//This line is a comment, ignore it
-      continue;
-    }
-    else if (lineHeader == OBJVERT) {	//This line is a vertex
+    if (lineHeader == OBJCOMMENT) { continue; }
+    else if (lineHeader == OBJVERT) {
       Vector3 vertex;
       f >> vertex.x; f >> vertex.y; f >> vertex.z;
       inputVertices.push_back(vertex);
     }
-    else if (lineHeader == OBJMTLLIB) {
-      f >> currentMtlLib;
+    else if (lineHeader == OBJTEX) {
+      Vector2 texCoord;
+      f >> texCoord.x; f >> texCoord.y;
+      inputTexCoords.push_back(texCoord);
     }
+    else if (lineHeader == OBJNORM) {
+      Vector3 normal;
+      f >> normal.x; f >> normal.y; f >> normal.z;
+      inputNormals.push_back(normal);
+    }
+    else if (lineHeader == OBJMTLLIB) { f >> currentMtlLib; }
     else if (lineHeader == OBJUSEMTL) {
       currentMesh = new OBJSubMesh();
       inputSubMeshes.push_back(currentMesh);
@@ -44,26 +48,13 @@ bool	OBJMesh::LoadOBJMesh(std::string filename) {
 
       currentMesh->mtlType = currentMtlType;
     }
-    else if (lineHeader == OBJMESH || lineHeader == OBJOBJECT) {	//This line is a submesh!
+    else if (lineHeader == OBJMESH || lineHeader == OBJOBJECT) {
       currentMesh = new OBJSubMesh();
       inputSubMeshes.push_back(currentMesh);
 
       currentMesh->mtlSrc = currentMtlLib;
       currentMesh->mtlType = currentMtlType;
-    }
-    else if (lineHeader == OBJNORM) {	//This line is a Normal!
-      Vector3 normal;
-      f >> normal.x; f >> normal.y; f >> normal.z;
-      inputNormals.push_back(normal);
-    }
-    else if (lineHeader == OBJTEX) {	//This line is a texture coordinate!
-      Vector2 texCoord;
-      f >> texCoord.x; f >> texCoord.y;
-      /*
-      TODO! Some OBJ files might have 3D tex coords...
-      */
-      inputTexCoords.push_back(texCoord);
-    }
+    }    
     else if (lineHeader == OBJFACE) {	//This is an object face!
       if (!currentMesh) {
         currentMesh = new OBJSubMesh();
@@ -111,36 +102,51 @@ bool	OBJMesh::LoadOBJMesh(std::string filename) {
         faceIndices.push_back(tempIndex);
       }
 
-      //If the face indices vector is a multiple of 3, we're looking at triangles
-      //with some combination of vertices, normals, texCoords
-      if (faceIndices.size() % 3 == 0) {		//This face is a triangle (probably)!
-        if (faceIndices.size() == 3) {	//This face has only vertex information;
-          currentMesh->vertIndices.push_back(faceIndices.at(0));
-          currentMesh->vertIndices.push_back(faceIndices.at(1));
-          currentMesh->vertIndices.push_back(faceIndices.at(2));
+      if (faceIndices.size() == 3) {	//This face has only vertex information;
+        currentMesh->vertIndices.push_back(faceIndices.at(0));
+        currentMesh->vertIndices.push_back(faceIndices.at(1));
+        currentMesh->vertIndices.push_back(faceIndices.at(2));
+      }
+      else if (faceIndices.size() == 9) {	//This face has vertex, normal and tex information!
+        for (int i = 0; i < 9; i += 3) {
+          currentMesh->vertIndices.push_back(faceIndices.at(i));
+          currentMesh->texIndices.push_back(faceIndices.at(i + 1));
+          currentMesh->normIndices.push_back(faceIndices.at(i + 2));
         }
-        else if (faceIndices.size() == 9) {	//This face has vertex, normal and tex information!
-          for (int i = 0; i < 9; i += 3) {
-            currentMesh->vertIndices.push_back(faceIndices.at(i));
+      }
+      else if (faceIndices.size() == 6) {	//This face has vertex, and one other index...
+        for (int i = 0; i < 6; i += 2) {
+          currentMesh->vertIndices.push_back(faceIndices.at(i));
+          if (!skipTex) {		// a double slash means it's skipping tex info...
             currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-            currentMesh->normIndices.push_back(faceIndices.at(i + 2));
           }
-        }
-        else if (faceIndices.size() == 6) {	//This face has vertex, and one other index...
-          for (int i = 0; i < 6; i += 2) {
-            currentMesh->vertIndices.push_back(faceIndices.at(i));
-            if (!skipTex) {		// a double slash means it's skipping tex info...
-              currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-            }
-            else {
-              currentMesh->normIndices.push_back(faceIndices.at(i + 1));
-            }
+          else {
+            currentMesh->normIndices.push_back(faceIndices.at(i + 1));
           }
         }
       }
       else {
-        //Uh oh! Face isn't a triangle. Have fun adding stuff to this ;)
-        bool a = true;
+        // First Face
+        for (int i = 0; i < 9; i += 3) {
+          currentMesh->vertIndices.push_back(faceIndices.at(i));
+          currentMesh->texIndices.push_back(faceIndices.at(i + 1));
+          currentMesh->normIndices.push_back(faceIndices.at(i + 2));
+        }
+
+        // Following Faces
+        for (int i = 6; i < faceIndices.size() - 3; i += 3) {
+          currentMesh->vertIndices.push_back(faceIndices.at(i));
+          currentMesh->texIndices.push_back(faceIndices.at(i + 1));
+          currentMesh->normIndices.push_back(faceIndices.at(i + 2));
+
+          currentMesh->vertIndices.push_back(faceIndices.at(i + 3));
+          currentMesh->texIndices.push_back(faceIndices.at(i + 4));
+          currentMesh->normIndices.push_back(faceIndices.at(i + 5));
+
+          currentMesh->vertIndices.push_back(faceIndices.at(0));
+          currentMesh->texIndices.push_back(faceIndices.at(1));
+          currentMesh->normIndices.push_back(faceIndices.at(2));
+        }
       }
     }
     else {
@@ -166,12 +172,8 @@ bool	OBJMesh::LoadOBJMesh(std::string filename) {
     else {
       OBJMesh*m;
 
-      if (i == 0) {
-        m = this;
-      }
-      else {
-        m = new OBJMesh();
-      }
+      if (i == 0) m = this;
+      else m = new OBJMesh();
 
       m->SetTexturesFromMTL(sm->mtlSrc, sm->mtlType);
 
@@ -193,36 +195,20 @@ bool	OBJMesh::LoadOBJMesh(std::string filename) {
           m->normals.push_back(inputNormals[sm->normIndices[j] - 1]);
         }
       }
-#ifdef OBJ_USE_TANGENTS_BUMPMAPS
-      m->GenerateTangents();
-#endif
+
+      // TODO: Tangents
+      // m->GenerateTangents();
 
       m->UploadToGPU();
 
-      if (i != 0) {
-        AddChild(m);
-      }
+      if (i != 0) AddChild(m);
     }
+
     delete inputSubMeshes[i];
     ++i;
   }
   return true;
 }
-
-/*
-Draws the current OBJMesh. The handy thing about overloaded virtual functions
-is that they can still run the code they have 'overridden', by calling the
-parent class function as you would a static function. So all of the new stuff
-you've been building up in the Mesh class as the tutorials go on, will
-automatically be used by this overloaded function. Once 'this' has been drawn,
-all of the children of 'this' will be drawn
-*/
-void OBJMesh::Draw() {
-  /*OGLMesh::Draw();
-  for (unsigned int i = 0; i < children.size(); ++i) {
-    children.at(i)->Draw();
-  }*/
-};
 
 void	OBJMesh::SetTexturesFromMTL(string &mtlFile, string &mtlType) {
   if (mtlType.empty() || mtlFile.empty()) {
@@ -242,10 +228,7 @@ void	OBJMesh::SetTexturesFromMTL(string &mtlFile, string &mtlType) {
   }
     
   std::ifstream f(string(Assets::MESHDIR + mtlFile).c_str(), std::ios::in);
-
-  if (!f) {//Oh dear, it can't find the file :(
-    return;
-  }
+  if (!f) return;
 
   MTLInfo currentMTL;
   string  currentMTLName;
@@ -280,7 +263,7 @@ void	OBJMesh::SetTexturesFromMTL(string &mtlFile, string &mtlType) {
       }
 
       if (!currentMTL.diffuse.empty()) {
-        //currentMTL.diffuseNum = SOIL_load_OGL_texture(string(TEXTUREDIR + currentMTL.diffuse).c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y | SOIL_FLAG_TEXTURE_REPEATS);
+        //currentMTL.diffuseTex = (OGLTexture*) TextureLoader::LoadAPITexture(Assets::TEXTUREDIR + currentMTL.diffuse);
       }
     }
     else if (currentLine == MTLBUMPMAP || currentLine == MTLBUMPMAPALT) {
