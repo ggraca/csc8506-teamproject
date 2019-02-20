@@ -43,6 +43,7 @@ void Scene::InitialiseAssets() {
   pbrWoodSpec =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
   pbrWoodMet  =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
+
   basicMaterial = new Material();
   basicMaterial->SetShader(basicShader);
   basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);

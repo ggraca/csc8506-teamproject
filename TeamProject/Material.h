@@ -15,6 +15,9 @@ public:
 	ShaderBase* GetShader() const { return shader; }
 	void SetShader(ShaderBase* s) { shader = s; }
 
+	float GetTiling() const { return tiling; }
+	void SetTiling(float t) { tiling = t; }
+
 	void AddTextureParameter(std::string parameter, TextureBase* texture) {
 		textureParameters.push_back(std::make_pair(parameter, texture));
 	}
@@ -24,5 +27,8 @@ public:
 protected:
 	ShaderBase* shader;
 	std::vector<std::pair<std::string, TextureBase*>> textureParameters;
+
+	//Think of better way to hold shader parameters
+	float tiling = 1.0f;
 };
 
