@@ -59,23 +59,23 @@ PhysicsScene::~PhysicsScene() {
 void PhysicsScene::UpdateKeys() {
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 100, 0));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 10, 0));
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_J)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(-100, 0, 0));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(-10, 0, 0));
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_K)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(100, 0, 0));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(10, 0, 0));
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_N)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, 100));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, 10));
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_M)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -100));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -10));
 	}
 }
 

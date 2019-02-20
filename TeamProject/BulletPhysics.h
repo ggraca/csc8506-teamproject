@@ -31,6 +31,4 @@ private:
 	btCollisionDispatcher* dispatcher;
 	btBroadphaseInterface* overlappingPairCache;
 	btSequentialImpulseConstraintSolver* solver;
-
-	std::map<const btCollisionObject*, std::vector<btManifoldPoint*>> objectsCollisions;
 };

@@ -67,11 +67,12 @@ void Player::LateUpdate(float dt)
 
 void Player::OnCollisionBegin(GameObject * otherObject)
 {
-	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
+	cout << "collision begin" << endl;
+	/*if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		otherObject->GetScript<Resource*>()->Aquire(gameObject);
 		UpdateResourceCount(1);
-	}
+	}*/
 }
 
 void Player::OnCollisionEnd(GameObject * otherObject)

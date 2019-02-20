@@ -61,12 +61,12 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	//int numCollisions = dynamicsWorld->getNumCollisionObjects();
 	//cout << numManifolds << ' ' << numCollisions << endl;
 
-	objectsCollisions.clear();
+	std::map<const btCollisionObject*, std::vector<btManifoldPoint*>> objectsCollisions;
 	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
 	for (int i = 0; i < numManifolds; i++) {
 		btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		auto* objA = contactManifold->getBody0();
-		auto* objB = contactManifold->getBody1();
+		const btCollisionObject* objA = contactManifold->getBody0();
+		const btCollisionObject* objB = contactManifold->getBody1();
 		auto& collisionsA = objectsCollisions[objA];
 		auto& collisionsB = objectsCollisions[objB];
 		int numContacts = contactManifold->getNumContacts();
@@ -124,7 +124,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 		auto& manifoldPoints = objectsCollisions[body];
 		if (!manifoldPoints.empty()) {
 			(*i)->GetRenderObject()->SetColour(Vector4(1,0,0,1));
-			
+			// (*i)->CallOnCollisionEnterForScripts((*i));
 		}
 
 		j++;
