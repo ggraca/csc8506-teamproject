@@ -210,7 +210,6 @@ namespace NCL {
 			bool	isActive;
 			bool	isAddedToWorld;
 			string	name;
-
 		};
 
 
@@ -232,7 +231,6 @@ namespace NCL {
 			virtual void OnCollisionEnd(GameObject* otherObject)=0;
 
 		protected:
-
 			GameObject * gameObject;
 		};
 

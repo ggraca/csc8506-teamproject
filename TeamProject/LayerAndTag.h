@@ -17,7 +17,8 @@ public:
 		ResourceParent,
 		CaptureParent,
 		Occupied,
-		Player
+		Player,
+		EnemyProjectile
 	};
 
 	LayerAndTag()

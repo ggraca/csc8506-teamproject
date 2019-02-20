@@ -89,6 +89,12 @@
     <ClCompile Include="Animation.cpp">
       <Filter>GameplayTools</Filter>
     </ClCompile>
+    <ClCompile Include="DamageControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthManager.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTechRenderer.h">
@@ -150,6 +156,12 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>GameplayTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthManager.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
