@@ -1,10 +1,12 @@
 #pragma once
 #include "../Common/ShaderBase.h"
 #include "../Common/TextureBase.h"
+#include "../Common/Matrix4.h"
 #include <vector>
 #include <string>
 
 using namespace NCL::Rendering;
+using namespace NCL::Maths;
 
 class Material
 {
@@ -15,8 +17,8 @@ public:
 	ShaderBase* GetShader() const { return shader; }
 	void SetShader(ShaderBase* s) { shader = s; }
 
-	float GetTiling() const { return tiling; }
-	void SetTiling(float t) { tiling = t; }
+	Matrix4 GetTextureMatrix() const { return textureMatrix; }
+	void SetTextureMatrix(Matrix4 t) { textureMatrix = t; }
 
 	void AddTextureParameter(std::string parameter, TextureBase* texture) {
 		textureParameters.push_back(std::make_pair(parameter, texture));
@@ -29,6 +31,6 @@ protected:
 	std::vector<std::pair<std::string, TextureBase*>> textureParameters;
 
 	//Think of better way to hold shader parameters
-	float tiling = 1.0f;
+	Matrix4 textureMatrix;
 };
 

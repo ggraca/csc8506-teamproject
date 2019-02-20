@@ -4,6 +4,8 @@
 
 Material::Material()
 {
+	shader = nullptr;
+	textureMatrix.ToIdentity();
 }
 
 
