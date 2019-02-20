@@ -3,6 +3,8 @@
 
 #include "../GameTechCommon/BulletPhysics.h"
 
+class Material;
+
 namespace NCL {
 	namespace CSC8503 {
 		class Scene		{
@@ -50,6 +52,7 @@ namespace NCL {
 			OGLTexture* ballTex	= nullptr;
 			OGLTexture* cubeMap = nullptr;
 			OGLShader*	basicShader = nullptr;
+			Material*   basicMaterial = nullptr;
 		};
 	}
 }

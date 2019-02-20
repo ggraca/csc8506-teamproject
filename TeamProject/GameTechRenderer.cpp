@@ -291,10 +291,14 @@ void GameTechRenderer::RenderCamera() {
 	vertsDrawn = 0;
 
 	for (const auto&i : activeObjects) {
-		OGLShader* shader = (OGLShader*)(*i).GetShader();
+		OGLShader* shader = (OGLShader*)(*i).GetMaterial()->GetShader();
 		BindShader(shader);
 
-		BindTextureToShader((OGLTexture*)(*i).GetDefaultTexture(), "mainTex", 0);
+		for (int j = 0; j < (*i).GetMaterial()->GetTextureParameters()->size(); j++)
+		{
+			BindTextureToShader((OGLTexture*)(*((*i).GetMaterial()->GetTextureParameters()))[j].second,
+				(*((*i).GetMaterial()->GetTextureParameters()))[j].first, j);
+		}
 
 		if (activeShader != shader) {
 			modelLocation	= glGetUniformLocation(shader->GetProgramID(), "modelMatrix");

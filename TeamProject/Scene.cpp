@@ -2,6 +2,7 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
+#include "Material.h"
 #include "../Common/TextureLoader.h"
 #include "GameWorld.h"
 
@@ -38,6 +39,9 @@ void Scene::InitialiseAssets() {
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
   basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
+  basicMaterial = new Material();
+  basicMaterial->SetShader(basicShader);
+  basicMaterial->AddTextureParameter("mainTex", woodTex);
 
   vector<std::string> faces
   {
@@ -64,6 +68,7 @@ Scene::~Scene() {
   delete grassTex;
   delete ballTex;
   delete basicShader;
+  delete basicMaterial;
 
   delete physics;
   delete renderer;
@@ -139,7 +144,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   Vector3 sphereSize = Vector3(radius, radius, radius);
   sphere->GetTransform().SetWorldScale(sphereSize);
   sphere->GetTransform().SetWorldPosition(position);
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, ballTex, basicShader));
+  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
 
   world->AddGameObject(sphere);
 
@@ -159,7 +164,7 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetLocalOrientation(orient);
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetWorldScale(dimensions);
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
+  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
   cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
 
   cube->GetPhysicsObject()->SetInverseMass(inverseMass);

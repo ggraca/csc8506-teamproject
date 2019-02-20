@@ -1,7 +1,6 @@
 #pragma once
 #include "../Common/Matrix4.h"
-#include "../Common/TextureBase.h"
-#include "../Common/ShaderBase.h"
+#include "../TeamProject/Material.h"
 
 namespace NCL {
 	using namespace NCL::Rendering;
@@ -13,16 +12,11 @@ namespace NCL {
 		class RenderObject
 		{
 		public:
-			RenderObject(Transform* parentTransform, MeshGeometry* mesh, TextureBase* tex, ShaderBase* shader);
+			RenderObject(Transform* parentTransform, MeshGeometry* mesh, Material* material);
 			~RenderObject();
 
-			void SetDefaultTexture(TextureBase* t) {
-				texture = t;
-			}
-
-			TextureBase* GetDefaultTexture() const {
-				return texture;
-			}
+			Material* GetMaterial() const { return material; }
+			void SetMaterial(Material* m) { material = m; }
 
 			MeshGeometry*	GetMesh() const {
 				return mesh;
@@ -30,10 +24,6 @@ namespace NCL {
 
 			Transform*		GetTransform() const {
 				return transform;
-			}
-
-			ShaderBase*		GetShader() const {
-				return shader;
 			}
 
 			void SetColour(const Vector4& c) {
@@ -46,8 +36,7 @@ namespace NCL {
 
 		protected:
 			MeshGeometry*	mesh;
-			TextureBase*	texture;
-			ShaderBase*		shader;
+			Material* material;
 			Transform*		transform;
 			Vector4			colour;
 		};
