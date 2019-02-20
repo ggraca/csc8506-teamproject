@@ -50,6 +50,15 @@ void Scene::InitialiseAssets() {
   basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
   basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
   basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
+  basicMaterial->SetTiling(1.0f);
+
+  floorMat = new Material();
+  floorMat->SetShader(basicShader);
+  floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
+  floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
+  floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
+  floorMat->AddTextureParameter("metalnessTex", pbrWoodMet);
+  floorMat->SetTiling(16.0f);
 
   vector<std::string> faces
   {

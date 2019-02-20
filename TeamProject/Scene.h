@@ -57,6 +57,7 @@ namespace NCL {
 			OGLTexture* pbrWoodMet = nullptr;
 			OGLShader*	basicShader = nullptr;
 			Material*   basicMaterial = nullptr;
+			Material* floorMat = nullptr;
 		};
 	}
 }
