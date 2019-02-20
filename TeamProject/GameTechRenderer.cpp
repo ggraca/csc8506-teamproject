@@ -328,7 +328,7 @@ void GameTechRenderer::RenderCamera() {
 		Matrix4 textureMatrix;
 		textureMatrix.ToIdentity();
 		float texTiling = i->GetMaterial()->GetTiling();
-		textureMatrix * Matrix4::Scale(Vector3(texTiling, texTiling, texTiling));
+		textureMatrix = textureMatrix * Matrix4::Scale(Vector3(texTiling, texTiling, texTiling));
 		glUniformMatrix4fv(textureLocation, 1, false, (float*)&textureMatrix);
 
 		glUniform4fv(colourLocation, 1, (float*)&i->GetColour());

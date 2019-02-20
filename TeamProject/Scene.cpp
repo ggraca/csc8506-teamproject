@@ -58,7 +58,7 @@ void Scene::InitialiseAssets() {
   floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
   floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
   floorMat->AddTextureParameter("metalnessTex", pbrWoodMet);
-  floorMat->SetTiling(16.0f);
+  floorMat->SetTiling(32.0f);
 
   vector<std::string> faces
   {
@@ -195,6 +195,31 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
 
 
   return cube;
+}
+
+GameObject* Scene::AddFloorToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass, float restitution, float friction) {
+	GameObject* cube = new GameObject();
+
+	btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+	SetBulletPhysicsParameters(Shape, position, inverseMass, restitution, friction, orient);
+
+	//AABBVolume* volume = new AABBVolume(dimensions);
+	//cube->SetBoundingVolume((CollisionVolume*)volume);
+	//cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume())); //TODO These 3 lines may still required until we find some better way of linking render objects to physics objects
+
+	cube->GetTransform().SetLocalOrientation(orient);
+	cube->GetTransform().SetWorldPosition(position);
+	cube->GetTransform().SetWorldScale(dimensions);
+	cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, floorMat));
+	cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
+
+	cube->GetPhysicsObject()->SetInverseMass(inverseMass);
+	cube->GetPhysicsObject()->InitCubeInertia();
+
+	world->AddGameObject(cube);
+
+
+	return cube;
 }
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
