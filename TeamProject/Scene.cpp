@@ -38,10 +38,17 @@ void Scene::InitialiseAssets() {
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
-  basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
+  pbrWoodDiff =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
+  pbrWoodBump =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
+  pbrWoodSpec =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
+  pbrWoodMet  =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
   basicMaterial = new Material();
   basicMaterial->SetShader(basicShader);
-  basicMaterial->AddTextureParameter("mainTex", woodTex);
+  basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
+  basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
+  basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
+  basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 
   vector<std::string> faces
   {

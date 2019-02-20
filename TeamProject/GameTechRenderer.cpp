@@ -300,6 +300,12 @@ void GameTechRenderer::RenderCamera() {
 				(*((*i).GetMaterial()->GetTextureParameters()))[j].first, j);
 		}
 
+		//TEMPORARY FOR SKYBOX TEXTURE
+		glActiveTexture(GL_TEXTURE8);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox);
+		int texLocation = glGetUniformLocation(shader->GetProgramID(), "cubeTex");
+		glUniform1i(texLocation, 8);
+
 		if (activeShader != shader) {
 			modelLocation	= glGetUniformLocation(shader->GetProgramID(), "modelMatrix");
 			viewLocation	= glGetUniformLocation(shader->GetProgramID(), "viewMatrix");
