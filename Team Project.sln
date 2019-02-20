@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletHelloWorld", "Plugins
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontBuilder", "Plugins\FontBuilder\FontBuilder.vcxproj", "{F75A977F-2D2B-4D4A-A5E4-72905D38922A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fmod part 2", "Fmod part 2\Fmod part 2.vcxproj", "{7DB5ACD2-3270-4991-BE73-A234BC495969}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -129,6 +131,14 @@ Global
 		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|Win32.Build.0 = Release|Win32
 		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|x64.ActiveCfg = Release|x64
 		{F75A977F-2D2B-4D4A-A5E4-72905D38922A}.Release|x64.Build.0 = Release|x64
+		{7DB5ACD2-3270-4991-BE73-A234BC495969}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7DB5ACD2-3270-4991-BE73-A234BC495969}.Debug|Win32.Build.0 = Debug|Win32
+		{7DB5ACD2-3270-4991-BE73-A234BC495969}.Debug|x64.ActiveCfg = Debug|x64
+		{7DB5ACD2-3270-4991-BE73-A234BC495969}.Debug|x64.Build.0 = Debug|x64
+		{7DB5ACD2-3270-4991-BE73-A234BC495969}.Release|Win32.ActiveCfg = Release|Win32
+		{7DB5ACD2-3270-4991-BE73-A234BC495969}.Release|Win32.Build.0 = Release|Win32
+		{7DB5ACD2-3270-4991-BE73-A234BC495969}.Release|x64.ActiveCfg = Release|x64
+		{7DB5ACD2-3270-4991-BE73-A234BC495969}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +148,7 @@ Global
 		{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
 		{F7631993-FE01-40DA-A3B4-39F572662C79} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
 		{F75A977F-2D2B-4D4A-A5E4-72905D38922A} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
+		{7DB5ACD2-3270-4991-BE73-A234BC495969} = {712B44BF-C16F-4369-916C-BEB6063B1E84}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28397354-383B-4D5D-B8BE-A6498FC71C4C}
