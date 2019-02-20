@@ -330,20 +330,30 @@ void GameTechRenderer::RenderCamera() {
 		textureMatrix.ToIdentity();
 		glUniformMatrix4fv(textureLocation, 1, false, (float*)&textureMatrix);
 
-		glUniform4fv(colourLocation, 1, (float*)&i->GetColour());
-
-		BindMesh((*i).GetMesh());
-		// Calculates how many vertices are drawn per frame
-		vertsDrawn += (*i).GetMesh()->GetVertexCount();
-		DrawBoundMesh();
-
     // OGL Meshes have additional meshes as children
     if (dynamic_cast<OBJMesh*>(i->GetMesh())) {
+      Vector4 colour = ((OBJMesh*)(*i).GetMesh())->colour;
+      glUniform4fv(colourLocation, 1, (float*)&colour);
+      BindMesh((*i).GetMesh());
+      vertsDrawn += (*i).GetMesh()->GetVertexCount();
+      DrawBoundMesh();
+
       for (auto child : ((OBJMesh*)i->GetMesh())->GetChildren()) {
+
+        Vector4 colour = ((OBJMesh*)child)->colour;
+        glUniform4fv(colourLocation, 1, (float*)&colour);
+
         BindMesh(child);
         vertsDrawn += child->GetVertexCount();
         DrawBoundMesh();
       }
+    }
+    else {
+      glUniform4fv(colourLocation, 1, (float*)&i->GetColour());
+
+      BindMesh((*i).GetMesh());
+      vertsDrawn += (*i).GetMesh()->GetVertexCount();
+      DrawBoundMesh();
     }
 	}
 

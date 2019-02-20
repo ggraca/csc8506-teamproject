@@ -8,6 +8,7 @@
 
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
+#include "../Common/Vector4.h"
 #include "OGLMesh.h"
 #include "../Common/Assets.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
@@ -72,7 +73,6 @@ struct OBJSubMesh {
   int indexOffset;
   string mtlType;
   string mtlSrc;
-  bool triangleStrip = false;
 };
 
 
@@ -82,6 +82,8 @@ struct MTLInfo {
 
   OGLTexture* bumpTex;
   OGLTexture* diffuseTex;
+
+  Vector4 colour;
 
   MTLInfo() {
     bumpTex = nullptr;
@@ -96,9 +98,12 @@ public:
   OBJMesh(std::string filename) { LoadOBJMesh(filename); };
   ~OBJMesh(void) {};
   bool	LoadOBJMesh(std::string filename);
+  Vector4 colour;
 
 protected:
-  void	SetTexturesFromMTL(string &mtlFile, string &mtlType);
+  void SetTexturesFromMTL(string &mtlFile, string &mtlType);
+  void LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes);
 
   map <string, MTLInfo> materials;
+
 };

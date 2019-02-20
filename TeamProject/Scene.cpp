@@ -33,7 +33,7 @@ void Scene::InitialiseAssets() {
   cylinderMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   cylinderMesh->UploadToGPU();*/
 
-  basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
+  basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("white.jpg");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("ball.png");
