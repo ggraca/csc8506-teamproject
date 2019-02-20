@@ -59,7 +59,16 @@ ExampleScene::~ExampleScene() {
 }
 
 void ExampleScene::UpdateGame(float dt) {
-  world->GetMainCamera()->UpdateCamera(dt);
+
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_SPACE)) {
+		world->SwitchToFPS();
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
+		world->SwitchToTPS();
+	}
+
+
+  //world->GetMainCamera()->UpdateCamera(dt);
   world->UpdateWorld(dt);
 
   renderer->Update(dt);
@@ -87,14 +96,14 @@ void ExampleScene::UpdateGame(float dt) {
 //}
 
 
-void CommandSetCameraPosition(vector<string> commandParams, void* data) {
-	float x = stof(commandParams[1]);
-	float y = stof(commandParams[2]);
-	float z = stof(commandParams[3]);
-
-	GameWorld* world = (GameWorld*)data;
-	world->GetMainCamera()->SetPosition(Vector3(x, y, z));
-}
+//void CommandSetCameraPosition(vector<string> commandParams, void* data) {
+//	float x = stof(commandParams[1]);
+//	float y = stof(commandParams[2]);
+//	float z = stof(commandParams[3]);
+//
+//	GameWorld* world = (GameWorld*)data;
+//	world->GetMainCamera()->SetPosition(Vector3(x, y, z));
+//}
 
 void ExampleScene::RegisterConsoleCommands() {
 	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);

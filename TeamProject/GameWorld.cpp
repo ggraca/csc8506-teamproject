@@ -8,12 +8,47 @@ using namespace NCL;
 using namespace NCL::CSC8503;
 
 GameWorld::GameWorld()	{
-	mainCamera = new Camera();
-
-	quadTree = nullptr;
-	shuffleConstraints	= false;
-	shuffleObjects		= false;
+	InitCamera();
 	layering = LayerAndTag();
+}
+
+void GameWorld::InitCamera()
+{
+	cameraOffset = Vector3(0, 30, -150);
+
+	mainCamera = new GameObject();
+	mainCamera->AddScript((ScriptObject*)new CameraControl(mainCamera));
+
+	Transform * child = new Transform();
+	child->SetLocalPosition(cameraOffset);
+	child->SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(-10,-180, 0));
+	child->SetParent(&(mainCamera->GetTransform()));
+
+	mainCamera->GetTransform().AddChild(child);
+}
+
+void GameWorld::SwitchToFPS()
+{
+	cameraOffset = Vector3(0, 0, 10);
+	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
+
+	if (child)
+	{
+		child->SetLocalPosition(cameraOffset);
+		mainCamera->GetScript<CameraControl*>()->SetCameraType(false);
+	}
+}
+
+void GameWorld::SwitchToTPS()
+{
+	cameraOffset = Vector3(0, 30, -150);
+	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
+
+	if (child)
+	{
+		child->SetLocalPosition(cameraOffset);
+		mainCamera->GetScript<CameraControl*>()->SetCameraType(true);
+	}
 }
 
 GameWorld::~GameWorld()	{
@@ -157,14 +192,7 @@ void GameWorld::UpdateWorld(float dt)
 	UpdateGameObjects(dt);
 	UpdateTransforms();
 	LateUpdateGameObjects(dt);
-
-	if (shuffleObjects) {
-		std::random_shuffle(gameObjects.begin(), gameObjects.end());
-	}
-
-	if (shuffleConstraints) {
-		std::random_shuffle(constraints.begin(), constraints.end());
-	}
+	mainCamera->GetScript<CameraControl*>()->Update(dt);
 }
 
 vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)

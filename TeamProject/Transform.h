@@ -86,6 +86,7 @@ namespace NCL {
 
 
 			void UpdateMatrices();
+			vector<Transform*> GetChildrenList();
 
 
 		protected:

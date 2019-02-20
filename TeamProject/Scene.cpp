@@ -59,7 +59,7 @@ Scene::~Scene() {
 
 void Scene::UpdateGame(float dt) {
   if (!inSelectionMode) {
-    world->GetMainCamera()->UpdateCamera(dt);
+    //world->GetMainCamera()->UpdateCamera(dt);
   }
 
   //UpdateKeys();
@@ -79,11 +79,11 @@ void Scene::UpdateKeys() {
 }
 
 void Scene::InitCamera() {
-  world->GetMainCamera()->SetNearPlane(3.0f);
-  world->GetMainCamera()->SetFarPlane(4200.0f);
-  world->GetMainCamera()->SetPitch(-10.0f);
-  world->GetMainCamera()->SetYaw(250.0f);
-  world->GetMainCamera()->SetPosition(Vector3(-50, 120, 200));
+  //world->GetMainCamera()->SetNearPlane(3.0f);
+  //world->GetMainCamera()->SetFarPlane(4200.0f);
+  //world->GetMainCamera()->SetPitch(-10.0f);
+  //world->GetMainCamera()->SetYaw(250.0f);
+  //world->GetMainCamera()->SetPosition(Vector3(-50, 120, 200));
 }
 
 void Scene::InitWorld() {
@@ -177,45 +177,6 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 	}
 }
 
-bool Scene::SelectObject() {
-  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Q)) {
-    inSelectionMode = !inSelectionMode;
-    if (inSelectionMode) {
-      Window::GetWindow()->ShowOSPointer(true);
-      Window::GetWindow()->LockMouseToWindow(false);
-    }
-    else {
-      Window::GetWindow()->ShowOSPointer(false);
-      Window::GetWindow()->LockMouseToWindow(true);
-    }
-  }
-  if (inSelectionMode) {
-    renderer->DrawString("Press Q to change to camera mode!", Vector2(10, 0));
-
-    if (Window::GetMouse()->ButtonDown(NCL::MouseButtons::MOUSE_LEFT)) {
-      if (selectionObject) {	//set colour to deselected;
-        selectionObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
-        selectionObject = nullptr;
-      }
-
-      Ray ray = CollisionDetection::BuildRayFromMouse(*world->GetMainCamera());
-
-      RayCollision closestCollision;
-      if (world->Raycast(ray, closestCollision, true)) {
-        selectionObject = (GameObject*)closestCollision.node;
-        selectionObject->GetRenderObject()->SetColour(Vector4(0, 1, 0, 1));
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
-  }
-  else {
-    renderer->DrawString("Press Q to change to select mode!", Vector2(10, 0));
-  }
-  return false;
-}
 
 /*
 If an object has been clicked, it can be pushed with the right mouse button, by an amount
@@ -224,22 +185,3 @@ added linear motion into our physics system. After the second tutorial, objects 
 line - after the third, they'll be able to twist under torque aswell.
 */
 
-void Scene::MoveSelectedObject() {
-  renderer->DrawString("Click Force:" + std::to_string(forceMagnitude), Vector2(10, 20));
-  forceMagnitude += Window::GetMouse()->GetWheelMovement() * 100.0f;
-
-  if (!selectionObject) {
-    return;//we haven't selected anything!
-  }
-  //Push the selected object!
-  if (Window::GetMouse()->ButtonPressed(NCL::MouseButtons::MOUSE_RIGHT)) {
-    Ray ray = CollisionDetection::BuildRayFromMouse(*world->GetMainCamera());
-
-    RayCollision closestCollision;
-    if (world->Raycast(ray, closestCollision, true)) {
-      if (closestCollision.node == selectionObject) {
-        selectionObject->GetPhysicsObject()->AddForceAtPosition(ray.GetDirection() * forceMagnitude, closestCollision.collidedAt);
-      }
-    }
-  }
-}
