@@ -259,7 +259,7 @@ bool Scene::SelectObject() {
 
     if (Window::GetMouse()->ButtonDown(NCL::MouseButtons::MOUSE_LEFT)) {
       if (selectionObject) {	//set colour to deselected;
-        selectionObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
+        selectionObject->GetRenderObject()->GetMaterial()->SetColour(Vector4(1, 1, 1, 1));
         selectionObject = nullptr;
       }
 
@@ -268,7 +268,7 @@ bool Scene::SelectObject() {
       RayCollision closestCollision;
       if (world->Raycast(ray, closestCollision, true)) {
         selectionObject = (GameObject*)closestCollision.node;
-        selectionObject->GetRenderObject()->SetColour(Vector4(0, 1, 0, 1));
+        selectionObject->GetRenderObject()->GetMaterial()->SetColour(Vector4(0, 1, 0, 1));
         return true;
       }
       else {

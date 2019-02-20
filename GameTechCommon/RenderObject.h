@@ -26,19 +26,10 @@ namespace NCL {
 				return transform;
 			}
 
-			void SetColour(const Vector4& c) {
-				colour = c;
-			}
-
-			Vector4 GetColour() const {
-				return colour;
-			}
-
 		protected:
 			MeshGeometry*	mesh;
 			Material* material;
 			Transform*		transform;
-			Vector4			colour;
 		};
 	}
 }

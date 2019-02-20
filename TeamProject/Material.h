@@ -20,6 +20,10 @@ public:
 	Matrix4 GetTextureMatrix() const { return textureMatrix; }
 	void SetTextureMatrix(Matrix4 t) { textureMatrix = t; }
 
+	void SetColour(const Vector4& c) { colour = c; }
+
+	Vector4 GetColour() const { return colour; }
+
 	void AddTextureParameter(std::string parameter, TextureBase* texture) {
 		textureParameters.push_back(std::make_pair(parameter, texture));
 	}
@@ -32,5 +36,6 @@ protected:
 
 	//Think of better way to hold shader parameters
 	Matrix4 textureMatrix;
+	Vector4 colour;
 };
 
