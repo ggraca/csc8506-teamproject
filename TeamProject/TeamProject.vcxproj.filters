@@ -27,6 +27,9 @@
     <Filter Include="GraphicsTools">
       <UniqueIdentifier>{2d1263d3-aa20-49f0-866b-a9c41f7e4747}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{794ac502-dedb-47d1-9138-d83fcb0b244a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -159,6 +162,9 @@
     </ClInclude>
     <ClInclude Include="OBJMesh.h">
       <Filter>GraphicsTools</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

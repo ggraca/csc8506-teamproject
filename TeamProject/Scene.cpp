@@ -39,6 +39,20 @@ void Scene::InitialiseAssets() {
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("ball.png");
   basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
+  // TO BE REMOVED AND REPLACED WITH PROPER CUBEMAP
+  vector<std::string> faces
+  {
+	  "wood1.jpg",
+		  "wood1.jpg",
+		  "wood1.jpg",
+		  "wood1.jpg",
+		  "wood1.jpg",
+		  "wood1.jpg"
+  };
+
+  cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
+  renderer->skybox = cubeMap->GetObjectID();
+
   InitCamera();
   InitWorld();
 }
