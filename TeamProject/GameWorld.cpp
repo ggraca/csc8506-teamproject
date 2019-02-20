@@ -1,8 +1,8 @@
 #include "GameWorld.h"
 #include "../TeamProject/GameObject.h"
-#include "../GameTechCommon/CollisionDetection.h"
 #include "../Common/Camera.h"
 #include <algorithm>
+#include "BulletPhysics.h"
 
 using namespace NCL;
 using namespace NCL::CSC8503;
@@ -101,20 +101,14 @@ void GameWorld::Destroy(GameObject * obj)
 
 void GameWorld::Clear() {
 	gameObjects.clear();
-	constraints.clear();
 }
 
 void GameWorld::ClearAndErase() {
 	for (auto& i : gameObjects) {
 		delete i;
 	}
-	for(auto& i : constraints) {
-		delete i;
-	}
 	Clear();
 }
-
-
 
 void GameWorld::UpdateGameObjects(float dt)
 {
@@ -138,7 +132,21 @@ void GameWorld::AddGameObject(GameObject* o)
 	
 	CallInitialObjectFunctions(o);
 	gameObjects.push_back(o);
-	
+
+	btCollisionShape* po = o->GetPhysicsObject()->GetShape();
+	physics->collisionShapes.push_back(po);
+
+	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
+	physics->dynamicsWorld->addRigidBody(pb);
+
+	//if (physics->collisionShapes.size() % 2 == 1 ) {
+	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
+	//	physics->dynamicsWorld->addRigidBody(pb, 1, 1111);
+	//}
+	//else {
+	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
+	//	physics->dynamicsWorld->addRigidBody(pb, 2, 1101);
+	//}
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
@@ -146,8 +154,7 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	if (!o) { return; }
 
 	o->SetIsAddedToWorld(true);
-	o->SetUpInitialScripts();
-	
+	o->SetUpInitialScripts();	
 }
 
 void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
@@ -235,66 +242,4 @@ void GameWorld::UpdateTransforms() {
 	{
 		i->GetTransform().UpdateMatrices();
 	}
-}
-
-void GameWorld::UpdateQuadTree() {
-	delete quadTree;
-
-	quadTree = new QuadTree<GameObject*>(Vector2(512, 512), 6);
-
-	for (auto& i : gameObjects) {
-		quadTree->Insert(i);
-	}
-}
-
-bool GameWorld::Raycast(Ray& r, RayCollision& closestCollision, bool closestObject) const {
-	//The simplest raycast just goes through each object and sees if there's a collision
-	RayCollision collision;
-
-	for (auto& i : gameObjects) {
-		if (!i->GetBoundingVolume()) { //objects might not be collideable etc...
-			continue;
-		}
-		RayCollision thisCollision;
-		if (CollisionDetection::RayIntersection(r, *i, thisCollision)) {
-
-			if (!closestObject) {
-				closestCollision		= collision;
-				closestCollision.node = i;
-				return true;
-			}
-			else {
-				if (thisCollision.rayDistance < collision.rayDistance) {
-					thisCollision.node = i;
-					collision = thisCollision;
-				}
-			}
-		}
-	}
-	if (collision.node) {
-		closestCollision		= collision;
-		closestCollision.node	= collision.node;
-		return true;
-	}
-	return false;
-}
-
-
-/*
-Constraint Tutorial Stuff
-*/
-
-void GameWorld::AddConstraint(Constraint* c) {
-	constraints.emplace_back(c);
-}
-
-void GameWorld::RemoveConstraint(Constraint* c) {
-	std::remove(constraints.begin(), constraints.end(), c);
-}
-
-void GameWorld::GetConstraintIterators(
-	std::vector<Constraint*>::const_iterator& first,
-	std::vector<Constraint*>::const_iterator& last) const {
-	first	= constraints.begin();
-	last	= constraints.end();
 }

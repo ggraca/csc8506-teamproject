@@ -1,4 +1,5 @@
 #pragma once
+
 #include "GameTechRenderer.h"
 #include "Scene.h"
 
@@ -12,9 +13,13 @@ namespace NCL {
       PhysicsScene();
       ~PhysicsScene();
       void UpdateGame(float dt);
+
     protected:
       void ResetWorld();
       void DebugScene(float dt);
+	  void UpdateKeys();
+
+	  GameObject* bestcube;
 
       DebugMenu debugMenu;
       Console console;

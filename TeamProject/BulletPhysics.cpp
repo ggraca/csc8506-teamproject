@@ -1,5 +1,8 @@
 #include "BulletPhysics.h"
 
+using namespace NCL;
+using namespace CSC8503;
+
 BulletPhysics::BulletPhysics(GameWorld& g) : gameWorld(g)
 {
 	collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -54,6 +57,35 @@ void BulletPhysics::SetGravity(Vector3 gravity)
 void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	dynamicsWorld->stepSimulation(dt, iterations);
 
+	//int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
+	//int numCollisions = dynamicsWorld->getNumCollisionObjects();
+	//cout << numManifolds << ' ' << numCollisions << endl;
+
+	objectsCollisions.clear();
+	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
+	for (int i = 0; i < numManifolds; i++) {
+		btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
+		auto* objA = contactManifold->getBody0();
+		auto* objB = contactManifold->getBody1();
+		auto& collisionsA = objectsCollisions[objA];
+		auto& collisionsB = objectsCollisions[objB];
+		int numContacts = contactManifold->getNumContacts();
+		for (int j = 0; j < numContacts; j++) {
+			btManifoldPoint& pt = contactManifold->getContactPoint(j);
+			collisionsA.push_back(&pt);
+			collisionsB.push_back(&pt);
+
+			const btVector3& ptA = pt.getPositionWorldOnA();
+			const btVector3& ptB = pt.getPositionWorldOnB();
+			const btVector3& normalOnB = pt.m_normalWorldOnB;
+
+			/*btVector3 velA = btRigidBody::upcast(objA)->getVelocityInLocalPoint(ptA - objA->getWorldTransform().getOrigin);
+			btVector3 velB = btRigidBody::upcast(objB)->getVelocityInLocalPoint(ptB - objB->getWorldTransform().getOrigin);
+			Vector3 relVelOfCollision = Vector3(velA.x - velB.x, velA.y - velB.y, velA.z - velB.z);
+			cout << relVelOfCollision << endl;*/
+		}
+	}
+
 	std::vector<GameObject*>::const_iterator first;
 	std::vector<GameObject*>::const_iterator last;
 	gameWorld.GetObjectIterators(first, last);
@@ -61,13 +93,17 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	int j = 0;
 	for (auto i = first; i != last; i++) {
 
-		/*PhysicsObject* object = (*i)->GetPhysicsObject();
-		if (object == nullptr) continue;*/
+		PhysicsObject* object = (*i)->GetPhysicsObject();
+		if (object == nullptr) continue;
 
+	//	(*i)->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
 		Transform& transform = (*i)->GetTransform();
 
-		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j]; //TODO This will only work if all gameWorld objects are physics objects!
+		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
 		btRigidBody* body = btRigidBody::upcast(obj);
+
+//		body->applyForce(btVector3(400, 10, 10), btVector3(0, -10, 0));
+
 		btTransform trans;
 		if (body && body->getMotionState())
 		{
@@ -82,6 +118,12 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 		transform.SetLocalPosition(position);
 		Quaternion orient = Quaternion(orientation.x(), orientation.y(), orientation.z(), orientation.w());
 		transform.SetLocalOrientation(orient);
+
+		auto& manifoldPoints = objectsCollisions[body];
+		if (!manifoldPoints.empty()) {
+//			(*i)->GetRenderObject()->SetColour(Vector4(1,0,0,1));
+		}
+
 		j++;
 	}
 }

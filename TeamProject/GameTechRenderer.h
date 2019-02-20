@@ -6,6 +6,7 @@
 
 #include "GameWorld.h"
 #include "CameraControl.h"
+#include "../Common/Matrix4.h"
 
 namespace NCL {
 	class Maths::Vector3;
