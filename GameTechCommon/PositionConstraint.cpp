@@ -1,6 +1,6 @@
 #include "PositionConstraint.h"
 #include "../Common/Vector3.h"
-#include "GameObject.h"
+#include "../TeamProject/GameObject.h"
 #include "Debug.h"
 
 using namespace NCL;

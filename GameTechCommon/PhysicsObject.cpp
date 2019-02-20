@@ -1,6 +1,6 @@
 #include "PhysicsObject.h"
-#include "PhysicsSystem.h"
-#include "../GameTechCommon/Transform.h"
+#include "../TeamProject/Transform.h"
+
 using namespace NCL;
 using namespace CSC8503;
 
@@ -32,7 +32,7 @@ void PhysicsObject::AddForce(const Vector3& addedForce) {
 void PhysicsObject::AddForceAtPosition(const Vector3& addedForce, const Vector3& position) {
 	Vector3 localPos = transform->GetWorldPosition() - position;
 
-	force += addedForce * PhysicsSystem::UNIT_MULTIPLIER;
+	force += addedForce;
 	torque += Vector3::Cross(addedForce, localPos);
 }
 

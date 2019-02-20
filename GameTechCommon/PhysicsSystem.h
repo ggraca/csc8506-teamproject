@@ -1,5 +1,5 @@
 #pragma once
-#include "../GameTechCommon/GameWorld.h"
+#include "../TeamProject/GameWorld.h"
 #include <set>
 
 namespace NCL {
