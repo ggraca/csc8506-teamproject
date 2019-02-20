@@ -76,6 +76,10 @@ Scene::~Scene() {
   delete ballTex;
   delete basicShader;
   delete basicMaterial;
+  delete pbrWoodDiff;
+  delete pbrWoodBump;
+  delete pbrWoodSpec;
+  delete pbrWoodMet;
 
   delete physics;
   delete renderer;
