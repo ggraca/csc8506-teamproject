@@ -39,15 +39,14 @@ void Scene::InitialiseAssets() {
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
   basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
-  // TO BE REMOVED AND REPLACED WITH PROPER CUBEMAP
   vector<std::string> faces
   {
-	  "wood1.jpg",
-		  "wood1.jpg",
-		  "wood1.jpg",
-		  "wood1.jpg",
-		  "wood1.jpg",
-		  "wood1.jpg"
+	  "hw_alps/alps_ft.png",
+	  "hw_alps/alps_bk.png",
+	  "hw_alps/alps_up.png",
+	  "hw_alps/alps_dn.png",
+	  "hw_alps/alps_rt.png",
+	  "hw_alps/alps_lf.png"
   };
 
   cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
