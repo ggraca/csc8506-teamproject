@@ -219,8 +219,8 @@ void GameTechRenderer::RenderShadowMap() {
 
 void GameTechRenderer::RenderSkybox() {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildProjectionMatrix(screenAspect);
 
 	glDepthMask(GL_FALSE);
 	glDisable(GL_DEPTH_TEST);
@@ -253,7 +253,7 @@ void GameTechRenderer::RenderSkybox() {
 	Matrix4 identity;
 	identity.ToIdentity();
 
-	glUniform3fv(cameraLocation, 1, (float *)& gameWorld.GetMainCamera()->GetPosition());
+	glUniform3fv(cameraLocation, 1, (float *)& gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition());
 	glUniformMatrix4fv(modelLocation, 1, false, (float*)&identity);
 	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
 	glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
@@ -340,8 +340,8 @@ void GameTechRenderer::RenderLights() {
 	glBlendFunc(GL_ONE, GL_ONE);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	BindShader(lightShader);
 
@@ -372,7 +372,7 @@ void GameTechRenderer::RenderLights() {
 	cameraLocation = glGetUniformLocation(lightShader->GetProgramID(), "cameraPos");
 	pixelLocation = glGetUniformLocation(lightShader->GetProgramID(), "pixelSize");
 
-	glUniform3fv(cameraLocation, 1, (float *)&gameWorld.GetMainCamera()->GetPosition());
+	glUniform3fv(cameraLocation, 1, (float *)&gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition());
 	glUniform2f(pixelLocation, 1.0f / currentWidth, 1.0f / currentHeight);
 
 	for (int x = 0; x < 1; ++x) {
@@ -415,7 +415,7 @@ void GameTechRenderer::RenderLights() {
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
-		float dist = (lightPosition - gameWorld.GetMainCamera()->GetPosition()).Length();
+		float dist = (lightPosition - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
 		if (dist < radius) {// camera is inside the light volume !
 			glCullFace(GL_FRONT);
 		}
@@ -449,7 +449,7 @@ void GameTechRenderer::CombineBuffers() {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT |
 		GL_STENCIL_BUFFER_BIT);
 
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 	
 	BindShader(combineShader);

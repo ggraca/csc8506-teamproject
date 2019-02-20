@@ -36,7 +36,7 @@ PhysicsScene::~PhysicsScene() {
 }
 
 void PhysicsScene::UpdateGame(float dt) {
-  world->GetMainCamera()->UpdateCamera(dt);
+//  world->GetMainCamera()->UpdateCamera(dt);
   world->UpdateWorld(dt);
 
   renderer->Update(dt);

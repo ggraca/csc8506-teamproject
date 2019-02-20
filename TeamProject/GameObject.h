@@ -195,6 +195,7 @@ namespace NCL {
 			static  void Destroy(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj,GameObject * parent);
+			static GameObject * GetMainCamera();
 
 		protected:
 			static GameWorld *gameWorld;

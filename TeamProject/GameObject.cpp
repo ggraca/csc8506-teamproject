@@ -177,6 +177,13 @@ void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
 	gameWorld->AddGameObject(obj, parent);
 }
 
+GameObject * GameObject::GetMainCamera()
+{
+	if (!gameWorld) { return nullptr; }
+
+	return gameWorld->GetMainCamera();
+}
+
 ///////////////////////////////////Script Object
 ScriptObject::ScriptObject()
 {

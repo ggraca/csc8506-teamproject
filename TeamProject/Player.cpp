@@ -21,30 +21,32 @@ void Player::Update(float dt)
 
 void Player::PlayerMovement(float dt)
 {
+	Vector3 playerPos = gameObject->GetTransform().GetWorldPosition();
+	Vector3 cameraPos = GameObject::GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
+	Vector3 up = Vector3(0, 1, 0);
+	Vector3 forward = (Vector3(playerPos.x, 0, playerPos.z) - Vector3(cameraPos.x, 0, cameraPos.z)).Normalised();
+	if (!GameObject::GetMainCamera()->GetScript<CameraControl*>()->GetCameraType()) { forward *= -1; }
+	Vector3 left = Vector3::Cross(up, forward).Normalised();
+
 	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
-		auto pos = gameObject->GetTransform().GetWorldPosition();
-		
-		pos += Quaternion::EulerAnglesToQuaternion(0,0,-1).ToEuler() * movementSpeed * dt;
-		gameObject->GetTransform().SetWorldPosition(pos);
+		playerPos += forward *movementSpeed * dt;
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
-		auto pos = gameObject->GetTransform().GetWorldPosition();
-		pos -= Quaternion::EulerAnglesToQuaternion(0, 0, -1).ToEuler() * movementSpeed * dt;
-		gameObject->GetTransform().SetWorldPosition(pos);
+		playerPos -= forward * movementSpeed * dt;
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::LEFT))
 	{
-		auto pos = gameObject->GetTransform().GetWorldPosition();
-		pos -= Quaternion::EulerAnglesToQuaternion(1, 0,0 ).ToEuler() * movementSpeed * dt;
-		gameObject->GetTransform().SetWorldPosition(pos);
+		playerPos += left * movementSpeed * dt;
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
-		auto pos = gameObject->GetTransform().GetWorldPosition();
-		pos += Quaternion::EulerAnglesToQuaternion(1, 0, 0).ToEuler() * movementSpeed * dt;
-		gameObject->GetTransform().SetWorldPosition(pos);
+		playerPos -= left * movementSpeed * dt;
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (ExampleScene::inputManager->IsButtonDown(InputManager::ActionButton::JUMP))
 	{
@@ -78,7 +80,7 @@ int Player::GetResourceCount() const
 void Player::ResetPlayer()
 {
 	resourceCount = 0;
-	movementSpeed = 20;
+	movementSpeed = 50;
 	jumpSpeed = 40;
 }
 

@@ -68,8 +68,8 @@ void CameraControl::UpdateCamera()
 	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(pitch, yaw, roll));
 	gameObject->GetTransform().UpdateMatrices();
 
-	GameObject::Find("Cube")->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, yaw, 0));
-	GameObject::Find("Cube")->GetTransform().UpdateMatrices();
+	//GameObject::Find("Cube")->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, yaw, 0));
+	//GameObject::Find("Cube")->GetTransform().UpdateMatrices();
 }
 
 void CameraControl::LateUpdate(float dt)
@@ -135,7 +135,7 @@ void CameraControl::RotatePlayer()
 	Vector3 playerRot = player->GetTransform().GetLocalOrientation().ToEuler();
 	playerRot.y = gameObject->GetTransform().GetLocalOrientation().ToEuler().y;
 	player->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(playerRot.x,playerRot.y,playerRot.z));
-	//player->GetTransform().UpdateMatrices(); May be needed
+	player->GetTransform().UpdateMatrices();
 }
 
 void CameraControl::SetCameraType(bool isTPSType)
