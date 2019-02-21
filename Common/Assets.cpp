@@ -23,6 +23,12 @@ bool Assets::ReadTextFile(const std::string &filepath, std::string& result) {
 	}
 }
 Rendering::TextureBase* Assets::AssetManager::LoadTexture(const std::string& filename) {
+	auto iter = GetInstance().loadedTextures.find(filename);
+
+	if (iter != GetInstance().loadedTextures.end()) {
+		return (*iter).second;
+	}
+
 	Rendering::TextureBase* newTexture;
 	newTexture = TextureLoader::LoadAPITexture(filename);
 	GetInstance().loadedTextures.insert(std::make_pair(filename, newTexture));

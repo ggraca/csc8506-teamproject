@@ -37,6 +37,11 @@ namespace NCL {
 			std::map<std::string, Rendering::TextureBase*> loadedTextures;
 			std::map<std::string, Rendering::ShaderBase*> loadedShaders;
 			std::map<std::string, Rendering::Material*> loadedMaterials;
+
+			// For later use when meshes and sounds can be loaded from one place.
+			//Also create add and flush functions
+			//std::map<std::string, Rendering::MeshGeometry*> loadedMeshes;
+			//std::map<std::string, Rendering::Material*> loadedSounds;
 		private:
 			AssetManager() {};
 		};
