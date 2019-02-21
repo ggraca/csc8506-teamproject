@@ -41,10 +41,10 @@ void Scene::InitialiseAssets() {
   //pbrWoodBump = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
   //pbrWoodSpec = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
   //pbrWoodMet = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
-  pbrWoodDiff = (OGLTexture*)Assets::LoadTexture("Wood Diffuse", "WoodPlanks/Wood_planks_COLOR.jpg");
-  pbrWoodBump = (OGLTexture*)Assets::LoadTexture("Wood Bump", "WoodPlanks/Wood_planks_NORM.jpg");
-  pbrWoodSpec = (OGLTexture*)Assets::LoadTexture("Wood Specular", "WoodPlanks/Wood_planks_DISP.jpg");
-  pbrWoodMet = (OGLTexture*)Assets::LoadTexture("Wood Metallic", "WoodPlanks/Wood_planks_SPEC.jpg");
+  pbrWoodDiff = (OGLTexture*)Assets::AssetManager::LoadTexture("Wood Diffuse", "WoodPlanks/Wood_planks_COLOR.jpg");
+  pbrWoodBump = (OGLTexture*)Assets::AssetManager::LoadTexture("Wood Bump", "WoodPlanks/Wood_planks_NORM.jpg");
+  pbrWoodSpec = (OGLTexture*)Assets::AssetManager::LoadTexture("Wood Specular", "WoodPlanks/Wood_planks_DISP.jpg");
+  pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("Wood Metallic", "WoodPlanks/Wood_planks_SPEC.jpg");
  
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
 
@@ -96,7 +96,7 @@ Scene::~Scene() {
   delete renderer;
   delete world;
 
-  Assets::FlushAssets();
+  Assets::AssetManager::FlushAssets();
 }
 
 void Scene::UpdateGame(float dt) {

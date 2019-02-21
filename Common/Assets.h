@@ -14,11 +14,30 @@ namespace NCL {
 		const std::string FONTSSDIR("../Assets/Fonts/");
 		const std::string DATADIR("../Assets/Data/");
 		
-		static std::map<std::string, Rendering::TextureBase*> loadedTextures;
-
 		extern bool ReadTextFile(const std::string &filepath, std::string& result);
+		
+		class AssetManager {
+		public:
+			AssetManager(AssetManager const&) = delete;
+			void operator=(AssetManager const&) = delete;
+
+			static AssetManager& getInstance()
+			{
+				static AssetManager instance;
+				return instance;
+			}
+
+			static Rendering::TextureBase* LoadTexture(const std::string& texturename, const std::string& filename);
+			static void FlushTextures();
+			static void FlushAssets();
+		protected:
+			std::map<std::string, Rendering::ShaderBase*> loadedShaders;
+			std::map<std::string, Rendering::Material*> loadedMaterials;
+			std::map<std::string, Rendering::TextureBase*> loadedTextures;
+		private:
+			AssetManager() {};
+		};
+
 		//static inline bool ReadBinaryFile(const std::string &filepath, std::string& result);
-		extern Rendering::TextureBase* LoadTexture(const std::string& texturename, const std::string& filename);
-		extern bool FlushAssets();
 	}
 }
