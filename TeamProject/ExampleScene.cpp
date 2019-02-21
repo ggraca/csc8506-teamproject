@@ -63,6 +63,23 @@ void ExampleScene::UpdateGame(float dt) {
 	  debugMenu.Toggle();
   }
 
+  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_K)) {
+	  if (hud.hp > 4)
+	  {
+		hud.hp -= 5;
+		renderer->health -= 0.05;
+		renderer->UpdateHealthQuad();
+	  }
+  }
+  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_L)) {
+	  if (hud.hp >= 0)
+	  {
+		  hud.hp = 100;
+		  renderer->health = 1;
+		  renderer->UpdateHealthQuad();
+	  }
+  }
+
   renderer->Render();
   
 }

@@ -13,19 +13,20 @@ namespace NCL {
 
     class ExampleScene : public Scene {
     public:
-      ExampleScene();
-      ~ExampleScene();
-      void UpdateGame(float dt);
-			InputManager* GetInputManager() const;
+		ExampleScene();
+		~ExampleScene();
+		void UpdateGame(float dt);
+		InputManager* GetInputManager() const;
 
     protected:
-      void ResetWorld();
-			void RegisterConsoleCommands();
+		void ResetWorld();
+		void RegisterConsoleCommands();
 
-			DebugMenu debugMenu;
-			HUD hud;
-			Console console;
-      InputManager * inputManager;
+		DebugMenu debugMenu;
+		vector<RenderObject> hudElements;
+		HUD hud;
+		Console console;
+		InputManager * inputManager;
     };
   }
 }

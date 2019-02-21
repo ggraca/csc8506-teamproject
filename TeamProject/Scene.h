@@ -1,6 +1,6 @@
 #pragma once
 #include "GameTechRenderer.h"
-
+#include "HUD.h"
 #include "../GameTechCommon/BulletPhysics.h"
 
 class Material;
@@ -39,7 +39,6 @@ namespace NCL {
 
 			bool useGravity;
 			bool inSelectionMode;
-
 			float		forceMagnitude;
 
 			GameObject* selectionObject = nullptr;
@@ -49,6 +48,8 @@ namespace NCL {
 			OGLMesh*	cylinderMesh = nullptr;
 			OGLTexture* basicTex	= nullptr;
 			OGLTexture* woodTex	= nullptr;
+			OGLTexture* healthBarGreen	= nullptr;
+			OGLTexture* healthBarRed	= nullptr;
 			OGLTexture* grassTex	= nullptr;
 			OGLTexture* ballTex	= nullptr;
 			OGLTexture* cubeMap = nullptr;

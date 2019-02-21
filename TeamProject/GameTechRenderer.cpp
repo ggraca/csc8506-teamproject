@@ -18,6 +18,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
 	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
 	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
+	basicShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
 
 	GenBuffers();
 
@@ -25,10 +26,20 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	screenQuad->UploadToGPU();
 
+	healthBarQuadGreen = OGLMesh::GenerateQuad(180, 10, 655, 685);
+	healthBarQuadGreen->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
+	healthBarQuadGreen->UploadToGPU();
+
+	healthBarQuadRed = OGLMesh::GenerateQuad(180, 10, 655, 685);
+	healthBarQuadRed->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
+	healthBarQuadRed->UploadToGPU();
+
+	glClearColor(1, 1, 1, 1);
 	//Set up the light properties
 	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
 		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
 }
+
 
 GameTechRenderer::~GameTechRenderer()	{
 	glDeleteTextures(1, &gBufferDepthTex);
@@ -157,6 +168,8 @@ void GameTechRenderer::RenderFrame() {
 	CombineBuffers();
 	glDisable(GL_CULL_FACE); //Todo - text indices are going the wrong way...
 }
+
+
 
 void GameTechRenderer::BuildObjectList() {
 	std::vector<GameObject*>::const_iterator first;
@@ -526,6 +539,30 @@ void GameTechRenderer::CombineBuffers() {
 	BindMesh(screenQuad);
 	DrawBoundMesh();
 
+	//HUD
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_CULL_FACE);
+	BindShader(basicShader);
+
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_2D, healthBarRed);
+	glUniform1i(glGetUniformLocation(basicShader->GetProgramID(), "basicTexture"), 8);
+	BindMesh(healthBarQuadRed);
+	DrawBoundMesh();
+
+	
+
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, healthBarGreen);
+	glUniform1i(glGetUniformLocation(basicShader->GetProgramID(), "basicTexture"), 9);
+	BindMesh(healthBarQuadGreen);
+	DrawBoundMesh();
+
+
+	glEnable(GL_CULL_FACE);
+
 	glUseProgram(0);
 }
 
@@ -539,4 +576,13 @@ void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 	int matLocation = glGetUniformLocation(s->GetProgramID(), "viewProjMatrix");
 
 	glUniformMatrix4fv(matLocation, 1, false, (float*)&vp);
+}
+
+void GameTechRenderer::UpdateHealthQuad()
+{
+	delete healthBarQuadGreen;
+	if (health < 0.01) healthBarQuadGreen = OGLMesh::GenerateQuad((180 * health) + 10, 10, 655, 685);
+	else healthBarQuadGreen = OGLMesh::GenerateQuad((180 * health), 10, 655, 685);
+	healthBarQuadGreen->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
+	healthBarQuadGreen->UploadToGPU();
 }

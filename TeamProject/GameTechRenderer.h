@@ -3,6 +3,7 @@
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
+#include "../Common/TextureLoader.h"
 
 #include "GameWorld.h"
 
@@ -11,7 +12,6 @@ class Light;
 namespace NCL {
 	namespace CSC8503 {
 		class RenderObject;
-
 		class GameTechRenderer : public OGLRenderer	{
 		public:
 			GameTechRenderer(GameWorld& world);
@@ -24,9 +24,15 @@ namespace NCL {
 
 			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
 
-			void GenerateScreenTexture(GLuint & into, bool depth = false);
-
+			void GenerateScreenTexture(GLuint& into, bool depth = false);
+			
 			GLuint skybox;
+
+			//HUD
+			GLuint healthBarGreen;
+			GLuint healthBarRed;
+			float health = 1; //(100%);
+			void UpdateHealthQuad();
 
 		protected:
 			void RenderFrame()	override;
@@ -61,6 +67,7 @@ namespace NCL {
 			GLuint gBufferColourTex; // Albedo goes here
 			GLuint gBufferNormalTex; // Normals go here
 			GLuint gBufferSpecularTex; // Specular goes here
+			GLuint hudTex;
 
 			GLuint lightFBO; // FBO for our lighting pass
 			GLuint lightEmissiveTex; // emissive lighting
@@ -68,14 +75,20 @@ namespace NCL {
 
 			OGLShader* combineShader;
 			OGLShader* lightShader;
+			OGLShader* basicShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
+			OGLMesh* healthBarQuadGreen;
+			OGLMesh* healthBarQuadRed;
 
 			Light* directionalLight;
+			
+			
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
+
 		};
 	}
 }
