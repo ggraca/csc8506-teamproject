@@ -3,6 +3,8 @@
 
 #include "../GameTechCommon/BulletPhysics.h"
 
+class Material;
+
 namespace NCL {
 	namespace CSC8503 {
 		class Scene		{
@@ -28,6 +30,7 @@ namespace NCL {
 
 			GameObject* AddSphereToWorld(const Vector3& position, float radius, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
 			GameObject* AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
+			GameObject* AddFloorToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
 			/*GameObject* AddCylinderToWorld(const Vector3& position, Vector3 dimensions, float inverseMass = 10.0f);*/
 
 			GameTechRenderer*	renderer;
@@ -49,7 +52,13 @@ namespace NCL {
 			OGLTexture* grassTex	= nullptr;
 			OGLTexture* ballTex	= nullptr;
 			OGLTexture* cubeMap = nullptr;
+			OGLTexture* pbrWoodDiff = nullptr;
+			OGLTexture* pbrWoodBump = nullptr;
+			OGLTexture* pbrWoodSpec = nullptr;
+			OGLTexture* pbrWoodMet = nullptr;
 			OGLShader*	basicShader = nullptr;
+			Material*   basicMaterial = nullptr;
+			Material* floorMat = nullptr;
 		};
 	}
 }

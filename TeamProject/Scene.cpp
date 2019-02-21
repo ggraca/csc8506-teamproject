@@ -2,7 +2,7 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "../Common/TextureLoader.h"
+#include "../Common/Assets.h"
 #include "GameWorld.h"
 
 using namespace NCL;
@@ -37,17 +37,43 @@ void Scene::InitialiseAssets() {
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
-  basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
+  //Old functions to show as comparison
+  //pbrWoodDiff = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
+  //pbrWoodBump = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
+  //pbrWoodSpec = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
+  //pbrWoodMet = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  pbrWoodDiff = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
+  pbrWoodBump = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
+  pbrWoodSpec = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
+  pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
+ 
+  basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
 
-  // TO BE REMOVED AND REPLACED WITH PROPER CUBEMAP
+  basicMaterial = new Material();
+  basicMaterial->SetShader(basicShader);
+  basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
+  basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
+  basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
+  basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
+
+  floorMat = new Material();
+  floorMat->SetShader(basicShader);
+  floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
+  floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
+  floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
+  floorMat->AddTextureParameter("metalnessTex", pbrWoodMet);
+  Matrix4 texMatrix;
+  texMatrix.ToIdentity();
+  floorMat->SetTextureMatrix(texMatrix * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
+
   vector<std::string> faces
   {
-	  "wood1.jpg",
-		  "wood1.jpg",
-		  "wood1.jpg",
-		  "wood1.jpg",
-		  "wood1.jpg",
-		  "wood1.jpg"
+	  "hw_alps/alps_ft.png",
+	  "hw_alps/alps_bk.png",
+	  "hw_alps/alps_up.png",
+	  "hw_alps/alps_dn.png",
+	  "hw_alps/alps_rt.png",
+	  "hw_alps/alps_lf.png"
   };
 
   cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
@@ -65,10 +91,13 @@ Scene::~Scene() {
   delete grassTex;
   delete ballTex;
   delete basicShader;
+  delete basicMaterial;
 
   delete physics;
   delete renderer;
   delete world;
+
+  Assets::AssetManager::FlushAssets();
 }
 
 void Scene::UpdateGame(float dt) {
@@ -140,7 +169,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   Vector3 sphereSize = Vector3(radius, radius, radius);
   sphere->GetTransform().SetWorldScale(sphereSize);
   sphere->GetTransform().SetWorldPosition(position);
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, ballTex, basicShader));
+  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
 
   world->AddGameObject(sphere);
 
@@ -160,7 +189,7 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetLocalOrientation(orient);
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetWorldScale(dimensions);
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
+  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
   cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
 
   cube->GetPhysicsObject()->SetInverseMass(inverseMass);
@@ -170,6 +199,31 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
 
 
   return cube;
+}
+
+GameObject* Scene::AddFloorToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass, float restitution, float friction) {
+	GameObject* cube = new GameObject();
+
+	btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+	SetBulletPhysicsParameters(Shape, position, inverseMass, restitution, friction, orient);
+
+	//AABBVolume* volume = new AABBVolume(dimensions);
+	//cube->SetBoundingVolume((CollisionVolume*)volume);
+	//cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume())); //TODO These 3 lines may still required until we find some better way of linking render objects to physics objects
+
+	cube->GetTransform().SetLocalOrientation(orient);
+	cube->GetTransform().SetWorldPosition(position);
+	cube->GetTransform().SetWorldScale(dimensions);
+	cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, floorMat));
+	cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
+
+	cube->GetPhysicsObject()->SetInverseMass(inverseMass);
+	cube->GetPhysicsObject()->InitCubeInertia();
+
+	world->AddGameObject(cube);
+
+
+	return cube;
 }
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
@@ -208,7 +262,7 @@ bool Scene::SelectObject() {
 
     if (Window::GetMouse()->ButtonDown(NCL::MouseButtons::MOUSE_LEFT)) {
       if (selectionObject) {	//set colour to deselected;
-        selectionObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
+        selectionObject->GetRenderObject()->GetMaterial()->SetColour(Vector4(1, 1, 1, 1));
         selectionObject = nullptr;
       }
 
@@ -217,7 +271,7 @@ bool Scene::SelectObject() {
       RayCollision closestCollision;
       if (world->Raycast(ray, closestCollision, true)) {
         selectionObject = (GameObject*)closestCollision.node;
-        selectionObject->GetRenderObject()->SetColour(Vector4(0, 1, 0, 1));
+        selectionObject->GetRenderObject()->GetMaterial()->SetColour(Vector4(0, 1, 0, 1));
         return true;
       }
       else {

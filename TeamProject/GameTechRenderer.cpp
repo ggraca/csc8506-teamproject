@@ -291,10 +291,21 @@ void GameTechRenderer::RenderCamera() {
 	vertsDrawn = 0;
 
 	for (const auto&i : activeObjects) {
-		OGLShader* shader = (OGLShader*)(*i).GetShader();
+		Material* currentMaterial = (*i).GetMaterial();
+		OGLShader* shader = (OGLShader*)currentMaterial->GetShader();
 		BindShader(shader);
 
-		BindTextureToShader((OGLTexture*)(*i).GetDefaultTexture(), "mainTex", 0);
+		for (int j = 0; j < currentMaterial->GetTextureParameters()->size(); j++)
+		{
+			//Gets texture, then gets texture shader param name, and binds it to texture slot = iteration
+			BindTextureToShader((*(currentMaterial->GetTextureParameters()))[j].second,
+				(*(currentMaterial->GetTextureParameters()))[j].first, j);
+		}
+
+		glActiveTexture(GL_TEXTURE8);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox);
+		int texLocation = glGetUniformLocation(shader->GetProgramID(), "cubeTex");
+		glUniform1i(texLocation, 8);
 
 		if (activeShader != shader) {
 			modelLocation	= glGetUniformLocation(shader->GetProgramID(), "modelMatrix");
@@ -312,14 +323,10 @@ void GameTechRenderer::RenderCamera() {
 			activeShader = shader;
 		}
 
-		Matrix4 modelMatrix = (*i).GetTransform()->GetWorldMatrix();
-		glUniformMatrix4fv(modelLocation, 1, false, (float*)&modelMatrix);
+		glUniformMatrix4fv(modelLocation, 1, false, (float*)&(*i).GetTransform()->GetWorldMatrix());
+		glUniformMatrix4fv(textureLocation, 1, false, (float*)&currentMaterial->GetTextureMatrix());
 
-		Matrix4 textureMatrix;
-		textureMatrix.ToIdentity();
-		glUniformMatrix4fv(textureLocation, 1, false, (float*)&textureMatrix);
-
-		glUniform4fv(colourLocation, 1, (float*)&i->GetColour());
+		glUniform4fv(colourLocation, 1, (float*)&currentMaterial->GetColour());
 
 		BindMesh((*i).GetMesh());
 

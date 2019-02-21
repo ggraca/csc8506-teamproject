@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace NCL;
 
@@ -20,4 +21,42 @@ bool Assets::ReadTextFile(const std::string &filepath, std::string& result) {
 		std::cout << __FUNCTION__ << " can't read file " << filepath << std::endl;
 		return false;
 	}
+}
+Rendering::TextureBase* Assets::AssetManager::LoadTexture(const std::string& filename) {
+	auto iter = GetInstance().loadedTextures.find(filename);
+
+	if (iter != GetInstance().loadedTextures.end()) {
+		return (*iter).second;
+	}
+
+	Rendering::TextureBase* newTexture;
+	newTexture = TextureLoader::LoadAPITexture(filename);
+	GetInstance().loadedTextures.insert(std::make_pair(filename, newTexture));
+	return newTexture;
+}
+
+void Assets::AssetManager::FlushTextures() {
+	for (auto i = GetInstance().loadedTextures.begin(); i != GetInstance().loadedTextures.end(); i++)
+	{
+		delete(i->second);
+	}
+	GetInstance().loadedTextures.clear();
+}
+
+void Assets::AssetManager::FlushShaders() {
+	for (auto i = GetInstance().loadedShaders.begin(); i != GetInstance().loadedShaders.end(); i++)
+	{
+		delete(i->second);
+	}
+	GetInstance().loadedShaders.clear();
+}
+
+void Assets::AssetManager::FlushMaterials() {
+	GetInstance().loadedMaterials.clear();
+}
+
+void Assets::AssetManager::FlushAssets() {
+	FlushTextures();
+	FlushShaders();
+	FlushMaterials();
 }
