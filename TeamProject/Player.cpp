@@ -99,10 +99,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 void Player::OnCollisionEnd(GameObject * otherObject)
 {
-	if (!otherObject) { return; }
 
-	cout << otherObject << " is no longer colliding" << endl;
-	otherObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
 }
 
 int Player::GetResourceCount() const
@@ -122,5 +119,4 @@ void Player::UpdateResourceCount(int amount)
 	resourceCount += amount;
 
 	if (resourceCount <= 0) resourceCount = 0;
-	cout << "Resource Count is: " << resourceCount << endl;
 }
