@@ -26,6 +26,8 @@ namespace NCL {
 			}
 
 			void SetPosition(Vector3 position) {
+				body->activate();
+				body->getWorldTransform().setOrigin(btVector3(position.x, position.y, position.z));
 				this->position = position;
 			}
 
@@ -34,6 +36,9 @@ namespace NCL {
 			}
 
 			void SetOrientation(Quaternion orientation) {
+				btQuaternion orient = btQuaternion(orientation.x, orientation.y, orientation.z, orientation.w);
+				body->activate();
+				body->getWorldTransform().setRotation(orient);
 				this->orientation = orientation;
 			}
 

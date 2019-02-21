@@ -67,7 +67,7 @@ namespace NCL {
 				physics = bulletPhysics;
 			}
 
-			
+			GameObject* GetPlayerGameObject();
 
 
 		protected:

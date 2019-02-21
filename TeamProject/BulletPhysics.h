@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include <map>
 
 #include "../Common/Vector3.h"
@@ -31,4 +32,11 @@ private:
 	btCollisionDispatcher* dispatcher;
 	btBroadphaseInterface* overlappingPairCache;
 	btSequentialImpulseConstraintSolver* solver;
+	btCollisionObject* playerColOb;
+
+	GameObject* ReturnGameObject(const btCollisionObject* testColOb);
+	std::set<const btCollisionObject*> colObjects1;
+	std::set<const btCollisionObject*> colObjects2;
+
+	int loopNum;
 };

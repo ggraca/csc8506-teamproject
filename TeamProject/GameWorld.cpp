@@ -190,6 +190,11 @@ void GameWorld::GetObjectIterators(
 	last	= gameObjects.end();
 }
 
+GameObject* GameWorld::GetPlayerGameObject()
+{
+	return gameObjects.at(1);
+}
+
 int GameWorld::GetObjectCount(){
 	return gameObjects.size();
 }
