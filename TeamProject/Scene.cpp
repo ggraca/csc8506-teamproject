@@ -50,7 +50,7 @@ void Scene::InitialiseAssets() {
   pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
  
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-  basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
+  //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
   renderer->healthBarGreen = healthBarGreen->GetObjectID();
   renderer->healthBarRed = healthBarRed->GetObjectID();
 
@@ -125,7 +125,7 @@ void Scene::UpdateGame(float dt) {
 }
 
 void Scene::UpdateKeys() {
-
+	
 }
 
 void Scene::InitCamera() {

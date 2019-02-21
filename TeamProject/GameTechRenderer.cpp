@@ -18,7 +18,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
 	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
 	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
-	basicShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
+	hudShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
 
 	GenBuffers();
 
@@ -542,11 +542,11 @@ void GameTechRenderer::CombineBuffers() {
 	//HUD
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CULL_FACE);
-	BindShader(basicShader);
+	BindShader(hudShader);
 
 	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, healthBarRed);
-	glUniform1i(glGetUniformLocation(basicShader->GetProgramID(), "basicTexture"), 8);
+	glUniform1i(glGetUniformLocation(hudShader->GetProgramID(), "basicTexture"), 8);
 	BindMesh(healthBarQuadRed);
 	DrawBoundMesh();
 
@@ -556,10 +556,10 @@ void GameTechRenderer::CombineBuffers() {
 
 	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, healthBarGreen);
-	glUniform1i(glGetUniformLocation(basicShader->GetProgramID(), "basicTexture"), 9);
+	glUniform1i(glGetUniformLocation(hudShader->GetProgramID(), "basicTexture"), 9);
 	BindMesh(healthBarQuadGreen);
 	DrawBoundMesh();
-
+	//End of HUD
 
 	glEnable(GL_CULL_FACE);
 

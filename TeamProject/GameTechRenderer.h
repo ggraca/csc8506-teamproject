@@ -75,7 +75,7 @@ namespace NCL {
 
 			OGLShader* combineShader;
 			OGLShader* lightShader;
-			OGLShader* basicShader;
+			OGLShader* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 			OGLMesh* healthBarQuadGreen;
