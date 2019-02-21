@@ -1,7 +1,8 @@
 #include "DebugMenu.h"
-#include "../GameTechCommon/Debug.h"
+#include "Debug.h"
 
 using namespace NCL;
+using namespace NCL::CSC8503;
 
 DebugMenu::DebugMenu()
 {

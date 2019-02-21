@@ -31,6 +31,11 @@ void Transform::UpdateMatrices() {
 	}
 }
 
+vector<Transform*> NCL::CSC8503::Transform::GetChildrenList()
+{
+	return children;
+}
+
 void Transform::SetWorldPosition(const Vector3& worldPos) {
 	if (parent) {
 		Vector3 parentPos = parent->GetWorldMatrix().GetPositionVector();

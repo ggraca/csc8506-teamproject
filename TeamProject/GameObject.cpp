@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include "../GameTechCommon/CollisionDetection.h"
 #include "InputManager.h"
 
 using namespace NCL;
@@ -63,13 +62,6 @@ void GameObject::OnCollisionEnd(GameObject * otherObject)
 	
 }
 
-bool GameObject::InsideAABB(const Vector3& boxPos, const Vector3& halfSize) {
-	if (!boundingVolume) {
-		return false;
-	}
-	return CollisionDetection::AABBTest(transform, *boundingVolume, boxPos, halfSize);
-}
-
 void GameObject::AddScript(ScriptObject * obj)
 {
 	if (!obj) { return; }
@@ -84,7 +76,6 @@ void GameObject::AddScript(ScriptObject * obj)
 
 	
 }
-
 
 void GameObject::SetUpInitialScripts()
 {
@@ -112,6 +103,30 @@ void GameObject::LateUpdateAttachedScripts(float dt)
 	for (auto&i : scripts)
 	{
 		i->LateUpdate(dt);
+	}
+}
+
+void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
+{
+	OnCollisionBegin(otherObject);
+
+	if (!HasOtherScriptsAttached()) { return; }
+
+	for (auto&i : scripts)
+	{
+		i->OnCollisionBegin(otherObject);
+	}
+}
+
+void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
+{
+	OnCollisionEnd(otherObject);
+
+	if (!HasOtherScriptsAttached()) { return; }
+
+	for (auto&i : scripts)
+	{
+		i->OnCollisionEnd(otherObject);
 	}
 }
 
@@ -176,29 +191,54 @@ void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
 	gameWorld->AddGameObject(obj, parent);
 }
 
+GameObject * GameObject::GetMainCamera()
+{
+	if (!gameWorld) { return nullptr; }
+
+	return gameWorld->GetMainCamera();
+}
+
 ///////////////////////////////////Script Object
 ScriptObject::ScriptObject()
 {
 	gameObject = nullptr;
-	inputManager = nullptr;
+	
 }
 
 
 ScriptObject::ScriptObject(GameObject * go)
 {
 	this->gameObject = go;
-	this->inputManager = nullptr;
-}
-
-ScriptObject::ScriptObject(GameObject * go, InputManager * im)
-{
-	this->gameObject = go;
-	this->inputManager = im;
+	
 }
 
 ScriptObject::~ScriptObject()
 {
 	//don"t delete gameobject as it may still meant to live after script is detached
+}
+
+void ScriptObject::Awake()
+{
+}
+
+void ScriptObject::Start()
+{
+}
+
+void ScriptObject::Update(float dt)
+{
+}
+
+void ScriptObject::LateUpdate(float dt)
+{
+}
+
+void ScriptObject::OnCollisionBegin(GameObject * otherObject)
+{
+}
+
+void ScriptObject::OnCollisionEnd(GameObject * otherObject)
+{
 }
 
 
