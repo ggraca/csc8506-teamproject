@@ -22,7 +22,7 @@ public:
 	btDiscreteDynamicsWorld* dynamicsWorld;
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	void Update(float dt);
-	void UpdateBullet(float dt, int iterations);
+  void UpdateBullet(float dt, int iterations);
 	void SetGravity(Vector3 gravity);
 
 private:
@@ -32,11 +32,8 @@ private:
 	btCollisionDispatcher* dispatcher;
 	btBroadphaseInterface* overlappingPairCache;
 	btSequentialImpulseConstraintSolver* solver;
-	btCollisionObject* playerColOb;
-
-	GameObject* ReturnGameObject(const btCollisionObject* testColOb);
-	std::set<const btCollisionObject*> colObjects1;
-	std::set<const btCollisionObject*> colObjects2;
-
 	int loopNum;
+
+  map<const btCollisionObject*, const btCollisionObject*> GenerateCollisionPairs();
+  void UpdateObjectTransform(GameObject* go, btRigidBody* body);
 };

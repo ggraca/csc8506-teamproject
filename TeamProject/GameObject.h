@@ -193,6 +193,8 @@ namespace NCL {
 			static void AddObjectToWorld(GameObject * obj,GameObject * parent);
 			static GameObject * GetMainCamera();
 
+			vector<GameObject*> collidingObjects;
+
 		protected:
 			static GameWorld *gameWorld;
 			Transform			transform;
@@ -207,7 +209,6 @@ namespace NCL {
 			bool	isActive;
 			bool	isAddedToWorld;
 			string	name;
-
 		};
 
 

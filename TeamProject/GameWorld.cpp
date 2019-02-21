@@ -195,6 +195,11 @@ GameObject* GameWorld::GetPlayerGameObject()
 	return gameObjects.at(1);
 }
 
+vector<GameObject*> NCL::CSC8503::GameWorld::GetGameObjectList()
+{
+  return gameObjects;
+}
+
 int GameWorld::GetObjectCount(){
 	return gameObjects.size();
 }

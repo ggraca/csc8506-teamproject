@@ -68,7 +68,7 @@ namespace NCL {
 			}
 
 			GameObject* GetPlayerGameObject();
-
+      vector<GameObject*> GetGameObjectList();
 
 		protected:
 			void UpdateTransforms();

@@ -99,7 +99,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 void Player::OnCollisionEnd(GameObject * otherObject)
 {
-
+	cout << "Stopped colliding with: " << otherObject->GetName() << endl;
 }
 
 int Player::GetResourceCount() const
