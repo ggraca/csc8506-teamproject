@@ -21,19 +21,22 @@ namespace NCL {
 			AssetManager(AssetManager const&) = delete;
 			void operator=(AssetManager const&) = delete;
 
-			static AssetManager& getInstance()
+			static AssetManager& GetInstance()
 			{
 				static AssetManager instance;
 				return instance;
 			}
 
 			static Rendering::TextureBase* LoadTexture(const std::string& texturename, const std::string& filename);
+
 			static void FlushTextures();
+			static void FlushShaders();
+			static void FlushMaterials();
 			static void FlushAssets();
 		protected:
+			std::map<std::string, Rendering::TextureBase*> loadedTextures;
 			std::map<std::string, Rendering::ShaderBase*> loadedShaders;
 			std::map<std::string, Rendering::Material*> loadedMaterials;
-			std::map<std::string, Rendering::TextureBase*> loadedTextures;
 		private:
 			AssetManager() {};
 		};

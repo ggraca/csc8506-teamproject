@@ -25,17 +25,30 @@ bool Assets::ReadTextFile(const std::string &filepath, std::string& result) {
 Rendering::TextureBase* Assets::AssetManager::LoadTexture(const std::string& texturename, const std::string& filename) {
 	Rendering::TextureBase* newTexture;
 	newTexture = TextureLoader::LoadAPITexture(filename);
-	getInstance().loadedTextures.insert(std::make_pair(texturename, newTexture));
+	GetInstance().loadedTextures.insert(std::make_pair(texturename, newTexture));
 	return newTexture;
 }
 
 void Assets::AssetManager::FlushTextures() {
-	for (auto i = getInstance().loadedTextures.begin(); i != getInstance().loadedTextures.end(); i++)
+	for (auto i = GetInstance().loadedTextures.begin(); i != GetInstance().loadedTextures.end(); i++)
 	{
 		delete(i->second);
 	}
 }
 
+void Assets::AssetManager::FlushShaders() {
+	for (auto i = GetInstance().loadedShaders.begin(); i != GetInstance().loadedShaders.end(); i++)
+	{
+		delete(i->second);
+	}
+}
+
+void Assets::AssetManager::FlushMaterials() {
+	GetInstance().loadedMaterials.clear();
+}
+
 void Assets::AssetManager::FlushAssets() {
 	FlushTextures();
+	FlushShaders();
+	FlushMaterials();
 }
