@@ -16,8 +16,10 @@ public:
 		Resources,
 		ResourceParent,
 		CaptureParent,
+		Destructable,
 		Occupied,
 		Player,
+		Enemy,
 		EnemyProjectile
 	};
 

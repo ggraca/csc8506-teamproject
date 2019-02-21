@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "HealthManager.h"
+#include "Player.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -19,7 +21,7 @@ public:
 	void SetTypeOfDamage(DamageType d);
 	DamageType GetTypeOfDamage(DamageType typeOfDamage);
 	void OnCollisionBegin(GameObject * otherObject);
-	void ResolveDamage();
+	void ResolveDamage(GameObject * obj);
 
 private:
 	int damage = 0;
