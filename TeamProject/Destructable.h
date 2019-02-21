@@ -1,15 +1,15 @@
 #pragma once
 #include "GameObject.h"
+#include "ExampleScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
 
 
-class Destructable:ScriptObject
+class Destructable: virtual public ScriptObject
 {
 public:
 	Destructable(GameObject * gameObject);
-	Destructable(GameObject * gameObject,InputManager * im);
 	~Destructable();
 
 	void Awake() override;

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "ExampleScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -9,7 +10,6 @@ class Enemy : virtual public ScriptObject
 public:
 
 	Enemy(GameObject * obj);
-	Enemy(GameObject*obj, InputManager* im);
 	virtual ~Enemy() {}
 
 	void Awake() override;

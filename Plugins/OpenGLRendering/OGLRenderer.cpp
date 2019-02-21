@@ -35,6 +35,7 @@ OGLRenderer::OGLRenderer(Window& w) : RendererBase(w)	{
 	currentHeight	= (int)w.GetScreenSize().y;
 
 	TextureLoader::RegisterAPILoadFunction(OGLTexture::RGBATextureFromFilename);
+	TextureLoader::RegisterAPILoadCubeFunction(OGLTexture::CubeTextureFromFilename);
 
 	font		= new SimpleFont("PressStart2P.fnt", "PressStart2P.png");
 
