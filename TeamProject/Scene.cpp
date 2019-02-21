@@ -2,7 +2,7 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "../Common/TextureLoader.h"
+#include "../Common/Assets.h"
 #include "GameWorld.h"
 
 using namespace NCL;
@@ -45,8 +45,48 @@ void Scene::InitialiseAssets() {
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
   dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
-//basicShader = new OGLShader("GameTechVert.glsl", "GameTechFrag.glsl");
-  basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
+
+  //Old functions to show as comparison
+  //pbrWoodDiff = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
+  //pbrWoodBump = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
+  //pbrWoodSpec = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
+  //pbrWoodMet = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  pbrWoodDiff = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
+  pbrWoodBump = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
+  pbrWoodSpec = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
+  pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
+
+  basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
+
+  basicMaterial = new Material();
+  basicMaterial->SetShader(basicShader);
+  basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
+  basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
+  basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
+  basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
+
+  floorMat = new Material();
+  floorMat->SetShader(basicShader);
+  floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
+  floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
+  floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
+  floorMat->AddTextureParameter("metalnessTex", pbrWoodMet);
+  Matrix4 texMatrix;
+  texMatrix.ToIdentity();
+  floorMat->SetTextureMatrix(texMatrix * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
+
+  vector<std::string> faces
+  {
+	  "hw_alps/alps_ft.png",
+	  "hw_alps/alps_bk.png",
+	  "hw_alps/alps_up.png",
+	  "hw_alps/alps_dn.png",
+	  "hw_alps/alps_rt.png",
+	  "hw_alps/alps_lf.png"
+  };
+
+  cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
+  renderer->skybox = cubeMap->GetObjectID();
 
   InitCamera();
   InitWorld();
@@ -62,10 +102,13 @@ Scene::~Scene() {
   delete grassTex;
   delete ballTex;
   delete basicShader;
+  delete basicMaterial;
 
   delete physics;
   delete renderer;
   delete world;
+
+  Assets::AssetManager::FlushAssets();
 }
 
 void Scene::UpdateGame(float dt) {
@@ -104,8 +147,8 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 
   sphere->GetTransform().SetWorldScale(Vector3(radius, radius, radius));
   sphere->GetTransform().SetWorldPosition(position);
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, ballTex, basicShader));
   sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
+  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
 
   world->AddGameObject(sphere);
   return sphere;
@@ -117,8 +160,8 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetWorldScale(dimensions);
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetLocalOrientation(orient);
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, woodTex, basicShader));
   cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
+  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
 
   world->AddGameObject(cube);
   return cube;
@@ -150,6 +193,31 @@ GameObject* Scene::AddConeToWorld(const Vector3& position, const Quaternion& ori
   return cone;
 }
 
+GameObject* Scene::AddFloorToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float inverseMass, float restitution, float friction) {
+	GameObject* cube = new GameObject();
+
+	btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+	SetBulletPhysicsParameters(Shape, position, inverseMass, restitution, friction, orient);
+
+	//AABBVolume* volume = new AABBVolume(dimensions);
+	//cube->SetBoundingVolume((CollisionVolume*)volume);
+	//cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume())); //TODO These 3 lines may still required until we find some better way of linking render objects to physics objects
+
+	cube->GetTransform().SetLocalOrientation(orient);
+	cube->GetTransform().SetWorldPosition(position);
+	cube->GetTransform().SetWorldScale(dimensions);
+	cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, floorMat));
+	cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), cube->GetBoundingVolume()));
+
+	cube->GetPhysicsObject()->SetInverseMass(inverseMass);
+	cube->GetPhysicsObject()->InitCubeInertia();
+
+	world->AddGameObject(cube);
+
+
+	return cube;
+}
+
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
 	for (int i = 0; i < numCols; ++i) {
 		for (int j = 0; j < numRows; ++j) {
@@ -167,7 +235,7 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 			}
 			if (rand() % 2) {
 				GameObject* go = AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
-				go->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));  
+				go->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
 				go->GetRenderObject()->SetDefaultTexture(tempTex);
 			}
 			else {

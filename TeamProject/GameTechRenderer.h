@@ -8,9 +8,9 @@
 #include "CameraControl.h"
 #include "../Common/Matrix4.h"
 
+class Light;
+
 namespace NCL {
-	class Maths::Vector3;
-	class Maths::Vector4;
 	namespace CSC8503 {
 		class RenderObject;
 
@@ -27,6 +27,8 @@ namespace NCL {
 			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
 
 			void GenerateScreenTexture(GLuint & into, bool depth = false);
+
+			GLuint skybox;
 
 		protected:
 			void RenderFrame()	override;
@@ -55,8 +57,6 @@ namespace NCL {
 			Matrix4     shadowMatrix;
 
 			OGLShader* skyBoxShader;
-			//Skybox needs to be loaded into the texture library
-			GLuint skybox;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			GLuint gBufferDepthTex; // Depth goes here
@@ -73,10 +73,7 @@ namespace NCL {
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 
-			Vector4		lightColour;
-			float		lightRadius;
-			Vector3		lightPosition;
-			float lightBrightness = 16.0f;
+			Light* directionalLight;
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
