@@ -43,7 +43,6 @@ void GameObject::ClearScripts()
 
 void GameObject::OnCollisionBegin(GameObject * otherObject)
 {
-	cout << "Colliding with " << otherObject->GetName() << endl;
 	if (!HasOtherScriptsAttached()) { return; }
 	
 	for (auto&i : scripts)

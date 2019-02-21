@@ -2,7 +2,7 @@
 #include "../TeamProject/InputManager.h"
 
 
-Resource::Resource(GameObject * obj):ScriptObject(obj)
+Resource::Resource(GameObject * obj) : ScriptObject(obj)
 {
 	Reset();
 }
@@ -23,14 +23,6 @@ void Resource::Start()
 void Resource::Update(float dt)
 {
 	FollowTarget(dt);
-	//if (gameObject)
-	//{
-	//	cout << "Intact" << endl;
-	//}
-	//else
-	//{
-	//	cout << "Not intact" << endl;
-	//}
 }
 
 void Resource::FollowTarget(float &dt)
@@ -41,7 +33,8 @@ void Resource::FollowTarget(float &dt)
 		auto amount = direction * moveSpeed * dt;
 		auto pos = (gameObject->GetTransform().GetWorldPosition());
 		pos += amount;
-		gameObject->GetTransform().GetWorldPosition() = pos;
+		gameObject->GetTransform().SetWorldPosition(pos);
+		gameObject->GetPhysicsObject()->SetPosition(pos);
 	}
 }
 
@@ -60,11 +53,10 @@ void Resource::OnCollisionEnd(GameObject * otherObject)
 
 void Resource::Aquire(GameObject * obj) 
 {
-	//if (!gameObject) { cout << "No game object" << endl; }
-	/*gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
+	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
 	gameObject->GetRenderObject()->SetColour(obj->GetRenderObject()->GetColour()); 
 	gameObject->SetTag(LayerAndTag::Tags::Occupied);
-	SetTarget(obj);*/
+	SetTarget(obj);
 }
 
 void Resource::Reset() 
@@ -72,8 +64,8 @@ void Resource::Reset()
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::ResourceParent));
 	gameObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
-	moveSpeed = 15.0f;
-	minDistance = 5.0f;
+	moveSpeed = 100.0f;
+	minDistance = 50.0f;
 	SetTarget(nullptr);
 }
 

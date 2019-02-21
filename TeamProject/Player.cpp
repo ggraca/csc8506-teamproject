@@ -88,8 +88,8 @@ void Player::LateUpdate(float dt)
 
 void Player::OnCollisionBegin(GameObject * otherObject)
 {
-	cout << otherObject->GetName() << "is colliding" << endl;
-	
+	if (!otherObject) { return; }
+	cout << "Colliding with: " << otherObject->GetName() << endl;
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		otherObject->GetScript<Resource*>()->Aquire(gameObject);
@@ -99,7 +99,9 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 void Player::OnCollisionEnd(GameObject * otherObject)
 {
-	cout << otherObject << "is no longer colliding" << endl;
+	if (!otherObject) { return; }
+
+	cout << otherObject << " is no longer colliding" << endl;
 	otherObject->GetRenderObject()->SetColour(Vector4(1, 1, 1, 1));
 }
 

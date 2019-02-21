@@ -46,10 +46,11 @@ void PhysicsScene::ResetWorld() {
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
 
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
-  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource1->SetName("Resource 1");
-  resource2->SetName("Resource 2");
   resource1->AddScript((ScriptObject*)new Resource(resource1));
+
+  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  resource2->SetName("Resource 2");
   resource2->AddScript((ScriptObject*)new Resource(resource2));
 }
 
