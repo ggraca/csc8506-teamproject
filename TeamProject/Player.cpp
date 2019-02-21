@@ -71,7 +71,6 @@ void Player::PlayerMovement(float dt)
 	}
 	if (PhysicsScene::inputManager->IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
-		cout << "Jump" << endl;
 		gameObject->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
 		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));
 	}
@@ -89,13 +88,13 @@ void Player::LateUpdate(float dt)
 
 void Player::OnCollisionBegin(GameObject * otherObject)
 {
-	cout << otherObject << "is colliding" << endl;
-	otherObject->GetRenderObject()->SetColour(Vector4(1, 0, 0, 1));
-	/*if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
+	cout << otherObject->GetName() << "is colliding" << endl;
+	
+	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		otherObject->GetScript<Resource*>()->Aquire(gameObject);
 		UpdateResourceCount(1);
-	}*/
+	}
 }
 
 void Player::OnCollisionEnd(GameObject * otherObject)

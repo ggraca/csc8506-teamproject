@@ -8,7 +8,7 @@ using namespace CSC8503;
 class Resource:ScriptObject
 {
 public:
-	Resource(GameObject * gameObject);
+	Resource(GameObject * obj);
 	virtual ~Resource();
 
 	void Awake() override;

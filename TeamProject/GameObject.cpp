@@ -109,6 +109,8 @@ void GameObject::LateUpdateAttachedScripts(float dt)
 
 void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
 {
+	OnCollisionBegin(otherObject);
+
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)
@@ -119,6 +121,8 @@ void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
 
 void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
 {
+	OnCollisionEnd(otherObject);
+
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)

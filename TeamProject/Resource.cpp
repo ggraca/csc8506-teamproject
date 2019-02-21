@@ -2,7 +2,7 @@
 #include "../TeamProject/InputManager.h"
 
 
-Resource::Resource(GameObject * gameObject):ScriptObject(gameObject)
+Resource::Resource(GameObject * obj):ScriptObject(obj)
 {
 	Reset();
 }
@@ -23,6 +23,14 @@ void Resource::Start()
 void Resource::Update(float dt)
 {
 	FollowTarget(dt);
+	//if (gameObject)
+	//{
+	//	cout << "Intact" << endl;
+	//}
+	//else
+	//{
+	//	cout << "Not intact" << endl;
+	//}
 }
 
 void Resource::FollowTarget(float &dt)
@@ -52,10 +60,11 @@ void Resource::OnCollisionEnd(GameObject * otherObject)
 
 void Resource::Aquire(GameObject * obj) 
 {
-	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
+	//if (!gameObject) { cout << "No game object" << endl; }
+	/*gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
 	gameObject->GetRenderObject()->SetColour(obj->GetRenderObject()->GetColour()); 
 	gameObject->SetTag(LayerAndTag::Tags::Occupied);
-	SetTarget(obj);
+	SetTarget(obj);*/
 }
 
 void Resource::Reset() 

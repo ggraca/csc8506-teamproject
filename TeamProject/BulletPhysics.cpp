@@ -84,6 +84,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 
 	std::map<const btCollisionObject*, std::vector<btManifoldPoint*>> objectsCollisions;
 	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
+
 	for (int i = 0; i < numManifolds; i++) {
 		btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
 		const btCollisionObject* objA = contactManifold->getBody0();
@@ -135,7 +136,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 				std::set<const btCollisionObject*>::iterator it2;
 				for (it2 = colObjects2.begin(); it2 != colObjects2.end(); ++it2)
 				{				
-					if (it1 == it2) {
+					if ((*it1) == (*it2)) {
 						stillColliding = true;
 						break;
 					}
@@ -147,7 +148,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 			}
 			colObjects1.clear();
 		}
-		if (loopNum % 2 == 0)
+		else
 		{
 			std::set<const btCollisionObject*>::iterator it2;
 			for (it2 = colObjects2.begin(); it2 != colObjects2.end(); ++it2)
@@ -156,7 +157,7 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 				std::set<const btCollisionObject*>::iterator it1;
 				for (it1 = colObjects1.begin(); it1 != colObjects1.end(); ++it1)
 				{
-					if (it1 == it2) {
+					if ((*it1) == (*it2)) {
 						stillColliding = true;
 						break;
 					}
