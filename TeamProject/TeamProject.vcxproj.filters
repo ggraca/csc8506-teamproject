@@ -27,6 +27,9 @@
     <Filter Include="Rendering">
       <UniqueIdentifier>{794ac502-dedb-47d1-9138-d83fcb0b244a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{f3bacd5e-d450-4a77-96f1-2e67413a03a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
