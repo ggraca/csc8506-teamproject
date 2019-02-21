@@ -3,7 +3,6 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "../Common/TextureLoader.h"
 
 #include "../Common/Assets.h"
 #include <fstream>

@@ -1,6 +1,7 @@
 #include "Material.h"
 
-
+using namespace NCL;
+using namespace Rendering;
 
 Material::Material()
 {

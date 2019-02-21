@@ -92,9 +92,6 @@
     <ClCompile Include="Animation.cpp">
       <Filter>GameplayTools</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTechRenderer.h">
@@ -158,9 +155,6 @@
       <Filter>GameplayTools</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
       <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>

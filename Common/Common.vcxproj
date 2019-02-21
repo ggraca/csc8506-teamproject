@@ -136,6 +136,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Maths.cpp" />
     <ClCompile Include="Matrix2.cpp" />
     <ClCompile Include="Matrix3.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Assets.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="Matrix2.h" />
     <ClInclude Include="Matrix3.h" />

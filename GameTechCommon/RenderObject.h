@@ -1,6 +1,6 @@
 #pragma once
 #include "../Common/Matrix4.h"
-#include "../TeamProject/Material.h"
+#include "../Common/Material.h"
 
 namespace NCL {
 	using namespace NCL::Rendering;

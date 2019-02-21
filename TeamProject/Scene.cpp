@@ -2,8 +2,7 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "Material.h"
-#include "../Common/TextureLoader.h"
+#include "../Common/Assets.h"
 #include "GameWorld.h"
 
 using namespace NCL;
@@ -38,10 +37,15 @@ void Scene::InitialiseAssets() {
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
-  pbrWoodDiff =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
-  pbrWoodBump =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
-  pbrWoodSpec =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
-  pbrWoodMet  =(OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  //pbrWoodDiff = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
+  //pbrWoodBump = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
+  //pbrWoodSpec = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
+  //pbrWoodMet = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  pbrWoodDiff = (OGLTexture*)Assets::LoadTexture("Wood Diffuse", "WoodPlanks/Wood_planks_COLOR.jpg");
+  pbrWoodBump = (OGLTexture*)Assets::LoadTexture("Wood Bump", "WoodPlanks/Wood_planks_NORM.jpg");
+  pbrWoodSpec = (OGLTexture*)Assets::LoadTexture("Wood Specular", "WoodPlanks/Wood_planks_DISP.jpg");
+  pbrWoodMet = (OGLTexture*)Assets::LoadTexture("Wood Metallic", "WoodPlanks/Wood_planks_SPEC.jpg");
+ 
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
 
   basicMaterial = new Material();
@@ -87,14 +91,12 @@ Scene::~Scene() {
   delete ballTex;
   delete basicShader;
   delete basicMaterial;
-  delete pbrWoodDiff;
-  delete pbrWoodBump;
-  delete pbrWoodSpec;
-  delete pbrWoodMet;
 
   delete physics;
   delete renderer;
   delete world;
+
+  Assets::FlushAssets();
 }
 
 void Scene::UpdateGame(float dt) {
