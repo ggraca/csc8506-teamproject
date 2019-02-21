@@ -37,6 +37,7 @@ void Scene::InitialiseAssets() {
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
+  //Old functions to show as comparison
   //pbrWoodDiff = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
   //pbrWoodBump = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
   //pbrWoodSpec = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
