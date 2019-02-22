@@ -1,7 +1,7 @@
 #pragma once
 
-#include <set>
 #include <map>
+#include <utility>
 
 #include "../Common/Vector3.h"
 #include "../Common/Vector4.h"
@@ -34,6 +34,6 @@ private:
 	btSequentialImpulseConstraintSolver* solver;
 	int loopNum;
 
-  map<const btCollisionObject*, const btCollisionObject*> GenerateCollisionPairs();
-  void UpdateObjectTransform(GameObject* go, btRigidBody* body);
+	map<btCollisionObject*, vector<btCollisionObject*>> GenerateCollisionPairs();
+	void UpdateObjectTransform(GameObject* go, btRigidBody* body);
 };
