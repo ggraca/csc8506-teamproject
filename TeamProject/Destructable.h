@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Resource.h"
+#include "HealthManager.h"
 #include "ExampleScene.h"
 
 using namespace NCL;

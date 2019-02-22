@@ -27,10 +27,15 @@ void Destructable::Update(float dt)
 
 void Destructable::CheckIfDestroyed()
 {
-	//if (1)//dead)
-	//{
-	//	
-	//}
+	HealthManager * health = gameObject->GetScript<HealthManager*>();
+	if (health->IsDead())
+	{
+		for (int i = 0; i < (health->GetHealth()/25);i++)
+		{
+			GenerateResource();
+		}
+		GameObject::Destroy(gameObject);
+	}
 }
 
 void Destructable::LateUpdate(float dt)
@@ -39,14 +44,6 @@ void Destructable::LateUpdate(float dt)
 
 void Destructable::OnCollisionBegin(GameObject * otherObject)
 {
-	if (otherObject->CompareTag(LayerAndTag::Tags::Player))
-	{
-		for (int i =0; i < 5;i++)
-		{
-			GenerateResource();
-		}
-		GameObject::Destroy(gameObject);
-	}
 }
 
 
