@@ -71,9 +71,6 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ExampleScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -97,8 +94,6 @@
     </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>GameplayTools</Filter>
-    <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExampleScene.cpp">
       <Filter>Source Files</Filter>
@@ -123,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="HealthManager.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleScene.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -165,9 +163,6 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExampleScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -191,8 +186,6 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>GameplayTools</Filter>
-    <ClInclude Include="..\GameTechCommon\BulletPhysics.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExampleScene.h">
       <Filter>Header Files</Filter>
@@ -220,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="HealthManager.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="ExampleScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
