@@ -17,8 +17,6 @@ namespace NCL {
       PhysicsScene();
       ~PhysicsScene();
       void UpdateGame(float dt);
-	  static InputManager * inputManager;
-
 
     protected:
       void ResetWorld();
@@ -29,6 +27,7 @@ namespace NCL {
 
       DebugMenu debugMenu;
       Console console;
+	  HUD hud;
     };
   }
 }

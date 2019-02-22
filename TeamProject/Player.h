@@ -22,12 +22,12 @@ public:
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
-
+	void UpdateResourceCount(int amount);
 	int GetResourceCount() const;
 protected:
 
 	void ResetPlayer();
-	void UpdateResourceCount(int amount);
+	
 
 	int resourceCount;
 	float movementSpeed;

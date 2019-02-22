@@ -16,22 +16,24 @@
 using namespace NCL;
 using namespace CSC8503;
 
-InputManager * ExampleScene::inputManager = nullptr;
-
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
   
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
+  InputManager::InitializeButtonRelations();
 
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
 
-  if(!inputManager){ inputManager = new InputManager(); }//Static guy initializations
   GameObject::SetGameWorld(world);
+
+
 }
+
+
 
 
 void ExampleScene::ResetWorld() {
@@ -55,7 +57,7 @@ void ExampleScene::ResetWorld() {
 }
 
 ExampleScene::~ExampleScene() {
-	delete inputManager;
+	InputManager::Dispose();
 }
 
 void ExampleScene::UpdateGame(float dt) {
@@ -83,6 +85,19 @@ void ExampleScene::UpdateGame(float dt) {
 	  console.Toggle();
 	  debugMenu.Toggle();
   }
+
+  
+  /*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
+	  delete hammer;
+	  hammer = (OGLTexture*)TextureLoader::LoadAPITexture("hammer.png");
+	  renderer->hammer = hammer->GetObjectID();
+	  delete gun;
+	  gun = (OGLTexture*)TextureLoader::LoadAPITexture("gun.png");
+	  renderer->gun = gun->GetObjectID();
+	  delete bomb;
+	  bomb = (OGLTexture*)TextureLoader::LoadAPITexture("bomb.png");
+	  renderer->bomb = bomb->GetObjectID();
+  }*/
 
   renderer->Render();
   
