@@ -4,6 +4,7 @@
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/Assets.h"
 #include "GameWorld.h"
+#include "InputManager.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -14,6 +15,7 @@ Scene::Scene() {
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
   world->SetPhysics(physics);
+  InputManager::InitializeButtonRelations();
 
   Debug::SetRenderer(renderer);
 
@@ -112,6 +114,7 @@ Scene::~Scene() {
   delete world;
 
   Assets::AssetManager::FlushAssets();
+  InputManager::Dispose();
 }
 
 void Scene::UpdateGame(float dt) {

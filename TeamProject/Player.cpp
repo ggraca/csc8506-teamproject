@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "InputManager.h"
 
 
 Player::Player(GameObject* obj) : ScriptObject(obj)

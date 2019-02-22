@@ -7,7 +7,6 @@
 #include "DebugMenu.h"
 #include "Player.h"
 #include "Resource.h"
-#include "InputManager.h"
 #include "CameraControl.h"
 
 namespace NCL {

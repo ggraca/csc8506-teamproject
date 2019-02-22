@@ -6,7 +6,6 @@
 #include "HUD.h"
 #include "HUDObject.h"
 #include "Animation.h"
-#include "InputManager.h"
 #include "Player.h"
 #include "Resource.h"
 #include "CameraControl.h"

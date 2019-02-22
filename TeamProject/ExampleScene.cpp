@@ -21,7 +21,6 @@ ExampleScene::ExampleScene() : Scene() {
   
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
-  InputManager::InitializeButtonRelations();
 
   ResetWorld();
   debugMenu = DebugMenu();
@@ -57,7 +56,6 @@ void ExampleScene::ResetWorld() {
 }
 
 ExampleScene::~ExampleScene() {
-	InputManager::Dispose();
 }
 
 void ExampleScene::UpdateGame(float dt) {
