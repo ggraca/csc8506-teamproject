@@ -24,7 +24,7 @@ DamageControl::DamageType DamageControl::GetTypeOfDamage(DamageControl::DamageTy
 
 void DamageControl::OnCollisionBegin(GameObject * otherObject)
 {
-
+	ResolveDamage(otherObject);
 }
 
 void DamageControl::ResolveDamage(GameObject * obj)
@@ -35,20 +35,21 @@ void DamageControl::ResolveDamage(GameObject * obj)
 	{
 		//obj->GetScript<Player*>()->TakeDamage(damage);
 	
-	obj->GetScript<HealthManager*>()->TakeDamage(damage);
-	if (typeOfDamage = DamageType::SingleShot) { damage = 0; }
-	//gravity
+		obj->GetScript<HealthManager*>()->TakeDamage(damage);
+		if (typeOfDamage = DamageType::SingleShot) { damage = 0; }
 	}
+
 	else if (GameObject::FindGameObjectWithTag(LayerAndTag::Tags::EnemyProjectile)) 
 	{
 		if (typeOfDamage = DamageType::SingleShot) { damage = 0; }
-		//gravity
 	}
+
 	else if (GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Occupied) || GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Resources) && GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Enemy))
 	{
 		//obj->GetScript<Enemy*>()->TakeDamage(damage);
 		if (typeOfDamage = DamageType::SingleShot) { damage = 0; }
 	}
+
 	else if (GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Occupied) || GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Resources) && GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Destructable))
 	{ 
 		//obj->GetScript<Destructable*>()->TakeDamage(damage);
