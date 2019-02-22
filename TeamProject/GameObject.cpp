@@ -241,4 +241,13 @@ void ScriptObject::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
+void SetLayer(GameObject* gameObject, LayerAndTag::ObjectLayer layer)
+{
+	//this->layer = layer;
+	//if (physics->collisionShapes.size() == 1) {
+	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
+	//	physics->dynamicsWorld->addRigidBody(pb, 1, 1111);
+	//}
+}
+
 

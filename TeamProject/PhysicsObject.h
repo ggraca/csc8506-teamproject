@@ -6,7 +6,7 @@
 
 using namespace NCL::Maths;
 
-enum ShapeType { cube, sphere, cylinder, cone, complexMesh };
+//enum ShapeType { cube, sphere, cylinder, cone, complexMesh };  //TODO Is this really better as a static class member??
 
 namespace NCL {
 	class CollisionVolume;
@@ -16,6 +16,7 @@ namespace NCL {
 
 		class PhysicsObject	{
 		public:
+			static enum ShapeType { cube, sphere, cylinder, cone, complexMesh };
 			PhysicsObject();
 			PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction);
 			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction);

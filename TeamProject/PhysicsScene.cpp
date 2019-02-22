@@ -35,12 +35,14 @@ void PhysicsScene::ResetWorld() {
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
+  player->SetLayer(LayerAndTag::ObjectLayer::UI);
 
-  auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+
+  auto resource1 = AddCubeToWorld(Vector3(80, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f);
   resource1->SetName("Resource 1");
   resource1->AddScript((ScriptObject*)new Resource(resource1));
 
-  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto resource2 = AddCubeToWorld(Vector3(90, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f);
   resource2->SetName("Resource 2");
   resource2->AddScript((ScriptObject*)new Resource(resource2));
 }

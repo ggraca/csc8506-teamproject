@@ -31,13 +31,10 @@ public:
 		InitializeLayerMatrixCollisions();
 	}
 
-	
-
 	~LayerAndTag(){}
 
 	bool CanLayersCollide(ObjectLayer layer1, ObjectLayer layer2);
-	
-
+	void SetLayerMatrixElement(ObjectLayer layer1, ObjectLayer layer2, bool collide);
 
 private:
 	void ResetLayerMatrix();

@@ -18,8 +18,17 @@ void LayerAndTag::ResetLayerMatrix()
 	
 }
 
+void LayerAndTag::SetLayerMatrixElement(ObjectLayer layer1, ObjectLayer layer2, bool collide)
+{
+	LayerMatrix[layer1][layer2] = collide;
+}
+
 void LayerAndTag::InitializeLayerMatrixCollisions()
 {
 	LayerMatrix[ObjectLayer::Default][ObjectLayer::Default] = true;
-	//Becareful about collision indexing
+	LayerMatrix[ObjectLayer::Default][ObjectLayer::UI] = true;
+	LayerMatrix[ObjectLayer::UI][ObjectLayer::Default] = true;
+	LayerMatrix[ObjectLayer::UI][ObjectLayer::UI] = true;
+	//Be careful about collision indexing
 }
+
