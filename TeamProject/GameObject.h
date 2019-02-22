@@ -230,7 +230,6 @@ namespace NCL {
 			virtual void OnCollisionEnd(GameObject* otherObject);
 
 		protected:
-
 			GameObject * gameObject;
 		};
 

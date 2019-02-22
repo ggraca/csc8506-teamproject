@@ -153,6 +153,7 @@
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="DamageControl.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
     <ClCompile Include="Destructable.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
     <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="HealthManager.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LayerAndTag.cpp" />
@@ -179,6 +181,7 @@
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="DamageControl.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="Destructable.h" />
@@ -187,6 +190,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTechRenderer.h" />
     <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="HealthManager.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LayerAndTag.h" />
