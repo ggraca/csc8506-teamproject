@@ -4,6 +4,7 @@
 #include "Console.h"
 #include "DebugMenu.h"
 #include "HUD.h"
+#include "HUDObject.h"
 #include "Animation.h"
 #include "InputManager.h"
 
@@ -23,7 +24,7 @@ namespace NCL {
 		void RegisterConsoleCommands();
 
 		DebugMenu debugMenu;
-		vector<RenderObject> hudElements;
+		vector<HUDObject> hudElements;
 		HUD hud;
 		Console console;
 		InputManager * inputManager;

@@ -35,10 +35,9 @@ void Scene::InitialiseAssets() {
 
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
-  healthBarGreen = (OGLTexture*)TextureLoader::LoadAPITexture("healthBarGreen.png");
-  healthBarRed = (OGLTexture*)TextureLoader::LoadAPITexture("healthBarRed.png");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("goal.jpg");
+
   //Old functions to show as comparison
   //pbrWoodDiff = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
   //pbrWoodBump = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
@@ -51,8 +50,6 @@ void Scene::InitialiseAssets() {
  
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
   //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
-  renderer->healthBarGreen = healthBarGreen->GetObjectID();
-  renderer->healthBarRed = healthBarRed->GetObjectID();
 
   basicMaterial = new Material();
   basicMaterial->SetShader(basicShader);
@@ -95,8 +92,6 @@ Scene::~Scene() {
   delete woodTex;
   delete grassTex;
   delete ballTex;
-  delete healthBarGreen;
-  delete healthBarRed;
   delete basicShader;
   delete basicMaterial;
 

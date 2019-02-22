@@ -29,7 +29,11 @@ ExampleScene::ExampleScene() : Scene() {
   console = Console();
   RegisterConsoleCommands();
   GameObject::SetGameWorld(world);
+
+
 }
+
+
 
 
 void ExampleScene::ResetWorld() {
@@ -79,6 +83,17 @@ void ExampleScene::UpdateGame(float dt) {
 		  renderer->UpdateHealthQuad();
 	  }
   }
+  /*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
+	  delete hammer;
+	  hammer = (OGLTexture*)TextureLoader::LoadAPITexture("hammer.png");
+	  renderer->hammer = hammer->GetObjectID();
+	  delete gun;
+	  gun = (OGLTexture*)TextureLoader::LoadAPITexture("gun.png");
+	  renderer->gun = gun->GetObjectID();
+	  delete bomb;
+	  bomb = (OGLTexture*)TextureLoader::LoadAPITexture("bomb.png");
+	  renderer->bomb = bomb->GetObjectID();
+  }*/
 
   renderer->Render();
   

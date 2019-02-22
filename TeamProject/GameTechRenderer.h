@@ -6,8 +6,10 @@
 #include "../Common/TextureLoader.h"
 
 #include "GameWorld.h"
+#include "HUDObject.h"
 
 class Light;
+class HUDObject;
 
 namespace NCL {
 	namespace CSC8503 {
@@ -29,14 +31,16 @@ namespace NCL {
 			GLuint skybox;
 
 			//HUD
-			GLuint healthBarGreen;
-			GLuint healthBarRed;
+			void AddHUDObjects();
+
 			float health = 1; //(100%);
 			void UpdateHealthQuad();
+
 
 		protected:
 			void RenderFrame()	override;
 			void GenBuffers();
+			void RenderHUD();
 
 			OGLShader*		defaultShader;
 
@@ -78,11 +82,10 @@ namespace NCL {
 			OGLShader* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
-			OGLMesh* healthBarQuadGreen;
-			OGLMesh* healthBarQuadRed;
 
 			Light* directionalLight;
 			
+			vector<HUDObject*> hudObjects;
 			
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 

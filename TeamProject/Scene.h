@@ -48,8 +48,6 @@ namespace NCL {
 			OGLMesh*	cylinderMesh = nullptr;
 			OGLTexture* basicTex	= nullptr;
 			OGLTexture* woodTex	= nullptr;
-			OGLTexture* healthBarGreen	= nullptr;
-			OGLTexture* healthBarRed	= nullptr;
 			OGLTexture* grassTex	= nullptr;
 			OGLTexture* ballTex	= nullptr;
 			OGLTexture* cubeMap = nullptr;
