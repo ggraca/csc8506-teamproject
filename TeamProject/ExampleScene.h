@@ -8,6 +8,9 @@
 #include "InputManager.h"
 #include "Player.h"
 #include "Resource.h"
+#include "CameraControl.h"
+
+
 
 
 namespace NCL {

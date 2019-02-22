@@ -24,6 +24,9 @@
     <Filter Include="GameplayTools">
       <UniqueIdentifier>{e45761f4-5c3f-4268-9422-8d0f3f4a26cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{794ac502-dedb-47d1-9138-d83fcb0b244a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -33,6 +36,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LayerAndTag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameWorld.cpp">
@@ -68,9 +80,6 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -88,6 +97,26 @@
     </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>GameplayTools</Filter>
+    <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletPhysics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsObject.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="DamageControl.cpp">
       <Filter>Scripts</Filter>
@@ -101,6 +130,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerAndTag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameWorld.h">
@@ -136,9 +174,6 @@
     <ClInclude Include="Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\GameTechCommon\BulletPhysics.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -156,6 +191,29 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>GameplayTools</Filter>
+    <ClInclude Include="..\GameTechCommon\BulletPhysics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExampleScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletPhysics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsObject.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="DamageControl.h">
       <Filter>Scripts</Filter>

@@ -1,9 +1,14 @@
 #pragma once
+
 #include "GameTechRenderer.h"
 #include "Scene.h"
 
 #include "Console.h"
 #include "DebugMenu.h"
+#include "Player.h"
+#include "Resource.h"
+#include "InputManager.h"
+#include "CameraControl.h"
 
 namespace NCL {
   namespace CSC8503 {
@@ -12,9 +17,15 @@ namespace NCL {
       PhysicsScene();
       ~PhysicsScene();
       void UpdateGame(float dt);
+	  static InputManager * inputManager;
+
+
     protected:
       void ResetWorld();
       void DebugScene(float dt);
+	  void UpdateKeys();
+
+	  GameObject* bestcube;
 
       DebugMenu debugMenu;
       Console console;

@@ -38,15 +38,15 @@ void ExampleScene::ResetWorld() {
   world->ClearAndErase();
 
   // Floor
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
   //Player
-  auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
-  player->GetRenderObject()->SetColour(Vector4(1, 0, 0, 1));
+  auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
   player->AddScript((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
+  world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
 
-  auto resource1 = AddCubeToWorld(Vector3(50, 20, 50), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
-  auto resource2 = AddCubeToWorld(Vector3(100, 20, 100), Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
+  auto resource1 = AddCubeToWorld(Vector3(50, 20, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
+  auto resource2 = AddCubeToWorld(Vector3(100, 20, 100), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
   resource1->SetName("Resource 1");
   resource2->SetName("Resource 2");
   resource1->AddScript((ScriptObject*)new Resource(resource1));
@@ -59,7 +59,14 @@ ExampleScene::~ExampleScene() {
 }
 
 void ExampleScene::UpdateGame(float dt) {
-  world->GetMainCamera()->UpdateCamera(dt);
+
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
+		world->SwitchToFPS();
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
+		world->SwitchToTPS();
+	}
+
   world->UpdateWorld(dt);
 
   renderer->Update(dt);
@@ -81,19 +88,13 @@ void ExampleScene::UpdateGame(float dt) {
   
 }
 
-//InputManager * ExampleScene::GetInputManager() const
-//{
-//	return inputManager;
-//}
-
-
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 	float x = stof(commandParams[1]);
 	float y = stof(commandParams[2]);
 	float z = stof(commandParams[3]);
 
 	GameWorld* world = (GameWorld*)data;
-	world->GetMainCamera()->SetPosition(Vector3(x, y, z));
+	world->GetMainCamera()->GetTransform().SetWorldPosition(Vector3(x, y, z));
 }
 
 void ExampleScene::RegisterConsoleCommands() {

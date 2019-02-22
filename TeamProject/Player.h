@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "ExampleScene.h"
+#include "PhysicsScene.h"
 #include "Resource.h"
 
 using namespace NCL;
@@ -30,5 +31,8 @@ protected:
 
 	int resourceCount;
 	float movementSpeed;
+	float jumpSpeed;
+	bool keyDown;
+	bool reset;
 };
 

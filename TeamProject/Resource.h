@@ -5,10 +5,10 @@
 using namespace NCL;
 using namespace CSC8503;
 
-class Resource:ScriptObject
+class Resource : virtual public ScriptObject
 {
 public:
-	Resource(GameObject * gameObject);
+	Resource(GameObject * obj);
 	virtual ~Resource();
 
 	void Awake() override;
