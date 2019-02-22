@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp" />
+    <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
     <ClCompile Include="Destructable.cpp" />
@@ -185,6 +186,8 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="..\GameTechCommon\BulletPhysics.h" />
+    <ClInclude Include="Asset.h" />
+    <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="Destructable.h" />

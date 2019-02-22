@@ -13,6 +13,7 @@
 
 using namespace std;
 
+
 struct Vector3 {
 	float x;
 	float y;

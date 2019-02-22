@@ -4,20 +4,30 @@
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
 #include "GameWorld.h"
+#include "AudioEngine.h"
+#include "Asset.h"
 
 using namespace NCL;
 using namespace CSC8503;
+CAudioEngine ae = CAudioEngine();
 
 Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
+ 
+  ae.Init();
+  ae.setMinMaxDistance(5.0f, 10.0f);
+  ae.LoadSound(Assets::SOUNDSDIR + "jaguar.wav", false, true, false);
+  ae.PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", Audio::Vector3(0,0,0), 0.5f);
+ ae.set3DListenerAttributes
+  
 
   Debug::SetRenderer(renderer);
 
   InitialiseAssets();
-}
+   }
 
 void Scene::InitialiseAssets() {
   cubeMesh = new OGLMesh("Cube.msh");
@@ -86,6 +96,8 @@ void Scene::UpdateGame(float dt) {
 
   Debug::FlushRenderables();
   renderer->Render();
+
+  ae.Update();
 }
 
 void Scene::UpdateKeys() {

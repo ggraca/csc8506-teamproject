@@ -20,7 +20,7 @@ void main() {
 	if (exists_test0(Assets::SOUNDSDIR + "jaguar.wav")) {
 
 		ae.Init();
-		ae.setMinMaxDistance(5.0f, 5000.0f);
+		ae.setMinMaxDistance(5.0f, 1000.0f);
 		ae.LoadSound(Assets::SOUNDSDIR + "jaguar.wav",false, true, false);
 		ae.PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", origin, 10.0f);
 
