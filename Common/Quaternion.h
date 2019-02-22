@@ -55,7 +55,7 @@ namespace NCL {
 			void RotateByWorldAngles(const Vector3 angles);
 
 			static Quaternion EulerAnglesToQuaternion(float pitch, float yaw, float roll);
-			static Quaternion AxisAngleToQuaterion(const Vector3& vector, float degrees);
+			static Quaternion AxisAngleToQuaternion(const Vector3& vector, float degrees);
 
 			Vector3 ToEuler() const;
 

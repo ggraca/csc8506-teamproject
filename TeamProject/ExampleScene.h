@@ -7,6 +7,11 @@
 #include "HUDObject.h"
 #include "Animation.h"
 #include "InputManager.h"
+#include "Player.h"
+#include "Resource.h"
+#include "CameraControl.h"
+
+
 
 
 namespace NCL {
@@ -14,20 +19,19 @@ namespace NCL {
 
     class ExampleScene : public Scene {
     public:
-		ExampleScene();
-		~ExampleScene();
-		void UpdateGame(float dt);
-		InputManager* GetInputManager() const;
+      ExampleScene();
+      ~ExampleScene();
+      void UpdateGame(float dt);
+	    static InputManager * inputManager;
 
     protected:
-		void ResetWorld();
-		void RegisterConsoleCommands();
+      void ResetWorld();
+	    void RegisterConsoleCommands();
 
-		DebugMenu debugMenu;
-		vector<HUDObject> hudElements;
-		HUD hud;
-		Console console;
-		InputManager * inputManager;
+      DebugMenu debugMenu;
+      vector<HUDObject> hudElements;
+      HUD hud;
+      Console console;
     };
   }
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <functional>
-#include "../GameTechCommon/Debug.h"
+#include "Debug.h"
 
 class Console
 {

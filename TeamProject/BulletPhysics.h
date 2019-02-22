@@ -1,7 +1,18 @@
 #pragma once
 
+#include <set>
+#include <map>
+
+#include "../Common/Vector3.h"
+#include "../Common/Vector4.h"
+#include "../TeamProject/Transform.h"
 #include "../TeamProject/GameWorld.h"
+#include "../TeamProject/GameObject.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
+
+using namespace NCL;
+using namespace NCL::Maths;
+using namespace NCL::CSC8503;
 
 class BulletPhysics
 {
@@ -11,7 +22,7 @@ public:
 	btDiscreteDynamicsWorld* dynamicsWorld;
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	void Update(float dt);
-	void UpdateBullet(float dt, int iterations);
+  void UpdateBullet(float dt, int iterations);
 	void SetGravity(Vector3 gravity);
 
 private:
@@ -21,4 +32,8 @@ private:
 	btCollisionDispatcher* dispatcher;
 	btBroadphaseInterface* overlappingPairCache;
 	btSequentialImpulseConstraintSolver* solver;
+	int loopNum;
+
+  map<const btCollisionObject*, const btCollisionObject*> GenerateCollisionPairs();
+  void UpdateObjectTransform(GameObject* go, btRigidBody* body);
 };
