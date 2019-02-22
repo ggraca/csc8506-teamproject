@@ -36,7 +36,7 @@ namespace NCL {
 			void AddHUDObjects();
 
 			float health = 1; //(100%);
-			void UpdateHealthQuad();
+			//void UpdateHealthQuad();
 
 
 		protected:

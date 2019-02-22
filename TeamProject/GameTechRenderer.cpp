@@ -613,11 +613,11 @@ void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 	glUniformMatrix4fv(matLocation, 1, false, (float*)&vp);
 }
 
-void GameTechRenderer::UpdateHealthQuad()
+/*void GameTechRenderer::UpdateHealthQuad()
 {
 	delete healthBarQuadGreen;
 	if (health < 0.01) healthBarQuadGreen = OGLMesh::GenerateQuad((180 * health) + 10, 10, 655, 685);
 	else healthBarQuadGreen = OGLMesh::GenerateQuad((180 * health), 10, 655, 685);
 	healthBarQuadGreen->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	healthBarQuadGreen->UploadToGPU();
-}
+}*/

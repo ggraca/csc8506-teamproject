@@ -9,7 +9,6 @@
 
 using namespace NCL;
 using namespace CSC8503;
-InputManager * PhysicsScene::inputManager = nullptr;
 
 PhysicsScene::PhysicsScene() : Scene() {
   Window::GetWindow()->ShowOSPointer(false);
@@ -20,7 +19,6 @@ PhysicsScene::PhysicsScene() : Scene() {
   console = Console();
 
   GameObject::SetGameWorld(world);
-  if (!inputManager) { inputManager = new InputManager(); }//Static guy initializations
 
 }
 

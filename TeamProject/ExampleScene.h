@@ -22,7 +22,6 @@ namespace NCL {
       ExampleScene();
       ~ExampleScene();
       void UpdateGame(float dt);
-	    static InputManager * inputManager;
 
     protected:
       void ResetWorld();

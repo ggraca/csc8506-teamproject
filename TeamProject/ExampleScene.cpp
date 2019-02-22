@@ -16,20 +16,18 @@
 using namespace NCL;
 using namespace CSC8503;
 
-InputManager * ExampleScene::inputManager = nullptr;
-
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
   
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
+  InputManager::InitializeButtonRelations();
 
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
 
-  if(!inputManager){ inputManager = new InputManager(); }//Static guy initializations
   GameObject::SetGameWorld(world);
 
 
@@ -59,7 +57,7 @@ void ExampleScene::ResetWorld() {
 }
 
 ExampleScene::~ExampleScene() {
-	delete inputManager;
+	InputManager::Dispose();
 }
 
 void ExampleScene::UpdateGame(float dt) {
@@ -88,22 +86,7 @@ void ExampleScene::UpdateGame(float dt) {
 	  debugMenu.Toggle();
   }
 
-  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_K)) {
-	  if (hud.hp > 4)
-	  {
-		hud.hp -= 5;
-		renderer->health -= 0.05;
-		renderer->UpdateHealthQuad();
-	  }
-  }
-  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_L)) {
-	  if (hud.hp >= 0)
-	  {
-		  hud.hp = 100;
-		  renderer->health = 1;
-		  renderer->UpdateHealthQuad();
-	  }
-  }
+  
   /*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
 	  delete hammer;
 	  hammer = (OGLTexture*)TextureLoader::LoadAPITexture("hammer.png");
