@@ -55,15 +55,14 @@ void BulletPhysics::SetGravity(Vector3 gravity)
 	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
 }
 
-map<btCollisionObject*, vector<btCollisionObject*>> BulletPhysics::GenerateCollisionPairs()
-{
-	map<btCollisionObject*, vector<btCollisionObject*>> collisionPairs;
+map<btRigidBody*, vector<btRigidBody*>> BulletPhysics::GenerateCollisionPairs() {
+	map<btRigidBody*, vector<btRigidBody*>> collisionPairs;
 	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
   
 	for (int i = 0; i < numManifolds; i++) {
 		btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		btCollisionObject* objA = (btCollisionObject*) contactManifold->getBody0();
-		btCollisionObject* objB = (btCollisionObject*) contactManifold->getBody1();
+		btRigidBody* objA = (btRigidBody*) btRigidBody::upcast(contactManifold->getBody0());
+		btRigidBody* objB = (btRigidBody*) btRigidBody::upcast(contactManifold->getBody1());
 
 		collisionPairs[objA].push_back(objB);
 		collisionPairs[objB].push_back(objA);
@@ -86,32 +85,7 @@ void BulletPhysics::UpdateObjectTransform(GameObject* go, btRigidBody* body) {
 	transform.SetLocalOrientation(orient);
 }
 
-void BulletPhysics::UpdateBullet(float dt, int iterations) {
-	dynamicsWorld->stepSimulation(dt, iterations);
-
-	map<btCollisionObject*, vector<btCollisionObject*>> collisionPairs = GenerateCollisionPairs();
-	map<const btCollisionObject*, const GameObject*> collisionObjectGameObjectPair;
-
-	for (auto& go : gameWorld.GetGameObjectList()) {
-		PhysicsObject* object = go->GetPhysicsObject();
-		if (object == nullptr) continue;
-
-		btRigidBody* body = go->GetPhysicsObject()->GetRigidbody();
-		UpdateObjectTransform(go, body);
-
-		if (collisionPairs.find((btCollisionObject*)body) != collisionPairs.end()) {
-			collisionObjectGameObjectPair[(btCollisionObject*)body] = go;
-		}
-		
-		vector<btCollisionObject*> pairs = collisionPairs[(btCollisionObject*)body];
-		for (auto collidingGo : go->collidingObjects) {
-			if (find(pairs.begin(), pairs.end(), (btCollisionObject*) collidingGo->GetPhysicsObject()->GetRigidbody()) != pairs.end()) continue;
-			
-			go->CallOnCollisionEndForScripts(collidingGo);
-			go->collidingObjects.erase(remove(go->collidingObjects.begin(), go->collidingObjects.end(), collidingGo), go->collidingObjects.end());
-		}
-	}
-
+void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, std::map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair) {
 	for (auto key : collisionPairs) {
 		GameObject* go1 = (GameObject*)collisionObjectGameObjectPair[key.first];
 
@@ -128,4 +102,37 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 			}
 		}
 	}
+}
+
+void BulletPhysics::EmitOnCollisionEndEvents(std::map<btRigidBody*, std::vector<btRigidBody*>> &collisionPairs, btRigidBody* body, GameObject*& go) {
+	vector<btRigidBody*> pairs = collisionPairs[(btRigidBody*)body];
+	for (auto collidingGo : go->collidingObjects) {
+		if (find(pairs.begin(), pairs.end(), collidingGo->GetPhysicsObject()->GetRigidbody()) != pairs.end()) continue;
+
+		go->CallOnCollisionEndForScripts(collidingGo);
+		go->collidingObjects.erase(remove(go->collidingObjects.begin(), go->collidingObjects.end(), collidingGo), go->collidingObjects.end());
+	}
+}
+
+void BulletPhysics::UpdateBullet(float dt, int iterations) {
+	dynamicsWorld->stepSimulation(dt, iterations);
+
+	map<btRigidBody*, vector<btRigidBody*>> collisionPairs = GenerateCollisionPairs();
+	map<btRigidBody*, GameObject*> collisionObjectGameObjectPair;
+
+	for (auto& go : gameWorld.GetGameObjectList()) {
+		PhysicsObject* object = go->GetPhysicsObject();
+		if (object == nullptr) continue;
+
+		btRigidBody* body = go->GetPhysicsObject()->GetRigidbody();
+		UpdateObjectTransform(go, body);
+
+		if (collisionPairs.find(body) != collisionPairs.end()) {
+			collisionObjectGameObjectPair[body] = go;
+		}
+		
+		EmitOnCollisionEndEvents(collisionPairs, body, go);
+	}
+
+	EmitOnCollisionEnterEvents(collisionPairs, collisionObjectGameObjectPair);
 }

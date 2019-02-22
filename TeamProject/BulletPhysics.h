@@ -22,7 +22,8 @@ public:
 	btDiscreteDynamicsWorld* dynamicsWorld;
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	void Update(float dt);
-  void UpdateBullet(float dt, int iterations);
+	
+	void UpdateBullet(float dt, int iterations);
 	void SetGravity(Vector3 gravity);
 
 private:
@@ -34,6 +35,8 @@ private:
 	btSequentialImpulseConstraintSolver* solver;
 	int loopNum;
 
-	map<btCollisionObject*, vector<btCollisionObject*>> GenerateCollisionPairs();
+	map<btRigidBody*, vector<btRigidBody*>> GenerateCollisionPairs();
+	void EmitOnCollisionEndEvents(std::map<btRigidBody *, std::vector<btRigidBody *>> &collisionPairs, btRigidBody * body, NCL::CSC8503::GameObject *& go);
+	void EmitOnCollisionEnterEvents(std::map<btRigidBody*, std::vector<btRigidBody*>> &collisionPairs, std::map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair);
 	void UpdateObjectTransform(GameObject* go, btRigidBody* body);
 };
