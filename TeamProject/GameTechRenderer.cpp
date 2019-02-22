@@ -3,6 +3,7 @@
 #include "../Common/Camera.h"
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
+#include "../Common/Matrix4.h"
 #include "Light.h"
 
 using namespace NCL;
@@ -69,7 +70,7 @@ void GameTechRenderer::GenBuffers() {
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowTex, 0);
 	glDrawBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0); 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	#pragma endregion
 
@@ -105,7 +106,7 @@ void GameTechRenderer::GenBuffers() {
 	#pragma endregion
 
 	#pragma region LightFBORegion
-	
+
 	//Generate Light FBO
 	glGenFramebuffers(1, &lightFBO);
 
@@ -218,8 +219,8 @@ void GameTechRenderer::RenderShadowMap() {
 
 void GameTechRenderer::RenderSkybox() {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildProjectionMatrix(screenAspect);
 
 	glDepthMask(GL_FALSE);
 	glDisable(GL_DEPTH_TEST);
@@ -252,12 +253,12 @@ void GameTechRenderer::RenderSkybox() {
 	Matrix4 identity;
 	identity.ToIdentity();
 
-	glUniform3fv(cameraLocation, 1, (float *)& gameWorld.GetMainCamera()->GetPosition());
+	glUniform3fv(cameraLocation, 1, (float *)& gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition());
 	glUniformMatrix4fv(modelLocation, 1, false, (float*)&identity);
 	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
 	glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
 	glUniformMatrix4fv(texLocation, 1, false, (float*)&identity);
-	
+
 	BindMesh(screenQuad);
 	DrawBoundMesh();
 
@@ -276,8 +277,8 @@ void GameTechRenderer::RenderCamera() {
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	OGLShader* activeShader = nullptr;
 	int modelLocation	= 0;
@@ -291,10 +292,21 @@ void GameTechRenderer::RenderCamera() {
 	vertsDrawn = 0;
 
 	for (const auto&i : activeObjects) {
-		OGLShader* shader = (OGLShader*)(*i).GetShader();
+		Material* currentMaterial = (*i).GetMaterial();
+		OGLShader* shader = (OGLShader*)currentMaterial->GetShader();
 		BindShader(shader);
 
-		BindTextureToShader((OGLTexture*)(*i).GetDefaultTexture(), "mainTex", 0);
+		for (int j = 0; j < currentMaterial->GetTextureParameters()->size(); j++)
+		{
+			//Gets texture, then gets texture shader param name, and binds it to texture slot = iteration
+			BindTextureToShader((*(currentMaterial->GetTextureParameters()))[j].second,
+				(*(currentMaterial->GetTextureParameters()))[j].first, j);
+		}
+
+		glActiveTexture(GL_TEXTURE8);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox);
+		int texLocation = glGetUniformLocation(shader->GetProgramID(), "cubeTex");
+		glUniform1i(texLocation, 8);
 
 		if (activeShader != shader) {
 			modelLocation	= glGetUniformLocation(shader->GetProgramID(), "modelMatrix");
@@ -304,7 +316,7 @@ void GameTechRenderer::RenderCamera() {
 			colourLocation  = glGetUniformLocation(shader->GetProgramID(), "objectColour");
 
 			cameraLocation = glGetUniformLocation(shader->GetProgramID(), "cameraPos");
-			glUniform3fv(cameraLocation, 1, (float*)&gameWorld.GetMainCamera()->GetPosition());
+			glUniform3fv(cameraLocation, 1, (float*)&gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition());//TODO give child position
 
 			glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
 			glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
@@ -312,14 +324,10 @@ void GameTechRenderer::RenderCamera() {
 			activeShader = shader;
 		}
 
-		Matrix4 modelMatrix = (*i).GetTransform()->GetWorldMatrix();
-		glUniformMatrix4fv(modelLocation, 1, false, (float*)&modelMatrix);
+		glUniformMatrix4fv(modelLocation, 1, false, (float*)&(*i).GetTransform()->GetWorldMatrix());
+		glUniformMatrix4fv(textureLocation, 1, false, (float*)&currentMaterial->GetTextureMatrix());
 
-		Matrix4 textureMatrix;
-		textureMatrix.ToIdentity();
-		glUniformMatrix4fv(textureLocation, 1, false, (float*)&textureMatrix);
-
-		glUniform4fv(colourLocation, 1, (float*)&i->GetColour());
+		glUniform4fv(colourLocation, 1, (float*)&currentMaterial->GetColour());
 
 		BindMesh((*i).GetMesh());
 
@@ -339,8 +347,8 @@ void GameTechRenderer::RenderLights() {
 	glBlendFunc(GL_ONE, GL_ONE);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	BindShader(lightShader);
 
@@ -355,7 +363,7 @@ void GameTechRenderer::RenderLights() {
 	int projLocation = 0;
 	int textureLocation = 0;
 	int shadowLocation = 0;
-		
+
 	Matrix4 identity;
 	identity.ToIdentity();
 
@@ -377,7 +385,7 @@ void GameTechRenderer::RenderLights() {
 	projLocation = glGetUniformLocation(lightShader->GetProgramID(), "projMatrix");
 	textureLocation = glGetUniformLocation(lightShader->GetProgramID(), "textureMatrix");
 
-	glUniform3fv(cameraLocation, 1, (float *)&gameWorld.GetMainCamera()->GetPosition());
+	glUniform3fv(cameraLocation, 1, (float *)&gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition());
 	glUniform2f(pixelLocation, 1.0f / currentWidth, 1.0f / currentHeight);
 	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
 	glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
@@ -415,7 +423,7 @@ void GameTechRenderer::RenderLights() {
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
-		float dist = (directionalLight->GetPosition() - gameWorld.GetMainCamera()->GetPosition()).Length();
+		float dist = (directionalLight->GetPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
 
 		if (directionalLight->GetType() == LightType::Point) {
 			if (dist < radius) {// camera is inside the light volume !
@@ -464,9 +472,9 @@ void GameTechRenderer::CombineBuffers() {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT |
 		GL_STENCIL_BUFFER_BIT);
 
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
-	
+
 	BindShader(combineShader);
 
 	int modelLocation = 0;
@@ -497,7 +505,7 @@ void GameTechRenderer::CombineBuffers() {
 	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "specularTex"), 5);
 	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "emissiveTex"), 6);
 	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "lightSpecularTex"), 7);
-	
+
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gBufferColourTex);
 
@@ -524,8 +532,8 @@ void GameTechRenderer::CombineBuffers() {
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	Matrix4 vp = projMatrix * viewMatrix;
 

@@ -1,14 +1,14 @@
-#version 150 core
+#version 400 core
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projMatrix;
 uniform mat4 textureMatrix;
 
-in vec3 position;
-in vec4 colour;
-in vec3 normal;
-in vec3 tangent; // New !
-in vec2 texCoord;
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec4 colour;
+layout(location = 2) in vec2 texCoord;
+layout(location = 3) in vec3 normal;
+layout(location = 4) in vec3 tangent;
 
 out Vertex {
 	vec4 colour;

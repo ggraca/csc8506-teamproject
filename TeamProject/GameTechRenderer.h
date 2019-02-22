@@ -5,6 +5,8 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 
 #include "GameWorld.h"
+#include "CameraControl.h"
+#include "../Common/Matrix4.h"
 
 class Light;
 

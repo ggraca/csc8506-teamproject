@@ -1,5 +1,9 @@
 #pragma once
 #include "GameTechRenderer.h"
+#include "Debug.h"
+
+using namespace NCL;
+using namespace NCL::CSC8503;
 
 class DebugMenu
 {

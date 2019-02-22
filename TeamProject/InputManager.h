@@ -18,6 +18,7 @@ namespace NCL
 				BACKWARD,
 				LEFT,
 				RIGHT,
+				JUMP,
 				FIRE,
 				MAX
 			};
