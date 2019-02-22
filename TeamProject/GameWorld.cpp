@@ -139,14 +139,6 @@ void GameWorld::AddGameObject(GameObject* o)
 	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
 	physics->dynamicsWorld->addRigidBody(pb);
 
-	//if (physics->collisionShapes.size() % 2 == 1 ) {
-	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
-	//	physics->dynamicsWorld->addRigidBody(pb, 1, 1111);
-	//}
-	//else {
-	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
-	//	physics->dynamicsWorld->addRigidBody(pb, 2, 1101);
-	//}
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)

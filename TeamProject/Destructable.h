@@ -16,13 +16,15 @@ public:
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;
+	void CheckIfDestroyed();
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
 
 
 private:
-	int objectHealth;
-	int resources;
+
+	void GenerateResource();
+	Vector3 resourceDimensions;
 };
 

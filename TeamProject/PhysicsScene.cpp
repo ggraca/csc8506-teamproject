@@ -27,13 +27,15 @@ PhysicsScene::PhysicsScene() : Scene() {
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f)->SetName("Floor"); //TODO Do these need to be deleted in destructor?!?!?!
   
    //Player
   auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
   player->AddScript((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+  player->SetName("Player");
+
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
 
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
@@ -43,6 +45,10 @@ void PhysicsScene::ResetWorld() {
   auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource2->SetName("Resource 2");
   resource2->AddScript((ScriptObject*)new Resource(resource2));
+
+  auto wall1 = AddCubeToWorld(Vector3(200,0,200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(50, 50, 50), 1000, 0.2f);
+  wall1->SetName("Wall");
+  wall1->AddScript((ScriptObject*)new Destructable(wall1));
 }
 
 PhysicsScene::~PhysicsScene() {
