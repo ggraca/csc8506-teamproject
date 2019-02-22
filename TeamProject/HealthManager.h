@@ -1,15 +1,19 @@
 #pragma once
 #include "GameObject.h"
 
-class HealthManager
+using namespace NCL;
+using namespace CSC8503;
+
+class HealthManager : virtual public ScriptObject
 {
 public:
-	HealthManager();
-	~HealthManager();
+	HealthManager(GameObject* obj);
+	virtual ~HealthManager();
 
 	void SetHealth(int h);
-	int GetHealth();
+	int GetHealth() const;
 	void TakeDamage(int amount);
+	bool IsDead();
 
 private:
 	int health;
