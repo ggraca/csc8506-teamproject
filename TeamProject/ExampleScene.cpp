@@ -41,7 +41,6 @@ void ExampleScene::ResetWorld() {
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
   //Player
   auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
-  player->GetRenderObject()->SetColour(Vector4(1, 0, 0, 1));
   player->AddScript((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
@@ -61,7 +60,7 @@ ExampleScene::~ExampleScene() {
 
 void ExampleScene::UpdateGame(float dt) {
 
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_SPACE)) {
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
 		world->SwitchToFPS();
 	}
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {

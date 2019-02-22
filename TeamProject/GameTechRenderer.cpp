@@ -423,7 +423,7 @@ void GameTechRenderer::RenderLights() {
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
-		float dist = (lightPosition - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
+		float dist = (directionalLight->GetPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
 
 		if (directionalLight->GetType() == LightType::Point) {
 			if (dist < radius) {// camera is inside the light volume !

@@ -27,18 +27,10 @@ PhysicsScene::PhysicsScene() : Scene() {
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
-  AddFloorToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
-  //AddCubeToWorld(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45), Vector3(2, 2, 2), 1);
-  //bestcube = AddCubeToWorld(Vector3(3.5, 130, 1), Quaternion::AxisAngleToQuaternion(Vector3(1, 1, 1), 45), Vector3(20, 20, 20), 10000);
-  //AddSphereToWorld(Vector3(40, 100, 20), 1, 1);
-  //AddSphereToWorld(Vector3(41, 130, 20), 1, 1);
- // InitMixedGridWorld(Vector3(47, 230, 20), 50, 40, 20, 20);
-  // AddCylinderToWorld(Vector3(0, 10, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 1);
-  // AddConeToWorld(Vector3(Vector3(0, 10, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 1);
-
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
+  
    //Player
   auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-  player->GetRenderObject()->SetColour(Vector4(1, 0, 0, 1));
   player->AddScript((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
@@ -82,6 +74,12 @@ void PhysicsScene::UpdateKeys() {
 
 void PhysicsScene::UpdateGame(float dt) {
 //  world->GetMainCamera()->UpdateCamera(dt);
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
+		world->SwitchToFPS();
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
+		world->SwitchToTPS();
+	}
   world->UpdateWorld(dt);
 
   UpdateKeys();

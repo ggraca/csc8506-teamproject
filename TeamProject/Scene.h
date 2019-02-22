@@ -28,10 +28,6 @@ namespace NCL {
 
 			GameObject* AddSphereToWorld(const Vector3& position, float radius, float mass = 10.0f, float restitution = 0.9, float friction = 0.4);
 			GameObject* AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float mass = 10.0f, float restitution = 0.9, float friction = 0.4);
-			GameObject* AddCylinderToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float mass = 10.0f, float restitution = 0.9, float friction = 0.4);
-			GameObject* AddConeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float mass = 10.0f, float restitution = 0.9, float friction = 0.4);
-			void SetBulletPhysicsParameters(btCollisionShape* Shape, const Vector3& position, float mass, float restitution, float friction, Quaternion orientation = Quaternion::AxisAngleToQuaterion(Vector3(0, 0, 0), 0));
-			GameObject* AddFloorToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float inverseMass = 10.0f, float restitution = 0.9, float friction = 0.4);
 
 			GameTechRenderer*	renderer;
 
