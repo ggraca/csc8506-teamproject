@@ -38,12 +38,12 @@ void DamageControl::ResolveDamage(GameObject * obj)
 	{
 		obj->GetScript<Player*>()->UpdateResourceCount(-damage);
 		
-		if (typeOfDamage = DamageType::SingleShot) { damage = 0; }
+		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 	}
 
 	else if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile)) 
 	{
-		if (typeOfDamage = DamageType::SingleShot) { damage = 0; }
+		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 	}
 
 	else if (gameObject->CompareTag(LayerAndTag::Tags::Occupied) || gameObject->CompareTag(LayerAndTag::Tags::Resources))
@@ -53,7 +53,7 @@ void DamageControl::ResolveDamage(GameObject * obj)
 			obj->GetScript<HealthManager*>()->TakeDamage(damage);
 		}
 
-		if (typeOfDamage = DamageType::SingleShot) { damage = 0; }
+		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 	}
 }
 
