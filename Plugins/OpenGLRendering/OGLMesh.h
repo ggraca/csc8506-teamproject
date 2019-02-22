@@ -30,6 +30,8 @@ namespace NCL {
 
 			void UploadToGPU() override;
 
+			static OGLMesh* GenerateQuad();
+
 		protected:
 			GLuint	GetVAO()			const { return vao;			}
 			int		GetSubMeshCount()	const { return subCount;	}

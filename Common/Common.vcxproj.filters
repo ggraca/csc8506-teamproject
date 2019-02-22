@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameTimer.cpp">
       <Filter>Windowing and Input</Filter>
     </ClCompile>
@@ -84,9 +81,6 @@
     <ClCompile Include="MeshGeometry.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Assets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TextureWriter.cpp">
       <Filter>Asset Handling</Filter>
     </ClCompile>
@@ -95,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="TextureLoader.cpp">
       <Filter>Asset Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets.cpp">
+      <Filter>Asset Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="TextureLoader.h">
       <Filter>Asset Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

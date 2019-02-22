@@ -94,4 +94,6 @@ void InputManager::InitializeButtonRelations()
 	registeredActionButtons[ActionButton::RIGHT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_RIGHT);
 
 	registeredActionButtons[ActionButton::FIRE].relatedMouseKeys.push_back(NCL::MOUSE_LEFT);
+
+	registeredActionButtons[ActionButton::JUMP].relatedKeyboardKeys.push_back(NCL::KEYBOARD_SPACE);
 }

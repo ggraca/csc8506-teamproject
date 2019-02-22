@@ -1,27 +1,26 @@
 #include "ExampleScene.h"
-#include "../GameTechCommon/GameWorld.h"
+#include "GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
 
-#include "../GameTechCommon/PositionConstraint.h"
 #include "../Common/Assets.h"
 
 #include <fstream>
 #include <string>
 
 
+
+
 using namespace NCL;
 using namespace CSC8503;
 
+InputManager * ExampleScene::inputManager = nullptr;
 
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
-  physics->UseGravity(false);
-  world->ShuffleConstraints(true);
-  world->ShuffleObjects(true);
-  inputManager = new InputManager();
+  
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
 
@@ -29,15 +28,30 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
+
+  if(!inputManager){ inputManager = new InputManager(); }//Static guy initializations
   GameObject::SetGameWorld(world);
 }
 
+
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
-  physics->Clear();
 
   // Floor
-  AddFloorToWorld(Vector3(200, 0, 200));
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
+  //Player
+  auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
+  player->AddScript((ScriptObject*)new Player(player));
+  player->SetTag(LayerAndTag::Tags::Player);
+  world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
+
+  auto resource1 = AddCubeToWorld(Vector3(50, 20, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
+  auto resource2 = AddCubeToWorld(Vector3(100, 20, 100), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
+  resource1->SetName("Resource 1");
+  resource2->SetName("Resource 2");
+  resource1->AddScript((ScriptObject*)new Resource(resource1));
+  resource2->AddScript((ScriptObject*)new Resource(resource2));
+
 }
 
 ExampleScene::~ExampleScene() {
@@ -45,7 +59,14 @@ ExampleScene::~ExampleScene() {
 }
 
 void ExampleScene::UpdateGame(float dt) {
-  world->GetMainCamera()->UpdateCamera(dt);
+
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
+		world->SwitchToFPS();
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
+		world->SwitchToTPS();
+	}
+
   world->UpdateWorld(dt);
 
   renderer->Update(dt);
@@ -55,7 +76,7 @@ void ExampleScene::UpdateGame(float dt) {
   debugMenu.Update(dt, renderer);
   console.Update();
   hud.Update(dt, renderer);
-  
+
 
   //Might want moved into a seperate function that handles input
   if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
@@ -64,13 +85,8 @@ void ExampleScene::UpdateGame(float dt) {
   }
 
   renderer->Render();
+  
 }
-
-InputManager * ExampleScene::GetInputManager() const
-{
-	return inputManager;
-}
-
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 	float x = stof(commandParams[1]);
@@ -78,7 +94,7 @@ void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 	float z = stof(commandParams[3]);
 
 	GameWorld* world = (GameWorld*)data;
-	world->GetMainCamera()->SetPosition(Vector3(x, y, z));
+	world->GetMainCamera()->GetTransform().SetWorldPosition(Vector3(x, y, z));
 }
 
 void ExampleScene::RegisterConsoleCommands() {
