@@ -164,6 +164,7 @@
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="HealthManager.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="HUDObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LayerAndTag.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="HealthManager.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="HUDObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LayerAndTag.h" />
     <ClInclude Include="PhysicsObject.h" />

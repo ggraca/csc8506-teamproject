@@ -119,6 +119,9 @@
     <ClCompile Include="HealthManager.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="HUDObject.cpp">
+      <Filter>UI</Filter>
+    </ClInclude>
     <ClCompile Include="ExampleScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -207,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="HUDObject.h">
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="DamageControl.h">
       <Filter>Scripts</Filter>

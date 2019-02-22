@@ -3,17 +3,19 @@
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
+#include "../Common/TextureLoader.h"
 
 #include "GameWorld.h"
+#include "HUDObject.h"
 #include "CameraControl.h"
 #include "../Common/Matrix4.h"
 
 class Light;
+class HUDObject;
 
 namespace NCL {
 	namespace CSC8503 {
 		class RenderObject;
-
 		class GameTechRenderer : public OGLRenderer	{
 		public:
 			GameTechRenderer(GameWorld& world);
@@ -26,13 +28,21 @@ namespace NCL {
 
 			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
 
-			void GenerateScreenTexture(GLuint & into, bool depth = false);
-
+			void GenerateScreenTexture(GLuint& into, bool depth = false);
+			
 			GLuint skybox;
+
+			//HUD
+			void AddHUDObjects();
+
+			float health = 1; //(100%);
+			void UpdateHealthQuad();
+
 
 		protected:
 			void RenderFrame()	override;
 			void GenBuffers();
+			void RenderHUD();
 
 			OGLShader*		defaultShader;
 
@@ -63,6 +73,7 @@ namespace NCL {
 			GLuint gBufferColourTex; // Albedo goes here
 			GLuint gBufferNormalTex; // Normals go here
 			GLuint gBufferSpecularTex; // Specular goes here
+			GLuint hudTex;
 
 			GLuint lightFBO; // FBO for our lighting pass
 			GLuint lightEmissiveTex; // emissive lighting
@@ -70,14 +81,19 @@ namespace NCL {
 
 			OGLShader* combineShader;
 			OGLShader* lightShader;
+			OGLShader* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 
 			Light* directionalLight;
+			
+			vector<HUDObject*> hudObjects;
+			
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
+
 		};
 	}
 }

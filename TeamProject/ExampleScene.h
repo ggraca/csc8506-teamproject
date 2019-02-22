@@ -4,6 +4,7 @@
 #include "Console.h"
 #include "DebugMenu.h"
 #include "HUD.h"
+#include "HUDObject.h"
 #include "Animation.h"
 #include "InputManager.h"
 #include "Player.h"
@@ -21,15 +22,16 @@ namespace NCL {
       ExampleScene();
       ~ExampleScene();
       void UpdateGame(float dt);
-	  static InputManager * inputManager;
+	    static InputManager * inputManager;
 
     protected:
       void ResetWorld();
-	  void RegisterConsoleCommands();
+	    void RegisterConsoleCommands();
 
-	  DebugMenu debugMenu;
-	  HUD hud;
-	  Console console;
+      DebugMenu debugMenu;
+      vector<HUDObject> hudElements;
+      HUD hud;
+      Console console;
     };
   }
 }

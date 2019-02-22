@@ -31,7 +31,11 @@ ExampleScene::ExampleScene() : Scene() {
 
   if(!inputManager){ inputManager = new InputManager(); }//Static guy initializations
   GameObject::SetGameWorld(world);
+
+
 }
+
+
 
 
 void ExampleScene::ResetWorld() {
@@ -83,6 +87,34 @@ void ExampleScene::UpdateGame(float dt) {
 	  console.Toggle();
 	  debugMenu.Toggle();
   }
+
+  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_K)) {
+	  if (hud.hp > 4)
+	  {
+		hud.hp -= 5;
+		renderer->health -= 0.05;
+		renderer->UpdateHealthQuad();
+	  }
+  }
+  if (Window::GetKeyboard()->KeyPressed(KEYBOARD_L)) {
+	  if (hud.hp >= 0)
+	  {
+		  hud.hp = 100;
+		  renderer->health = 1;
+		  renderer->UpdateHealthQuad();
+	  }
+  }
+  /*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
+	  delete hammer;
+	  hammer = (OGLTexture*)TextureLoader::LoadAPITexture("hammer.png");
+	  renderer->hammer = hammer->GetObjectID();
+	  delete gun;
+	  gun = (OGLTexture*)TextureLoader::LoadAPITexture("gun.png");
+	  renderer->gun = gun->GetObjectID();
+	  delete bomb;
+	  bomb = (OGLTexture*)TextureLoader::LoadAPITexture("bomb.png");
+	  renderer->bomb = bomb->GetObjectID();
+  }*/
 
   renderer->Render();
   

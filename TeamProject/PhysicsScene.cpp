@@ -94,6 +94,7 @@ void PhysicsScene::UpdateGame(float dt) {
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
   console.Update();
+  
 
   renderer->Render();
 }

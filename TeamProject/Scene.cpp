@@ -43,8 +43,10 @@ void Scene::InitialiseAssets() {
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   dogsTex = (OGLTexture*)TextureLoader::LoadAPITexture("dogs.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
+
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
   dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
+
 
   //Old functions to show as comparison
   //pbrWoodDiff = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
@@ -57,6 +59,7 @@ void Scene::InitialiseAssets() {
   pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
 
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
+  //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
   basicMaterial = new Material();
   basicMaterial->SetShader(basicShader);
@@ -127,7 +130,7 @@ void Scene::UpdateGame(float dt) {
 }
 
 void Scene::UpdateKeys() {
-
+	
 }
 
 void Scene::InitCamera() {

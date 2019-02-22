@@ -1,6 +1,8 @@
 #pragma once
 
 #include "GameTechRenderer.h"
+#include "../Common/TextureLoader.h"
+//#include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/Vector2.h"
 #include "../Common/Vector4.h"
 
@@ -15,8 +17,8 @@ class HUD
 		~HUD() {}
 
 		void Update(const float dt, GameTechRenderer* renderer);
+		
 		int ammo = 100;
 		int hp = 100;
 	protected:
-	
 };

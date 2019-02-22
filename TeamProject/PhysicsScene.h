@@ -29,6 +29,7 @@ namespace NCL {
 
       DebugMenu debugMenu;
       Console console;
+	  HUD hud;
     };
   }
 }
