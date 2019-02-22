@@ -33,10 +33,9 @@ private:
 	btCollisionDispatcher* dispatcher;
 	btBroadphaseInterface* overlappingPairCache;
 	btSequentialImpulseConstraintSolver* solver;
-	int loopNum;
 
 	map<btRigidBody*, vector<btRigidBody*>> GenerateCollisionPairs();
-	void EmitOnCollisionEndEvents(std::map<btRigidBody *, std::vector<btRigidBody *>> &collisionPairs, btRigidBody * body, NCL::CSC8503::GameObject *& go);
-	void EmitOnCollisionEnterEvents(std::map<btRigidBody*, std::vector<btRigidBody*>> &collisionPairs, std::map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair);
+	void EmitOnCollisionEndEvents(map<btRigidBody *, vector<btRigidBody *>> &collisionPairs, btRigidBody * body, GameObject *& go);
+	void EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair);
 	void UpdateObjectTransform(GameObject* go, btRigidBody* body);
 };

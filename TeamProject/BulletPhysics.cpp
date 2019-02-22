@@ -11,7 +11,6 @@ BulletPhysics::BulletPhysics(GameWorld& g) : gameWorld(g)
 	solver = new btSequentialImpulseConstraintSolver;
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);;
 	dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
-	loopNum = 0;
 }
 
 BulletPhysics::~BulletPhysics()
@@ -85,18 +84,18 @@ void BulletPhysics::UpdateObjectTransform(GameObject* go, btRigidBody* body) {
 	transform.SetLocalOrientation(orient);
 }
 
-void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, std::map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair) {
+void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair) {
 	for (auto key : collisionPairs) {
 		GameObject* go1 = (GameObject*)collisionObjectGameObjectPair[key.first];
 
 		for (auto val : key.second) {
 			GameObject* go2 = (GameObject*)collisionObjectGameObjectPair[val];
 
-			if (!std::count(go1->collidingObjects.begin(), go1->collidingObjects.end(), go2)) {
+			if (!count(go1->collidingObjects.begin(), go1->collidingObjects.end(), go2)) {
 				go1->CallOnCollisionEnterForScripts(go2);
 				go1->collidingObjects.push_back(go2);
 			}
-			if (!std::count(go2->collidingObjects.begin(), go2->collidingObjects.end(), go1)) {
+			if (!count(go2->collidingObjects.begin(), go2->collidingObjects.end(), go1)) {
 				go2->CallOnCollisionEnterForScripts(go1);
 				go2->collidingObjects.push_back(go1);
 			}
@@ -104,8 +103,8 @@ void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidB
 	}
 }
 
-void BulletPhysics::EmitOnCollisionEndEvents(std::map<btRigidBody*, std::vector<btRigidBody*>> &collisionPairs, btRigidBody* body, GameObject*& go) {
-	vector<btRigidBody*> pairs = collisionPairs[(btRigidBody*)body];
+void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, btRigidBody* body, GameObject*& go) {
+	vector<btRigidBody*> pairs = collisionPairs[body];
 	for (auto collidingGo : go->collidingObjects) {
 		if (find(pairs.begin(), pairs.end(), collidingGo->GetPhysicsObject()->GetRigidbody()) != pairs.end()) continue;
 
