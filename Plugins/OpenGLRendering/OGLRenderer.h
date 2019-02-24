@@ -52,7 +52,8 @@ namespace NCL {
 			void BindMesh(MeshGeometry*m);
 			void DrawBoundMesh(int subLayer = 0, int numInstances = 1);
 
-			void ClearBuffer(bool depth, bool colour, bool stencil) const;
+			void ClearBuffer(bool depth, bool color, bool stencil) const;
+			void ClearColor(const Vector4& color) const;
 #ifdef _WIN32
 			void InitWithWin32(Window& w);
 			void DestroyWithWin32();

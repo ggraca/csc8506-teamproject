@@ -31,7 +31,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	AddHUDObjects();
 
-	glClearColor(1, 1, 1, 1);
+	ClearColor(Vector4(1, 1, 1, 1));
 	//Set up the light properties
 	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
 		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
@@ -151,7 +151,7 @@ void GameTechRenderer::GenBuffers() {
 void GameTechRenderer::RenderFrame() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.3f, 0.8f, 1, 1);
+	ClearColor(Vector4(0.3f, 0.8f, 1, 1));
 	BuildObjectList();
 	SortObjectList();
 	RenderShadowMap();
@@ -346,7 +346,7 @@ void GameTechRenderer::RenderCamera() {
 
 void GameTechRenderer::RenderLights() {
 	glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
-	glClearColor(0, 0, 0, 1);
+	ClearColor(Vector4(0, 0, 0, 1));
 	ClearBuffer(false, true, false);
 	glBlendFunc(GL_ONE, GL_ONE);
 
@@ -461,7 +461,7 @@ void GameTechRenderer::RenderLights() {
 	glCullFace(GL_BACK);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glClearColor(0.2f, 0.2f, 0.2f, 1);
+	ClearColor(Vector4(0.2f, 0.2f, 0.2f, 1));
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(0);

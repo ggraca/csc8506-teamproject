@@ -167,18 +167,22 @@ void OGLRenderer::BindTextureToShader(const TextureBase*t, const std::string& un
 	glUniform1i(slot, texUnit);
 }
 
-void OGLRenderer::ClearBuffer(bool depth, bool colour, bool stencil) const {
+void OGLRenderer::ClearBuffer(bool depth, bool color, bool stencil) const {
 	int bit = 0;
 	if (depth) {
 		bit = bit | GL_DEPTH_BUFFER_BIT;
 	}
-	if (colour) {
+	if (color) {
 		bit = bit | GL_COLOR_BUFFER_BIT;
 	}
 	if (stencil) {
 		bit = bit | GL_STENCIL_BUFFER_BIT;
 	}
 	glClear(bit);
+}
+
+void OGLRenderer::ClearColor(const Vector4& color) const {
+	glClearColor(color.x, color.y, color.z, color.w);
 }
 
 //void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const Vector4& colour) {
