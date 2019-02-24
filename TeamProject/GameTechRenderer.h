@@ -62,22 +62,21 @@ namespace NCL {
 
 			//shadow mapping things
 			OGLShader*	shadowShader;
-			GLuint		shadowTex;
+			TextureBase*		shadowTex;
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
 			OGLShader* skyBoxShader;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
-			GLuint gBufferDepthTex; // Depth goes here
-			GLuint gBufferColourTex; // Albedo goes here
-			GLuint gBufferNormalTex; // Normals go here
-			GLuint gBufferSpecularTex; // Specular goes here
-			GLuint hudTex;
+			TextureBase* gBufferDepthTex; // Depth goes here
+			TextureBase* gBufferColourTex; // Albedo goes here
+			TextureBase* gBufferNormalTex; // Normals go here
+			TextureBase* gBufferSpecularTex; // Specular goes here
 
 			GLuint lightFBO; // FBO for our lighting pass
-			GLuint lightEmissiveTex; // emissive lighting
-			GLuint lightSpecularTex; // specular lighting
+			TextureBase* lightEmissiveTex; // emissive lighting
+			TextureBase* lightSpecularTex; // specular lighting
 
 			OGLShader* combineShader;
 			OGLShader* lightShader;
@@ -87,6 +86,7 @@ namespace NCL {
 
 			Light* directionalLight;
 			
+			GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 			
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
