@@ -27,8 +27,6 @@ namespace NCL {
 			int GetShadowCasters() const { return shadowCasters; }
 
 			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
-
-			void GenerateScreenTexture(GLuint& into, bool depth = false);
 			
 			GLuint skybox;
 

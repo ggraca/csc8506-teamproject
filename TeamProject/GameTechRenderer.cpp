@@ -134,21 +134,6 @@ void GameTechRenderer::GenBuffers() {
 	glDrawBuffers(2, lightBuffer);
 }
 
-void GameTechRenderer::GenerateScreenTexture(GLuint & into, bool depth) {
-	glGenTextures(1, &into);
-	glBindTexture(GL_TEXTURE_2D, into);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, depth ? GL_DEPTH_COMPONENT24 : GL_RGBA8, currentWidth, currentHeight, 0,
-		depth ? GL_DEPTH_COMPONENT : GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
 void GameTechRenderer::RenderFrame() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -163,8 +148,6 @@ void GameTechRenderer::RenderFrame() {
 	RenderHUD();
 	glDisable(GL_CULL_FACE); //Todo - text indices are going the wrong way...
 }
-
-
 
 void GameTechRenderer::BuildObjectList() {
 	std::vector<GameObject*>::const_iterator first;
