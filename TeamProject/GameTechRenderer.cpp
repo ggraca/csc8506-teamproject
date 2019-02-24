@@ -37,14 +37,6 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 
 GameTechRenderer::~GameTechRenderer()	{
-	glDeleteTextures(1, &gBufferDepthTex);
-	glDeleteTextures(1, &gBufferColourTex);
-	glDeleteTextures(1, &gBufferNormalTex);
-	glDeleteTextures(1, &gBufferSpecularTex);
-	glDeleteTextures(1, &lightEmissiveTex);
-	glDeleteTextures(1, &lightSpecularTex);
-	glDeleteTextures(1, &shadowTex);
-
 	glDeleteFramebuffers(1, &gBufferFBO);
 	glDeleteFramebuffers(1, &lightFBO);
 	glDeleteFramebuffers(1, &shadowFBO);
@@ -85,33 +77,15 @@ void GameTechRenderer::AddHUDObjects()
 }
 
 void GameTechRenderer::GenBuffers() {
-	#pragma region ShadowFBORegion
-
-	//Generate shadow texture and assign texture parameters
-	glGenTextures(1, &shadowTex);
-	glBindTexture(GL_TEXTURE_2D, shadowTex);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		SHADOWSIZE, SHADOWSIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
+	shadowTex = OGLTexture::EmptyTexture(SHADOWSIZE, SHADOWSIZE, true);
 	//Generate Shadow FBO
 	glGenFramebuffers(1, &shadowFBO);
 
 	//Attach shadow texture to FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowTex, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, ((OGLTexture*)shadowTex)->GetObjectID(), 0);
 	glDrawBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	#pragma endregion
-
-	#pragma region GBufferFBORegion
 
 	//Generate G-Buffer FBO
 	glGenFramebuffers(1, &gBufferFBO);
@@ -122,27 +96,23 @@ void GameTechRenderer::GenBuffers() {
 	GBuffer[2] = GL_COLOR_ATTACHMENT2;
 
 	//Generate G-Buffer textures
-	GenerateScreenTexture(gBufferDepthTex, true);
-	GenerateScreenTexture(gBufferColourTex);
-	GenerateScreenTexture(gBufferNormalTex);
-	GenerateScreenTexture(gBufferSpecularTex);
+	gBufferDepthTex = OGLTexture::EmptyTexture(currentWidth, currentHeight, true);
+	gBufferColourTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	gBufferNormalTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	gBufferSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 
 	// Add G-Buffer textures to G-Buffer FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-		GL_TEXTURE_2D, gBufferColourTex, 0);
+		GL_TEXTURE_2D, ((OGLTexture*)gBufferColourTex)->GetObjectID(), 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
-		GL_TEXTURE_2D, gBufferNormalTex, 0);
+		GL_TEXTURE_2D, ((OGLTexture*)gBufferNormalTex)->GetObjectID(), 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2,
-		GL_TEXTURE_2D, gBufferSpecularTex, 0);
+		GL_TEXTURE_2D, ((OGLTexture*)gBufferSpecularTex)->GetObjectID(), 0);
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-		GL_TEXTURE_2D, gBufferDepthTex, 0);
+		GL_TEXTURE_2D, ((OGLTexture*)gBufferDepthTex)->GetObjectID(), 0);
 	glDrawBuffers(3, GBuffer);
-
-	#pragma endregion
-
-	#pragma region LightFBORegion
 
 	//Generate Light FBO
 	glGenFramebuffers(1, &lightFBO);
@@ -152,19 +122,16 @@ void GameTechRenderer::GenBuffers() {
 	lightBuffer[1] = GL_COLOR_ATTACHMENT1;
 
 	//Generate light buffer textures
-	GenerateScreenTexture(lightEmissiveTex);
-	GenerateScreenTexture(lightSpecularTex);
+	lightEmissiveTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	lightSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 
 	//Add light textures to the light FBO
 	glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-		GL_TEXTURE_2D, lightEmissiveTex, 0);
+		GL_TEXTURE_2D, ((OGLTexture*)lightEmissiveTex)->GetObjectID(), 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
-		GL_TEXTURE_2D, lightSpecularTex, 0);
+		GL_TEXTURE_2D, ((OGLTexture*)lightSpecularTex)->GetObjectID(), 0);
 	glDrawBuffers(2, lightBuffer);
-
-	#pragma endregion
-
 }
 
 void GameTechRenderer::GenerateScreenTexture(GLuint & into, bool depth) {
@@ -414,10 +381,10 @@ void GameTechRenderer::RenderLights() {
 	glUniform1i(glGetUniformLocation(lightShader->GetProgramID(), "normTex"), 4);
 
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, gBufferDepthTex);
+	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferDepthTex)->GetObjectID());
 
 	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, gBufferNormalTex);
+	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferNormalTex)->GetObjectID());
 
 	cameraLocation = glGetUniformLocation(lightShader->GetProgramID(), "cameraPos");
 	pixelLocation = glGetUniformLocation(lightShader->GetProgramID(), "pixelSize");
@@ -461,7 +428,7 @@ void GameTechRenderer::RenderLights() {
 		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
 			"shadowTex"), 20);
 		glActiveTexture(GL_TEXTURE20);
-		glBindTexture(GL_TEXTURE_2D, shadowTex);
+		glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)shadowTex)->GetObjectID());
 
 		float dist = (directionalLight->GetPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
 
@@ -547,22 +514,22 @@ void GameTechRenderer::CombineBuffers() {
 	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "lightSpecularTex"), 7);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, gBufferColourTex);
+	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferColourTex)->GetObjectID());
 
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, gBufferDepthTex);
+	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferDepthTex)->GetObjectID());
 
 	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, gBufferNormalTex);
+	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferNormalTex)->GetObjectID());
 
 	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, gBufferSpecularTex);
+	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferSpecularTex)->GetObjectID());
 
 	glActiveTexture(GL_TEXTURE6);
-	glBindTexture(GL_TEXTURE_2D, lightEmissiveTex);
+	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)lightEmissiveTex)->GetObjectID());
 
 	glActiveTexture(GL_TEXTURE7);
-	glBindTexture(GL_TEXTURE_2D, lightSpecularTex);
+	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)lightSpecularTex)->GetObjectID());
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
