@@ -19,6 +19,8 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
 	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
 	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
+
+
 	hudShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
 
 	GenBuffers();
@@ -185,7 +187,7 @@ void GameTechRenderer::SortObjectList() {
 
 void GameTechRenderer::RenderShadowMap() {
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
+	ClearBuffer(true, false, false);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glViewport(0, 0, SHADOWSIZE, SHADOWSIZE);
 
@@ -229,7 +231,7 @@ void GameTechRenderer::RenderSkybox() {
 	glDisable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	ClearBuffer(true, true, false);
 
 	BindShader(skyBoxShader);
 
@@ -276,7 +278,7 @@ void GameTechRenderer::RenderSkybox() {
 
 void GameTechRenderer::RenderCamera() {
 	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
+	ClearBuffer(true, false, false);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
@@ -345,7 +347,7 @@ void GameTechRenderer::RenderCamera() {
 void GameTechRenderer::RenderLights() {
 	glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
 	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
+	ClearBuffer(false, true, false);
 	glBlendFunc(GL_ONE, GL_ONE);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
@@ -471,8 +473,7 @@ void GameTechRenderer::CombineBuffers() {
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 	//	GL_TEXTURE_2D, postProcessTex[1], 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT |
-		GL_STENCIL_BUFFER_BIT);
+	ClearBuffer(true, true, false);
 
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
@@ -534,7 +535,7 @@ void GameTechRenderer::CombineBuffers() {
 
 void GameTechRenderer::RenderHUD()
 {
-	glClear(GL_DEPTH_BUFFER_BIT);
+	ClearBuffer(true, false, false);
 	glDisable(GL_CULL_FACE);
 	BindShader(hudShader);
 	for (int i = 0; i < hudObjects.size(); i++)
