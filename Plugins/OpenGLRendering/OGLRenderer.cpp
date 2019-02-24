@@ -185,6 +185,10 @@ void OGLRenderer::ClearColor(const Vector4& color) const {
 	glClearColor(color.x, color.y, color.z, color.w);
 }
 
+void OGLRenderer::SetViewport(int x, int y, int width, int height) const {
+	glViewport(x, y, width, height);
+}
+
 //void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const Vector4& colour) {
 //	DebugString s;
 //	s.colour = colour;

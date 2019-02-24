@@ -189,7 +189,7 @@ void GameTechRenderer::RenderShadowMap() {
 	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
 	ClearBuffer(true, false, false);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-	glViewport(0, 0, SHADOWSIZE, SHADOWSIZE);
+	SetViewport(0, 0, SHADOWSIZE, SHADOWSIZE);
 
 	glCullFace(GL_FRONT);
 
@@ -214,7 +214,7 @@ void GameTechRenderer::RenderShadowMap() {
 	// Calculates how many shadow casting lights are currently being renderered
 	shadowCasters++;
 
-	glViewport(0, 0, currentWidth, currentHeight);
+	SetViewport(0, 0, currentWidth, currentHeight);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
