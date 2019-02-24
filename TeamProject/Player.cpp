@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "InputManager.h"
 
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
@@ -29,7 +30,7 @@ void Player::PlayerMovement(float dt)
 	if (!GameObject::GetMainCamera()->GetScript<CameraControl*>()->GetCameraType()) { forward *= -1; }
 	Vector3 left = Vector3::Cross(up, forward).Normalised();
 
-	if (PhysicsScene::inputManager->IsButtonDown(InputManager::ActionButton::FORWARD))
+	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
 		playerPos += forward *movementSpeed * dt;
 		/*gameObject->GetTransform().SetWorldPosition(playerPos);
@@ -39,7 +40,7 @@ void Player::PlayerMovement(float dt)
 		keyDown = true;
 		reset = false;
 	}
-	if (PhysicsScene::inputManager->IsButtonDown(InputManager::ActionButton::BACKWARD))
+	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
 		playerPos -= forward * movementSpeed * dt;
 		/*gameObject->GetTransform().SetWorldPosition(playerPos);
@@ -49,7 +50,7 @@ void Player::PlayerMovement(float dt)
 		keyDown = true;
 		reset = false;
 	}
-	if (PhysicsScene::inputManager->IsButtonDown(InputManager::ActionButton::LEFT))
+	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
 	{
 		playerPos += left * movementSpeed * dt;
 		/*gameObject->GetTransform().SetWorldPosition(playerPos);
@@ -59,7 +60,7 @@ void Player::PlayerMovement(float dt)
 		keyDown = true;
 		reset = false;
 	}
-	if (PhysicsScene::inputManager->IsButtonDown(InputManager::ActionButton::RIGHT))
+	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
 		playerPos -= left * movementSpeed * dt;
 		/*gameObject->GetTransform().SetWorldPosition(playerPos);
@@ -69,7 +70,7 @@ void Player::PlayerMovement(float dt)
 		keyDown = true;
 		reset = false;
 	}
-	if (PhysicsScene::inputManager->IsButtonPressed(InputManager::ActionButton::JUMP))
+	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
 		gameObject->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
 		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));

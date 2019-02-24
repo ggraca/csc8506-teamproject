@@ -19,6 +19,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
 	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
 	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
+	hudShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
 
 	GenBuffers();
 
@@ -26,10 +27,14 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	screenQuad->UploadToGPU();
 
+	AddHUDObjects();
+
+	glClearColor(1, 1, 1, 1);
 	//Set up the light properties
 	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
 		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
 }
+
 
 GameTechRenderer::~GameTechRenderer()	{
 	glDeleteTextures(1, &gBufferDepthTex);
@@ -45,6 +50,38 @@ GameTechRenderer::~GameTechRenderer()	{
 	glDeleteFramebuffers(1, &shadowFBO);
 
 	delete directionalLight;
+}
+
+void GameTechRenderer::AddHUDObjects()
+{	
+
+	//Green HealthBar
+	vector<OGLTexture*> textures1;
+	textures1.push_back((OGLTexture*)TextureLoader::LoadAPITexture("healthBarGreen.png"));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures1, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	//Red HealthBar
+	vector<OGLTexture*> textures2;
+	textures2.push_back((OGLTexture*)TextureLoader::LoadAPITexture("healthBarRed.png"));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures2, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	//Hammer
+	vector<OGLTexture*> textures3;
+	textures3.push_back((OGLTexture*)TextureLoader::LoadAPITexture("hammer_gray.png"));
+	textures3.push_back((OGLTexture*)TextureLoader::LoadAPITexture("hammer.png"));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 106, (GameTechRenderer::GetRendererWidth() / 2) - 42, 20, 84),
+		textures3, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	//Gun
+	vector<OGLTexture*> textures4;
+	textures4.push_back((OGLTexture*)TextureLoader::LoadAPITexture("gun_gray.png"));
+	textures4.push_back((OGLTexture*)TextureLoader::LoadAPITexture("gun.png"));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 32, (GameTechRenderer::GetRendererWidth() / 2) + 32, 20, 84),
+		textures4, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	//Bomb
+	vector<OGLTexture*> textures5;
+	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb_gray.png"));
+	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb.png"));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) + 42, (GameTechRenderer::GetRendererWidth() / 2) + 106, 20, 84),
+		textures5, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	
 }
 
 void GameTechRenderer::GenBuffers() {
@@ -156,8 +193,11 @@ void GameTechRenderer::RenderFrame() {
 	RenderCamera();
 	RenderLights();
 	CombineBuffers();
+	RenderHUD();
 	glDisable(GL_CULL_FACE); //Todo - text indices are going the wrong way...
 }
+
+
 
 void GameTechRenderer::BuildObjectList() {
 	std::vector<GameObject*>::const_iterator first;
@@ -423,7 +463,7 @@ void GameTechRenderer::RenderLights() {
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
-		float dist = (lightPosition - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
+		float dist = (directionalLight->GetPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
 
 		if (directionalLight->GetType() == LightType::Point) {
 			if (dist < radius) {// camera is inside the light volume !
@@ -526,8 +566,39 @@ void GameTechRenderer::CombineBuffers() {
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
-
+	
 	glUseProgram(0);
+}
+
+void GameTechRenderer::RenderHUD()
+{
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_CULL_FACE);
+	BindShader(hudShader);
+	for (int i = 0; i < hudObjects.size(); i++)
+	{
+		glActiveTexture(GL_TEXTURE8);
+		if (hudObjects[i]->GetTexture().size() == 1)
+		{
+			glBindTexture(GL_TEXTURE_2D, hudObjects[i]->GetTexture()[0]->GetObjectID());
+		}
+		else
+		{
+			if (true)
+			{
+				glBindTexture(GL_TEXTURE_2D, hudObjects[i]->GetTexture()[0]->GetObjectID());
+			}
+			else
+			{
+				glBindTexture(GL_TEXTURE_2D, hudObjects[i]->GetTexture()[1]->GetObjectID());
+			}
+		}
+		glUniform1i(glGetUniformLocation(hudObjects[i]->GetShader()->GetProgramID(), "basicTexture"), 8);
+		BindMesh(hudObjects[i]->GetObjectMesh());
+		DrawBoundMesh();
+	}
+
+	glEnable(GL_CULL_FACE);
 }
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
@@ -541,3 +612,12 @@ void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 
 	glUniformMatrix4fv(matLocation, 1, false, (float*)&vp);
 }
+
+/*void GameTechRenderer::UpdateHealthQuad()
+{
+	delete healthBarQuadGreen;
+	if (health < 0.01) healthBarQuadGreen = OGLMesh::GenerateQuad((180 * health) + 10, 10, 655, 685);
+	else healthBarQuadGreen = OGLMesh::GenerateQuad((180 * health), 10, 655, 685);
+	healthBarQuadGreen->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
+	healthBarQuadGreen->UploadToGPU();
+}*/

@@ -16,8 +16,6 @@
 using namespace NCL;
 using namespace CSC8503;
 
-InputManager * ExampleScene::inputManager = nullptr;
-
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
   
@@ -29,9 +27,12 @@ ExampleScene::ExampleScene() : Scene() {
   console = Console();
   RegisterConsoleCommands();
 
-  if(!inputManager){ inputManager = new InputManager(); }//Static guy initializations
   GameObject::SetGameWorld(world);
+
+
 }
+
+
 
 
 void ExampleScene::ResetWorld() {
@@ -41,7 +42,6 @@ void ExampleScene::ResetWorld() {
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
   //Player
   auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
-  player->GetRenderObject()->SetColour(Vector4(1, 0, 0, 1));
   player->AddScript((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
@@ -56,12 +56,11 @@ void ExampleScene::ResetWorld() {
 }
 
 ExampleScene::~ExampleScene() {
-	delete inputManager;
 }
 
 void ExampleScene::UpdateGame(float dt) {
 
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_SPACE)) {
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
 		world->SwitchToFPS();
 	}
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
@@ -84,6 +83,19 @@ void ExampleScene::UpdateGame(float dt) {
 	  console.Toggle();
 	  debugMenu.Toggle();
   }
+
+  
+  /*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
+	  delete hammer;
+	  hammer = (OGLTexture*)TextureLoader::LoadAPITexture("hammer.png");
+	  renderer->hammer = hammer->GetObjectID();
+	  delete gun;
+	  gun = (OGLTexture*)TextureLoader::LoadAPITexture("gun.png");
+	  renderer->gun = gun->GetObjectID();
+	  delete bomb;
+	  bomb = (OGLTexture*)TextureLoader::LoadAPITexture("bomb.png");
+	  renderer->bomb = bomb->GetObjectID();
+  }*/
 
   renderer->Render();
   
