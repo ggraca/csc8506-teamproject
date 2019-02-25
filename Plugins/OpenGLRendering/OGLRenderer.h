@@ -49,6 +49,7 @@ namespace NCL {
 
 			void GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& bufferTexs, TextureBase* depth);
 			void DeleteFrameBuffer(void* buffer);
+			void BindFBO(void* buffer);
 
 			void BindShader(ShaderBase*s);
 			void BindTextureToShader(const TextureBase*t, const std::string& uniform, int texUnit) const;

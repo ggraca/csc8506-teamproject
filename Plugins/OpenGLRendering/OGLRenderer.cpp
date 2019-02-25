@@ -171,7 +171,7 @@ void OGLRenderer::GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& b
 	glGenFramebuffers(1, (GLuint*)buffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, *(GLuint*)(buffer));
 
-	if (depth != nullptr) {
+	if (depth) {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
 			GL_TEXTURE_2D, ((OGLTexture*)depth)->GetObjectID(), 0);
 	}
@@ -194,6 +194,15 @@ void OGLRenderer::GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& b
 
 void OGLRenderer::DeleteFrameBuffer(void* buffer) {
 	glDeleteFramebuffers(1, (GLuint*)buffer);
+}
+
+void OGLRenderer::BindFBO(void* buffer) {
+	if (!buffer) {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+	else {
+		glBindFramebuffer(GL_FRAMEBUFFER, *(GLuint*)buffer);
+	}
 }
 
 void OGLRenderer::ClearBuffer(bool depth, bool color, bool stencil) const {

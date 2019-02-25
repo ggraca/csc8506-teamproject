@@ -164,7 +164,7 @@ void GameTechRenderer::SortObjectList() {
 }
 
 void GameTechRenderer::RenderShadowMap() {
-	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
+	BindFBO((void*)&shadowFBO);
 	ClearBuffer(true, false, false);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	SetViewport(0, 0, SHADOWSIZE, SHADOWSIZE);
@@ -176,9 +176,7 @@ void GameTechRenderer::RenderShadowMap() {
 
 	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(directionalLight->GetPosition(), Vector3(0, 0, 0));
 	Matrix4 shadowProjMatrix = Matrix4::Perspective(100.0f, 5000.0f, 1, 45.0f);
-
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
-
 	shadowMatrix = biasMatrix * mvMatrix; //we'll use this one later on
 
 	for (const auto&i : activeObjects) {
@@ -194,12 +192,15 @@ void GameTechRenderer::RenderShadowMap() {
 
 	SetViewport(0, 0, currentWidth, currentHeight);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	BindFBO(nullptr);
 
 	glCullFace(GL_BACK);
 }
 
 void GameTechRenderer::RenderSkybox() {
+	BindFBO((void*)&gBufferFBO);
+	ClearBuffer(true, true, false);
+	
 	float screenAspect = (float)currentWidth / (float)currentHeight;
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildViewMatrix();
 	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildProjectionMatrix(screenAspect);
@@ -208,8 +209,6 @@ void GameTechRenderer::RenderSkybox() {
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
-	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
-	ClearBuffer(true, true, false);
 
 	BindShader(skyBoxShader);
 
@@ -252,10 +251,11 @@ void GameTechRenderer::RenderSkybox() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glEnable(GL_CULL_FACE);
+	BindFBO(nullptr);
 }
 
 void GameTechRenderer::RenderCamera() {
-	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
+	BindFBO((void*)&gBufferFBO);
 	ClearBuffer(true, false, false);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
@@ -319,11 +319,11 @@ void GameTechRenderer::RenderCamera() {
 		DrawBoundMesh();
 	}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	BindFBO(nullptr);
 }
 
 void GameTechRenderer::RenderLights() {
-	glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
+	BindFBO((void*)&lightFBO);
 	ClearColor(Vector4(0, 0, 0, 1));
 	ClearBuffer(false, true, false);
 	glBlendFunc(GL_ONE, GL_ONE);
@@ -441,8 +441,8 @@ void GameTechRenderer::RenderLights() {
 
 	ClearColor(Vector4(0.2f, 0.2f, 0.2f, 1));
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glUseProgram(0);
+	BindFBO(nullptr);
+	BindShader(nullptr);
 }
 
 void GameTechRenderer::CombineBuffers() {
@@ -450,7 +450,7 @@ void GameTechRenderer::CombineBuffers() {
 	//glBindFramebuffer(GL_FRAMEBUFFER, postProcessFBO);
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 	//	GL_TEXTURE_2D, postProcessTex[1], 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	BindFBO(nullptr);
 	ClearBuffer(true, true, false);
 
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
@@ -508,7 +508,7 @@ void GameTechRenderer::CombineBuffers() {
 	BindMesh(screenQuad);
 	DrawBoundMesh();
 	
-	glUseProgram(0);
+	BindShader(nullptr);
 }
 
 void GameTechRenderer::RenderHUD()
