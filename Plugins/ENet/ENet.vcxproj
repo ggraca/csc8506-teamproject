@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{7A22CD41-A2EE-49F0-8B06-E01B4526CA41}</ProjectGuid>
-    <RootNamespace>Common</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{124740DA-B6CB-4D9B-8C79-B8358B2A1D9F}</ProjectGuid>
+    <RootNamespace>NetworkingENet</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -70,27 +70,25 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)$(Platform)\$(Configuration)\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)$(Platform)\$(Configuration)\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -98,9 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,9 +106,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -126,9 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -136,66 +128,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Assets.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="GameClient.cpp" />
-    <ClCompile Include="GameServer.cpp" />
-    <ClCompile Include="GameTimer.cpp" />
-    <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Maths.cpp" />
-    <ClCompile Include="Matrix2.cpp" />
-    <ClCompile Include="Matrix3.cpp" />
-    <ClCompile Include="Matrix4.cpp" />
-    <ClCompile Include="MeshGeometry.cpp" />
-    <ClCompile Include="Mouse.cpp" />
-    <ClCompile Include="NetworkBase.cpp" />
-    <ClCompile Include="NetworkObject.cpp" />
-    <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="Quaternion.cpp" />
-    <ClCompile Include="RendererBase.cpp" />
-    <ClCompile Include="ShaderBase.cpp" />
-    <ClCompile Include="SimpleFont.cpp" />
-    <ClCompile Include="TextureBase.cpp" />
-    <ClCompile Include="TextureLoader.cpp" />
-    <ClCompile Include="TextureWriter.cpp" />
-    <ClCompile Include="Win32Keyboard.cpp" />
-    <ClCompile Include="Win32Mouse.cpp" />
-    <ClCompile Include="Win32Window.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="callbacks.c" />
+    <ClCompile Include="compress.c" />
+    <ClCompile Include="host.c" />
+    <ClCompile Include="list.c" />
+    <ClCompile Include="packet.c" />
+    <ClCompile Include="peer.c" />
+    <ClCompile Include="protocol.c" />
+    <ClCompile Include="win32.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Assets.h" />
-    <ClInclude Include="GameClient.h" />
-    <ClInclude Include="GameServer.h" />
-    <ClInclude Include="GameTimer.h" />
-    <ClInclude Include="Keyboard.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Maths.h" />
-    <ClInclude Include="Matrix2.h" />
-    <ClInclude Include="Matrix3.h" />
-    <ClInclude Include="Matrix4.h" />
-    <ClInclude Include="MeshGeometry.h" />
-    <ClInclude Include="Mouse.h" />
-    <ClInclude Include="NetworkBase.h" />
-    <ClInclude Include="NetworkObject.h" />
-    <ClInclude Include="NetworkState.h" />
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="Quaternion.h" />
-    <ClInclude Include="RendererBase.h" />
-    <ClInclude Include="ShaderBase.h" />
-    <ClInclude Include="SimpleFont.h" />
-    <ClInclude Include="TextureBase.h" />
-    <ClInclude Include="TextureLoader.h" />
-    <ClInclude Include="TextureWriter.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="Vector4.h" />
-    <ClInclude Include="Win32Keyboard.h" />
-    <ClInclude Include="Win32Mouse.h" />
-    <ClInclude Include="Win32Window.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="include\enet\callbacks.h" />
+    <ClInclude Include="include\enet\enet.h" />
+    <ClInclude Include="include\enet\list.h" />
+    <ClInclude Include="include\enet\protocol.h" />
+    <ClInclude Include="include\enet\time.h" />
+    <ClInclude Include="include\enet\types.h" />
+    <ClInclude Include="include\enet\utility.h" />
+    <ClInclude Include="include\enet\win32.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
