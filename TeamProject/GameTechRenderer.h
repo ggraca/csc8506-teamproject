@@ -31,7 +31,7 @@ namespace NCL {
 
 			//HUD
 			void AddHUDObjects();
-
+			void WeaponState(int index, bool state);
 			float health = 1; //(100%);
 			//void UpdateHealthQuad();
 

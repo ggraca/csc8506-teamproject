@@ -68,6 +68,29 @@ void PhysicsScene::UpdateKeys() {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -10));
 	}
+
+	//HUD TESTING BEGINS
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
+		renderer->WeaponState(2, true); //Hammer
+		renderer->WeaponState(3, true); //Gun
+		renderer->WeaponState(4, true); //Bomb
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_I)) {
+		renderer->WeaponState(2, false); //Hammer
+		renderer->WeaponState(3, false); //Gun
+		renderer->WeaponState(4, false); //Bomb
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Y))
+	{
+		hud.hp -= 5;
+		renderer->health -= 0.05f;
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_T))
+	{
+		hud.hp = 100;
+		renderer->health = 1.0f;
+	}
+	//HUD TESTING ENDS
 }
 
 void PhysicsScene::UpdateGame(float dt) {
@@ -83,6 +106,7 @@ void PhysicsScene::UpdateGame(float dt) {
   UpdateKeys();
   renderer->Update(dt);
   physics->Update(dt);
+  
   //bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
   //bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));
   //bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
@@ -92,7 +116,7 @@ void PhysicsScene::UpdateGame(float dt) {
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
   console.Update();
-  
+  hud.Update(dt, renderer);
 
   renderer->Render();
 }

@@ -49,30 +49,26 @@ void GameTechRenderer::AddHUDObjects()
 	//Green HealthBar
 	vector<OGLTexture*> textures1;
 	textures1.push_back((OGLTexture*)TextureLoader::LoadAPITexture("healthBarGreen.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures1, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures1, Transform(), false));
 	//Red HealthBar
 	vector<OGLTexture*> textures2;
 	textures2.push_back((OGLTexture*)TextureLoader::LoadAPITexture("healthBarRed.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures2, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures2, Transform(), false));
 	//Hammer
 	vector<OGLTexture*> textures3;
 	textures3.push_back((OGLTexture*)TextureLoader::LoadAPITexture("hammer_gray.png"));
 	textures3.push_back((OGLTexture*)TextureLoader::LoadAPITexture("hammer.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 106, (GameTechRenderer::GetRendererWidth() / 2) - 42, 20, 84),
-		textures3, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 106, (GameTechRenderer::GetRendererWidth() / 2) - 42, 20, 84), textures3, Transform(), false));
 	//Gun
 	vector<OGLTexture*> textures4;
 	textures4.push_back((OGLTexture*)TextureLoader::LoadAPITexture("gun_gray.png"));
 	textures4.push_back((OGLTexture*)TextureLoader::LoadAPITexture("gun.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 32, (GameTechRenderer::GetRendererWidth() / 2) + 32, 20, 84),
-		textures4, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 32, (GameTechRenderer::GetRendererWidth() / 2) + 32, 20, 84), textures4, Transform(), false));
 	//Bomb
 	vector<OGLTexture*> textures5;
 	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb_gray.png"));
 	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) + 42, (GameTechRenderer::GetRendererWidth() / 2) + 106, 20, 84),
-		textures5, Transform(), new OGLShader("BasicVert.glsl", "BasicFrag.glsl")));
-	
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) + 42, (GameTechRenderer::GetRendererWidth() / 2) + 106, 20, 84), textures5, Transform(), false));
 }
 
 void GameTechRenderer::GenBuffers() {
@@ -396,6 +392,12 @@ void GameTechRenderer::RenderHUD()
 	BindShader(hudShader);
 	for (int i = 0; i < hudObjects.size(); i++)
 	{
+		if (i == 0)
+		{
+			glEnable(GL_SCISSOR_TEST);
+			glScissor(10 + 170 * (1- health), 180, 655, 685);
+		}
+
 		glActiveTexture(GL_TEXTURE8);
 		if (hudObjects[i]->GetTexture().size() == 1)
 		{
@@ -403,7 +405,7 @@ void GameTechRenderer::RenderHUD()
 		}
 		else
 		{
-			if (true)
+			if (!hudObjects[i]->IsWeaponActive())
 			{
 				glBindTexture(GL_TEXTURE_2D, hudObjects[i]->GetTexture()[0]->GetObjectID());
 			}
@@ -415,9 +417,15 @@ void GameTechRenderer::RenderHUD()
 		glUniform1i(glGetUniformLocation(hudObjects[i]->GetShader()->GetProgramID(), "basicTexture"), 8);
 		BindMesh(hudObjects[i]->GetObjectMesh());
 		DrawBoundMesh();
+		if (i == 0) glDisable(GL_SCISSOR_TEST);
 	}
 
 	glEnable(GL_CULL_FACE);
+}
+
+void GameTechRenderer::WeaponState(int index, bool state)
+{
+	hudObjects[index]->SetWeaponState(state);
 }
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
@@ -431,6 +439,8 @@ void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 
 	glUniformMatrix4fv(matLocation, 1, false, (float*)&vp);
 }
+
+
 
 /*void GameTechRenderer::UpdateHealthQuad()
 {
