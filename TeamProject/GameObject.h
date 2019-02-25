@@ -1,6 +1,6 @@
 #pragma once
 #include "Transform.h"
-#include "RenderObject.h"
+//#include "RenderObject.h"
 #include "LayerAndTag.h"
 
 #include <vector>
@@ -36,16 +36,8 @@ namespace NCL {
 				return transform;
 			}
 
-			RenderObject* GetRenderObject() const {
-				return renderObject;
-			}
-
 			NetworkObject* GetNetworkObject() const {
 				return networkObject;
-			}
-
-			void SetRenderObject(RenderObject* newObject) {
-				renderObject = newObject;
 			}
 
 			const string& GetName() const {
@@ -100,23 +92,23 @@ namespace NCL {
 			{
 				if (parent)
 				{
-					this->GetRenderObject()->GetTransform()->SetParent(parent->GetRenderObject()->GetTransform());
-					parent->GetRenderObject()->GetTransform()->AddChild(this->GetRenderObject()->GetTransform());
+					this->GetComponent<RenderObject*>()->GetTransform()->SetParent(parent->GetComponent<RenderObject*>()->GetTransform());
+					parent->GetComponent<RenderObject*>()->GetTransform()->AddChild(this->GetComponent<RenderObject*>()->GetTransform());
 				}
 				else
 				{
-					if (this->GetRenderObject()->GetTransform()->GetParent() != nullptr)
+					if (this->GetComponent<RenderObject*>()->GetTransform()->GetParent() != nullptr)
 					{
-						this->GetRenderObject()->GetTransform()->GetParent()->RemoveChild(this->GetRenderObject()->GetTransform());
+						this->GetComponent<RenderObject*>()->GetTransform()->GetParent()->RemoveChild(this->GetComponent<RenderObject*>()->GetTransform());
 					}
 
-					this->GetRenderObject()->GetTransform()->SetParent(nullptr);
+					this->GetComponent<RenderObject*>()->GetTransform()->SetParent(nullptr);
 				}
 			}
 
 			bool IsParent(const Transform* transform)
 			{
-				return (this->GetRenderObject()->GetTransform()->GetParent() == transform);
+				return (this->GetComponent<RenderObject*>()->GetTransform()->GetParent() == transform);
 			}
 
 			void AddChild(GameObject * child)
@@ -187,7 +179,7 @@ namespace NCL {
 
 			static GameWorld *gameWorld;
 			Transform			transform;
-			RenderObject*		renderObject;
+			//RenderObject*		renderObject;
 			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;

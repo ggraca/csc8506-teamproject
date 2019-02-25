@@ -154,7 +154,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   sphere->GetTransform().SetWorldScale(Vector3(radius, radius, radius));
   sphere->GetTransform().SetWorldPosition(position);
   sphere->AddComponent((Component*)new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
+  sphere->AddComponent((Component*)new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
 
   world->AddGameObject(sphere);
   return sphere;
@@ -167,7 +167,7 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetLocalOrientation(orient);
   cube->AddComponent((Component*)new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
+  cube->AddComponent((Component*)new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
 
   world->AddGameObject(cube);
   return cube;

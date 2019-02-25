@@ -6,10 +6,11 @@ namespace NCL {
 	using namespace NCL::Rendering;
 	class MeshGeometry;
 	namespace CSC8503 {
+		class Component;
 		class Transform;
 		using namespace Maths;
 
-		class RenderObject
+		class RenderObject:virtual public Component
 		{
 		public:
 			RenderObject(Transform* parentTransform, MeshGeometry* mesh, Material* material);

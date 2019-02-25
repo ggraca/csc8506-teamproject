@@ -12,7 +12,7 @@ GameObject::GameObject(string objectName)
 	name			= objectName;
 	isActive		= true;
 	isAddedToWorld  = false;
-	renderObject	= nullptr;
+	//renderObject	= nullptr;
 	networkObject	= nullptr;
 	layer			= LayerAndTag::ObjectLayer::Default;
 	tag				= LayerAndTag::Tags::Untagged;
@@ -21,7 +21,7 @@ GameObject::GameObject(string objectName)
 
 GameObject::~GameObject()	
 {
-	delete renderObject;
+	//delete renderObject;
 	delete networkObject;
 
 	ClearComponents();
