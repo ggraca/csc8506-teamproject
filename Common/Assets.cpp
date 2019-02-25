@@ -22,6 +22,7 @@ bool Assets::ReadTextFile(const std::string &filepath, std::string& result) {
 		return false;
 	}
 }
+
 Rendering::TextureBase* Assets::AssetManager::LoadTexture(const std::string& filename) {
 	auto iter = GetInstance().loadedTextures.find(filename);
 
@@ -33,6 +34,19 @@ Rendering::TextureBase* Assets::AssetManager::LoadTexture(const std::string& fil
 	newTexture = TextureLoader::LoadAPITexture(filename);
 	GetInstance().loadedTextures.insert(std::make_pair(filename, newTexture));
 	return newTexture;
+}
+
+Rendering::Material* Assets::AssetManager::LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader) {
+	auto iter = GetInstance().loadedMaterials.find(materialname);
+
+	if (iter != GetInstance().loadedMaterials.end()) {
+		return (*iter).second;
+	}
+
+	Rendering::Material* newMaterial;
+	newMaterial->SetShader(shader);
+	GetInstance().loadedMaterials.insert(std::make_pair(materialname, newMaterial));
+	return newMaterial;
 }
 
 void Assets::AssetManager::FlushTextures() {

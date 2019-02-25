@@ -57,15 +57,13 @@ void Scene::InitialiseAssets() {
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
   //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
-  basicMaterial = new Material();
-  basicMaterial->SetShader(basicShader);
+  basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", basicShader);
   basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
   basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
   basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
   basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 
-  floorMat = new Material();
-  floorMat->SetShader(basicShader);
+  floorMat = Assets::AssetManager::LoadMaterial("Floor Material", basicShader);
   floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
   floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
   floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
