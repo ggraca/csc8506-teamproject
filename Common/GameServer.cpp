@@ -3,7 +3,7 @@
 #include <iostream>
 
 using namespace NCL;
-using namespace CSC8503;
+using namespace NCL::Networking;
 
 GameServer::GameServer(int onPort, int maxClients)	{
 	port		= onPort;

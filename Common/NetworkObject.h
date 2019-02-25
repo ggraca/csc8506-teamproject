@@ -7,7 +7,7 @@
 // #include "GameObject.h"
 
 namespace NCL {
-	namespace CSC8503 {
+	namespace Networking {
 		struct FullPacket : public GamePacket {
 			int		objectID;
 			NetworkState fullState;

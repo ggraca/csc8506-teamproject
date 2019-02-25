@@ -5,8 +5,8 @@
 #include "NetworkBase.h"
 
 namespace NCL {
-	namespace CSC8503 {
-		class GameWorld;
+	namespace Networking {
+
 		class GameServer : public NetworkBase {
 		public:
 			GameServer(int onPort, int maxClients);
@@ -15,7 +15,7 @@ namespace NCL {
 			bool Initialise();
 			void Shutdown();
 
-			void SetGameWorld(GameWorld &g);
+			// void SetGameWorld(GameWorld &g);
 
 			void ThreadedUpdate();
 
@@ -31,7 +31,7 @@ namespace NCL {
 			int			port;
 			int			clientMax;
 			int			clientCount;
-			GameWorld*	gameWorld;
+			// GameWorld*	gameWorld;
 
 			std::atomic<bool> threadAlive;
 

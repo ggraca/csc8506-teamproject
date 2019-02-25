@@ -1,7 +1,7 @@
 #include "NetworkObject.h"
 
 using namespace NCL;
-using namespace CSC8503;
+using namespace Networking;
 
 //NetworkObject::NetworkObject(GameObject& o, int id) : object(o)	{
 //	deltaErrors = 0;
