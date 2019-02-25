@@ -32,6 +32,7 @@ void PhysicsScene::ResetWorld() {
   player->AddScript((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+  player->GetRenderObject()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
 
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);

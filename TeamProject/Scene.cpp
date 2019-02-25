@@ -160,6 +160,7 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetLocalOrientation(orient);
   cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
   cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
+  cube->GetRenderObject()->SetMaterialInstanced();
 
   world->AddGameObject(cube);
   return cube;
