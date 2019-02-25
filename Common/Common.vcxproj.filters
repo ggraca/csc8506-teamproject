@@ -99,6 +99,9 @@
     <ClCompile Include="Material.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
