@@ -14,15 +14,12 @@ GameObject::GameObject(std::string objectName)
 	name			= objectName;
 	isActive		= true;
 	isAddedToWorld  = false;
-	networkObject	= nullptr;
 	layer			= LayerAndTag::ObjectLayer::Default;
 	tag				= LayerAndTag::Tags::Untagged;
 }
 
 GameObject::~GameObject()	
 {
-	delete networkObject;
-
 	ClearComponents();
 	ClearScripts();
 	std::cout << name << " Destroyed" << std::endl;

@@ -1,9 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include "LayerAndTag.h"
-
 #include <vector>
-
 
 using std::vector;
 
@@ -35,10 +33,6 @@ namespace NCL {
 
 			Transform& GetTransform() {
 				return transform;
-			}
-
-			NetworkObject* GetNetworkObject() const {
-				return networkObject;
 			}
 
 			const std::string& GetName() const {
@@ -158,7 +152,6 @@ namespace NCL {
 
 			static GameWorld *gameWorld;
 			Transform			transform;
-			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
 			std::vector<ScriptObject*> scripts;

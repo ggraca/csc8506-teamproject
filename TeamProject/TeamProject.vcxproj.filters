@@ -84,6 +84,7 @@
     <ClCompile Include="ScriptObject.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -171,6 +172,7 @@
     <ClInclude Include="ScriptObject.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UI">
