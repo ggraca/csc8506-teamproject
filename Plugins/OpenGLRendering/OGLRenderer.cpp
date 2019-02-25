@@ -6,9 +6,6 @@
 #include "../../Common/SimpleFont.h"
 #include "../../Common/TextureLoader.h"
 
-#include "../../Common/Vector2.h"
-#include "../../Common/Vector3.h"
-
 #include "../../Common/MeshGeometry.h"
 
 #ifdef _WIN32
@@ -191,6 +188,95 @@ void OGLRenderer::BindTextureCubeToShader(const TextureBase*t, const std::string
 	glUniform1i(slot, texUnit);
 }
 
+void OGLRenderer::BindBoolToShader(const bool val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform1i(slot, val);
+}
+
+void OGLRenderer::BindIntToShader(const int val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform1i(slot, val);
+}
+
+void OGLRenderer::BindFloatToShader(const float val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform1f(slot, val);
+}
+
+void OGLRenderer::BindVector3ToShader(const Vector3& val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform3fv(slot, 1, (float*)&val);
+}
+
+void OGLRenderer::BindVector4ToShader(const Vector4& val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform4fv(slot, 1, (float*)&val);
+}
+
+void OGLRenderer::BindMatrix4ToShader(const Matrix4& val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniformMatrix4fv(slot, 1, false, (float*)&val);
+}
 
 void OGLRenderer::GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& bufferTexs, TextureBase* depth) {
 	glGenFramebuffers(1, (GLuint*)buffer);

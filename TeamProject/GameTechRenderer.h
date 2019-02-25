@@ -8,7 +8,6 @@
 #include "GameWorld.h"
 #include "HUDObject.h"
 #include "CameraControl.h"
-#include "../Common/Matrix4.h"
 
 class Light;
 class HUDObject;

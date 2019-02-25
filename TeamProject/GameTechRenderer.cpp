@@ -1,9 +1,6 @@
 #include "GameTechRenderer.h"
 #include "../TeamProject/GameObject.h"
 #include "../Common/Camera.h"
-#include "../Common/Vector2.h"
-#include "../Common/Vector3.h"
-#include "../Common/Matrix4.h"
 #include "Light.h"
 
 using namespace NCL;
@@ -219,8 +216,6 @@ void GameTechRenderer::RenderSkybox() {
 	int textureLocation = 0;
 
 	BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 2);
-	int texLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "cubeTex");
-	glUniform1i(texLocation, 2);
 
 	cameraLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "cameraPos");
 	modelLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "modelMatrix");
@@ -235,7 +230,7 @@ void GameTechRenderer::RenderSkybox() {
 	glUniformMatrix4fv(modelLocation, 1, false, (float*)&identity);
 	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
 	glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
-	glUniformMatrix4fv(texLocation, 1, false, (float*)&identity);
+	glUniformMatrix4fv(textureLocation, 1, false, (float*)&identity);
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
@@ -243,7 +238,7 @@ void GameTechRenderer::RenderSkybox() {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
-	glUseProgram(0);
+	BindShader(nullptr);
 	glDepthMask(GL_TRUE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
