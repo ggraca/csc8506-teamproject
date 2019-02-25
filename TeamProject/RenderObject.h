@@ -26,10 +26,17 @@ namespace NCL {
 				return transform;
 			}
 
+			void SetMaterialInstanced() {
+				material = new Material(*material);
+				materialInstanced = true;
+			}
+
 		protected:
 			MeshGeometry*	mesh;
 			Material* material;
 			Transform*		transform;
+
+			bool materialInstanced = false;
 		};
 	}
 }

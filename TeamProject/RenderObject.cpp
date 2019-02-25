@@ -11,5 +11,7 @@ RenderObject::RenderObject(Transform* parentTransform, MeshGeometry* mesh, Mater
 }
 
 RenderObject::~RenderObject() {
-
+	if (materialInstanced) {
+		delete material;
+	}
 }
