@@ -16,7 +16,7 @@ Component::~Component()
 
 void Component::Update(float dt)
 {
-	std::cout << "Component Update" << std::endl;
+	
 }
 
 void Component::SetGameObject(GameObject * go)
