@@ -8,10 +8,10 @@ namespace NCL {
 		{
 		public:
 			friend class OGLRenderer;
-			OGLShader(const string& vertex, const string& fragment, const string& geometry = "", const string& domain = "", const string& hull = "");
+			OGLShader();
 			~OGLShader();
 
-			void ReloadShader() override;
+			void LoadShader(const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull) override;
 
 			bool LoadSuccess() const {
 				return programValid == GL_TRUE;

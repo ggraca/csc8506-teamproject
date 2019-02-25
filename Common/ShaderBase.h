@@ -15,10 +15,10 @@ namespace NCL {
 		class ShaderBase
 		{
 		public:
-			ShaderBase(const string& vertex, const string& fragment, const string& geometry = "", const string& domain = "", const string& hull = "");
+			ShaderBase();
 			virtual ~ShaderBase();
 
-			virtual void ReloadShader() = 0;
+			virtual void LoadShader(const string& vertex, const string& fragment, const string& geometry = "", const string& domain = "", const string& hull = "") = 0;
 		protected:
 
 			string shaderFiles[ShaderStages::SHADER_MAX];

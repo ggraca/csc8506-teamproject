@@ -21,17 +21,21 @@ string ShaderNames[ShaderStages::SHADER_MAX] = {
 	"Tess. Eval"
 };
 
-OGLShader::OGLShader(const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull) :
-	ShaderBase(vertex, fragment, geometry, domain, hull) {
-	ReloadShader();
+OGLShader::OGLShader() {
+
 }
 
 OGLShader::~OGLShader()	{
 	DeleteIDs();
 }
 
-void OGLShader::ReloadShader() {
-	DeleteIDs();
+void OGLShader::LoadShader(const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull) {
+	shaderFiles[ShaderStages::SHADER_VERTEX] = vertex;
+	shaderFiles[ShaderStages::SHADER_FRAGMENT] = fragment;
+	shaderFiles[ShaderStages::SHADER_GEOMETRY] = geometry;
+	shaderFiles[ShaderStages::SHADER_DOMAIN] = domain;
+	shaderFiles[ShaderStages::SHADER_HULL] = hull;
+
 	programID = glCreateProgram();
 	string fileContents = "";
 	for (int i = 0; i < ShaderStages::SHADER_MAX; ++i) {
