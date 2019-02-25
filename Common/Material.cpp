@@ -8,11 +8,7 @@ Material::Material(Material& mat)
 	this->shader = mat.GetShader();
 	this->textureMatrix = mat.GetTextureMatrix();
 	this->colour = mat.GetColour();
-
-	for (auto  i = mat.GetTextureParameters()->begin(); i != mat.GetTextureParameters()->end(); i++)
-	{
-		textureParameters.push_back(*i);
-	}
+	this->textureParameters = std::vector<std::pair<std::string, TextureBase*>>(*mat.GetTextureParameters());
 }
 
 Material::Material()
