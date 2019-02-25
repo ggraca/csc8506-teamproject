@@ -1,6 +1,5 @@
 #pragma once
 #include "Transform.h"
-#include "PhysicsObject.h"
 #include "RenderObject.h"
 #include "LayerAndTag.h"
 
@@ -25,14 +24,6 @@ namespace NCL {
 
 			void ClearComponents();
 
-			void SetBoundingVolume(CollisionVolume* vol) {
-				boundingVolume = vol;
-			}
-
-			const CollisionVolume* GetBoundingVolume() const {
-				return boundingVolume;
-			}
-
 			bool IsActive() const {
 				return isActive;
 			}
@@ -49,10 +40,6 @@ namespace NCL {
 				return renderObject;
 			}
 
-			/*PhysicsObject* GetPhysicsObject() const {
-				return physicsObject;
-			}*/
-
 			NetworkObject* GetNetworkObject() const {
 				return networkObject;
 			}
@@ -60,10 +47,6 @@ namespace NCL {
 			void SetRenderObject(RenderObject* newObject) {
 				renderObject = newObject;
 			}
-
-			/*void SetPhysicsObject(PhysicsObject* newObject) {
-				physicsObject = newObject;
-			}*/
 
 			const string& GetName() const {
 				return name;
@@ -204,8 +187,6 @@ namespace NCL {
 
 			static GameWorld *gameWorld;
 			Transform			transform;
-			CollisionVolume*	boundingVolume;
-			//PhysicsObject*		physicsObject;
 			RenderObject*		renderObject;
 			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;

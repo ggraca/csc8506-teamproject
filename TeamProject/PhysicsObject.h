@@ -3,6 +3,7 @@
 #include "../Common/Matrix3.h"
 #include "../Common/Quaternion.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
+#include "Component.h"
 
 using namespace NCL::Maths;
 
@@ -13,8 +14,7 @@ namespace NCL {
 	
 	namespace CSC8503 {
 		class Transform;
-		class GameObject;
-
+		
 		class PhysicsObject : virtual public Component{
 		public:
 			PhysicsObject();
