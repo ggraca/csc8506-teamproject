@@ -11,7 +11,7 @@ namespace NCL {
 			OGLShader();
 			~OGLShader();
 
-			void LoadShader(const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull) override;
+			ShaderBase* LoadShader(const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull) override;
 
 			bool LoadSuccess() const {
 				return programValid == GL_TRUE;

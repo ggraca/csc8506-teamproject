@@ -18,7 +18,7 @@ namespace NCL {
 			ShaderBase();
 			virtual ~ShaderBase();
 
-			virtual void LoadShader(const string& vertex, const string& fragment, const string& geometry = "", const string& domain = "", const string& hull = "") = 0;
+			virtual ShaderBase* LoadShader(const string& vertex, const string& fragment, const string& geometry = "", const string& domain = "", const string& hull = "") = 0;
 		protected:
 
 			string shaderFiles[ShaderStages::SHADER_MAX];

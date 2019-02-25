@@ -5,6 +5,7 @@
 
 #include "../../Common/SimpleFont.h"
 #include "../../Common/TextureLoader.h"
+#include "../../Common/ShaderLoader.h"
 
 #include "../../Common/MeshGeometry.h"
 
@@ -33,6 +34,7 @@ OGLRenderer::OGLRenderer(Window& w) : RendererBase(w)	{
 
 	TextureLoader::RegisterAPILoadFunction(OGLTexture::RGBATextureFromFilename);
 	TextureLoader::RegisterAPILoadCubeFunction(OGLTexture::CubeTextureFromFilename);
+	ShaderLoader::RegisterAPILoadFunction(OGLShader::LoadShader);
 
 	font		= new SimpleFont("PressStart2P.fnt", "PressStart2P.png");
 
