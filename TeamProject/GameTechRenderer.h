@@ -58,12 +58,12 @@ namespace NCL {
 			vector<const RenderObject*> activeObjects;
 
 			//shadow mapping things
-			OGLShader*	shadowShader;
+			ShaderBase*	shadowShader;
 			GLuint		shadowTex;
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
-			OGLShader* skyBoxShader;
+			ShaderBase* skyBoxShader;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			TextureBase* gBufferDepthTex; // Depth goes here
@@ -75,9 +75,9 @@ namespace NCL {
 			TextureBase* lightEmissiveTex; // emissive lighting
 			TextureBase* lightSpecularTex; // specular lighting
 
-			OGLShader* combineShader;
-			OGLShader* lightShader;
-			OGLShader* hudShader;
+			ShaderBase* combineShader;
+			ShaderBase* lightShader;
+			ShaderBase* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 

@@ -12,10 +12,10 @@ using namespace CSC8503;
 Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
 GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetWindow()), gameWorld(world)	{
-	shadowShader = (OGLShader*)Assets::AssetManager::LoadShader("GameTechShadowShader", "GameTechShadowVert.glsl", "GameTechShadowFrag.glsl", "", "", "");
-	skyBoxShader = (OGLShader*)Assets::AssetManager::LoadShader("SkyboxShader", "skyboxVertex.glsl", "skyboxFragment.glsl", "", "", "");
-	lightShader = (OGLShader*)Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl", "", "", "");
-	combineShader = (OGLShader*)Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl", "", "", "");
+	shadowShader = Assets::AssetManager::LoadShader("GameTechShadowShader", "GameTechShadowVert.glsl", "GameTechShadowFrag.glsl", "", "", "");
+	skyBoxShader = Assets::AssetManager::LoadShader("SkyboxShader", "skyboxVertex.glsl", "skyboxFragment.glsl", "", "", "");
+	lightShader = Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl", "", "", "");
+	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl", "", "", "");
 
 
 	hudShader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl", "", "", "");
@@ -289,7 +289,7 @@ void GameTechRenderer::RenderLights() {
 			* Matrix4::Scale(Vector3(radius, radius, radius));
 
 		//Need to be to bind vector2 to shader
-		int pixelLocation = glGetUniformLocation(lightShader->GetProgramID(), "pixelSize");
+		int pixelLocation = glGetUniformLocation(((OGLShader*)lightShader)->GetProgramID(), "pixelSize");
 		glUniform2f(pixelLocation, 1.0f / currentWidth, 1.0f / currentHeight);
 
 		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
@@ -306,7 +306,7 @@ void GameTechRenderer::RenderLights() {
 
 		//TODO: Overload BindTextureToShader to take GLuint as parameter, as above for all textures
 		//BindTextureToShader(shadowTex, "shadowTex", 20);
-		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
+		glUniform1i(glGetUniformLocation(((OGLShader*)lightShader)->GetProgramID(),
 			"shadowTex"), 20);
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);

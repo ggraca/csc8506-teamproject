@@ -1,7 +1,4 @@
 #include "Scene.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/Assets.h"
 #include "GameWorld.h"
 #include "InputManager.h"
@@ -40,21 +37,21 @@ void Scene::InitialiseAssets() {
   coneMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   coneMesh->UploadToGPU();
 
-  basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
-  brickTex = (OGLTexture*)TextureLoader::LoadAPITexture("brick.png");
-  woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
-  dogsTex = (OGLTexture*)TextureLoader::LoadAPITexture("dogs.jpg");
-  grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
+  basicTex = TextureLoader::LoadAPITexture("checkerboard.png");
+  brickTex = TextureLoader::LoadAPITexture("brick.png");
+  woodTex = TextureLoader::LoadAPITexture("wood1.jpg");
+  dogsTex = TextureLoader::LoadAPITexture("dogs.jpg");
+  grassTex = TextureLoader::LoadAPITexture("grass.jpg");
 
-  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
-  dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
+  ballTex = TextureLoader::LoadAPITexture("smileyface.png");
+  dogTex = TextureLoader::LoadAPITexture("doge.png");
 
-  pbrWoodDiff = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
-  pbrWoodBump = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
-  pbrWoodSpec = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
-  pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  pbrWoodDiff = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
+  pbrWoodBump = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
+  pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
+  pbrWoodMet = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
 
-  pbrShader = (OGLShader*)Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl", "", "", "");
+  pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl", "", "", "");
 
   basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", pbrShader);
   basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
