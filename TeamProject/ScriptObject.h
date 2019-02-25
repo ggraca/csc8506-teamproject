@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Component.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -8,7 +8,9 @@ namespace NCL
 {
 	namespace CSC8503
 	{
-		class ScriptObject
+		class Component;
+
+		class ScriptObject:virtual public Component
 		{
 		public:
 

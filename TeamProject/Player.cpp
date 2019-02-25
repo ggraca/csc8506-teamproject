@@ -27,7 +27,7 @@ void Player::PlayerMovement(float dt)
 	Vector3 cameraPos = GameObject::GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
 	Vector3 up = Vector3(0, 1, 0);
 	Vector3 forward = (Vector3(playerPos.x, 0, playerPos.z) - Vector3(cameraPos.x, 0, cameraPos.z)).Normalised();
-	if (!GameObject::GetMainCamera()->GetScript<CameraControl*>()->GetCameraType()) { forward *= -1; }
+	if (!GameObject::GetMainCamera()->GetComponent<CameraControl*>()->GetCameraType()) { forward *= -1; }
 	Vector3 left = Vector3::Cross(up, forward).Normalised();
 
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
@@ -93,7 +93,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 	cout << "Colliding with: " << otherObject->GetName() << endl;
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
-		otherObject->GetScript<Resource*>()->Aquire(gameObject);
+		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
 		UpdateResourceCount(1);
 	}
 }

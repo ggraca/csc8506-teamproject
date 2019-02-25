@@ -14,7 +14,7 @@ namespace NCL
 			Component();
 			Component(GameObject * go);
 			virtual ~Component();
-			virtual void Update();
+			virtual void Update(float dt);
 
 		protected:
 			GameObject * gameObject;

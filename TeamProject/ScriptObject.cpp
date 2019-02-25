@@ -8,7 +8,7 @@ ScriptObject::ScriptObject()
 }
 
 
-ScriptObject::ScriptObject(GameObject * go)
+ScriptObject::ScriptObject(GameObject * go):Component(go)
 {
 	this->gameObject = go;
 
@@ -29,6 +29,7 @@ void ScriptObject::Start()
 
 void ScriptObject::Update(float dt)
 {
+	std::cout << "Script Update" << std::endl;
 }
 
 void ScriptObject::LateUpdate(float dt)

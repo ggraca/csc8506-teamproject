@@ -12,9 +12,9 @@ namespace NCL {
 	namespace CSC8503 {
 		class NetworkObject;
 		class InputManager;
+		class Component;
 		class ScriptObject;
 		class GameWorld;
-		class Component;
 
 		class GameObject	{
 		public:
@@ -22,6 +22,8 @@ namespace NCL {
 			virtual ~GameObject();
 
 			void ClearScripts();
+
+			void ClearComponents();
 
 			void SetBoundingVolume(CollisionVolume* vol) {
 				boundingVolume = vol;
@@ -139,38 +141,7 @@ namespace NCL {
 				child->SetParent(this);
 			}
 
-			void AddScript(ScriptObject* obj);
-
-
-			template<class T>
-			void RemoveScript()
-			{
-
-				for (int i = 0; i < scripts.size();i++)
-				{
-					if (dynamic_cast<T>(scripts[i]))
-					{
-						delete scripts[i];
-						scripts.erase(scripts.begin()+i);
-
-						return;
-					}
-				}
-			}
-
-			template<class T>
-			T GetScript()
-			{
-				for (auto& i : scripts)
-				{
-					if (dynamic_cast<T>(i))
-					{
-						return dynamic_cast<T>(i);
-					}
-				}
-
-				return nullptr;
-			}
+			
 
 			void AddComponent(Component* obj);
 
@@ -178,11 +149,13 @@ namespace NCL {
 			template<class T>
 			void RemoveComponent()
 			{
+				
 
 				for (int i = 0; i < components.size();i++)
 				{
 					if (dynamic_cast<T>(components[i]))
 					{
+						if (dynamic_cast<ScriptObject*>(T)) { RemoveScript<T>(); }
 						delete components[i];
 						components.erase(components.begin() + i);
 
@@ -207,13 +180,12 @@ namespace NCL {
 
 			void SetUpInitialScripts();
 			bool HasOtherScriptsAttached() { return (scripts.size() > 0); }
-			void UpdateAttachedScripts(float dt);
+			void UpdateComponents(float dt);
 			void LateUpdateAttachedScripts(float dt);
 			void CallOnCollisionEnterForScripts(GameObject * otherObject);
 			void CallOnCollisionEndForScripts(GameObject * otherObject);
 
 			bool HasComponentsAttached() { return (components.size() > 0); }
-			void UpdateComponents(float dt);
 
 			static void SetGameWorld(GameWorld * world);
 			static GameObject * Find(string name);
@@ -229,6 +201,7 @@ namespace NCL {
 			vector<GameObject*> collidingObjects;
 
 		protected:
+
 			static GameWorld *gameWorld;
 			Transform			transform;
 			CollisionVolume*	boundingVolume;
@@ -243,6 +216,26 @@ namespace NCL {
 			bool	isActive;
 			bool	isAddedToWorld;
 			string	name;
+
+		private:
+			void AddScript(ScriptObject* obj);
+
+
+			template<class T>
+			void RemoveScript()
+			{
+
+				for (int i = 0; i < scripts.size();i++)
+				{
+					if (dynamic_cast<T>(scripts[i]))
+					{
+						delete scripts[i];
+						scripts.erase(scripts.begin() + i);
+
+						return;
+					}
+				}
+			}
 		};
 
 	}

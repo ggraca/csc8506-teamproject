@@ -81,7 +81,9 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ScriptObject.cpp" />
+    <ClCompile Include="ScriptObject.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -166,7 +168,9 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ScriptObject.h" />
+    <ClInclude Include="ScriptObject.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UI">

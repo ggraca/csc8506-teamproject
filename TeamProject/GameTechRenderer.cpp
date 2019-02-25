@@ -259,8 +259,8 @@ void GameTechRenderer::RenderShadowMap() {
 
 void GameTechRenderer::RenderSkybox() {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl *>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl *>()->BuildProjectionMatrix(screenAspect);
 
 	glDepthMask(GL_FALSE);
 	glDisable(GL_DEPTH_TEST);
@@ -317,8 +317,8 @@ void GameTechRenderer::RenderCamera() {
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	OGLShader* activeShader = nullptr;
 	int modelLocation	= 0;
@@ -387,8 +387,8 @@ void GameTechRenderer::RenderLights() {
 	glBlendFunc(GL_ONE, GL_ONE);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	BindShader(lightShader);
 
@@ -512,7 +512,7 @@ void GameTechRenderer::CombineBuffers() {
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT |
 		GL_STENCIL_BUFFER_BIT);
 
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 
 	BindShader(combineShader);
@@ -603,8 +603,8 @@ void GameTechRenderer::RenderHUD()
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	Matrix4 vp = projMatrix * viewMatrix;
 

@@ -17,7 +17,7 @@ void GameWorld::InitCamera()
 	cameraOffset = Vector3(0, 30, -150);
 
 	mainCamera = new GameObject();
-	mainCamera->AddScript((ScriptObject*)new CameraControl(mainCamera));
+	mainCamera->AddComponent((Component*)new CameraControl(mainCamera));
 
 	Transform * child = new Transform();
 	child->SetLocalPosition(cameraOffset);
@@ -35,7 +35,7 @@ void GameWorld::SwitchToFPS()
 	if (child)
 	{
 		child->SetLocalPosition(cameraOffset);
-		mainCamera->GetScript<CameraControl*>()->SetCameraType(false);
+		mainCamera->GetComponent<CameraControl*>()->SetCameraType(false);
 	}
 }
 
@@ -47,7 +47,7 @@ void GameWorld::SwitchToTPS()
 	if (child)
 	{
 		child->SetLocalPosition(cameraOffset);
-		mainCamera->GetScript<CameraControl*>()->SetCameraType(true);
+		mainCamera->GetComponent<CameraControl*>()->SetCameraType(true);
 	}
 }
 
@@ -114,7 +114,7 @@ void GameWorld::UpdateGameObjects(float dt)
 {
 	for (auto&i : gameObjects) 
 	{	
-		i->UpdateAttachedScripts(dt);
+		i->UpdateComponents(dt);
 	}
 }
 
@@ -209,7 +209,7 @@ void GameWorld::UpdateWorld(float dt)
 	UpdateGameObjects(dt);
 	UpdateTransforms();
 	LateUpdateGameObjects(dt);
-	mainCamera->GetScript<CameraControl*>()->Update(dt);
+	mainCamera->GetComponent<CameraControl*>()->Update(dt);
 }
 
 vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)

@@ -28,17 +28,23 @@ GameObject::~GameObject()
 	delete renderObject;
 	delete networkObject;
 
+	ClearComponents();
 	ClearScripts();
 	std::cout << name << " Destroyed" << std::endl;
 }
 
 void GameObject::ClearScripts()
 {
-	for (auto&i : scripts)
+	scripts.clear();
+}
+
+void GameObject::ClearComponents()
+{
+	for (auto&i : components)
 	{
 		delete i;
 	}
-	scripts.clear();
+	components.clear();
 }
 
 void GameObject::OnCollisionBegin(GameObject * otherObject)
@@ -73,13 +79,13 @@ void GameObject::AddScript(ScriptObject * obj)
 		obj->Awake();
 		obj->Start();
 	}
-
-	
 }
 
 void GameObject::AddComponent(Component * obj)
 {
 	if (!obj) { return; }
+
+	if (dynamic_cast<ScriptObject*>(obj)) { AddScript((ScriptObject*)dynamic_cast<ScriptObject*>(obj)); }
 
 	components.push_back(obj);
 }
@@ -90,16 +96,6 @@ void GameObject::SetUpInitialScripts()
 	{
 		i->Awake();
 		i->Start();
-	}
-}
-
-void GameObject::UpdateAttachedScripts(float dt)
-{
-	if (!HasOtherScriptsAttached()) { return; }
-
-	for (auto&i : scripts)
-	{
-		i->Update(dt);
 	}
 }
 
@@ -139,6 +135,13 @@ void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
 
 void GameObject::UpdateComponents(float dt)
 {
+	
+	if (!HasComponentsAttached()) { return; }
+
+	for (auto&i : components)
+	{
+		i->Update(dt);
+	}
 }
 
 void GameObject::SetGameWorld(GameWorld * world)
