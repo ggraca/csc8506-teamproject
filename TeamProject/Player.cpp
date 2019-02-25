@@ -36,7 +36,7 @@ void Player::PlayerMovement(float dt)
 		/*gameObject->GetTransform().SetWorldPosition(playerPos);
 		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
 
-		gameObject->GetPhysicsObject()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z));  
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z));
 		keyDown = true;
 		reset = false;
 	}
@@ -46,7 +46,7 @@ void Player::PlayerMovement(float dt)
 		/*gameObject->GetTransform().SetWorldPosition(playerPos);
 		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
 
-		gameObject->GetPhysicsObject()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(forward.x, forward.y, forward.z));
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(forward.x, forward.y, forward.z));
 		keyDown = true;
 		reset = false;
 	}
@@ -56,7 +56,7 @@ void Player::PlayerMovement(float dt)
 		/*gameObject->GetTransform().SetWorldPosition(playerPos);
 		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
 
-		gameObject->GetPhysicsObject()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(left.x, left.y, left.z));
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(left.x, left.y, left.z));
 		keyDown = true;
 		reset = false;
 	}
@@ -66,17 +66,17 @@ void Player::PlayerMovement(float dt)
 		/*gameObject->GetTransform().SetWorldPosition(playerPos);
 		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
 
-		gameObject->GetPhysicsObject()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(left.x, left.y, left.z));
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(left.x, left.y, left.z));
 		keyDown = true;
 		reset = false;
 	}
 	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
-		gameObject->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
 		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));
 	}
 	if (!keyDown && !reset) {
-		gameObject->GetPhysicsObject()->GetRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 		reset = true;
 	}
 	keyDown = false;

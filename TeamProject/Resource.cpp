@@ -34,7 +34,7 @@ void Resource::FollowTarget(float &dt)
 		auto pos = (gameObject->GetTransform().GetWorldPosition());
 		pos += amount;
 		gameObject->GetTransform().SetWorldPosition(pos);
-		gameObject->GetPhysicsObject()->SetPosition(pos);
+		gameObject->GetComponent<PhysicsObject*>()->SetPosition(pos);
 	}
 }
 

@@ -13,7 +13,7 @@ GameObject::GameObject(string objectName)
 	isActive		= true;
 	isAddedToWorld  = false;
 	boundingVolume	= nullptr;
-	physicsObject	= nullptr;
+	//physicsObject	= nullptr;
 	renderObject	= nullptr;
 	networkObject	= nullptr;
 	layer			= LayerAndTag::ObjectLayer::Default;
@@ -24,7 +24,7 @@ GameObject::GameObject(string objectName)
 GameObject::~GameObject()	
 {
 	delete boundingVolume;
-	delete physicsObject;
+	//delete physicsObject;
 	delete renderObject;
 	delete networkObject;
 

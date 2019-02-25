@@ -13,8 +13,9 @@ namespace NCL {
 	
 	namespace CSC8503 {
 		class Transform;
+		class GameObject;
 
-		class PhysicsObject	{
+		class PhysicsObject : virtual public Component{
 		public:
 			PhysicsObject();
 			PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction);

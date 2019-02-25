@@ -49,9 +49,9 @@ namespace NCL {
 				return renderObject;
 			}
 
-			PhysicsObject* GetPhysicsObject() const {
+			/*PhysicsObject* GetPhysicsObject() const {
 				return physicsObject;
-			}
+			}*/
 
 			NetworkObject* GetNetworkObject() const {
 				return networkObject;
@@ -61,9 +61,9 @@ namespace NCL {
 				renderObject = newObject;
 			}
 
-			void SetPhysicsObject(PhysicsObject* newObject) {
+			/*void SetPhysicsObject(PhysicsObject* newObject) {
 				physicsObject = newObject;
-			}
+			}*/
 
 			const string& GetName() const {
 				return name;
@@ -205,7 +205,7 @@ namespace NCL {
 			static GameWorld *gameWorld;
 			Transform			transform;
 			CollisionVolume*	boundingVolume;
-			PhysicsObject*		physicsObject;
+			//PhysicsObject*		physicsObject;
 			RenderObject*		renderObject;
 			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;
