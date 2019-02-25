@@ -51,7 +51,6 @@ OGLRenderer::OGLRenderer(Window& w) : RendererBase(w)	{
 
 OGLRenderer::~OGLRenderer()	{
 	delete font;
-	delete debugShader;
 
 #ifdef _WIN32
 	DestroyWithWin32();

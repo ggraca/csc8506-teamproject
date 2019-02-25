@@ -52,22 +52,22 @@ ShaderBase* OGLShader::LoadShader(const string& vertex, const string& fragment, 
 				glShaderSource(newShader->shaderIDs[i], 1, &stringData, &stringLength);
 				glCompileShader(newShader->shaderIDs[i]);
 
-				glGetShaderiv(newShader->shaderIDs[i], GL_COMPILE_STATUS, &shaderValid[i]);
+				glGetShaderiv(newShader->shaderIDs[i], GL_COMPILE_STATUS, &newShader->shaderValid[i]);
 		
-				if (shaderValid[i] != GL_TRUE) {
+				if (newShader->shaderValid[i] != GL_TRUE) {
 					std::cout << ShaderNames[i] << " shader " << " has failed!" << std::endl;
 				}
 				else {
 					glAttachShader(newShader->programID, newShader->shaderIDs[i]);
 				}
-				PrintCompileLog(newShader->shaderIDs[i]);
+				newShader->PrintCompileLog(newShader->shaderIDs[i]);
 			}
 		}
 	}	
 	glLinkProgram(newShader->programID);
 	glGetProgramiv(newShader->programID, GL_LINK_STATUS, &newShader->programValid);
 
-	PrintLinkLog();
+	newShader->PrintLinkLog();
 
 	if (newShader->programValid != GL_TRUE) {
 		std::cout << "This shader has failed!" << std::endl;
