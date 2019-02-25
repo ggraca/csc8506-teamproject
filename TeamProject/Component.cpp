@@ -16,7 +16,6 @@ Component::~Component()
 
 void Component::Update(float dt)
 {
-	
 }
 
 void Component::SetGameObject(GameObject * go)
