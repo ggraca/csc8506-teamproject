@@ -169,7 +169,6 @@ void GameTechRenderer::RenderShadowMap() {
 	glCullFace(GL_FRONT);
 
 	BindShader(shadowShader);
-	int mvpLocation = glGetUniformLocation(shadowShader->GetProgramID(), "mvpMatrix");
 
 	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(directionalLight->GetPosition(), Vector3(0, 0, 0));
 	Matrix4 shadowProjMatrix = Matrix4::Perspective(100.0f, 5000.0f, 1, 45.0f);
@@ -179,7 +178,7 @@ void GameTechRenderer::RenderShadowMap() {
 	for (const auto&i : activeObjects) {
 		Matrix4 modelMatrix = (*i).GetTransform()->GetWorldMatrix();
 		Matrix4 mvpMatrix	= mvMatrix * modelMatrix;
-		glUniformMatrix4fv(mvpLocation, 1, false, (float*)&mvpMatrix);
+		BindMatrix4ToShader(mvpMatrix, "mvpMatrix");
 		BindMesh((*i).GetMesh());
 		DrawBoundMesh();
 	}
@@ -209,34 +208,13 @@ void GameTechRenderer::RenderSkybox() {
 
 	BindShader(skyBoxShader);
 
-	int cameraLocation = 0;
-	int modelLocation = 0;
-	int viewLocation = 0;
-	int projLocation = 0;
-	int textureLocation = 0;
-
 	BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 2);
-
-	cameraLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "cameraPos");
-	modelLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "modelMatrix");
-	viewLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "viewMatrix");
-	projLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "projMatrix");
-	textureLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "textureMatrix");
-
-	Matrix4 identity;
-	identity.ToIdentity();
-
-	glUniform3fv(cameraLocation, 1, (float *)& gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition());
-	glUniformMatrix4fv(modelLocation, 1, false, (float*)&identity);
-	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
-	glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
-	glUniformMatrix4fv(textureLocation, 1, false, (float*)&identity);
+	BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
+	BindMatrix4ToShader(viewMatrix, "viewMatrix");
+	BindMatrix4ToShader(projMatrix, "projMatrix");
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
-
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
 	BindShader(nullptr);
 	glDepthMask(GL_TRUE);
@@ -253,14 +231,6 @@ void GameTechRenderer::RenderCamera() {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
 	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildProjectionMatrix(screenAspect);
-
-	OGLShader* activeShader = nullptr;
-	int modelLocation	= 0;
-	int viewLocation	= 0;
-	int projLocation	= 0;
-	int textureLocation = 0;
-	int colourLocation  = 0;
-	int cameraLocation = 0;
 
 	shadowCasters = 0;
 	vertsDrawn = 0;
@@ -279,26 +249,12 @@ void GameTechRenderer::RenderCamera() {
 
 		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
 
-		if (activeShader != shader) {
-			modelLocation	= glGetUniformLocation(shader->GetProgramID(), "modelMatrix");
-			viewLocation	= glGetUniformLocation(shader->GetProgramID(), "viewMatrix");
-			projLocation	= glGetUniformLocation(shader->GetProgramID(), "projMatrix");
-			textureLocation = glGetUniformLocation(shader->GetProgramID(), "textureMatrix");
-			colourLocation  = glGetUniformLocation(shader->GetProgramID(), "objectColour");
-
-			cameraLocation = glGetUniformLocation(shader->GetProgramID(), "cameraPos");
-			glUniform3fv(cameraLocation, 1, (float*)&gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition());//TODO give child position
-
-			glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
-			glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
-
-			activeShader = shader;
-		}
-
-		glUniformMatrix4fv(modelLocation, 1, false, (float*)&(*i).GetTransform()->GetWorldMatrix());
-		glUniformMatrix4fv(textureLocation, 1, false, (float*)&currentMaterial->GetTextureMatrix());
-
-		glUniform4fv(colourLocation, 1, (float*)&currentMaterial->GetColour());
+		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
+		BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
+		BindMatrix4ToShader(projMatrix, "projMatrix");
+		BindMatrix4ToShader(viewMatrix, "viewMatrix");
+		BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");
+		BindMatrix4ToShader(currentMaterial->GetTextureMatrix(), "textureMatrix");
 
 		BindMesh((*i).GetMesh());
 
@@ -323,44 +279,11 @@ void GameTechRenderer::RenderLights() {
 
 	BindShader(lightShader);
 
-	int cameraLocation = 0;
-	int pixelLocation = 0;
-	int lightPosLocation = 0;
-	int lightColLocation = 0;
-	int lightRadiusLocation = 0;
-	int lightBrightnessLocation = 0;
-	int modelLocation = 0;
-	int viewLocation = 0;
-	int projLocation = 0;
-	int textureLocation = 0;
-	int shadowLocation = 0;
-
 	Matrix4 identity;
 	identity.ToIdentity();
 
-	//TODO: Overload BindTextureToShader to take GLuint as parameter, as above for all textures
-	//BindTextureToShader(gBufferDepthTex, "depthTex", 3);
-	//BindTextureToShader(gBufferNormalTex, "normTex", 4);
-	glUniform1i(glGetUniformLocation(lightShader->GetProgramID(), "depthTex"), 3);
-	glUniform1i(glGetUniformLocation(lightShader->GetProgramID(), "normTex"), 4);
-
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferDepthTex)->GetObjectID());
-
-	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferNormalTex)->GetObjectID());
-
-	cameraLocation = glGetUniformLocation(lightShader->GetProgramID(), "cameraPos");
-	pixelLocation = glGetUniformLocation(lightShader->GetProgramID(), "pixelSize");
-	viewLocation = glGetUniformLocation(lightShader->GetProgramID(), "viewMatrix");
-	projLocation = glGetUniformLocation(lightShader->GetProgramID(), "projMatrix");
-	textureLocation = glGetUniformLocation(lightShader->GetProgramID(), "textureMatrix");
-
-	glUniform3fv(cameraLocation, 1, (float *)&gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition());
-	glUniform2f(pixelLocation, 1.0f / currentWidth, 1.0f / currentHeight);
-	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
-	glUniformMatrix4fv(projLocation, 1, false, (float*)&projMatrix);
-	glUniformMatrix4fv(textureLocation, 1, false, (float*)&identity);
+	BindTextureToShader(gBufferDepthTex, "depthTex", 3);
+	BindTextureToShader(gBufferNormalTex, "normTex", 4);
 
 	for (int x = 0; x < 1; ++x) {
 		float radius = directionalLight->GetRadius();
@@ -369,23 +292,21 @@ void GameTechRenderer::RenderLights() {
 			* directionalLight->GetOrientation().ToMatrix4()
 			* Matrix4::Scale(Vector3(radius, radius, radius));
 
-		lightPosLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightPos");
-		lightColLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightColour");
-		lightRadiusLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightRadius");
-		lightBrightnessLocation = glGetUniformLocation(lightShader->GetProgramID(), "lightBrightness");
-		modelLocation = glGetUniformLocation(lightShader->GetProgramID(), "modelMatrix");
-		shadowLocation = glGetUniformLocation(lightShader->GetProgramID(), "shadowMatrix");
+		//Need to be to bind vector2 to shader
+		int pixelLocation = glGetUniformLocation(lightShader->GetProgramID(), "pixelSize");
+		glUniform2f(pixelLocation, 1.0f / currentWidth, 1.0f / currentHeight);
 
-		glUniform3fv(lightPosLocation, 1, (float*)&directionalLight->GetPosition());
-		glUniform4fv(lightColLocation, 1, (float*)&directionalLight->GetColour());
-		glUniform1f(lightRadiusLocation, radius);
-		glUniform1f(lightBrightnessLocation, directionalLight->GetBrightness());
-
-		glUniformMatrix4fv(modelLocation, 1, false, (float*)&tempModelMatrix);
-		glUniformMatrix4fv(shadowLocation, 1, false, (float*)&shadowMatrix);
-
-		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
-			"drawShadows"), true);
+		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
+		BindMatrix4ToShader(viewMatrix, "viewMatrix");
+		BindMatrix4ToShader(projMatrix, "projMatrix");
+		BindMatrix4ToShader(identity, "textureMatrix");
+		BindVector3ToShader(directionalLight->GetPosition(), "lightPos");
+		BindVector4ToShader(directionalLight->GetColour(), "lightColour");
+		BindFloatToShader(radius, "lightRadius");
+		BindFloatToShader(directionalLight->GetBrightness(), "lightBrightness");
+		BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
+		BindMatrix4ToShader(shadowMatrix, "shadowMatrix");
+		BindIntToShader(drawShadows, "drawShadows");
 
 		//TODO: Overload BindTextureToShader to take GLuint as parameter, as above for all textures
 		//BindTextureToShader(shadowTex, "shadowTex", 20);
@@ -444,55 +365,23 @@ void GameTechRenderer::CombineBuffers() {
 
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
-
-	BindShader(combineShader);
-
-	int modelLocation = 0;
-	int viewLocation = 0;
-	int projLocation = 0;
-	int textureLocation = 0;
-    int ambientLocation = 0;
-
 	Matrix4 identity;
 	identity.ToIdentity();
 
-	modelLocation = glGetUniformLocation(combineShader->GetProgramID(), "modelMatrix");
-	viewLocation = glGetUniformLocation(combineShader->GetProgramID(), "viewMatrix");
-	projLocation = glGetUniformLocation(combineShader->GetProgramID(), "projMatrix");
-	textureLocation = glGetUniformLocation(combineShader->GetProgramID(), "textureMatrix");
-	ambientLocation = glGetUniformLocation(combineShader->GetProgramID(), "ambientColour");
+	BindShader(combineShader);
 
-	glUniformMatrix4fv(modelLocation, 1, false, (float*)&identity);
-	glUniformMatrix4fv(viewLocation, 1, false, (float*)&viewMatrix);
-	glUniformMatrix4fv(projLocation, 1, false, (float*)&tempProjMatrix);
-	glUniformMatrix4fv(textureLocation, 1, false, (float*)&identity);
-	glUniform3f(ambientLocation, ambientColour.x, ambientColour.y, ambientColour.z);
+	BindMatrix4ToShader(identity, "modelMatrix");
+	BindMatrix4ToShader(viewMatrix, "viewMatrix");
+	BindMatrix4ToShader(tempProjMatrix, "projMatrix");
+	BindMatrix4ToShader(identity, "textureMatrix");
+	BindVector4ToShader(ambientColour, "ambientColour");
 
-	//Change to bind texture function
-	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "diffuseTex"), 2);
-	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "depthTex"), 3);
-	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "normTex"), 4);
-	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "specularTex"), 5);
-	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "emissiveTex"), 6);
-	glUniform1i(glGetUniformLocation(combineShader->GetProgramID(), "lightSpecularTex"), 7);
-
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferColourTex)->GetObjectID());
-
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferDepthTex)->GetObjectID());
-
-	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferNormalTex)->GetObjectID());
-
-	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)gBufferSpecularTex)->GetObjectID());
-
-	glActiveTexture(GL_TEXTURE6);
-	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)lightEmissiveTex)->GetObjectID());
-
-	glActiveTexture(GL_TEXTURE7);
-	glBindTexture(GL_TEXTURE_2D, ((OGLTexture*)lightSpecularTex)->GetObjectID());
+	BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
+	BindTextureToShader(gBufferDepthTex, "depthTex", 3);
+	BindTextureToShader(gBufferNormalTex, "normTex", 4);
+	BindTextureToShader(gBufferSpecularTex, "specularTex", 5);
+	BindTextureToShader(lightEmissiveTex, "emissiveTex", 6);
+	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 7);
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();

@@ -90,7 +90,7 @@ namespace NCL {
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
-
+			bool drawShadows = true;
 		};
 	}
 }
