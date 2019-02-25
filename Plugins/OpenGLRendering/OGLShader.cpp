@@ -75,6 +75,7 @@ ShaderBase* OGLShader::LoadShader(const string& vertex, const string& fragment, 
 	else {
 		std::cout << "Shader loaded!" << std::endl;
 	}
+	return newShader;
 }
 
 void	OGLShader::DeleteIDs() {

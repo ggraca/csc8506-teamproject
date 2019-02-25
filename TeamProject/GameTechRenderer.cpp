@@ -12,13 +12,13 @@ using namespace CSC8503;
 Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
 GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetWindow()), gameWorld(world)	{
-	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
-	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
-	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
-	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
+	shadowShader = (OGLShader*)Assets::AssetManager::LoadShader("GameTechShadowShader", "GameTechShadowVert.glsl", "GameTechShadowFrag.glsl", "", "", "");
+	skyBoxShader = (OGLShader*)Assets::AssetManager::LoadShader("SkyboxShader", "skyboxVertex.glsl", "skyboxFragment.glsl", "", "", "");
+	lightShader = (OGLShader*)Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl", "", "", "");
+	combineShader = (OGLShader*)Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl", "", "", "");
 
 
-	hudShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
+	hudShader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl", "", "", "");
 
 	GenBuffers();
 

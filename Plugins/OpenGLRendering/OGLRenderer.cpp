@@ -4,8 +4,6 @@
 #include "OGLTexture.h"
 
 #include "../../Common/SimpleFont.h"
-#include "../../Common/TextureLoader.h"
-#include "../../Common/ShaderLoader.h"
 
 #include "../../Common/MeshGeometry.h"
 
@@ -48,7 +46,7 @@ OGLRenderer::OGLRenderer(Window& w) : RendererBase(w)	{
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-	debugShader = new OGLShader("debugVert.glsl", "debugFrag.glsl");
+	debugShader = (OGLShader*)Assets::AssetManager::LoadShader("DebugShader", "debugVert.glsl", "debugFrag.glsl", "", "", "");
 }
 
 OGLRenderer::~OGLRenderer()	{

@@ -54,16 +54,15 @@ void Scene::InitialiseAssets() {
   pbrWoodSpec = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
   pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
 
-  basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-  //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
+  pbrShader = (OGLShader*)Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl", "", "", "");
 
-  basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", basicShader);
+  basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", pbrShader);
   basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
   basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
   basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
   basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 
-  floorMat = Assets::AssetManager::LoadMaterial("Floor Material", basicShader);
+  floorMat = Assets::AssetManager::LoadMaterial("Floor Material", pbrShader);
   floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
   floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
   floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
@@ -94,12 +93,6 @@ Scene::~Scene() {
   delete sphereMesh;
   delete cylinderMesh;
   delete coneMesh;
-  delete basicTex;
-  delete woodTex;
-  delete grassTex;
-  delete ballTex;
-  delete basicShader;
-  delete basicMaterial;
 
   delete physics;
   delete renderer;

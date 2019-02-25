@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Common/RendererBase.h"
+#include "../../Common/Assets.h"
 
 #include "../../Common/Vector2.h"
 #include "../../Common/Vector3.h"

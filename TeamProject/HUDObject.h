@@ -23,6 +23,6 @@ protected:
 	OGLMesh* objectMesh;
 	vector<OGLTexture*> texture;
 	Transform transform;
-	OGLShader* shader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
+	OGLShader* shader;
 	bool activeTexture;
 };
