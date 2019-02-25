@@ -28,7 +28,7 @@ namespace NCL {
 
 			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
 			
-			GLuint skybox;
+			TextureBase* skybox;
 
 			//HUD
 			void AddHUDObjects();

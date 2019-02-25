@@ -218,10 +218,7 @@ void GameTechRenderer::RenderSkybox() {
 	int projLocation = 0;
 	int textureLocation = 0;
 
-	//TODO: Change to below
-	//BindTextureToShader((OGLTexture*)skybox, "cubeTex", 2);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox);
+	BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 2);
 	int texLocation = glGetUniformLocation(skyBoxShader->GetProgramID(), "cubeTex");
 	glUniform1i(texLocation, 2);
 
@@ -285,10 +282,7 @@ void GameTechRenderer::RenderCamera() {
 				(*(currentMaterial->GetTextureParameters()))[j].first, j);
 		}
 
-		glActiveTexture(GL_TEXTURE8);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, skybox);
-		int texLocation = glGetUniformLocation(shader->GetProgramID(), "cubeTex");
-		glUniform1i(texLocation, 8);
+		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
 
 		if (activeShader != shader) {
 			modelLocation	= glGetUniformLocation(shader->GetProgramID(), "modelMatrix");
