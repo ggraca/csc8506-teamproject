@@ -43,7 +43,7 @@ Rendering::Material* Assets::AssetManager::LoadMaterial(const std::string& mater
 		return (*iter).second;
 	}
 
-	Rendering::Material* newMaterial;
+	Rendering::Material* newMaterial = new Rendering::Material();
 	newMaterial->SetShader(shader);
 	GetInstance().loadedMaterials.insert(std::make_pair(materialname, newMaterial));
 	return newMaterial;
