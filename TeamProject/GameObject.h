@@ -1,23 +1,24 @@
 #pragma once
 #include "Transform.h"
-//#include "RenderObject.h"
 #include "LayerAndTag.h"
 
 #include <vector>
 
+
 using std::vector;
+
 
 namespace NCL {
 	namespace CSC8503 {
 		class NetworkObject;
-		class InputManager;
 		class Component;
 		class ScriptObject;
 		class GameWorld;
+		
 
 		class GameObject	{
 		public:
-			GameObject(string name = "");
+			GameObject(std::string name = "");
 			virtual ~GameObject();
 
 			void ClearScripts();
@@ -40,11 +41,11 @@ namespace NCL {
 				return networkObject;
 			}
 
-			const string& GetName() const {
+			const std::string& GetName() const {
 				return name;
 			}
 
-			void SetName(string s) {
+			void SetName(std::string s) {
 				name = s;
 			}
 
@@ -88,36 +89,14 @@ namespace NCL {
 			virtual void OnCollisionEnd(GameObject* otherObject);
 
 
-			void SetParent(const GameObject * parent)
-			{
-				if (parent)
-				{
-					this->GetComponent<RenderObject*>()->GetTransform()->SetParent(parent->GetComponent<RenderObject*>()->GetTransform());
-					parent->GetComponent<RenderObject*>()->GetTransform()->AddChild(this->GetComponent<RenderObject*>()->GetTransform());
-				}
-				else
-				{
-					if (this->GetComponent<RenderObject*>()->GetTransform()->GetParent() != nullptr)
-					{
-						this->GetComponent<RenderObject*>()->GetTransform()->GetParent()->RemoveChild(this->GetComponent<RenderObject*>()->GetTransform());
-					}
-
-					this->GetComponent<RenderObject*>()->GetTransform()->SetParent(nullptr);
-				}
-			}
-
-			bool IsParent(const Transform* transform)
-			{
-				return (this->GetComponent<RenderObject*>()->GetTransform()->GetParent() == transform);
-			}
-
-			void AddChild(GameObject * child)
-			{
-				child->SetParent(this);
-			}
-
+			void SetParent(GameObject * parent);
 			
 
+			bool IsParent(const Transform* transform);
+			
+
+			void AddChild(GameObject * child);
+			
 			void AddComponent(Component* obj);
 
 
@@ -163,11 +142,11 @@ namespace NCL {
 			bool HasComponentsAttached() { return (components.size() > 0); }
 
 			static void SetGameWorld(GameWorld * world);
-			static GameObject * Find(string name);
+			static GameObject * Find(std::string name);
 			static GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
 			static vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
-			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
-			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+			static vector<GameObject*> GetChildrenOfObject(GameObject* obj);
+			static vector<GameObject*> GetChildrenOfObject(GameObject* obj, LayerAndTag::Tags tag);
 			static  void Destroy(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj,GameObject * parent);
@@ -179,7 +158,6 @@ namespace NCL {
 
 			static GameWorld *gameWorld;
 			Transform			transform;
-			//RenderObject*		renderObject;
 			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
@@ -188,11 +166,11 @@ namespace NCL {
 
 			bool	isActive;
 			bool	isAddedToWorld;
-			string	name;
+			std::string	name;
 
 		private:
-			void AddScript(ScriptObject* obj);
 
+			void AddScript(ScriptObject* obj);
 
 			template<class T>
 			void RemoveScript()

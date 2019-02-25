@@ -1,5 +1,5 @@
 #include "GameTechRenderer.h"
-#include "../TeamProject/GameObject.h"
+#include "RenderObject.h"
 #include "../Common/Camera.h"
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
@@ -209,7 +209,7 @@ void GameTechRenderer::BuildObjectList() {
 
 	for (std::vector<GameObject*>::const_iterator i = first; i != last; ++i) {
 		if ((*i)->IsActive()) {
-			const RenderObject*g = (*i)->GetRenderObject();
+			const RenderObject*g = (*i)->GetComponent<RenderObject*>();
 			if (g) {
 				activeObjects.emplace_back(g);
 			}

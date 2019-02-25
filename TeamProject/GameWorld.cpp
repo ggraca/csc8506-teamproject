@@ -1,5 +1,5 @@
 #include "GameWorld.h"
-#include "../TeamProject/GameObject.h"
+#include "GameObject.h"
 #include "../Common/Camera.h"
 #include <algorithm>
 #include "BulletPhysics.h"
@@ -138,15 +138,6 @@ void GameWorld::AddGameObject(GameObject* o)
 
 	btRigidBody* pb = o->GetComponent<PhysicsObject*>()->GetRigidbody();
 	physics->dynamicsWorld->addRigidBody(pb);
-
-	//if (physics->collisionShapes.size() % 2 == 1 ) {
-	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
-	//	physics->dynamicsWorld->addRigidBody(pb, 1, 1111);
-	//}
-	//else {
-	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
-	//	physics->dynamicsWorld->addRigidBody(pb, 2, 1101);
-	//}
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
@@ -157,7 +148,7 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	o->SetUpInitialScripts();	
 }
 
-void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
+void GameWorld::AddGameObject(GameObject* o, GameObject* parent )
 {
 	if (!o) { return; }
 
@@ -212,31 +203,29 @@ void GameWorld::UpdateWorld(float dt)
 	mainCamera->GetComponent<CameraControl*>()->Update(dt);
 }
 
-vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
+vector<GameObject*> GameWorld::GetChildrenOfObject(GameObject* obj)
 {
 	vector<GameObject*> temp;
 
-
 	for (auto& i : gameObjects)
 	{
-		if (i->IsParent(obj->GetRenderObject()->GetTransform()))
+		if (i->IsParent(obj->GetComponent<RenderObject*>()->GetTransform()))
 		{
 			temp.emplace_back(i);
 		}
 	}
 
-
 	return temp;
 }
 
-vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj,LayerAndTag::Tags tag)
+vector<GameObject*> GameWorld::GetChildrenOfObject(GameObject* obj,LayerAndTag::Tags tag)
 {
 	vector<GameObject*> temp;
 
 	
 	for (auto& i : gameObjects)
 	{
-		if (i->CompareTag(tag) && i->IsParent(obj->GetRenderObject()->GetTransform()))
+		if (i->CompareTag(tag) && i->IsParent(obj->GetComponent<RenderObject*>()->GetTransform()))
 		{
 			temp.emplace_back(i);
 		}

@@ -1,27 +1,26 @@
 #include "GameObject.h"
-#include "InputManager.h"
+#include "ScriptObject.h"
+#include "Component.h"
+#include "GameWorld.h"
+#include "RenderObject.h"
 
 using namespace NCL;
 using namespace CSC8503;
 
 GameWorld * GameObject::gameWorld = nullptr;
 
-GameObject::GameObject(string objectName)	
+GameObject::GameObject(std::string objectName)	
 {
-	
 	name			= objectName;
 	isActive		= true;
 	isAddedToWorld  = false;
-	//renderObject	= nullptr;
 	networkObject	= nullptr;
 	layer			= LayerAndTag::ObjectLayer::Default;
 	tag				= LayerAndTag::Tags::Untagged;
-	
 }
 
 GameObject::~GameObject()	
 {
-	//delete renderObject;
 	delete networkObject;
 
 	ClearComponents();
@@ -41,6 +40,34 @@ void GameObject::ClearComponents()
 		delete i;
 	}
 	components.clear();
+}
+
+void GameObject::SetParent(GameObject * parent)
+{
+	if (parent)
+	{
+		this->GetComponent<RenderObject*>()->GetTransform()->SetParent(parent->GetComponent<RenderObject*>()->GetTransform());
+		parent->GetComponent<RenderObject*>()->GetTransform()->AddChild(this->GetComponent<RenderObject*>()->GetTransform());
+	}
+	else
+	{
+		if (this->GetComponent<RenderObject*>()->GetTransform()->GetParent() != nullptr)
+		{
+			this->GetComponent<RenderObject*>()->GetTransform()->GetParent()->RemoveChild(this->GetComponent<RenderObject*>()->GetTransform());
+		}
+
+		this->GetComponent<RenderObject*>()->GetTransform()->SetParent(nullptr);
+	}
+}
+
+bool GameObject::IsParent(const Transform* transform)
+{
+	return (this->GetComponent<RenderObject*>()->GetTransform()->GetParent() == transform);
+}
+
+void GameObject::AddChild(GameObject * child)
+{
+	child->SetParent(this);
 }
 
 void GameObject::OnCollisionBegin(GameObject * otherObject)
@@ -81,7 +108,7 @@ void GameObject::AddComponent(Component * obj)
 {
 	if (!obj) { return; }
 
-	if (dynamic_cast<ScriptObject*>(obj)) { AddScript((ScriptObject*)dynamic_cast<ScriptObject*>(obj)); }
+	if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
 
 	components.push_back(obj);
 }
@@ -145,7 +172,7 @@ void GameObject::SetGameWorld(GameWorld * world)
 	gameWorld = world;
 }
 
-GameObject * GameObject::Find(string name)
+GameObject * GameObject::Find(std::string name)
 {
 	if (!gameWorld) { return nullptr; }
 
@@ -166,14 +193,14 @@ vector<GameObject*> GameObject::FindGameObjectsWithTag(LayerAndTag::Tags tag)
 	return gameWorld->FindGameObjectsWithTag(tag);
 }
 
-vector<GameObject*> GameObject::GetChildrenOfObject(const GameObject * obj)
+vector<GameObject*> GameObject::GetChildrenOfObject(GameObject * obj)
 {
 	if (!gameWorld) { return vector<GameObject*>(); }
 
 	return gameWorld->GetChildrenOfObject(obj);
 }
 
-vector<GameObject*> GameObject::GetChildrenOfObject(const GameObject * obj, LayerAndTag::Tags tag)
+vector<GameObject*> GameObject::GetChildrenOfObject(GameObject * obj, LayerAndTag::Tags tag)
 {
 	if (!gameWorld) { return vector<GameObject*>(); }
 

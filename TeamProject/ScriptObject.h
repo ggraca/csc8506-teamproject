@@ -9,7 +9,7 @@ namespace NCL
 	namespace CSC8503
 	{
 		class Component;
-
+		class GameObject;
 		class ScriptObject:virtual public Component
 		{
 		public:
