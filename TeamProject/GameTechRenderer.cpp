@@ -39,9 +39,9 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 
 GameTechRenderer::~GameTechRenderer()	{
-	glDeleteFramebuffers(1, &gBufferFBO);
-	glDeleteFramebuffers(1, &lightFBO);
-	glDeleteFramebuffers(1, &shadowFBO);
+	DeleteFrameBuffer(&gBufferFBO);
+	DeleteFrameBuffer(&lightFBO);
+	DeleteFrameBuffer(&shadowFBO);
 
 	delete directionalLight;
 }
@@ -90,8 +90,6 @@ void GameTechRenderer::GenBuffers() {
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	//Shader doesn't like this code for some reason?
-	//shadowTex = OGLTexture::EmptyTexture(SHADOWSIZE, SHADOWSIZE, true);
 	//Generate Shadow FBO
 	glGenFramebuffers(1, &shadowFBO);
 
@@ -101,51 +99,31 @@ void GameTechRenderer::GenBuffers() {
 	glDrawBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	//Generate G-Buffer FBO
-	glGenFramebuffers(1, &gBufferFBO);
-
-	GLenum GBuffer[3];
-	GBuffer[0] = GL_COLOR_ATTACHMENT0;
-	GBuffer[1] = GL_COLOR_ATTACHMENT1;
-	GBuffer[2] = GL_COLOR_ATTACHMENT2;
+	//Shader doesn't like this code for some reason?
+	//Use 2 lines below to generate texture and FBO when shader draws correctly
+	//shadowTex = OGLTexture::EmptyTexture(SHADOWSIZE, SHADOWSIZE, true);
+	//GenerateFrameBuffer(&shadowFBO, nullptr, shadowTex);
 
 	//Generate G-Buffer textures
 	gBufferDepthTex = OGLTexture::EmptyTexture(currentWidth, currentHeight, true);
 	gBufferColourTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	gBufferNormalTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	gBufferSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
-
-	// Add G-Buffer textures to G-Buffer FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, gBufferFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-		GL_TEXTURE_2D, ((OGLTexture*)gBufferColourTex)->GetObjectID(), 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
-		GL_TEXTURE_2D, ((OGLTexture*)gBufferNormalTex)->GetObjectID(), 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2,
-		GL_TEXTURE_2D, ((OGLTexture*)gBufferSpecularTex)->GetObjectID(), 0);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-		GL_TEXTURE_2D, ((OGLTexture*)gBufferDepthTex)->GetObjectID(), 0);
-	glDrawBuffers(3, GBuffer);
-
-	//Generate Light FBO
-	glGenFramebuffers(1, &lightFBO);
-
-	GLenum lightBuffer[2];
-	lightBuffer[0] = GL_COLOR_ATTACHMENT0;
-	lightBuffer[1] = GL_COLOR_ATTACHMENT1;
-
 	//Generate light buffer textures
 	lightEmissiveTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	lightSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 
-	//Add light textures to the light FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-		GL_TEXTURE_2D, ((OGLTexture*)lightEmissiveTex)->GetObjectID(), 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
-		GL_TEXTURE_2D, ((OGLTexture*)lightSpecularTex)->GetObjectID(), 0);
-	glDrawBuffers(2, lightBuffer);
+	vector<TextureBase*> gBufferTexes;
+	gBufferTexes.push_back(gBufferColourTex);
+	gBufferTexes.push_back(gBufferNormalTex);
+	gBufferTexes.push_back(gBufferSpecularTex);
+
+	vector<TextureBase*> lightBufferTexes;
+	lightBufferTexes.push_back(lightEmissiveTex);
+	lightBufferTexes.push_back(lightSpecularTex);
+
+	GenerateFrameBuffer(&gBufferFBO, gBufferTexes, gBufferDepthTex);
+	GenerateFrameBuffer(&lightFBO, lightBufferTexes, nullptr);
 }
 
 void GameTechRenderer::RenderFrame() {
