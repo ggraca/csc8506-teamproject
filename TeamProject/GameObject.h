@@ -3,7 +3,6 @@
 #include "PhysicsObject.h"
 #include "RenderObject.h"
 #include "LayerAndTag.h"
-//#include "GameWorld.h"
 
 #include <vector>
 
@@ -15,6 +14,7 @@ namespace NCL {
 		class InputManager;
 		class ScriptObject;
 		class GameWorld;
+		class Component;
 
 		class GameObject	{
 		public:
@@ -172,15 +172,48 @@ namespace NCL {
 				return nullptr;
 			}
 
+			void AddComponent(Component* obj);
+
+
+			template<class T>
+			void RemoveComponent()
+			{
+
+				for (int i = 0; i < components.size();i++)
+				{
+					if (dynamic_cast<T>(components[i]))
+					{
+						delete components[i];
+						components.erase(components.begin() + i);
+
+						return;
+					}
+				}
+			}
+
+			template<class T>
+			T GetComponent()
+			{
+				for (auto& i : components)
+				{
+					if (dynamic_cast<T>(i))
+					{
+						return dynamic_cast<T>(i);
+					}
+				}
+
+				return nullptr;
+			}
+
 			void SetUpInitialScripts();
-
 			bool HasOtherScriptsAttached() { return (scripts.size() > 0); }
-
 			void UpdateAttachedScripts(float dt);
 			void LateUpdateAttachedScripts(float dt);
 			void CallOnCollisionEnterForScripts(GameObject * otherObject);
 			void CallOnCollisionEndForScripts(GameObject * otherObject);
 
+			bool HasComponentsAttached() { return (components.size() > 0); }
+			void UpdateComponents(float dt);
 
 			static void SetGameWorld(GameWorld * world);
 			static GameObject * Find(string name);
@@ -205,32 +238,11 @@ namespace NCL {
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
 			std::vector<ScriptObject*> scripts;
+			std::vector<Component*> components;
 
 			bool	isActive;
 			bool	isAddedToWorld;
 			string	name;
-		};
-
-
-		class ScriptObject
-		{
-		public:
-
-			ScriptObject();
-			ScriptObject(GameObject * go);
-
-			virtual ~ScriptObject();
-
-
-			virtual void Awake();
-			virtual void Start();
-			virtual void Update(float dt);
-			virtual void LateUpdate(float dt);
-			virtual void OnCollisionBegin(GameObject* otherObject);
-			virtual void OnCollisionEnd(GameObject* otherObject);
-
-		protected:
-			GameObject * gameObject;
 		};
 
 	}

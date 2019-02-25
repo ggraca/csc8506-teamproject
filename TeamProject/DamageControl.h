@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "ScriptObject.h"
 #include "HealthManager.h"
 #include "Player.h"
 

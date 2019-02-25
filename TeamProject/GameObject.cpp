@@ -77,6 +77,13 @@ void GameObject::AddScript(ScriptObject * obj)
 	
 }
 
+void GameObject::AddComponent(Component * obj)
+{
+	if (!obj) { return; }
+
+	components.push_back(obj);
+}
+
 void GameObject::SetUpInitialScripts()
 {
 	for (auto&i : scripts)
@@ -128,6 +135,10 @@ void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
 	{
 		i->OnCollisionEnd(otherObject);
 	}
+}
+
+void GameObject::UpdateComponents(float dt)
+{
 }
 
 void GameObject::SetGameWorld(GameWorld * world)
@@ -198,47 +209,6 @@ GameObject * GameObject::GetMainCamera()
 	return gameWorld->GetMainCamera();
 }
 
-///////////////////////////////////Script Object
-ScriptObject::ScriptObject()
-{
-	gameObject = nullptr;
-	
-}
 
-
-ScriptObject::ScriptObject(GameObject * go)
-{
-	this->gameObject = go;
-	
-}
-
-ScriptObject::~ScriptObject()
-{
-	//don"t delete gameobject as it may still meant to live after script is detached
-}
-
-void ScriptObject::Awake()
-{
-}
-
-void ScriptObject::Start()
-{
-}
-
-void ScriptObject::Update(float dt)
-{
-}
-
-void ScriptObject::LateUpdate(float dt)
-{
-}
-
-void ScriptObject::OnCollisionBegin(GameObject * otherObject)
-{
-}
-
-void ScriptObject::OnCollisionEnd(GameObject * otherObject)
-{
-}
 
 

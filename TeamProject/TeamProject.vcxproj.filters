@@ -80,6 +80,8 @@
     <ClCompile Include="DebugMenu.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ScriptObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -163,6 +165,8 @@
     <ClInclude Include="DebugMenu.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ScriptObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UI">

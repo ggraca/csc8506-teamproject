@@ -152,6 +152,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DamageControl.cpp" />
     <ClCompile Include="Debug.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -181,6 +183,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DamageControl.h" />
     <ClInclude Include="Debug.h" />
@@ -203,6 +206,7 @@
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ScriptObject.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
