@@ -1,5 +1,5 @@
 #include "CameraControl.h"
-#include "../TeamProject/InputManager.h"
+#include "InputManager.h"
 
 
 CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)

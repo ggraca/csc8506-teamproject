@@ -42,7 +42,7 @@ void ExampleScene::ResetWorld() {
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
   //Player
   auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
-  player->AddComponent((ScriptObject*)new Player(player));
+  player->AddComponent<Player*>((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
@@ -50,8 +50,8 @@ void ExampleScene::ResetWorld() {
   auto resource2 = AddCubeToWorld(Vector3(100, 20, 100), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
   resource1->SetName("Resource 1");
   resource2->SetName("Resource 2");
-  resource1->AddComponent((ScriptObject*)new Resource(resource1));
-  resource2->AddComponent((ScriptObject*)new Resource(resource2));
+  resource1->AddComponent<Resource*>((ScriptObject*)new Resource(resource1));
+  resource2->AddComponent<Resource*>((ScriptObject*)new Resource(resource2));
 
 }
 

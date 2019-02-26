@@ -34,7 +34,8 @@ void GameObject::ClearComponents()
 {
 	for (auto&i : components)
 	{
-		delete i;
+		delete i.second;
+		components.erase(i.first);
 	}
 	components.clear();
 }
@@ -101,14 +102,7 @@ void GameObject::AddScript(ScriptObject * obj)
 	}
 }
 
-void GameObject::AddComponent(Component * obj)
-{
-	if (!obj) { return; }
 
-	if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
-
-	components.push_back(obj);
-}
 
 void GameObject::SetUpInitialScripts()
 {
@@ -160,7 +154,7 @@ void GameObject::UpdateComponents(float dt)
 
 	for (auto&i : components)
 	{
-		i->Update(dt);
+		i.second->Update(dt);
 	}
 }
 

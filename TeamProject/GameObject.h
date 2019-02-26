@@ -2,13 +2,14 @@
 #include "Transform.h"
 #include "LayerAndTag.h"
 #include <vector>
+#include <map>
+#include "TypeId.h"
 
 using std::vector;
 
 
 namespace NCL {
 	namespace CSC8503 {
-		class NetworkObject;
 		class Component;
 		class ScriptObject;
 		class GameWorld;
@@ -91,39 +92,24 @@ namespace NCL {
 
 			void AddChild(GameObject * child);
 			
-			void AddComponent(Component* obj);
-
+			template<class T>
+			void AddComponent(Component * obj);
 
 			template<class T>
 			void RemoveComponent()
 			{
-				
+				int index = TypeId::GetTypeId(typeid(T));
 
-				for (int i = 0; i < components.size();i++)
-				{
-					if (dynamic_cast<T>(components[i]))
-					{
-						if (dynamic_cast<ScriptObject*>(T)) { RemoveScript<T>(); }
-						delete components[i];
-						components.erase(components.begin() + i);
-
-						return;
-					}
-				}
+				if (dynamic_cast<ScriptObject*>(T)) { RemoveScript<T>(); }
+				delete components[index];
+				components.erase(index);
 			}
 
 			template<class T>
 			T GetComponent()
 			{
-				for (auto& i : components)
-				{
-					if (dynamic_cast<T>(i))
-					{
-						return dynamic_cast<T>(i);
-					}
-				}
-
-				return nullptr;
+				int index = TypeId::GetTypeId(typeid(T));
+				return dynamic_cast<T>(components[index]);
 			}
 
 			void SetUpInitialScripts();
@@ -155,7 +141,7 @@ namespace NCL {
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
 			std::vector<ScriptObject*> scripts;
-			std::vector<Component*> components;
+			std::map<int, Component*> components;
 
 			bool	isActive;
 			bool	isAddedToWorld;
@@ -182,5 +168,22 @@ namespace NCL {
 			}
 		};
 
-	}
+		template<class T>
+		void GameObject::AddComponent(Component * obj)
+		{
+			if (!obj) { return; }
+
+			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
+
+			int index = TypeId::GetTypeId(typeid(T));
+
+			if (components[index])
+			{
+				delete components[index];
+			}
+
+			components[index] = obj;
+		}
+
+}
 }

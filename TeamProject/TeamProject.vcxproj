@@ -178,6 +178,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TypeId.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +211,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ScriptObject.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TypeId.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

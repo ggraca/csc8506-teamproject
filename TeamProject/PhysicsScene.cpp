@@ -29,17 +29,17 @@ void PhysicsScene::ResetWorld() {
   
    //Player
   auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-  player->AddComponent((Component*)new Player(player));
+  player->AddComponent<Player*>((Component*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource1->SetName("Resource 1");
-  resource1->AddComponent((Component*)new Resource(resource1));
+  resource1->AddComponent<Resource*>((Component*)new Resource(resource1));
 
   auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource2->SetName("Resource 2");
-  resource2->AddComponent((Component*)new Resource(resource2));
+  resource2->AddComponent<Resource*>((Component*)new Resource(resource2));
 }
 
 PhysicsScene::~PhysicsScene() {
