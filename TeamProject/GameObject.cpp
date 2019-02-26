@@ -21,13 +21,7 @@ GameObject::GameObject(std::string objectName)
 GameObject::~GameObject()	
 {
 	ClearComponents();
-	ClearScripts();
 	std::cout << name << " Destroyed" << std::endl;
-}
-
-void GameObject::ClearScripts()
-{
-	scripts.clear();
 }
 
 void GameObject::ClearComponents()
@@ -38,6 +32,7 @@ void GameObject::ClearComponents()
 		components.erase(i.first);
 	}
 	components.clear();
+	scripts.clear();
 }
 
 void GameObject::SetParent(GameObject * parent)

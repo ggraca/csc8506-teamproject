@@ -20,8 +20,6 @@ namespace NCL {
 			GameObject(std::string name = "");
 			virtual ~GameObject();
 
-			void ClearScripts();
-
 			void ClearComponents();
 
 			bool IsActive() const {
