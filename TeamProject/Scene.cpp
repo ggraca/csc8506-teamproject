@@ -5,6 +5,7 @@
 #include "../Common/Assets.h"
 #include "GameWorld.h"
 #include "CubePrefab.h"
+#include "SpherePrefab.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -144,13 +145,8 @@ void Scene::InitWorld() {
 }
 
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float mass, float restitution, float friction) {
-  GameObject* sphere = new GameObject();
-
-  sphere->GetTransform().SetWorldScale(Vector3(radius, radius, radius));
-  sphere->GetTransform().SetWorldPosition(position);
-  sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
+	GameObject* sphere = new SpherePrefab(position, radius,mass,restitution,friction);
   sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
-
   world->AddGameObject(sphere);
   return sphere;
 }

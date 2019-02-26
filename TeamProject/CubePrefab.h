@@ -9,6 +9,7 @@ using namespace NCL::Rendering;
 class CubePrefab : public GameObject
 {
 public:
+	CubePrefab();
 	CubePrefab(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction);
 	~CubePrefab();
 };
