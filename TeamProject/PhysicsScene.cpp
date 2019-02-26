@@ -41,6 +41,8 @@ void PhysicsScene::ResetWorld() {
   auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource2->SetName("Resource 2");
   resource2->AddScript((ScriptObject*)new Resource(resource2));
+
+  auto wall = InstantiateGameObject(ShapeType::wall, Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
 }
 
 PhysicsScene::~PhysicsScene() {

@@ -40,6 +40,10 @@ void Scene::InitialiseAssets() {
   coneMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   coneMesh->UploadToGPU();
 
+  wallMesh = new OGLMesh("wall.msh");
+  wallMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+  wallMesh->UploadToGPU();
+
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   brickTex = (OGLTexture*)TextureLoader::LoadAPITexture("brick.png");
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
@@ -61,6 +65,7 @@ void Scene::InitialiseAssets() {
   pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
 
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
+  basicShaderTwo = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
   //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
   basicMaterial = new Material();
@@ -69,6 +74,9 @@ void Scene::InitialiseAssets() {
   basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
   basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
   basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
+
+  
+
 
   floorMat = new Material();
   floorMat->SetShader(basicShader);
@@ -80,6 +88,11 @@ void Scene::InitialiseAssets() {
   texMatrix.ToIdentity();
   floorMat->SetTextureMatrix(texMatrix * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 
+  wallMaterial = new Material();
+  wallMaterial->SetShader(basicShader);
+  wallMaterial->AddTextureParameter("diffuseTex", (OGLTexture*)Assets::AssetManager::LoadTexture("wall.jpg"));
+  wallMaterial->AddTextureParameter("bumpTex", (OGLTexture*)Assets::AssetManager::LoadTexture("wall_NRM.jpg"));
+  //wallMaterial->SetTextureMatrix(texMatrix * Matrix4::Scale(Vector3(2.0f, 2.0f, 2.0f)));
   vector<std::string> faces
   {
 	  "hw_alps/alps_ft.png",
@@ -172,6 +185,22 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   world->AddGameObject(cube);
   return cube;
 }
+
+GameObject* Scene::InstantiateGameObject(ShapeType meshName, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction)
+{
+	GameObject* newGameObject = new GameObject();
+
+	newGameObject->GetTransform().SetWorldScale(dimensions);
+	newGameObject->GetTransform().SetWorldPosition(position);
+	newGameObject->GetTransform().SetLocalOrientation(orient);
+	newGameObject->SetPhysicsObject(new PhysicsObject(&newGameObject->GetTransform(), meshName, mass, restitution, friction));
+	newGameObject->SetRenderObject(new RenderObject(&newGameObject->GetTransform(), wallMesh, wallMaterial));
+
+	world->AddGameObject(newGameObject);
+	return newGameObject;
+}
+
+
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
 	for (int i = 0; i < numCols; ++i) {

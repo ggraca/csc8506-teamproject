@@ -6,7 +6,7 @@
 
 using namespace NCL::Maths;
 
-enum ShapeType { cube, sphere, cylinder, cone, complexMesh };
+enum ShapeType { cube, sphere, cylinder, cone, complexMesh, wall };
 
 namespace NCL {
 	class CollisionVolume;
