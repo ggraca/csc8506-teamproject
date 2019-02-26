@@ -84,7 +84,6 @@
     <ClCompile Include="ScriptObject.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkObject.cpp" />
     <ClCompile Include="TypeId.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,7 +172,6 @@
     <ClInclude Include="ScriptObject.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkObject.h" />
     <ClInclude Include="TypeId.h" />
   </ItemGroup>
   <ItemGroup>
