@@ -1,13 +1,14 @@
 #include "HUDObject.h"
 
-HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform objTransform, OGLShader* objShader)
+HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform objTransform, bool activeTex)
 {
 	objectMesh = objMesh;
 	objectMesh->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	objectMesh->UploadToGPU();
 	texture = objTexture;
 	transform = objTransform;
-	shader = objShader;
+	activeTexture = activeTex;
+	//shader = objShader;
 }
 
 HUDObject::~HUDObject()

@@ -55,6 +55,7 @@ void Resource::Aquire(GameObject * obj)
 {
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
 	gameObject->SetTag(LayerAndTag::Tags::Occupied);
+	gameObject->GetRenderObject()->GetMaterial()->SetColour(obj->GetRenderObject()->GetMaterial()->GetColour());
 	SetTarget(obj);
 }
 
@@ -62,6 +63,7 @@ void Resource::Reset()
 {
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::ResourceParent));
+	gameObject->GetRenderObject()->GetMaterial()->SetColour(Vector4(1,1,1,1));
 	moveSpeed = 100.0f;
 	minDistance = 50.0f;
 	SetTarget(nullptr);

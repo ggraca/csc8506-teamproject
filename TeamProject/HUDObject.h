@@ -7,7 +7,7 @@ using namespace NCL;
 class HUDObject
 {
 public:
-	HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform objTransform, OGLShader* objShader);
+	HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform objTransform, bool activeTex);
 
 	~HUDObject();
 
@@ -15,11 +15,14 @@ public:
 	OGLMesh* GetObjectMesh() { return objectMesh; }
 	vector<OGLTexture*> GetTexture() { return texture; }
 	OGLShader* GetShader() { return shader; }
+	bool IsWeaponActive() { return activeTexture; }
+	void SetWeaponState(bool state) { activeTexture = state; }
 
 	
 protected:
 	OGLMesh* objectMesh;
 	vector<OGLTexture*> texture;
 	Transform transform;
-	OGLShader* shader;
+	OGLShader* shader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
+	bool activeTexture;
 };

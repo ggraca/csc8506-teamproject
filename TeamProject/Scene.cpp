@@ -49,12 +49,6 @@ void Scene::InitialiseAssets() {
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
   dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
 
-
-  //Old functions to show as comparison
-  //pbrWoodDiff = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
-  //pbrWoodBump = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
-  //pbrWoodSpec = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
-  //pbrWoodMet = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
   pbrWoodDiff = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
   pbrWoodBump = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
   pbrWoodSpec = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
@@ -63,15 +57,13 @@ void Scene::InitialiseAssets() {
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
   //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
-  basicMaterial = new Material();
-  basicMaterial->SetShader(basicShader);
+  basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", basicShader);
   basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
   basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
   basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
   basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 
-  floorMat = new Material();
-  floorMat->SetShader(basicShader);
+  floorMat = Assets::AssetManager::LoadMaterial("Floor Material", basicShader);
   floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
   floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
   floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
@@ -91,7 +83,7 @@ void Scene::InitialiseAssets() {
   };
 
   cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
-  renderer->skybox = cubeMap->GetObjectID();
+  renderer->skybox = cubeMap;
 
   InitCamera();
   InitWorld();
@@ -168,6 +160,7 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetLocalOrientation(orient);
   cube->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
   cube->AddComponent<RenderObject*>((Component*)new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
+  cube->GetComponent<RendeObject*>()->SetMaterialInstanced();
 
   world->AddGameObject(cube);
   return cube;
