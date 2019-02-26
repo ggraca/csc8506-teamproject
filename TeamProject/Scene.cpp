@@ -15,6 +15,9 @@ Scene::Scene() {
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
   world->SetPhysics(physics);
+
+  Window::GetWindow()->ShowOSPointer(false);
+  Window::GetWindow()->LockMouseToWindow(true);
   InputManager::InitializeButtonRelations();
 
   Debug::SetRenderer(renderer);

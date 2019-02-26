@@ -80,6 +80,9 @@
     <ClCompile Include="DebugMenu.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -162,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="DebugMenu.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

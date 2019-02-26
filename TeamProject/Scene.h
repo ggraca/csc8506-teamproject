@@ -10,7 +10,7 @@ class Material;
 
 namespace NCL {
 	namespace CSC8503 {
-		class Scene		{
+		class Scene {
 		public:
 			Scene();
 			~Scene();

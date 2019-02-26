@@ -3,6 +3,7 @@
 #include "../Common/Window.h"
 #include "PhysicsScene.h"
 #include "ExampleScene.h"
+#include "NetworkScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -19,7 +20,7 @@ int main(int argc, char** argv) {
 	w->ShowConsole(true);
   
 	//Scene* scene = new ExampleScene();
-	Scene* scene = new PhysicsScene();
+	Scene* scene = new NetworkScene();
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;

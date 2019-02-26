@@ -11,9 +11,6 @@ using namespace NCL;
 using namespace CSC8503;
 
 PhysicsScene::PhysicsScene() : Scene() {
-  Window::GetWindow()->ShowOSPointer(false);
-  Window::GetWindow()->LockMouseToWindow(true);
-
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
