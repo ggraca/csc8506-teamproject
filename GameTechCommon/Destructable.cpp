@@ -25,13 +25,13 @@ void Destructable::Start()
 
 	switch (gameObject->GetTag)
 	{
-	case LayerAndTag::SmallWall: objectHealth = 10;
-	case LayerAndTag::BigWall: objectHealth = 20;
-	case LayerAndTag::Tower: objectHealth = 15;
-	case LayerAndTag::Turret: objectHealth = 5;
+	case LayerAndTag::SmallWall: objectHealth = 100;
+	case LayerAndTag::BigWall: objectHealth = 200;
+	case LayerAndTag::Tower: objectHealth = 150;
+	case LayerAndTag::Turret: objectHealth = 50;
 	}
 
-	
+	resources = objectHealth / 25;
 	
 }
 
@@ -43,11 +43,12 @@ void Destructable::Update(float dt)
 		//create resources
 		
 		//Let's say it has 100 health, spawn 100/25 = 4;
-		
-
-		GameObject * cube = new GameObject();//AddCubeToWorld
-		Resource * r = new Resource(cube, inputManager);
-		cube->AddScript((ScriptObject*)r);
+		for (int i = 0; i++; i < resources)
+		{
+			GameObject * cube = new GameObject();//AddCubeToWorld
+			Resource * r = new Resource(cube, inputManager);
+			cube->AddScript((ScriptObject*)r);
+		}
 
 		//TODO Add it to world
 		gameObject->Destroy(gameObject);
