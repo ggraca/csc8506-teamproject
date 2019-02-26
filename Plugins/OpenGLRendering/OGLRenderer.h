@@ -66,7 +66,6 @@ namespace NCL {
 			void DrawBoundMesh(int subLayer = 0, int numInstances = 1);
 
 			void ClearBuffer(bool depth, bool color, bool stencil) const;
-			void ClearColor(const Vector4& color) const;
 			void SetViewport(int x, int y, int width, int height) const;
 #ifdef _WIN32
 			void InitWithWin32(Window& w);

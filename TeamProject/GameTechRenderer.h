@@ -46,6 +46,8 @@ namespace NCL {
 
 			GameWorld&	gameWorld;
 
+			PixOpsFlags* pixOpsFlags;
+
 			void BuildObjectList();
 			void SortObjectList();
 			void RenderShadowMap();
@@ -93,82 +95,6 @@ namespace NCL {
 			int shadowCasters = 0;
 			bool drawShadows = true;
 		};
-
-		#ifdef WIN32
-		class PixOpsFlags {
-		public:
-			enum CULLFACE {
-				NONE = 0,
-				FRONT = 1,
-				BACK = 2
-			};
-
-			void SetFaceCulling(CULLFACE cull) { 
-				switch (cull) {
-				case NONE:
-					if (Culling != CULLFACE::NONE) {
-						Culling = CULLFACE::NONE;
-						glDisable(GL_CULL_FACE);
-					}
-					break;
-				case FRONT:
-					if (Culling == CULLFACE::NONE) {
-						glEnable(GL_CULL_FACE);
-					}
-
-					if (Culling != CULLFACE::FRONT) {
-						Culling = CULLFACE::FRONT;
-						glCullFace(GL_FRONT);
-					}
-					break;
-				case BACK:
-					if (Culling == CULLFACE::NONE) {
-						glEnable(GL_CULL_FACE);
-					}
-
-					if (Culling != CULLFACE::BACK) {
-						Culling = CULLFACE::BACK;
-						glCullFace(GL_BACK);
-					}
-					break;
-				default:
-					std::cout << "Set Face Culling with undefined mode" << endl;
-					break;
-				}
-			};
-
-			CULLFACE GetFaceCulling() { return Culling; }
-
-		protected:
-			CULLFACE Culling;
-
-		private:
-
-
-		};
-		#endif
-
-		#ifdef PS4
-		class PixOpsFlags {
-		public:
-			enum CULLFACE {
-				NONE = 0,
-				FRONT = 1,
-				BACK = 2
-			};
-
-			void EnableFaceCulling() { cullingEnabled = true; GNMEnable(GNM_CULL_FACE); }
-			void DisableFaceCulling() { cullingEnabled = false; GNMDisable(GNM_CULL_FACE); }
-
-		protected:
-			bool cullingEnabled = false;
-			bool cullingFront = false;
-
-		private:
-
-
-		};
-		#endif
 	}
 }
 
