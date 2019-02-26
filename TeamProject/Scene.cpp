@@ -4,6 +4,7 @@
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/Assets.h"
 #include "GameWorld.h"
+#include "CubePrefab.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -155,14 +156,8 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 }
 
 GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
-  GameObject* cube = new GameObject();
-
-  cube->GetTransform().SetWorldScale(dimensions);
-  cube->GetTransform().SetWorldPosition(position);
-  cube->GetTransform().SetLocalOrientation(orient);
-  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
+  GameObject* cube = new CubePrefab(position, orient, dimensions, mass, restitution, friction);
   cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
-
   world->AddGameObject(cube);
   return cube;
 }

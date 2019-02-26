@@ -171,6 +171,7 @@
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerPrefab.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="PhysicsScene.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerPrefab.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
