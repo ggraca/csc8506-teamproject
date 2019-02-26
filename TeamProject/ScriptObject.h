@@ -27,8 +27,8 @@ namespace NCL
 			virtual void OnCollisionBegin(GameObject* otherObject);
 			virtual void OnCollisionEnd(GameObject* otherObject);
 
-		protected:
-			GameObject * gameObject;
+		//protected:
+			//GameObject * gameObject;
 		};
 	}
 }

@@ -3,14 +3,13 @@
 
 ScriptObject::ScriptObject()
 {
-	gameObject = nullptr;
-
+	//gameObject = nullptr;
 }
 
 
 ScriptObject::ScriptObject(GameObject * go):Component(go)
 {
-	this->gameObject = go;
+	//this->gameObject = go;
 
 }
 
