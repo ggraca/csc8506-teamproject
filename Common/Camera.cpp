@@ -10,15 +10,18 @@ Should be done once per frame! Pass it the msec since
 last frame (default value is for simplicities sake...)
 */
 void Camera::UpdateCamera(float dt) {
-	//Update the mouse by how much
-	pitch	-= (Window::GetMouse()->GetRelativePosition().y);
-	yaw		-= (Window::GetMouse()->GetRelativePosition().x);
+	roll -= 5.0f * (Window::GetMouse()->GetWheelMovement());
+	pitch -= (Window::GetMouse()->GetRelativePosition().y);
+	yaw -= (Window::GetMouse()->GetRelativePosition().x);
+
+	roll = min(roll, 90.0f);
+	roll = max(roll, -90.0f);
 
 	//Bounds check the pitch, to be between straight up and straight down ;)
-	pitch = std::min(pitch, 90.0f);
-	pitch = std::max(pitch, -90.0f);
+	pitch = min(pitch, 90.0f);
+	pitch = max(pitch, -90.0f);
 
-	if (yaw <0) {
+	if (yaw < 0) {
 		yaw += 360.0f;
 	}
 	if (yaw > 360.0f) {
@@ -28,26 +31,27 @@ void Camera::UpdateCamera(float dt) {
 	float frameSpeed = 100 * dt;
 
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_W)) {
-		position += Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Vector3(0, 0, -1) * frameSpeed;
+		position += Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Matrix4::Rotation(pitch, Vector3(1, 0, 0)) * Vector3(0, 0, -1) * frameSpeed * speedz;
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_S)) {
-		position -= Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Vector3(0, 0, -1) * frameSpeed;
+		position -= Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Matrix4::Rotation(pitch, Vector3(1, 0, 0)) * Vector3(0, 0, -1) * frameSpeed * speedz;
 	}
 
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_A)) {
-		position += Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Vector3(-1, 0, 0) * frameSpeed;
+		position += Matrix4::Rotation(yaw, Vector3(0, 1, 0)) *  Vector3(-1, 0, 0) * frameSpeed * speedx;
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_D)) {
-		position -= Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Vector3(-1, 0, 0) * frameSpeed;
+		position -= Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Vector3(-1, 0, 0) * frameSpeed * speedx;
 	}
 
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SPACE)) {
-		position.y += frameSpeed;
-	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SHIFT)) {
-		position.y -= frameSpeed;
+		position.y += frameSpeed * speedy;
+	}
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SPACE)) {
+		position.y -= frameSpeed * speedy;
 	}
 }
+
 
 /*
 Generates a view matrix for the camera's viewpoint. This matrix can be sent

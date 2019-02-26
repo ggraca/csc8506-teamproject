@@ -12,6 +12,7 @@ using namespace Rendering;
 
 std::map<std::string, TextureLoadFunction> TextureLoader::fileHandlers;
 APILoadFunction TextureLoader::apiFunction = nullptr;
+APILoadFunctionCube TextureLoader::apiFunctionCube = nullptr;
 
 bool TextureLoader::LoadTexture(const std::string& filename, char*& outData, int& width, int &height, int &channels, int&flags) {
 	if (filename.empty()) {
@@ -57,10 +58,25 @@ void TextureLoader::RegisterAPILoadFunction(APILoadFunction f) {
 	apiFunction = f;
 }
 
+void TextureLoader::RegisterAPILoadCubeFunction(APILoadFunctionCube f) {
+	if (apiFunctionCube) {
+		std::cout << __FUNCTION__ << " replacing previously defined API function." << std::endl;
+	}
+	apiFunctionCube = f;
+}
+
 TextureBase* TextureLoader::LoadAPITexture(const std::string&filename) {
 	if (apiFunction == nullptr) {
 		std::cout << __FUNCTION__ << " no API Function has been defined!" << std::endl;
 		return nullptr;
 	}
 	return apiFunction(filename);
+}
+
+TextureBase* TextureLoader::LoadAPICubeTexture(const std::vector<std::string>& faces) {
+	if (apiFunctionCube == nullptr) {
+		std::cout << __FUNCTION__ << " no API Function has been defined!" << std::endl;
+		return nullptr;
+	}
+	return apiFunctionCube(faces);
 }
