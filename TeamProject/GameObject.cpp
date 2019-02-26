@@ -144,9 +144,6 @@ void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
 
 void GameObject::UpdateComponents(float dt)
 {
-	
-	if (!HasComponentsAttached()) { return; }
-
 	for (auto&i : components)
 	{
 		i.second->Update(dt);
