@@ -139,6 +139,15 @@ void GameWorld::AddGameObject(GameObject* o)
 	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
 	physics->dynamicsWorld->addRigidBody(pb);
 
+
+	/*btCollisionObject* obj = physics->dynamicsWorld->getCollisionObjectArray()[i];
+	btRigidBody* body = btRigidBody::upcast(obj);
+	if (body && body->getMotionState())
+	{
+		delete body->getMotionState();
+	}
+	physics->dynamicsWorld->removeCollisionObject(obj);*/
+
 	//if (physics->collisionShapes.size() % 2 == 1 ) {
 	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
 	//	physics->dynamicsWorld->addRigidBody(pb, 1, 1111);

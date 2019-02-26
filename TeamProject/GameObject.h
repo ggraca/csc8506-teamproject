@@ -71,10 +71,7 @@ namespace NCL {
 				name = s;
 			}
 
-			void SetLayer(LayerAndTag::ObjectLayer l)
-			{
-				this->layer = l;
-			}
+			void SetLayer(LayerAndTag::ObjectLayer l);
 
 			LayerAndTag::ObjectLayer GetLayer() const
 			{

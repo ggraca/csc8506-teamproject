@@ -23,6 +23,8 @@ public:
 		EnemyProjectile
 	};
 
+	void SetLayerMatrixElement(ObjectLayer layer1, ObjectLayer layer2, bool collide);
+
 	LayerAndTag()
 	{
 
