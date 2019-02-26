@@ -71,7 +71,7 @@ namespace NCL {
 				name = s;
 			}
 
-			void SetLayer(GameObject* gameObject, LayerAndTag::ObjectLayer layer);
+			void SetLayer(LayerAndTag::ObjectLayer layer);
 		
 			LayerAndTag::ObjectLayer GetLayer() const
 			{

@@ -241,7 +241,7 @@ void ScriptObject::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
-void SetLayer(GameObject* gameObject, LayerAndTag::ObjectLayer layer)
+void SetLayer(LayerAndTag::ObjectLayer layer)
 {
 	//this->layer = layer;
 	//if (physics->collisionShapes.size() == 1) {

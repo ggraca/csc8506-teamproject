@@ -69,9 +69,6 @@ void Player::PlayerMovement(float dt)
 		gameObject->GetTransform().SetWorldPosition(playerPos);
 		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
 
-
-
-
 		//playerPos += left * movementSpeed * dt;
 		///*gameObject->GetTransform().SetWorldPosition(playerPos);
 		//gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
@@ -87,8 +84,6 @@ void Player::PlayerMovement(float dt)
 		playerPos = Vector3(test.getX(), test.getY(), test.getZ()) - left * movementSpeed * dt;
 		gameObject->GetTransform().SetWorldPosition(playerPos);
 		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
-
-
 
 		//playerPos -= left * movementSpeed * dt;
 		///*gameObject->GetTransform().SetWorldPosition(playerPos);
