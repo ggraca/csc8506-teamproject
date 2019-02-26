@@ -90,6 +90,10 @@ void PhysicsScene::UpdateKeys() {
 		hud.hp = 100;
 		renderer->health = 1.0f;
 	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_G))
+	{
+		hud.isGameOver = true;
+	}
 	//HUD TESTING ENDS
 }
 

@@ -17,13 +17,20 @@ class HUD
 		~HUD() {}
 
 		void Update(const float dt, GameTechRenderer* renderer);
+		void GameOver(const float dt, GameTechRenderer* renderer);
 		
 		int resources = 0;
 		int hp = 100;
+
+		//For testing
+		bool isGameOver = false;
+	protected:
 		string ready = "Ready! ";
 		string readySet = "Ready! Set! ";
 		string readySetGo = "Ready! Set! Go!";
-	protected:
+		string gameOver = "Game Over!";
 		float timestepCounter = 0.0f;
+		float gameOverCounter = 0.0f;
+
 
 };
