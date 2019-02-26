@@ -1,10 +1,5 @@
 #include "AudioEngine.h"
 
-const float DISTANCEFACTOR = 1.0f;
-float min = 0.0f;
-float max = 0.0f;
-
-
 Implementation::Implementation() {
 	mpStudioSystem = NULL;
 	CAudioEngine::ErrorCheck(FMOD::Studio::System::create(&mpStudioSystem));
@@ -38,13 +33,15 @@ void Implementation::Update() {   // if channel stops playing this will delete i
 	
 }
 
-Implementation* sgpImplementation = nullptr;
-
 void CAudioEngine::Init() {
-	sgpImplementation = new Implementation;
+	sgpImplementation = new Implementation();
+	sgpImplementation->mpSystem->set3DSettings(NULL, DISTANCEFACTOR, 1.0f);
+	listenerpos = { 0.0f, 0.0f, 0.0f };
+	//FMOD::System_Create(&system);
 }
 
 void CAudioEngine::Update() {
+	sgpImplementation->mpSystem->set3DListenerAttributes(0, &cPos, NULL,&forward, &up);
 	sgpImplementation->Update();
 }
 
@@ -63,14 +60,9 @@ void CAudioEngine::LoadSound(const string &strSoundName, bool b3d, bool bLooping
 	CAudioEngine::ErrorCheck(sgpImplementation->mpSystem->createSound(strSoundName.c_str(), eMode, nullptr, &pSound));
 	if (pSound) {
 		sgpImplementation->mSounds[strSoundName] = pSound;
-	}
-
-
-	if (b3d == true) {
 		pSound->set3DMinMaxDistance(min * DISTANCEFACTOR, max*DISTANCEFACTOR);
-
+		//sgpImplementation->mpSystem->set3DListenerAttributes(0, &listenerpos, NULL, &forward, &up);
 	}
-
 }
 
 void CAudioEngine::UnLoadSound(const std::string& strSoundName) // unloads sound out of clod need filename
@@ -83,7 +75,7 @@ void CAudioEngine::UnLoadSound(const std::string& strSoundName) // unloads sound
 	sgpImplementation->mSounds.erase(tFoundIt);
 }
 
-int CAudioEngine::PlaySounds(const string& strSoundName, const Audio::Vector3& vPosition, float fVolumedB) // (filename, world pos, volume) it pauses sound to comfirm it is set up correctly then unpauses and returns a channel ID
+int CAudioEngine::PlaySounds(const string& strSoundName, const Vector3& vPosition, float fVolumedB) // (filename, world pos, volume) it pauses sound to comfirm it is set up correctly then unpauses and returns a channel ID
 {
 	int nChannelId = sgpImplementation->mnNextChannelId++;
 	auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
@@ -105,16 +97,18 @@ int CAudioEngine::PlaySounds(const string& strSoundName, const Audio::Vector3& v
 		if (currMode & FMOD_3D) {
 			FMOD_VECTOR position = VectorToFmod(vPosition);
 			CAudioEngine::ErrorCheck(pChannel->set3DAttributes(&position, nullptr));
+						
 		}
 		CAudioEngine::ErrorCheck(pChannel->setVolume(dbToVolume(fVolumedB)));
 		CAudioEngine::ErrorCheck(pChannel->setPaused(false));
 		sgpImplementation->mChannels[nChannelId] = pChannel;
+
 	}
 	return nChannelId;
 }
 
 
-void CAudioEngine::SetChannel3dPosition(int nChannelId, const Audio::Vector3& vPosition) // sets position of sound use as well as prevoius function
+void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition) // sets position of sound use as well as prevoius function
 {
 	auto tFoundIt = sgpImplementation->mChannels.find(nChannelId);
 	if (tFoundIt == sgpImplementation->mChannels.end())
@@ -213,12 +207,28 @@ void CAudioEngine::SetEventParameter(const string &strEventName, const string &s
 	CAudioEngine::ErrorCheck(pParameter->setValue(fValue));
 }
 
-FMOD_VECTOR CAudioEngine::VectorToFmod(const Audio::Vector3& vPosition) { // sets world sapce to fmod co ord
-	FMOD_VECTOR fVec;
+FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world sapce to fmod co ord
+	
 	fVec.x = vPosition.x;
 	fVec.y = vPosition.y;
 	fVec.z = vPosition.z;
 	return fVec;
+}
+
+FMOD_VECTOR CAudioEngine::cameraPos(const Vector3& vPosition) { // sets world sapce to fmod co ord
+
+	cPos.x = vPosition.x;
+	cPos.y = vPosition.y;
+	cPos.z = vPosition.z;
+	return cPos;
+}
+
+FMOD_VECTOR CAudioEngine::getforward(const Vector3& vPosition) { // sets world sapce to fmod co ord
+
+	forward.x = vPosition.x;
+	forward.y = vPosition.y;
+	forward.z = vPosition.z;
+	return forward;
 }
 
 float  CAudioEngine::dbToVolume(float dB) // converts dB volume to linear
@@ -249,25 +259,8 @@ void CAudioEngine::setMinMaxDistance(float x, float y) {
 	max = y;
 }
 
-void CAudioEngine::setListener(Audio::Vector3 pos) {
-	//FMOD_System_Set3DListenerAttributes(0,pos, null,null,null)
+void CAudioEngine::setNumList(int num) {
+	sgpImplementation->mpSystem->set3DNumListeners(num);
 }
 
 // code tutorial from https://codyclaborn.me/tutorials/making-a-basic-fmod-audio-engine-in-c/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

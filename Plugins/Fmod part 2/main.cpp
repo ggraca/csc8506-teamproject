@@ -1,5 +1,5 @@
 #include "AudioEngine.h"
-#include "Asset.h"
+#include "../../Common/Assets.h"
 #include <fstream>
 #include <windows.h>
 
@@ -13,7 +13,7 @@ inline bool exists_test0(const std::string& name) {
 
 void main() {
 		
-	Vector3 origin = Vector3(0.0f, 0.0f, 0.0f);
+	Audio::Vector3 origin = Vector3(0.0f, 0.0f, 0.0f);
 
 	CAudioEngine ae = CAudioEngine();
 

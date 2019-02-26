@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef _AUDIO_ENGINE_H_
-#define _AUDIO_ENGINE_H_
-
 #include "fmod_studio.hpp"
 #include "fmod.hpp"
 #include <string>
@@ -10,19 +7,11 @@
 #include <vector>
 #include <math.h>
 #include <iostream>
+#include "../Common/Vector3.h"
 
 using namespace std;
-
-namespace Audio {
-
-	struct Vector3 {
-		float x;
-		float y;
-		float z;
-
-		Vector3(float nx, float ny, float nz) { x = nx; y = ny; z = nz; }
-	};
-}
+using namespace NCL;
+using namespace NCL::Maths;
 
 	struct Implementation {
 		Implementation();
@@ -47,32 +36,45 @@ namespace Audio {
 
 	class CAudioEngine {
 	public:
-		static void Init();
-		static void Update();
-		static void Shutdown();
+		void Init();
+		void Update();
+		void Shutdown();
 		static int ErrorCheck(FMOD_RESULT result);
-
+		
 		void LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags);
 		void LoadEvent(const std::string& strEventName);
 		void LoadSound(const string &strSoundName, bool b3d = true, bool bLooping = false, bool bStream = false);
 		void UnLoadSound(const string &strSoundName);
 		//void Set3dListenerAndOrientation(const Vector3& vPosition, const Vector3& vLook, const Vector3& vUp);
-		int PlaySounds(const string &strSoundName, const Audio::Vector3& vPos = Audio::Vector3{ 0, 0, 0 }, float fVolumedB = 0.0f);
+		int PlaySounds(const string &strSoundName, const Vector3& vPos = Vector3{ 0, 0, 0 }, float fVolumedB = 0.0f);
 		void PlayEvent(const string &strEventName);
 		//void StopChannel(int nChannelId);
 		void StopEvent(const string &strEventName, bool bImmediate = false);
 		void GetEventParameter(const string &strEventName, const string &strEventParameter, float* parameter);
 		void SetEventParameter(const string &strEventName, const string &strParameterName, float fValue);
 		//void StopAllChannels();
-		void SetChannel3dPosition(int nChannelId, const Audio::Vector3& vPosition);
+		void SetChannel3dPosition(int nChannelId, const Vector3& vPosition);
 		void SetChannelVolume(int nChannelId, float fVolumedB);
 		//bool IsPlaying(int nChannelId) const;
 		bool IsEventPlaying(const string &strEventName) const;
 		float dbToVolume(float dB);
 		float VolumeTodB(float volume);
-		FMOD_VECTOR VectorToFmod(const Audio::Vector3& vPosition);
+		FMOD_VECTOR VectorToFmod(const Vector3& vPosition);
+		FMOD_VECTOR cameraPos(const Vector3& vPosition);
+		FMOD_VECTOR getforward(const Vector3& vPosition);
 		void setMinMaxDistance(float min, float max);
-		void setListener(Audio::Vector3 pos);
-	};
-#endif
+		void setNumList(int num);
+		//static FMOD::System    *system;
+		
 
+	private:
+		Implementation* sgpImplementation = nullptr;
+		const float DISTANCEFACTOR = 1.0f;
+		float min;
+		float max;
+		FMOD_VECTOR listenerpos;
+		FMOD_VECTOR fVec;
+		FMOD_VECTOR cPos;
+		FMOD_VECTOR forward;
+		FMOD_VECTOR up = { 0.0f,1.0f,0.0f };
+	};

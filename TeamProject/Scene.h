@@ -2,6 +2,7 @@
 #include "GameTechRenderer.h"
 #include "Debug.h"
 #include "../Common/Camera.h"
+#include "AudioEngine.h"
 
 #include "BulletPhysics.h"
 
@@ -14,7 +15,7 @@ namespace NCL {
 			Scene();
 			~Scene();
 
-			virtual void UpdateGame(float dt);
+			virtual void UpdateGame(float dt) = 0;
 			BulletPhysics*		physics; //TODO Make protected again?
 		protected:
 			void InitialiseAssets();
@@ -30,6 +31,8 @@ namespace NCL {
 			GameObject* AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float mass = 10.0f, float restitution = 0.9, float friction = 0.4);
 
 			GameTechRenderer*	renderer;
+			CAudioEngine* audio;
+
 
 			GameWorld*		world;
 

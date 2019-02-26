@@ -5,11 +5,10 @@
 #include "../Common/Assets.h"
 #include "GameWorld.h"
 #include "AudioEngine.h"
-#include "Asset.h"
+#include "../../Common/Assets.h"
 
 using namespace NCL;
 using namespace CSC8503;
-CAudioEngine ae = CAudioEngine();
 
 Scene::Scene() {
   world = new GameWorld();
@@ -17,12 +16,15 @@ Scene::Scene() {
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
  
-  ae.Init();
-  ae.setMinMaxDistance(5.0f, 10.0f);
-  ae.LoadSound(Assets::SOUNDSDIR + "jaguar.wav", false, true, false);
-  ae.PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", Audio::Vector3(0,0,0), 0.5f);
- ae.set3DListenerAttributes
-  
+  audio = new CAudioEngine();
+  audio->Init();
+  audio->setNumList(1);
+  audio->setMinMaxDistance(100.0f, 10000.0f);
+  audio->LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, true, false);
+  int x;
+  x = audio->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", Vector3(0, 0, 0), 1.0f); 
+  audio->SetChannel3dPosition(x, Vector3(110, 10, 50));
+ 
   world->SetPhysics(physics);
 
   Debug::SetRenderer(renderer);
@@ -121,22 +123,6 @@ Scene::~Scene() {
   Assets::AssetManager::FlushAssets();
 }
 
-void Scene::UpdateGame(float dt) {
-
-
-  //UpdateKeys();
-  //SelectObject();
-  //MoveSelectedObject();
-
-  world->UpdateWorld(dt);
-  renderer->Update(dt);
-  physics->Update(dt);
-
-  Debug::FlushRenderables();
-  renderer->Render();
-
-  ae.Update();
-}
 
 void Scene::UpdateKeys() {
 

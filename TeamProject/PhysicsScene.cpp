@@ -4,8 +4,11 @@
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 
+
 #include "../Common/Assets.h"
 #include <fstream>
+
+
 
 using namespace NCL;
 using namespace CSC8503;
@@ -94,9 +97,28 @@ void PhysicsScene::UpdateGame(float dt) {
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
   console.Update();
-
+  
   renderer->Render();
+
+  Vector3 campos = world->GetMainCamera()->GetTransform().GetWorldPosition();
+  cout << campos << endl;
+  audio->cameraPos(campos);
+  Vector3 forward = PhysicsScene::forward();
+  audio->getforward(forward);
+  audio->Update();
 }
 
 void PhysicsScene::DebugScene(float dt) {
 }
+
+
+Vector3  PhysicsScene::forward() {
+
+	auto player = GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Player);
+	float xPos = sin(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
+	float yPos = sin(-player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
+	float zPos = cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180));
+
+	return Vector3{ xPos,yPos, zPos };
+}
+

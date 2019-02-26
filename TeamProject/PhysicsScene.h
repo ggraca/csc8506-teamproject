@@ -8,7 +8,7 @@
 #include "Player.h"
 #include "Resource.h"
 #include "InputManager.h"
-#include "CameraControl.h"
+
 
 namespace NCL {
   namespace CSC8503 {
@@ -18,6 +18,8 @@ namespace NCL {
       ~PhysicsScene();
       void UpdateGame(float dt);
 	  static InputManager * inputManager;
+	  Vector3  forward();
+	  float M_PI = 3.14159265358979323846;
 
 
     protected:
