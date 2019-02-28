@@ -39,23 +39,23 @@ void GameObject::SetParent(GameObject * parent)
 {
 	if (parent)
 	{
-		this->GetComponent<RenderObject*>()->GetTransform()->SetParent(parent->GetComponent<RenderObject*>()->GetTransform());
-		parent->GetComponent<RenderObject*>()->GetTransform()->AddChild(this->GetComponent<RenderObject*>()->GetTransform());
+		GetTransform().SetParent(&parent->GetTransform());
+		GetTransform().AddChild(&parent->GetTransform());
 	}
 	else
 	{
-		if (this->GetComponent<RenderObject*>()->GetTransform()->GetParent() != nullptr)
+		if (GetTransform().GetParent() != nullptr)
 		{
-			this->GetComponent<RenderObject*>()->GetTransform()->GetParent()->RemoveChild(this->GetComponent<RenderObject*>()->GetTransform());
+			GetTransform().GetParent()->RemoveChild(&parent->GetTransform());
 		}
 
-		this->GetComponent<RenderObject*>()->GetTransform()->SetParent(nullptr);
+		GetTransform().SetParent(nullptr);
 	}
 }
 
 bool GameObject::IsParent(const Transform* transform)
 {
-	return (this->GetComponent<RenderObject*>()->GetTransform()->GetParent() == transform);
+	return (GetTransform().GetParent() == transform);
 }
 
 void GameObject::AddChild(GameObject * child)

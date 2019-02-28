@@ -209,7 +209,7 @@ vector<GameObject*> GameWorld::GetChildrenOfObject(GameObject* obj)
 
 	for (auto& i : gameObjects)
 	{
-		if (i->IsParent(obj->GetComponent<RenderObject*>()->GetTransform()))
+		if (i->IsParent(&obj->GetTransform()))
 		{
 			temp.emplace_back(i);
 		}
@@ -225,7 +225,7 @@ vector<GameObject*> GameWorld::GetChildrenOfObject(GameObject* obj,LayerAndTag::
 	
 	for (auto& i : gameObjects)
 	{
-		if (i->CompareTag(tag) && i->IsParent(obj->GetComponent<RenderObject*>()->GetTransform()))
+		if (i->CompareTag(tag) && i->IsParent(&obj->GetTransform()))
 		{
 			temp.emplace_back(i);
 		}
