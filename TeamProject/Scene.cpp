@@ -146,7 +146,7 @@ void Scene::InitWorld() {
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float mass, float restitution, float friction) {
 
   GameObject* sphere = new SpherePrefab(position, radius, mass, restitution, friction);
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
+  sphere->AddComponent<RenderObject*>((Component *)new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
 
   world->AddGameObject(sphere);
   return sphere;
@@ -155,7 +155,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
   
   GameObject* cube = new CubePrefab(position, orient, dimensions, mass, restitution, friction);
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
+  cube->AddComponent<RenderObject*>((Component *)new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
 
   world->AddGameObject(cube);
   return cube;

@@ -1,5 +1,5 @@
 #include "CubePrefab.h"
-
+#include "PhysicsObject.h"
 
 CubePrefab::CubePrefab() {}
 
@@ -8,7 +8,7 @@ CubePrefab::CubePrefab(const Vector3& position, const Quaternion& orient, Vector
 	GetTransform().SetWorldScale(dimensions);
 	GetTransform().SetWorldPosition(position);
 	GetTransform().SetLocalOrientation(orient);
-	SetPhysicsObject(new PhysicsObject(&GetTransform(), ShapeType::cube, mass, restitution, friction));
+	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, mass, restitution, friction));
 }
 
 

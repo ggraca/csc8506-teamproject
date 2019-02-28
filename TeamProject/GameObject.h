@@ -91,7 +91,21 @@ namespace NCL {
 			void AddChild(GameObject * child);
 			
 			template<class T>
-			void AddComponent(Component * obj);
+			void AddComponent(Component * obj)
+			{
+				if (!obj) { return; }
+
+				if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
+
+				int index = TypeId::GetTypeId(typeid(T));
+
+				if (components[index])
+				{
+					delete components[index];
+				}
+
+				components[index] = obj;
+			}
 
 			template<class T>
 			void RemoveComponent()
@@ -165,23 +179,5 @@ namespace NCL {
 				}
 			}
 		};
-
-		template<class T>
-		void GameObject::AddComponent(Component * obj)
-		{
-			if (!obj) { return; }
-
-			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
-
-			int index = TypeId::GetTypeId(typeid(T));
-
-			if (components[index])
-			{
-				delete components[index];
-			}
-
-			components[index] = obj;
-		}
-
-}
+	}
 }
