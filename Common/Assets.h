@@ -28,6 +28,7 @@ namespace NCL {
 			}
 
 			static Rendering::TextureBase* LoadTexture(const std::string& filename);
+			static Rendering::Material* LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader);
 
 			static void FlushTextures();
 			static void FlushShaders();
