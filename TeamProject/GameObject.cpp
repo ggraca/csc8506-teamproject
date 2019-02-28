@@ -28,8 +28,7 @@ void GameObject::ClearComponents()
 {
 	for (auto&i : components)
 	{
-		delete i.second;
-		components.erase(i.first);
+		if (i.second) { delete i.second; }
 	}
 	components.clear();
 	scripts.clear();

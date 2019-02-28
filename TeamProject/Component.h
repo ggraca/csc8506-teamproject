@@ -20,7 +20,7 @@ namespace NCL
 			GameObject * GetGameObject() const;
 
 		protected:
-			GameObject * gameObj;
+			GameObject * gameObject = nullptr;
 		};
 	}
 }

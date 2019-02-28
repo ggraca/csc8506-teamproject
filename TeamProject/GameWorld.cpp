@@ -169,6 +169,7 @@ void GameWorld::RemoveGameObject(GameObject* o)
 			delete gameObjects[i];
 			gameObjects.erase(gameObjects.begin() + i);
 			o = nullptr;
+			return;
 		}
 	}
 }

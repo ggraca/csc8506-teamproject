@@ -2,16 +2,16 @@
 
 Component::Component()
 {
-	gameObj = nullptr;
 }
 
-Component::Component(GameObject * go)
+Component::Component(GameObject * go) : gameObject(go)
 {
-	gameObj = go;
+
 }
 
 Component::~Component()
 {
+
 }
 
 void Component::Update(float dt)
@@ -20,10 +20,10 @@ void Component::Update(float dt)
 
 void Component::SetGameObject(GameObject * go)
 {
-	gameObj = go;
+	gameObject = go;
 }
 
 GameObject * Component::GetGameObject() const
 {
-	return gameObj;
+	return gameObject;
 }

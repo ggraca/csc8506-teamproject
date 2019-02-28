@@ -10,7 +10,7 @@ namespace NCL
 	{
 		class Component;
 		class GameObject;
-		class ScriptObject:virtual public Component
+		class ScriptObject : public Component
 		{
 		public:
 
@@ -26,9 +26,6 @@ namespace NCL
 			virtual void LateUpdate(float dt);
 			virtual void OnCollisionBegin(GameObject* otherObject);
 			virtual void OnCollisionEnd(GameObject* otherObject);
-
-		protected:
-			GameObject * gameObject;
 		};
 	}
 }
