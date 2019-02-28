@@ -8,6 +8,7 @@ using namespace CSC8503;
 class Resource : virtual public ScriptObject
 {
 public:
+	Resource();
 	Resource(GameObject * obj);
 	virtual ~Resource();
 

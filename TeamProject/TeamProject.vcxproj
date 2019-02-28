@@ -174,6 +174,7 @@
     <ClCompile Include="PlayerPrefab.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourcePrefab.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpherePrefab.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="PlayerPrefab.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourcePrefab.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpherePrefab.h" />
     <ClInclude Include="Transform.h" />

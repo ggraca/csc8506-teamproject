@@ -6,6 +6,8 @@
 
 #include "../Common/Assets.h"
 #include <fstream>
+#include "PlayerPrefab.h"
+#include "ResourcePrefab.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -30,19 +32,15 @@ void PhysicsScene::ResetWorld() {
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
   
    //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-  player->AddScript((ScriptObject*)new Player(player));
-  player->SetTag(LayerAndTag::Tags::Player);
-  player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+  auto player = new PlayerPrefab();
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
 
-  auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto resource1 = new ResourcePrefab();
   resource1->SetName("Resource 1");
-  resource1->AddScript((ScriptObject*)new Resource(resource1));
-
-  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  
+  auto resource2 = new ResourcePrefab();
   resource2->SetName("Resource 2");
-  resource2->AddScript((ScriptObject*)new Resource(resource2));
+  
 }
 
 PhysicsScene::~PhysicsScene() {

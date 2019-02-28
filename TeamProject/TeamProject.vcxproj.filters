@@ -30,6 +30,7 @@
     <ClCompile Include="CubePrefab.cpp" />
     <ClCompile Include="SpherePrefab.cpp" />
     <ClCompile Include="PlayerPrefab.cpp" />
+    <ClCompile Include="ResourcePrefab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -61,5 +62,6 @@
     <ClInclude Include="CubePrefab.h" />
     <ClInclude Include="SpherePrefab.h" />
     <ClInclude Include="PlayerPrefab.h" />
+    <ClInclude Include="ResourcePrefab.h" />
   </ItemGroup>
 </Project>

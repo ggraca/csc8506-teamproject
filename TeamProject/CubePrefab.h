@@ -4,7 +4,6 @@
 
 using namespace NCL;
 using namespace NCL::CSC8503;
-using namespace NCL::Rendering;
 
 class CubePrefab : public GameObject
 {
