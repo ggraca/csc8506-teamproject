@@ -2,7 +2,6 @@
 #include "../TeamProject/InputManager.h"
 
 
-Resource::Resource() {};
 
 Resource::Resource(GameObject * obj) : ScriptObject(obj)
 {
