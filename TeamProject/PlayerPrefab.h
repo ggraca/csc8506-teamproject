@@ -10,6 +10,7 @@ class PlayerPrefab : public CubePrefab
 {
 public:
 	PlayerPrefab();
+	//TODO parameterized (or whatever it is) which will call parameterized cube prefab construct
 	~PlayerPrefab();
 };
 
