@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "ScriptObject.h"
 
 using namespace NCL;
 using namespace CSC8503;

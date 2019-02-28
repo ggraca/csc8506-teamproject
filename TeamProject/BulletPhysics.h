@@ -7,7 +7,7 @@
 #include "../Common/Vector4.h"
 #include "../TeamProject/Transform.h"
 #include "../TeamProject/GameWorld.h"
-#include "../TeamProject/GameObject.h"
+#include "PhysicsObject.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 using namespace NCL;

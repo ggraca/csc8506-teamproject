@@ -36,7 +36,7 @@ void DamageControl::ResolveDamage(GameObject * obj)
 
 	if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile) && obj->CompareTag(LayerAndTag::Tags::Player)) 
 	{
-		obj->GetScript<Player*>()->UpdateResourceCount(-damage);
+		obj->GetComponent<Player*>()->UpdateResourceCount(-damage);
 		
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 	}
@@ -48,9 +48,9 @@ void DamageControl::ResolveDamage(GameObject * obj)
 
 	else if (gameObject->CompareTag(LayerAndTag::Tags::Occupied) || gameObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
-		if (obj->GetScript<HealthManager*>())
+		if (obj->GetComponent<HealthManager*>())
 		{
-			obj->GetScript<HealthManager*>()->TakeDamage(damage);
+			obj->GetComponent<HealthManager*>()->TakeDamage(damage);
 		}
 
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }

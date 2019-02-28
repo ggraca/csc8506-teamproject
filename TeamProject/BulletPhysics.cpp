@@ -106,7 +106,7 @@ void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidB
 void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, btRigidBody* body, GameObject*& go) {
 	vector<btRigidBody*> pairs = collisionPairs[body];
 	for (auto collidingGo : go->collidingObjects) {
-		if (find(pairs.begin(), pairs.end(), collidingGo->GetPhysicsObject()->GetRigidbody()) != pairs.end()) continue;
+		if (find(pairs.begin(), pairs.end(), collidingGo->GetComponent<PhysicsObject*>()->GetRigidbody()) != pairs.end()) continue;
 
 		go->CallOnCollisionEndForScripts(collidingGo);
 		go->collidingObjects.erase(remove(go->collidingObjects.begin(), go->collidingObjects.end(), collidingGo), go->collidingObjects.end());
@@ -120,10 +120,10 @@ void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	map<btRigidBody*, GameObject*> collisionObjectGameObjectPair;
 
 	for (auto& go : gameWorld.GetGameObjectList()) {
-		PhysicsObject* object = go->GetPhysicsObject();
+		PhysicsObject* object = go->GetComponent<PhysicsObject*>();
 		if (object == nullptr) continue;
 
-		btRigidBody* body = go->GetPhysicsObject()->GetRigidbody();
+		btRigidBody* body = go->GetComponent<PhysicsObject*>()->GetRigidbody();
 		UpdateObjectTransform(go, body);
 
 		if (collisionPairs.find(body) != collisionPairs.end()) {

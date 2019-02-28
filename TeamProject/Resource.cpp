@@ -34,7 +34,7 @@ void Resource::FollowTarget(float &dt)
 		auto pos = (gameObject->GetTransform().GetWorldPosition());
 		pos += amount;
 		gameObject->GetTransform().SetWorldPosition(pos);
-		gameObject->GetPhysicsObject()->SetPosition(pos);
+		gameObject->GetComponent<PhysicsObject*>()->SetPosition(pos);
 	}
 }
 
@@ -55,7 +55,7 @@ void Resource::Aquire(GameObject * obj)
 {
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
 	gameObject->SetTag(LayerAndTag::Tags::Occupied);
-	gameObject->GetRenderObject()->GetMaterial()->SetColour(obj->GetRenderObject()->GetMaterial()->GetColour());
+	gameObject->GetComponent<RenderObject*>()->GetMaterial()->SetColour(obj->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	SetTarget(obj);
 }
 
@@ -63,7 +63,7 @@ void Resource::Reset()
 {
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::ResourceParent));
-	gameObject->GetRenderObject()->GetMaterial()->SetColour(Vector4(1,1,1,1));
+	gameObject->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1,1,1,1));
 	moveSpeed = 100.0f;
 	minDistance = 50.0f;
 	SetTarget(nullptr);
