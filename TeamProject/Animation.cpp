@@ -126,6 +126,17 @@ void Animation::SetupFirstFrameIterations(GameObject * obj)
 	nextFrame = keyFrames[currentIndex + 1];
 }
 
+void Animation::ResetAnimation()
+{
+	currentFrame = nullptr;
+	nextFrame = nullptr;
+	interpolation = nullptr;
+	currentTime = -1;
+	currentIndex = -1;
+	hasAnimationStarted = false;
+	hasAnimationFinished = false;
+}
+
 void Animation::ClearKeyFrames()
 {
 	for (auto&i : keyFrames)

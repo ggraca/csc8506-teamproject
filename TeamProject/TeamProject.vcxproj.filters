@@ -85,6 +85,7 @@
       <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="TypeId.cpp" />
+    <ClCompile Include="Animator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -173,6 +174,7 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="TypeId.h" />
+    <ClInclude Include="Animator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UI">

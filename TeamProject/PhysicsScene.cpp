@@ -6,6 +6,8 @@
 
 #include "../Common/Assets.h"
 #include <fstream>
+#include "Animator.h"
+#include "InputManager.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -21,12 +23,53 @@ PhysicsScene::PhysicsScene() : Scene() {
   GameObject::SetGameWorld(world);
 
 }
+bool UpdateSome(GameObject *data)
+{
+	return InputManager::IsButtonPressed(InputManager::ActionButton::FIRE);
+}
+
+bool ChangeSome(GameObject *data)
+{
+	return InputManager::IsButtonPressed(InputManager::ActionButton::JUMP);
+}
 
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
-  
+  auto floor = AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
+  floor->AddComponent<Animator*>((Component*)new Animator(floor));
+  auto anim1 = new Animation(60);
+  auto anim2 = new Animation(60);
+  KeyFrame *frame1 = new KeyFrame();
+  frame1->time = 10;
+  frame1->localPosition = Vector3(200, -10, 200);
+  frame1->localRotation =(Vector3(0, 0, 0));
+  frame1->localScale = Vector3(700, 10, 1000);
+  anim1->AddKeyFrame(frame1);
+  auto animState1 = new AnimationState(anim1);
+
+  KeyFrame *frame2 = new KeyFrame();
+  frame2->time = 10;
+  frame2->localPosition = Vector3(200, -10, 200);
+  frame2->localRotation = (Vector3(0, 0, 0));
+  frame2->localScale = Vector3(10, 10, 10);
+  anim2->AddKeyFrame(frame2);
+  auto animState2 = new AnimationState(anim2);
+
+  auto transition1 = new Transition();
+  transition1->destinationState = animState2;
+  transition1->transitionFunction = UpdateSome;
+
+  auto transition2 = new Transition();
+  transition2->destinationState = animState1;
+  transition2->transitionFunction = ChangeSome;
+
+  animState1->AddTransition(transition1);
+  animState2->AddTransition(transition2);
+  floor->GetComponent<Animator*>()->AddAnimationState(animState1);
+  floor->GetComponent<Animator*>()->AddAnimationState(animState2);
+
+
    //Player
   auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
   player->AddComponent<Player*>((Component*)new Player(player));
