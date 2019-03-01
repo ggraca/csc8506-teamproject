@@ -7,7 +7,6 @@
 #include "../Common/Assets.h"
 #include <fstream>
 #include "Animator.h"
-#include "InputManager.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -25,21 +24,38 @@ PhysicsScene::PhysicsScene() : Scene() {
 }
 bool UpdateSome(GameObject *data)
 {
-	return InputManager::IsButtonPressed(InputManager::ActionButton::FIRE);
+	return Window::GetKeyboard()->KeyPressed(NCL::KEYBOARD_1);
 }
 
-bool ChangeSome(GameObject *data)
+bool ChangeSome(GameObject *data)//Just to test out
 {
-	return InputManager::IsButtonPressed(InputManager::ActionButton::JUMP);
+	return Window::GetKeyboard()->KeyPressed(NCL::KEYBOARD_2);
+}
+
+bool ChangeMore(GameObject *data)//Just to test out
+{
+	return Window::GetKeyboard()->KeyPressed(NCL::KEYBOARD_3);
 }
 
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
-  auto floor = AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
+  GameObject* floor = new GameObject();
+
+  floor->GetTransform().SetWorldScale(Vector3(700, 10, 1000));
+  floor->GetTransform().SetWorldPosition(Vector3(200, -10, 200));
+  floor->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0));
+  floor->AddComponent<RenderObject*>((Component*)new RenderObject(&floor->GetTransform(), cubeMesh, basicMaterial));
+  floor->GetComponent<RenderObject*>()->SetMaterialInstanced();
+
+  world->AddGameObject(floor);
+  //auto floor = AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
   floor->AddComponent<Animator*>((Component*)new Animator(floor));
+
   auto anim1 = new Animation(60);
   auto anim2 = new Animation(60);
+  auto anim3 = new Animation(60);
+
   KeyFrame *frame1 = new KeyFrame();
   frame1->time = 10;
   frame1->localPosition = Vector3(200, -10, 200);
@@ -50,11 +66,20 @@ void PhysicsScene::ResetWorld() {
 
   KeyFrame *frame2 = new KeyFrame();
   frame2->time = 10;
-  frame2->localPosition = Vector3(200, -10, 200);
+  frame2->localPosition = Vector3(0, -10, 0);
   frame2->localRotation = (Vector3(0, 0, 0));
   frame2->localScale = Vector3(10, 10, 10);
   anim2->AddKeyFrame(frame2);
   auto animState2 = new AnimationState(anim2);
+
+  KeyFrame *frame3 = new KeyFrame();
+  frame3->time = 10.0f;
+  frame3->localPosition = Vector3(200, -200, 200);
+  frame3->localRotation = Vector3(180, 135, 0);
+  frame3->localScale = Vector3(700, 10, 1000);
+  anim3->AddKeyFrame(frame3);
+  auto animState3 = new AnimationState(anim3);
+
 
   auto transition1 = new Transition();
   transition1->destinationState = animState2;
@@ -64,17 +89,26 @@ void PhysicsScene::ResetWorld() {
   transition2->destinationState = animState1;
   transition2->transitionFunction = ChangeSome;
 
+  auto transition3 = new Transition();
+  transition3->destinationState = animState3;
+  transition3->transitionFunction = ChangeMore;
+
   animState1->AddTransition(transition1);
+  animState1->AddTransition(transition3);
+  animState3->AddTransition(transition2);
+
   animState2->AddTransition(transition2);
   floor->GetComponent<Animator*>()->AddAnimationState(animState1);
   floor->GetComponent<Animator*>()->AddAnimationState(animState2);
+  floor->GetComponent<Animator*>()->AddAnimationState(animState3);
 
 
    //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 0, 0.2f, 0.4f);
   player->AddComponent<Player*>((Component*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+  player->GetComponent<PhysicsObject*>()->GetRigidbody()->setGravity(btVector3(0,0,0));
   player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
