@@ -37,7 +37,7 @@ CAudioEngine::CAudioEngine() {
 	Init();
 	setNumList(1);
 	setMinMaxDistance(100.0f, 10000.0f);
-	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, true, false);
+	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, false, false);
 }
 
 void CAudioEngine::Init() {

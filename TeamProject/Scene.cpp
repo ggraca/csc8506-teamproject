@@ -13,16 +13,13 @@ using namespace CSC8503;
 Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
+  
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
+  world->SetPhysics(physics);
 
   audio = new CAudioEngine();
-  
-  int x;
-  x = audio->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", Vector3(0, 0, 0), 1.0f); 
-  audio->SetChannel3dPosition(x, Vector3(110, 10, 50));
- 
-  world->SetPhysics(physics);
+  world->SetAudio(audio);
 
   Debug::SetRenderer(renderer);
 

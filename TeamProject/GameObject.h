@@ -194,9 +194,9 @@ namespace NCL {
 			static GameObject * GetMainCamera();
 
 			vector<GameObject*> collidingObjects;
+			static GameWorld *gameWorld;
 
 		protected:
-			static GameWorld *gameWorld;
 			Transform			transform;
 			CollisionVolume*	boundingVolume;
 			PhysicsObject*		physicsObject;
