@@ -117,7 +117,6 @@ void Scene::UpdateGame(float dt) {
   //MoveSelectedObject();
 
   world->UpdateWorld(dt);
-  renderer->Update(dt);
   physics->Update(dt);
 
   Debug::FlushRenderables();

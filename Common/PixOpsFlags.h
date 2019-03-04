@@ -6,10 +6,26 @@
 class PixOpsFlags
 {
 public:
-	PixOpsFlags() {};
+	typedef std::tuple<bool, bool, bool, bool> ColorMask;
+
+	PixOpsFlags() {
+		culling = CULLFACE::NONE;
+
+		depthComparison = COMPARISON::NEVER;
+		depthMask = false;
+
+		stencilComparison = COMPARISON::NEVER;
+		stencilMask = false;
+
+		NCL::Maths::Vector4 clearColor = NCL::Maths::Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+		colorMask = ColorMask(true, true, true, true);
+
+		alphaComparison = COMPARISON::NEVER;
+		alphaBlend = BLEND::GL_ZERO;
+	};
+
 	virtual ~PixOpsFlags() = 0;
 
-	typedef std::tuple<bool, bool, bool, bool> ColorMask;
 	
 	enum BLEND {
 		GL_ZERO = 0,
@@ -45,17 +61,11 @@ public:
 	virtual void SetFaceCulling(CULLFACE cull) = 0;
 	CULLFACE GetFaceCulling() { return culling; }
 
-	virtual void SetDepthTest(bool depth) = 0;
-	bool GetDepthTest() { return depthTest; }
-
 	virtual void SetDepthComparison(COMPARISON comp) = 0;
 	COMPARISON GetDepthComparison() { return depthComparison; }
 
 	virtual void SetDepthMask(bool mask) = 0;
 	bool GetDepthMask() { return depthMask; }
-
-	virtual void SetStencilTest(bool stencil) = 0;
-	bool GetStencilTest() { return stencilTest; }
 
 	virtual void SetStencilComparison(COMPARISON comp) = 0;
 	COMPARISON GetStencilComparison() { return stencilComparison; }
@@ -69,27 +79,21 @@ public:
 	virtual void SetColourMask(ColorMask mask) = 0;
 	ColorMask GetColourMask() { return colorMask; }
 
-	virtual void SetAlphaTest(bool alpha) = 0;
-	bool GetAlphaTest() { return alphaTest; }
-
 	virtual void SetAlphaBlend(BLEND blend) = 0;
 	BLEND GetAlphaBlend() { return alphaBlend; }
 
 protected:
 	CULLFACE culling;
 
-	bool depthTest;
 	COMPARISON depthComparison;
 	bool depthMask;
 
-	bool stencilTest;
 	COMPARISON stencilComparison;
 	bool stencilMask;
 
 	NCL::Maths::Vector4 clearColor;
 	ColorMask colorMask;
 
-	bool alphaTest;
 	COMPARISON alphaComparison;
 	BLEND alphaBlend;
 
