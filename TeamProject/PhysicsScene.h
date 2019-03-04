@@ -8,7 +8,7 @@
 #include "Player.h"
 #include "Resource.h"
 #include "InputManager.h"
-
+#include "CameraControl.h"
 
 namespace NCL {
   namespace CSC8503 {
@@ -17,8 +17,8 @@ namespace NCL {
       PhysicsScene();
       ~PhysicsScene();
       void UpdateGame(float dt);
-	  static InputManager * inputManager;
-	  
+	    static InputManager * inputManager;
+
     protected:
       void ResetWorld();
       void DebugScene(float dt);
@@ -28,6 +28,7 @@ namespace NCL {
 
       DebugMenu debugMenu;
       Console console;
+	  HUD hud;
     };
   }
 }

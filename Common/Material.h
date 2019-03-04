@@ -12,6 +12,7 @@ namespace NCL {
 		class Material
 		{
 		public:
+			Material(Material& mat);
 			Material();
 			~Material();
 

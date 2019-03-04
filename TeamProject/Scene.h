@@ -1,10 +1,11 @@
 #pragma once
 #include "GameTechRenderer.h"
+#include "HUD.h"
 #include "Debug.h"
 #include "../Common/Camera.h"
 #include "AudioEngine.h"
-
 #include "BulletPhysics.h"
+
 
 class Material;
 

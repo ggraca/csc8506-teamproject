@@ -11,7 +11,6 @@ BulletPhysics::BulletPhysics(GameWorld& g) : gameWorld(g)
 	solver = new btSequentialImpulseConstraintSolver;
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);;
 	dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
-	loopNum = 0;
 }
 
 BulletPhysics::~BulletPhysics()
@@ -55,72 +54,84 @@ void BulletPhysics::SetGravity(Vector3 gravity)
 	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
 }
 
-map<const btCollisionObject*, const btCollisionObject*> BulletPhysics::GenerateCollisionPairs()
-{
-  map<const btCollisionObject*, const btCollisionObject*> collisionPairs;
-  int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
-  for (int i = 0; i < numManifolds; i++) {
-    btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
-    const btCollisionObject* objA = contactManifold->getBody0();
-    const btCollisionObject* objB = contactManifold->getBody1();
+map<btRigidBody*, vector<btRigidBody*>> BulletPhysics::GenerateCollisionPairs() {
+	map<btRigidBody*, vector<btRigidBody*>> collisionPairs;
+	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
+  
+	for (int i = 0; i < numManifolds; i++) {
+		btPersistentManifold* contactManifold = dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
+		btRigidBody* objA = (btRigidBody*) btRigidBody::upcast(contactManifold->getBody0());
+		btRigidBody* objB = (btRigidBody*) btRigidBody::upcast(contactManifold->getBody1());
 
-    collisionPairs[objA] = objB;
-    collisionPairs[objB] = objA;
-  }
+		collisionPairs[objA].push_back(objB);
+		collisionPairs[objB].push_back(objA);
+	}
 
-  return collisionPairs;
+	return collisionPairs;
 }
 
 void BulletPhysics::UpdateObjectTransform(GameObject* go, btRigidBody* body) {
-  Transform& transform = go->GetTransform();
+	Transform& transform = go->GetTransform();
 
-  btTransform trans;
-  if (body && body->getMotionState()) body->getMotionState()->getWorldTransform(trans);
-  else trans = body->getWorldTransform();
+	btTransform trans;
+	if (body && body->getMotionState()) body->getMotionState()->getWorldTransform(trans);
+	else trans = body->getWorldTransform();
 
-  btQuaternion orientation = trans.getRotation();
-  Vector3 position = Vector3(float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
-  transform.SetLocalPosition(position);
-  Quaternion orient = Quaternion(orientation.x(), orientation.y(), orientation.z(), orientation.w());
-  transform.SetLocalOrientation(orient);
+	btQuaternion orientation = trans.getRotation();
+	Vector3 position = Vector3(float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
+	transform.SetLocalPosition(position);
+	Quaternion orient = Quaternion(orientation.x(), orientation.y(), orientation.z(), orientation.w());
+	transform.SetLocalOrientation(orient);
+}
+
+void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair) {
+	for (auto key : collisionPairs) {
+		GameObject* go1 = (GameObject*)collisionObjectGameObjectPair[key.first];
+
+		for (auto val : key.second) {
+			GameObject* go2 = (GameObject*)collisionObjectGameObjectPair[val];
+
+			if (!count(go1->collidingObjects.begin(), go1->collidingObjects.end(), go2)) {
+				go1->CallOnCollisionEnterForScripts(go2);
+				go1->collidingObjects.push_back(go2);
+			}
+			if (!count(go2->collidingObjects.begin(), go2->collidingObjects.end(), go1)) {
+				go2->CallOnCollisionEnterForScripts(go1);
+				go2->collidingObjects.push_back(go1);
+			}
+		}
+	}
+}
+
+void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, btRigidBody* body, GameObject*& go) {
+	vector<btRigidBody*> pairs = collisionPairs[body];
+	for (auto collidingGo : go->collidingObjects) {
+		if (find(pairs.begin(), pairs.end(), collidingGo->GetComponent<PhysicsObject*>()->GetRigidbody()) != pairs.end()) continue;
+
+		go->CallOnCollisionEndForScripts(collidingGo);
+		go->collidingObjects.erase(remove(go->collidingObjects.begin(), go->collidingObjects.end(), collidingGo), go->collidingObjects.end());
+	}
 }
 
 void BulletPhysics::UpdateBullet(float dt, int iterations) {
-  dynamicsWorld->stepSimulation(dt, iterations);
+	dynamicsWorld->stepSimulation(dt, iterations);
 
-  map<const btCollisionObject*, const btCollisionObject*> collisionPairs = GenerateCollisionPairs();
-  map<const btCollisionObject*, const GameObject*> collisionObjectGameObjectPair;
+	map<btRigidBody*, vector<btRigidBody*>> collisionPairs = GenerateCollisionPairs();
+	map<btRigidBody*, GameObject*> collisionObjectGameObjectPair;
 
-  for (auto& go : gameWorld.GetGameObjectList()) {
-    PhysicsObject* object = go->GetPhysicsObject();
-    if (object == nullptr) continue;
+	for (auto& go : gameWorld.GetGameObjectList()) {
+		PhysicsObject* object = go->GetComponent<PhysicsObject*>();
+		if (object == nullptr) continue;
 
-    btRigidBody* body = go->GetPhysicsObject()->GetRigidbody();
-    UpdateObjectTransform(go, body);
+		btRigidBody* body = go->GetComponent<PhysicsObject*>()->GetRigidbody();
+		UpdateObjectTransform(go, body);
 
-    if (collisionPairs.find((btCollisionObject*)body) != collisionPairs.end()) {
-      collisionObjectGameObjectPair[(btCollisionObject*)body] = go;
-    }
-
-	if (collisionPairs.find((btCollisionObject*)body) == collisionPairs.end()) {
-		for (auto collidingGo : go->collidingObjects) {
-			go->CallOnCollisionEndForScripts(collidingGo);
+		if (collisionPairs.find(body) != collisionPairs.end()) {
+			collisionObjectGameObjectPair[body] = go;
 		}
-		go->collidingObjects.clear();
+		
+		EmitOnCollisionEndEvents(collisionPairs, body, go);
 	}
-  }
-  
-  for (auto iter : collisionPairs) {
-    GameObject* go1 = (GameObject*) collisionObjectGameObjectPair[iter.first];
-    GameObject* go2 = (GameObject*) collisionObjectGameObjectPair[iter.second];
 
-	if (!std::count(go1->collidingObjects.begin(), go1->collidingObjects.end(), go2)) {
-		go1->CallOnCollisionEnterForScripts(go2);
-		go1->collidingObjects.push_back(go2);
-	}
-	if (!std::count(go2->collidingObjects.begin(), go2->collidingObjects.end(), go1)) {
-		go2->CallOnCollisionEnterForScripts(go1);
-		go2->collidingObjects.push_back(go1);
-	}
-  }
+	EmitOnCollisionEnterEvents(collisionPairs, collisionObjectGameObjectPair);
 }

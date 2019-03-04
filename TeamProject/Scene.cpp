@@ -5,7 +5,7 @@
 #include "../Common/Assets.h"
 #include "GameWorld.h"
 #include "AudioEngine.h"
-#include "../../Common/Assets.h"
+#include "InputManager.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -17,6 +17,7 @@ Scene::Scene() {
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
   world->SetPhysics(physics);
+  InputManager::InitializeButtonRelations();
 
   audio = new CAudioEngine();
   world->SetAudio(audio);
@@ -49,30 +50,25 @@ void Scene::InitialiseAssets() {
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   dogsTex = (OGLTexture*)TextureLoader::LoadAPITexture("dogs.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
+
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
   dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
 
-  //Old functions to show as comparison
-  //pbrWoodDiff = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_COLOR.jpg");
-  //pbrWoodBump = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_NORM.jpg");
-  //pbrWoodSpec = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_DISP.jpg");
-  //pbrWoodMet = (OGLTexture*)TextureLoader::LoadAPITexture("WoodPlanks/Wood_planks_SPEC.jpg");
   pbrWoodDiff = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
   pbrWoodBump = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
   pbrWoodSpec = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
   pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
 
   basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
+  //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
 
-  basicMaterial = new Material();
-  basicMaterial->SetShader(basicShader);
+  basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", basicShader);
   basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
   basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
   basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
   basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 
-  floorMat = new Material();
-  floorMat->SetShader(basicShader);
+  floorMat = Assets::AssetManager::LoadMaterial("Floor Material", basicShader);
   floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
   floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
   floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
@@ -92,7 +88,7 @@ void Scene::InitialiseAssets() {
   };
 
   cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
-  renderer->skybox = cubeMap->GetObjectID();
+  renderer->skybox = cubeMap;
 
   InitCamera();
   InitWorld();
@@ -115,10 +111,11 @@ Scene::~Scene() {
   delete world;
 
   Assets::AssetManager::FlushAssets();
+  InputManager::Dispose();
 }
 
 void Scene::UpdateKeys() {
-
+	
 }
 
 void Scene::InitCamera() {
@@ -138,9 +135,9 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 
   sphere->GetTransform().SetWorldScale(Vector3(radius, radius, radius));
   sphere->GetTransform().SetWorldPosition(position);
-  sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
-
+  sphere->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
+  sphere->AddComponent<RenderObject*>((Component*)new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
+    
   world->AddGameObject(sphere);
   return sphere;
 }
@@ -151,8 +148,9 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetWorldScale(dimensions);
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetLocalOrientation(orient);
-  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
+  cube->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
+  cube->AddComponent<RenderObject*>((Component*)new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
+  cube->GetComponent<RenderObject*>()->SetMaterialInstanced();
 
   world->AddGameObject(cube);
   return cube;

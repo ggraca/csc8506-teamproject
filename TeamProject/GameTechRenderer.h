@@ -3,17 +3,18 @@
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
+#include "../Common/TextureLoader.h"
 
 #include "GameWorld.h"
+#include "HUDObject.h"
 #include "CameraControl.h"
-#include "../Common/Matrix4.h"
 
 class Light;
+class HUDObject;
 
 namespace NCL {
 	namespace CSC8503 {
 		class RenderObject;
-
 		class GameTechRenderer : public OGLRenderer	{
 		public:
 			GameTechRenderer(GameWorld& world);
@@ -25,14 +26,20 @@ namespace NCL {
 			int GetShadowCasters() const { return shadowCasters; }
 
 			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
+			
+			TextureBase* skybox;
 
-			void GenerateScreenTexture(GLuint & into, bool depth = false);
+			//HUD
+			void AddHUDObjects();
+			void WeaponState(int index, bool state);
+			float health = 1; //(100%);
+			//void UpdateHealthQuad();
 
-			GLuint skybox;
 
 		protected:
 			void RenderFrame()	override;
 			void GenBuffers();
+			void RenderHUD();
 
 			OGLShader*		defaultShader;
 
@@ -59,25 +66,31 @@ namespace NCL {
 			OGLShader* skyBoxShader;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
-			GLuint gBufferDepthTex; // Depth goes here
-			GLuint gBufferColourTex; // Albedo goes here
-			GLuint gBufferNormalTex; // Normals go here
-			GLuint gBufferSpecularTex; // Specular goes here
+			TextureBase* gBufferDepthTex; // Depth goes here
+			TextureBase* gBufferColourTex; // Albedo goes here
+			TextureBase* gBufferNormalTex; // Normals go here
+			TextureBase* gBufferSpecularTex; // Specular goes here
 
 			GLuint lightFBO; // FBO for our lighting pass
-			GLuint lightEmissiveTex; // emissive lighting
-			GLuint lightSpecularTex; // specular lighting
+			TextureBase* lightEmissiveTex; // emissive lighting
+			TextureBase* lightSpecularTex; // specular lighting
 
 			OGLShader* combineShader;
 			OGLShader* lightShader;
+			OGLShader* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 
 			Light* directionalLight;
+			
+			GLuint hudTex;
+			vector<HUDObject*> hudObjects;
+			
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
+			bool drawShadows = true;
 		};
 	}
 }

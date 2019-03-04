@@ -1,35 +1,26 @@
 #pragma once
 #include "Transform.h"
-#include "PhysicsObject.h"
-#include "RenderObject.h"
 #include "LayerAndTag.h"
-//#include "GameWorld.h"
-
 #include <vector>
+#include <map>
+#include "TypeId.h"
 
 using std::vector;
 
+
 namespace NCL {
 	namespace CSC8503 {
-		class NetworkObject;
-		class InputManager;
+		class Component;
 		class ScriptObject;
 		class GameWorld;
+		
 
 		class GameObject	{
 		public:
-			GameObject(string name = "");
+			GameObject(std::string name = "");
 			virtual ~GameObject();
 
-			void ClearScripts();
-
-			void SetBoundingVolume(CollisionVolume* vol) {
-				boundingVolume = vol;
-			}
-
-			const CollisionVolume* GetBoundingVolume() const {
-				return boundingVolume;
-			}
+			void ClearComponents();
 
 			bool IsActive() const {
 				return isActive;
@@ -43,31 +34,11 @@ namespace NCL {
 				return transform;
 			}
 
-			RenderObject* GetRenderObject() const {
-				return renderObject;
-			}
-
-			PhysicsObject* GetPhysicsObject() const {
-				return physicsObject;
-			}
-
-			NetworkObject* GetNetworkObject() const {
-				return networkObject;
-			}
-
-			void SetRenderObject(RenderObject* newObject) {
-				renderObject = newObject;
-			}
-
-			void SetPhysicsObject(PhysicsObject* newObject) {
-				physicsObject = newObject;
-			}
-
-			const string& GetName() const {
+			const std::string& GetName() const {
 				return name;
 			}
 
-			void SetName(string s) {
+			void SetName(std::string s) {
 				name = s;
 			}
 
@@ -111,83 +82,49 @@ namespace NCL {
 			virtual void OnCollisionEnd(GameObject* otherObject);
 
 
-			void SetParent(const GameObject * parent)
-			{
-				if (parent)
-				{
-					this->GetRenderObject()->GetTransform()->SetParent(parent->GetRenderObject()->GetTransform());
-					parent->GetRenderObject()->GetTransform()->AddChild(this->GetRenderObject()->GetTransform());
-				}
-				else
-				{
-					if (this->GetRenderObject()->GetTransform()->GetParent() != nullptr)
-					{
-						this->GetRenderObject()->GetTransform()->GetParent()->RemoveChild(this->GetRenderObject()->GetTransform());
-					}
+			void SetParent(GameObject * parent);
+			
 
-					this->GetRenderObject()->GetTransform()->SetParent(nullptr);
-				}
-			}
+			bool IsParent(const Transform* transform);
+			
 
-			bool IsParent(const Transform* transform)
-			{
-				return (this->GetRenderObject()->GetTransform()->GetParent() == transform);
-			}
-
-			void AddChild(GameObject * child)
-			{
-				child->SetParent(this);
-			}
-
-			void AddScript(ScriptObject* obj);
-
+			void AddChild(GameObject * child);
+			
+			template<class T>
+			void AddComponent(Component * obj);
 
 			template<class T>
-			void RemoveScript()
+			void RemoveComponent()
 			{
+				int index = TypeId::GetTypeId(typeid(T));
 
-				for (int i = 0; i < scripts.size();i++)
-				{
-					if (dynamic_cast<T>(scripts[i]))
-					{
-						delete scripts[i];
-						scripts.erase(scripts.begin()+i);
-
-						return;
-					}
-				}
+				if (dynamic_cast<ScriptObject*>(T)) { RemoveScript<T>(); }
+				delete components[index];
+				components.erase(index);
 			}
 
 			template<class T>
-			T GetScript()
+			T GetComponent()
 			{
-				for (auto& i : scripts)
-				{
-					if (dynamic_cast<T>(i))
-					{
-						return dynamic_cast<T>(i);
-					}
-				}
-
-				return nullptr;
+				int index = TypeId::GetTypeId(typeid(T));
+				return dynamic_cast<T>(components[index]);
 			}
 
 			void SetUpInitialScripts();
-
 			bool HasOtherScriptsAttached() { return (scripts.size() > 0); }
-
-			void UpdateAttachedScripts(float dt);
+			void UpdateComponents(float dt);
 			void LateUpdateAttachedScripts(float dt);
 			void CallOnCollisionEnterForScripts(GameObject * otherObject);
 			void CallOnCollisionEndForScripts(GameObject * otherObject);
 
+			bool HasComponentsAttached() { return (components.size() > 0); }
 
 			static void SetGameWorld(GameWorld * world);
-			static GameObject * Find(string name);
+			static GameObject * Find(std::string name);
 			static GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
 			static vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
-			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
-			static vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+			static vector<GameObject*> GetChildrenOfObject(GameObject* obj);
+			static vector<GameObject*> GetChildrenOfObject(GameObject* obj, LayerAndTag::Tags tag);
 			static  void Destroy(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj,GameObject * parent);
@@ -198,40 +135,52 @@ namespace NCL {
 
 		protected:
 			Transform			transform;
-			CollisionVolume*	boundingVolume;
-			PhysicsObject*		physicsObject;
-			RenderObject*		renderObject;
-			NetworkObject*		networkObject;
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
 			std::vector<ScriptObject*> scripts;
+			std::map<int, Component*> components;
 
 			bool	isActive;
 			bool	isAddedToWorld;
-			string	name;
+			std::string	name;
+
+		private:
+
+			void AddScript(ScriptObject* obj);
+
+			template<class T>
+			void RemoveScript()
+			{
+
+				for (int i = 0; i < scripts.size();i++)
+				{
+					if (dynamic_cast<T>(scripts[i]))
+					{
+						delete scripts[i];
+						scripts.erase(scripts.begin() + i);
+
+						return;
+					}
+				}
+			}
 		};
 
-
-		class ScriptObject
+		template<class T>
+		void GameObject::AddComponent(Component * obj)
 		{
-		public:
+			if (!obj) { return; }
 
-			ScriptObject();
-			ScriptObject(GameObject * go);
+			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
 
-			virtual ~ScriptObject();
+			int index = TypeId::GetTypeId(typeid(T));
 
+			if (components[index])
+			{
+				delete components[index];
+			}
 
-			virtual void Awake();
-			virtual void Start();
-			virtual void Update(float dt);
-			virtual void LateUpdate(float dt);
-			virtual void OnCollisionBegin(GameObject* otherObject);
-			virtual void OnCollisionEnd(GameObject* otherObject);
+			components[index] = obj;
+		}
 
-		protected:
-			GameObject * gameObject;
-		};
-
-	}
+}
 }

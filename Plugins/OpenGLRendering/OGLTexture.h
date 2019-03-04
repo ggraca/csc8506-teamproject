@@ -20,6 +20,8 @@ namespace NCL {
 
 			static TextureBase* RGBATextureFromFilename(const std::string&name);
 
+			static TextureBase* EmptyTexture(int width, int height, bool depth = false);
+
 			static TextureBase* CubeTextureFromFilename(const std::vector<std::string>& faces);
 
 			GLuint GetObjectID() const	{

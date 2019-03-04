@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{86B67DBB-8D8A-4B90-9383-A95C534E2A01}</ProjectGuid>
     <RootNamespace>TeamProject</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -165,6 +165,7 @@
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DamageControl.cpp" />
     <ClCompile Include="Debug.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="HealthManager.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="HUDObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LayerAndTag.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -186,7 +188,9 @@
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TypeId.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +198,7 @@
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DamageControl.h" />
     <ClInclude Include="Debug.h" />
@@ -206,6 +211,7 @@
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="HealthManager.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="HUDObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LayerAndTag.h" />
     <ClInclude Include="PhysicsObject.h" />
@@ -215,7 +221,9 @@
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ScriptObject.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TypeId.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

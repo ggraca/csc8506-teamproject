@@ -23,16 +23,26 @@ namespace NCL
 				MAX
 			};
 
-			InputManager();
-			~InputManager();
+			InputManager(InputManager const&) = delete;
+			void operator=(InputManager const&) = delete;
+
+			static InputManager& GetInstance()
+			{
+				static InputManager instance;
+				return instance;
+			}
 
 
-			bool IsButtonPressed(ActionButton actionButton);
-			bool IsButtonHeld(ActionButton actionButton);
-			bool IsButtonDown(ActionButton actionButton);
-			bool IsDoubleClicked(ActionButton actionButton);
+			static bool IsButtonPressed(ActionButton actionButton);
+			static bool IsButtonHeld(ActionButton actionButton);
+			static bool IsButtonDown(ActionButton actionButton);
+			static bool IsDoubleClicked(ActionButton actionButton);
+
+			static void InitializeButtonRelations();
+			static void Dispose();
 
 		private:
+			InputManager() {};
 
 			struct ButtonRelation
 			{
@@ -40,7 +50,6 @@ namespace NCL
 				std::vector<NCL::MouseButtons> relatedMouseKeys;
 			};
 
-			void InitializeButtonRelations();
 
 		protected:
 

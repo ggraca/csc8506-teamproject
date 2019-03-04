@@ -6,9 +6,6 @@
 #include "../../Common/SimpleFont.h"
 #include "../../Common/TextureLoader.h"
 
-#include "../../Common/Vector2.h"
-#include "../../Common/Vector3.h"
-
 #include "../../Common/MeshGeometry.h"
 
 #ifdef _WIN32
@@ -165,6 +162,180 @@ void OGLRenderer::BindTextureToShader(const TextureBase*t, const std::string& un
 	glBindTexture(GL_TEXTURE_2D, texID);
 
 	glUniform1i(slot, texUnit);
+}
+
+void OGLRenderer::BindTextureCubeToShader(const TextureBase*t, const std::string& uniform, int texUnit) const {
+	GLint texID = 0;
+
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	if (const OGLTexture* oglTexture = dynamic_cast<const OGLTexture*>(t)) {
+		texID = oglTexture->texID;
+	}
+
+	glActiveTexture(GL_TEXTURE0 + texUnit);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texID);
+
+	glUniform1i(slot, texUnit);
+}
+
+void OGLRenderer::BindBoolToShader(const bool val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform1i(slot, val);
+}
+
+void OGLRenderer::BindIntToShader(const int val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform1i(slot, val);
+}
+
+void OGLRenderer::BindFloatToShader(const float val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform1f(slot, val);
+}
+
+void OGLRenderer::BindVector3ToShader(const Vector3& val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform3fv(slot, 1, (float*)&val);
+}
+
+void OGLRenderer::BindVector4ToShader(const Vector4& val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform4fv(slot, 1, (float*)&val);
+}
+
+void OGLRenderer::BindMatrix4ToShader(const Matrix4& val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniformMatrix4fv(slot, 1, false, (float*)&val);
+}
+
+void OGLRenderer::GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& bufferTexs, TextureBase* depth) {
+	glGenFramebuffers(1, (GLuint*)buffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, *(GLuint*)(buffer));
+
+	if (depth) {
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+			GL_TEXTURE_2D, ((OGLTexture*)depth)->GetObjectID(), 0);
+	}
+
+	if (bufferTexs.size() != 0) {
+		GLenum* drawBuffer = new GLenum[bufferTexs.size()];
+		for (int i = 0; i < bufferTexs.size(); i++)
+		{
+			drawBuffer[i] = GL_COLOR_ATTACHMENT0 + i;
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i,
+				GL_TEXTURE_2D, ((OGLTexture*)bufferTexs[i])->GetObjectID(), 0);
+		}
+		glDrawBuffers(bufferTexs.size(), drawBuffer);
+		delete[] drawBuffer;
+	}
+	else {
+		glDrawBuffer(GL_NONE);
+	}
+}
+
+void OGLRenderer::DeleteFrameBuffer(void* buffer) {
+	glDeleteFramebuffers(1, (GLuint*)buffer);
+}
+
+void OGLRenderer::BindFBO(void* buffer) {
+	if (!buffer) {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+	else {
+		glBindFramebuffer(GL_FRAMEBUFFER, *(GLuint*)buffer);
+	}
+}
+
+void OGLRenderer::ClearBuffer(bool depth, bool color, bool stencil) const {
+	int bit = 0;
+	if (depth) {
+		bit = bit | GL_DEPTH_BUFFER_BIT;
+	}
+	if (color) {
+		bit = bit | GL_COLOR_BUFFER_BIT;
+	}
+	if (stencil) {
+		bit = bit | GL_STENCIL_BUFFER_BIT;
+	}
+	glClear(bit);
+}
+
+void OGLRenderer::ClearColor(const Vector4& color) const {
+	glClearColor(color.x, color.y, color.z, color.w);
+}
+
+void OGLRenderer::SetViewport(int x, int y, int width, int height) const {
+	glViewport(x, y, width, height);
 }
 
 //void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const Vector4& colour) {
