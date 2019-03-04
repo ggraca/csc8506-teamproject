@@ -15,12 +15,9 @@ Scene::Scene() {
   renderer = new GameTechRenderer(*world);
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
- 
+
   audio = new CAudioEngine();
-  audio->Init();
-  audio->setNumList(1);
-  audio->setMinMaxDistance(100.0f, 10000.0f);
-  audio->LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, true, false);
+  
   int x;
   x = audio->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", Vector3(0, 0, 0), 1.0f); 
   audio->SetChannel3dPosition(x, Vector3(110, 10, 50));
@@ -122,7 +119,6 @@ Scene::~Scene() {
 
   Assets::AssetManager::FlushAssets();
 }
-
 
 void Scene::UpdateKeys() {
 

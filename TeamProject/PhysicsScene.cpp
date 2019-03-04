@@ -39,6 +39,9 @@ void PhysicsScene::ResetWorld() {
   player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
 
+  audio->SetPlayer(player);
+  audio->SetCamera(world->GetMainCamera());
+
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource1->SetName("Resource 1");
   resource1->AddScript((ScriptObject*)new Resource(resource1));
@@ -100,25 +103,8 @@ void PhysicsScene::UpdateGame(float dt) {
   
   renderer->Render();
 
-  Vector3 campos = world->GetMainCamera()->GetTransform().GetWorldPosition();
-  cout << campos << endl;
-  audio->cameraPos(campos);
-  Vector3 forward = PhysicsScene::forward();
-  audio->getforward(forward);
   audio->Update();
 }
 
 void PhysicsScene::DebugScene(float dt) {
 }
-
-
-Vector3  PhysicsScene::forward() {
-
-	auto player = GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Player);
-	float xPos = sin(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
-	float yPos = sin(-player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
-	float zPos = cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180));
-
-	return Vector3{ xPos,yPos, zPos };
-}
-

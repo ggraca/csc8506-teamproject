@@ -18,10 +18,7 @@ namespace NCL {
       ~PhysicsScene();
       void UpdateGame(float dt);
 	  static InputManager * inputManager;
-	  Vector3  forward();
-	  float M_PI = 3.14159265358979323846;
-
-
+	  
     protected:
       void ResetWorld();
       void DebugScene(float dt);

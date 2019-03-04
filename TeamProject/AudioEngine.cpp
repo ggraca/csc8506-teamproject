@@ -33,6 +33,13 @@ void Implementation::Update() {   // if channel stops playing this will delete i
 	
 }
 
+CAudioEngine::CAudioEngine() {
+	Init();
+	setNumList(1);
+	setMinMaxDistance(100.0f, 10000.0f);
+	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, true, false);
+}
+
 void CAudioEngine::Init() {
 	sgpImplementation = new Implementation();
 	sgpImplementation->mpSystem->set3DSettings(NULL, DISTANCEFACTOR, 1.0f);
@@ -41,6 +48,8 @@ void CAudioEngine::Init() {
 }
 
 void CAudioEngine::Update() {
+	SetOrientation();
+	SetCameraPos();
 	sgpImplementation->mpSystem->set3DListenerAttributes(0, &cPos, NULL,&forward, &up);
 	sgpImplementation->Update();
 }
@@ -208,27 +217,23 @@ void CAudioEngine::SetEventParameter(const string &strEventName, const string &s
 }
 
 FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world sapce to fmod co ord
-	
+	FMOD_VECTOR fVec;
 	fVec.x = vPosition.x;
 	fVec.y = vPosition.y;
 	fVec.z = vPosition.z;
 	return fVec;
 }
 
-FMOD_VECTOR CAudioEngine::cameraPos(const Vector3& vPosition) { // sets world sapce to fmod co ord
+void CAudioEngine::SetCamera(GameObject* cam) { // sets world sapce to fmod co ord
+	
+	camera = cam;
+}
 
+void CAudioEngine::SetCameraPos() {
+	Vector3 vPosition = camera->GetTransform().GetWorldPosition();
 	cPos.x = vPosition.x;
 	cPos.y = vPosition.y;
 	cPos.z = vPosition.z;
-	return cPos;
-}
-
-FMOD_VECTOR CAudioEngine::getforward(const Vector3& vPosition) { // sets world sapce to fmod co ord
-
-	forward.x = vPosition.x;
-	forward.y = vPosition.y;
-	forward.z = vPosition.z;
-	return forward;
 }
 
 float  CAudioEngine::dbToVolume(float dB) // converts dB volume to linear
@@ -261,6 +266,18 @@ void CAudioEngine::setMinMaxDistance(float x, float y) {
 
 void CAudioEngine::setNumList(int num) {
 	sgpImplementation->mpSystem->set3DNumListeners(num);
+}
+
+void CAudioEngine::SetPlayer(GameObject* player1) {
+
+	player = player1;
+}
+
+void CAudioEngine::SetOrientation() {
+
+	forward.x = sin(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
+	forward.y = sin(-player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
+	forward.z = cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180));
 }
 
 // code tutorial from https://codyclaborn.me/tutorials/making-a-basic-fmod-audio-engine-in-c/

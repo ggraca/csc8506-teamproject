@@ -17,6 +17,7 @@ namespace NCL {
 
 			virtual void UpdateGame(float dt) = 0;
 			BulletPhysics*		physics; //TODO Make protected again?
+
 		protected:
 			void InitialiseAssets();
 
@@ -61,6 +62,7 @@ namespace NCL {
 			OGLShader*	basicShader = nullptr;
 			Material*   basicMaterial = nullptr;
 			Material* floorMat = nullptr;
+
 		};
 	}
 }
