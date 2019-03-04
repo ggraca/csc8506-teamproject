@@ -44,7 +44,12 @@ void Resource::LateUpdate(float dt)
 
 void Resource::OnCollisionBegin(GameObject * otherObject)
 {
-	
+	if (otherObject && otherObject->CompareTag(LayerAndTag::Tags::Player)) {
+		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
+		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
+		int x = audio->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", pos, 1.0f);
+		audio->SetChannel3dPosition(x, pos);
+	}
 }
 
 void Resource::OnCollisionEnd(GameObject * otherObject)

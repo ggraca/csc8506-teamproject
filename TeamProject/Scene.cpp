@@ -4,6 +4,7 @@
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/Assets.h"
 #include "GameWorld.h"
+#include "AudioEngine.h"
 #include "InputManager.h"
 
 using namespace NCL;
@@ -12,15 +13,19 @@ using namespace CSC8503;
 Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
+  
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
   world->SetPhysics(physics);
   InputManager::InitializeButtonRelations();
 
+  audio = new CAudioEngine();
+  world->SetAudio(audio);
+
   Debug::SetRenderer(renderer);
 
   InitialiseAssets();
-}
+   }
 
 void Scene::InitialiseAssets() {
   cubeMesh = new OGLMesh("Cube.msh");
@@ -107,21 +112,6 @@ Scene::~Scene() {
 
   Assets::AssetManager::FlushAssets();
   InputManager::Dispose();
-}
-
-void Scene::UpdateGame(float dt) {
-
-
-  //UpdateKeys();
-  //SelectObject();
-  //MoveSelectedObject();
-
-  world->UpdateWorld(dt);
-  renderer->Update(dt);
-  physics->Update(dt);
-
-  Debug::FlushRenderables();
-  renderer->Render();
 }
 
 void Scene::UpdateKeys() {
