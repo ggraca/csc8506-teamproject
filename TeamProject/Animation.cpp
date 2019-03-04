@@ -1,6 +1,6 @@
 #include "Animation.h"
 #include "PhysicsObject.h"
-
+#include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 Animation::Animation(int fps = 60)
 {
@@ -81,6 +81,14 @@ void Animation::UpdateObjectTransform(GameObject * obj)
 	currentRotation += interpolation->localRotation;
 	obj->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(currentRotation.x, currentRotation.y, currentRotation.z));
 	obj->GetTransform().UpdateMatrices();
+
+	if (obj->GetComponent<PhysicsObject*>())
+	{
+		PhysicsObject * phy = obj->GetComponent<PhysicsObject*>();
+		phy->ForceUpdateWorldPosition(obj->GetTransform().GetWorldPosition());
+		phy->ForceUpdateLocalRotation(obj->GetTransform().GetLocalOrientation());
+		phy->ForceUpdateScale(obj->GetTransform().GetLocalScale());
+	}
 }
 
 void Animation::CalculateInterpolation()

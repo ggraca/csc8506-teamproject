@@ -75,7 +75,7 @@ void PhysicsObject::SetBulletPhysicsParameters()
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btMass, myMotionState, shape, localInertia);
 
 	body = new btRigidBody(rbInfo);
-
+	
 	//body->setLinearVelocity(btVector3(10, 100, 0));
 	//body->setAngularVelocity(btVector3(0, 10, 0));
 
@@ -85,4 +85,60 @@ void PhysicsObject::SetBulletPhysicsParameters()
 	body->setRestitution(restitution);
 	body->setRollingFriction(0.9);
 	body->setSpinningFriction(0.3);
+}
+
+void PhysicsObject::ForceUpdateBulletWorldTransform(btTransform &temp)
+{
+	body->getMotionState()->setWorldTransform(temp);
+	body->setWorldTransform(temp);
+}
+
+void PhysicsObject::ForceUpdateWorldPosition(Vector3 pos)
+{
+	btTransform temp;
+	body->getMotionState()->getWorldTransform(temp);
+	temp.setOrigin(btVector3(pos.x, pos.y, pos.z));
+	ForceUpdateBulletWorldTransform(temp);
+}
+
+void PhysicsObject::ForceUpdateWorldPositionWithTransform(Vector3 pos)
+{
+	transform->SetWorldPosition(pos);
+	ForceUpdateWorldPosition(pos);
+}
+
+void PhysicsObject::ForceUpdateLocalRotation(Quaternion qt)
+{
+	btTransform temp;
+	body->getMotionState()->getWorldTransform(temp);
+	temp.setRotation(btQuaternion(qt.x,qt.y,qt.z,qt.w));
+	ForceUpdateBulletWorldTransform(temp);
+}
+
+void PhysicsObject::ForceUpdateLocalRotationWithTransform(Quaternion qt)
+{
+	transform->SetLocalOrientation(qt);
+	ForceUpdateLocalRotation(qt);
+}
+
+void PhysicsObject::ForceUpdateScale(Vector3 scale)
+{
+	if (type == cube) {
+		body->setCollisionShape(new btBoxShape(btVector3(scale.x, scale.y, scale.z)));
+	}
+	if (type == sphere) {
+		body->setCollisionShape(new btSphereShape(scale.x));
+	}
+	if (type == cylinder) {
+		body->setCollisionShape(new btCylinderShape(btVector3(btScalar(scale.x), btScalar(scale.y), btScalar(scale.z))));
+	}
+	if (type == cone) {
+		body->setCollisionShape(new btConeShape(btScalar(scale.x), btScalar(scale.y)));
+	}
+}
+
+void PhysicsObject::ForceUpdateScaleWithTransform(Vector3 scale)
+{
+	transform->SetLocalScale(scale);
+	ForceUpdateScale(scale);
 }
