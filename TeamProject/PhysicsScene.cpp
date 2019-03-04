@@ -104,8 +104,9 @@ void PhysicsScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   UpdateKeys();
-  renderer->Update(dt);
   physics->Update(dt);
+  renderer->Update(dt);
+  world->clearObjectsToDestroy();
   
   //bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
   //bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));

@@ -26,7 +26,6 @@ namespace NCL {
 			GameObject * Find(string name);
 			GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
 			vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
-			void Destroy(GameObject * obj);
 
 			void Clear();
 			void ClearAndErase();
@@ -68,13 +67,25 @@ namespace NCL {
 				physics = bulletPhysics;
 			}
 
+			BulletPhysics* GetPhysics()
+			{
+				return physics;
+			}
+
 			GameObject* GetPlayerGameObject();
 			vector<GameObject*> GetGameObjectList();
+
+			void LateDestroy(GameObject * obj);
+			void clearObjectsToDestroy();
 
 		protected:
 			void UpdateTransforms();
 
+			void Destroy(GameObject * obj);
+			void RemoveCollisionsFromGameObject(GameObject * obj);
+
 			std::vector<GameObject*> gameObjects;
+			std::vector<GameObject*> objectsToDestroy;
 
 			GameObject* mainCamera;
 			LayerAndTag layering;

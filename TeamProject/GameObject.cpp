@@ -62,27 +62,6 @@ void GameObject::AddChild(GameObject * child)
 	child->SetParent(this);
 }
 
-void GameObject::OnCollisionBegin(GameObject * otherObject)
-{
-	if (!HasOtherScriptsAttached()) { return; }
-	
-	for (auto&i : scripts)
-	{
-		i->OnCollisionBegin(otherObject);
-	}
-}
-
-void GameObject::OnCollisionEnd(GameObject * otherObject)
-{
-	if (!HasOtherScriptsAttached()) { return; }
-
-	for (auto&i : scripts)
-	{
-		i->OnCollisionEnd(otherObject);
-	}
-	
-}
-
 void GameObject::AddScript(ScriptObject * obj)
 {
 	if (!obj) { return; }
@@ -119,8 +98,6 @@ void GameObject::LateUpdateAttachedScripts(float dt)
 
 void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
 {
-	OnCollisionBegin(otherObject);
-
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)
@@ -131,8 +108,6 @@ void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
 
 void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
 {
-	OnCollisionEnd(otherObject);
-
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)
@@ -193,7 +168,7 @@ void GameObject::Destroy(GameObject * obj)
 {
 	if (!gameWorld) { return; }
 
-	return gameWorld->Destroy(obj);
+	return gameWorld->LateDestroy(obj);
 }
 
 void GameObject::AddObjectToWorld(GameObject * obj)
