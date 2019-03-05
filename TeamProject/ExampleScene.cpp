@@ -44,13 +44,16 @@ void ExampleScene::ResetWorld() {
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 0.2f);
   //Player
   auto player = new PlayerPrefab();
-  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+  player->AddComponent<RenderObject*>(new RenderObject(&player->GetTransform(), cubeMesh, basicMaterial));
 
   auto resource1 = new ResourcePrefab();
-  auto resource2 = new ResourcePrefab();
-
   resource1->SetName("Resource 1");
+  resource1->AddComponent<RenderObject*>(new RenderObject(&resource1->GetTransform(), cubeMesh, basicMaterial));
+
+
+  auto resource2 = new ResourcePrefab();
   resource2->SetName("Resource 2");
+  resource2->AddComponent<RenderObject*>(new RenderObject(&resource2->GetTransform(), cubeMesh, basicMaterial));
 }
 
 ExampleScene::~ExampleScene() {

@@ -4,17 +4,16 @@
 
 
 Resource::Resource(GameObject * obj) : ScriptObject(obj)
-{
-	Reset();
+{	
 }
 
 Resource::~Resource()
 {
 }
 
-
 void Resource::Awake()
 {
+	Reset();
 }
 
 void Resource::Start()
@@ -45,7 +44,6 @@ void Resource::LateUpdate(float dt)
 
 void Resource::OnCollisionBegin(GameObject * otherObject)
 {
-	
 }
 
 void Resource::OnCollisionEnd(GameObject * otherObject)

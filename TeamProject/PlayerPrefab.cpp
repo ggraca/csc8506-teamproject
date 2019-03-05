@@ -1,16 +1,23 @@
 #include "PlayerPrefab.h"
-#include "PhysicsObject.h"
 
 
-PlayerPrefab::PlayerPrefab()
+PlayerPrefab::PlayerPrefab() :CubePrefab()
 {
-	//auto player = new CubePrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
 	//TODO Set transform values if needed.
+	ResetPlayer();
+}
+
+void PlayerPrefab::ResetPlayer()
+{
 	AddComponent<Player*>((Component*)new Player(this));
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 }
 
+PlayerPrefab::PlayerPrefab(const Vector3 & position, const Quaternion & orient, Vector3 dimensions, float mass, float restitution, float friction): CubePrefab(position,orient,dimensions,mass,restitution,friction)
+{
+	ResetPlayer();
+}
 
 PlayerPrefab::~PlayerPrefab()
 {

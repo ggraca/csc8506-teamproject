@@ -10,7 +10,8 @@ class PlayerPrefab : public CubePrefab
 {
 public:
 	PlayerPrefab();
-	//TODO parameterized (or whatever it is) which will call parameterized cube prefab construct
-	~PlayerPrefab();
+	void ResetPlayer();
+	PlayerPrefab(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction);
+	virtual ~PlayerPrefab();
 };
 

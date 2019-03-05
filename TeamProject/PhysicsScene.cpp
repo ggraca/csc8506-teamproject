@@ -31,13 +31,17 @@ void PhysicsScene::ResetWorld() {
   
    //Player
   auto player = new PlayerPrefab();
+  player->AddComponent<RenderObject*>(new RenderObject(&player->GetTransform(), cubeMesh, basicMaterial));
 
   auto resource1 = new ResourcePrefab();
   resource1->SetName("Resource 1");
+  resource1->AddComponent<RenderObject*>(new RenderObject(&resource1->GetTransform(), cubeMesh, basicMaterial));
+
   
   auto resource2 = new ResourcePrefab();
   resource2->SetName("Resource 2");
-  
+  resource2->AddComponent<RenderObject*>(new RenderObject(&resource2->GetTransform(), cubeMesh, basicMaterial));
+
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
 

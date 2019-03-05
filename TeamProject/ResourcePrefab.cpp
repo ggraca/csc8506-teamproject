@@ -4,10 +4,13 @@
 
 ResourcePrefab::ResourcePrefab()
 {
-	//auto resource = new CubePrefab(Vector3(100, 20, 100), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f, 0.f);
 	AddComponent<Resource*>((Component*)new Resource(this));
 }
 
+ResourcePrefab::ResourcePrefab(const Vector3 & position, const Quaternion & orient, Vector3 dimensions, float mass, float restitution, float friction):CubePrefab(position,orient,dimensions,mass,restitution,friction)
+{
+	AddComponent<Resource*>((Component*)new Resource(this));
+}
 
 ResourcePrefab::~ResourcePrefab()
 {
