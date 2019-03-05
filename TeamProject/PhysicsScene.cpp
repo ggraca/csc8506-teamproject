@@ -22,9 +22,6 @@ PhysicsScene::PhysicsScene() : Scene() {
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
-
-  GameObject::SetGameWorld(world);
-
 }
 
 void PhysicsScene::ResetWorld() {
@@ -33,17 +30,22 @@ void PhysicsScene::ResetWorld() {
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
   
    //Player
-  auto player = new PlayerPrefab();
+  auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
   player->AddComponent<RenderObject*>(new RenderObject(&player->GetTransform(), cubeMesh, basicMaterial));
+  player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
+  player->GetComponent<RenderObject*>()->SetMaterialInstanced();
 
-  auto resource1 = new ResourcePrefab();
+  auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);
   resource1->SetName("Resource 1");
   resource1->AddComponent<RenderObject*>(new RenderObject(&resource1->GetTransform(), cubeMesh, basicMaterial));
+  resource1->GetComponent<RenderObject*>()->SetMaterialInstanced();
+  resource1->GetComponent<Resource*>()->Reset();
 
-  
-  auto resource2 = new ResourcePrefab();
+  auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
   resource2->SetName("Resource 2");
   resource2->AddComponent<RenderObject*>(new RenderObject(&resource2->GetTransform(), cubeMesh, basicMaterial));
+  resource2->GetComponent<RenderObject*>()->SetMaterialInstanced();
+  resource2->GetComponent<Resource*>()->Reset();
 
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }

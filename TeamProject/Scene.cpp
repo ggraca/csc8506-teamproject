@@ -21,14 +21,14 @@ Scene::Scene() {
   physics->SetGravity(Vector3(-4, -60.81, 0));
   world->SetPhysics(physics);
   InputManager::InitializeButtonRelations();
-
+  GameObject::SetGameWorld(world);
   audio = new CAudioEngine();
   world->SetAudio(audio);
 
   Debug::SetRenderer(renderer);
 
   InitialiseAssets();
-   }
+}
 
 void Scene::InitialiseAssets() {
   cubeMesh = new OGLMesh("Cube.msh");
@@ -146,6 +146,7 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   
   GameObject* cube = new CubePrefab(position, orient, dimensions, mass, restitution, friction);
   cube->AddComponent<RenderObject*>((Component *)new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
+  cube->GetComponent<RenderObject*>()->SetMaterialInstanced();
 
   world->AddGameObject(cube);
   return cube;

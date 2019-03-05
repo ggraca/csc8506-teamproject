@@ -13,7 +13,7 @@ Resource::~Resource()
 
 void Resource::Awake()
 {
-	Reset();
+	//Reset();
 }
 
 void Resource::Start()

@@ -5,6 +5,7 @@ PlayerPrefab::PlayerPrefab() :CubePrefab()
 {
 	//TODO Set transform values if needed.
 	ResetPlayer();
+	GameObject::AddObjectToWorld(this);
 }
 
 void PlayerPrefab::ResetPlayer()
@@ -17,6 +18,7 @@ void PlayerPrefab::ResetPlayer()
 PlayerPrefab::PlayerPrefab(const Vector3 & position, const Quaternion & orient, Vector3 dimensions, float mass, float restitution, float friction): CubePrefab(position,orient,dimensions,mass,restitution,friction)
 {
 	ResetPlayer();
+	GameObject::AddObjectToWorld(this);
 }
 
 PlayerPrefab::~PlayerPrefab()

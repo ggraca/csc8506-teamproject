@@ -17,7 +17,7 @@ namespace NCL {
       PhysicsScene();
       ~PhysicsScene();
       void UpdateGame(float dt);
-	    static InputManager * inputManager;
+	  static InputManager * inputManager;
 
     protected:
       void ResetWorld();
