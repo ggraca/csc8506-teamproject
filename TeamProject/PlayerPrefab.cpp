@@ -8,14 +8,8 @@ PlayerPrefab::PlayerPrefab() :CubePrefab()
 	GameObject::AddObjectToWorld(this);
 }
 
-void PlayerPrefab::ResetPlayer()
-{
-	AddComponent<Player*>((Component*)new Player(this));
-	SetTag(LayerAndTag::Tags::Player);
-	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-}
-
-PlayerPrefab::PlayerPrefab(const Vector3 & position, const Quaternion & orient, Vector3 dimensions, float mass, float restitution, float friction): CubePrefab(position,orient,dimensions,mass,restitution,friction)
+PlayerPrefab::PlayerPrefab(const Vector3 & position, const Quaternion & orient, Vector3 dimensions, float mass, float restitution, float friction)
+:CubePrefab(position,orient,dimensions,mass,restitution,friction)
 {
 	ResetPlayer();
 	GameObject::AddObjectToWorld(this);
@@ -23,4 +17,11 @@ PlayerPrefab::PlayerPrefab(const Vector3 & position, const Quaternion & orient, 
 
 PlayerPrefab::~PlayerPrefab()
 {
+}
+
+void PlayerPrefab::ResetPlayer()
+{
+	AddComponent<Player*>((Component*)new Player(this));
+	SetTag(LayerAndTag::Tags::Player);
+	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 }
