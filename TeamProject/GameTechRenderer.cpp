@@ -28,10 +28,6 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	AddHUDObjects();
 
-	//Set up the light properties
-	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
-		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
-
 	pixOps.Init();
 }
 
@@ -40,8 +36,6 @@ GameTechRenderer::~GameTechRenderer()	{
 	DeleteFrameBuffer(&gBufferFBO);
 	DeleteFrameBuffer(&lightFBO);
 	DeleteFrameBuffer(&shadowFBO);
-
-	delete directionalLight;
 }
 
 void GameTechRenderer::AddHUDObjects()
@@ -145,9 +139,15 @@ void GameTechRenderer::BuildObjectList() {
 
 	for (std::vector<GameObject*>::const_iterator i = first; i != last; ++i) {
 		if ((*i)->IsActive()) {
-			const RenderObject*g = (*i)->GetComponent<RenderObject*>();
+			const RenderObject* g = (*i)->GetComponent<RenderObject*>();
+			const Light* l = (*i)->GetComponent<Light*>();
+
 			if (g) {
 				activeObjects.emplace_back(g);
+			}
+
+			if (l) {
+				activeLights.emplace_back(l);
 			}
 		}
 	}
@@ -167,7 +167,16 @@ void GameTechRenderer::RenderShadowMap() {
 
 	BindShader(shadowShader);
 
-	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(directionalLight->GetPosition(), Vector3(0, 0, 0));
+	//Temporary code to work out which light is the directional
+	Vector3 directionalLightPos;
+	for (int i = 0; i < activeLights.size(); i++)
+	{
+		if (activeLights[i]->GetGameObject()->GetName() == "Directional Light") {
+			directionalLightPos = activeLights[i]->GetGameObject()->GetTransform().GetWorldPosition();
+		}
+	}
+
+	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(directionalLightPos, Vector3(0, 0, 0));
 	Matrix4 shadowProjMatrix = Matrix4::Perspective(100.0f, 5000.0f, 1, 45.0f);
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
 	shadowMatrix = biasMatrix * mvMatrix; //we'll use this one later on
@@ -284,11 +293,12 @@ void GameTechRenderer::RenderLights() {
 	BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 	BindTextureToShader(gBufferNormalTex, "normTex", 4);
 
-	for (int x = 0; x < 1; ++x) {
-		float radius = directionalLight->GetRadius();
 
-		Matrix4 tempModelMatrix = Matrix4::Translation(directionalLight->GetPosition())
-			* directionalLight->GetOrientation().ToMatrix4()
+	for (int x = 0; x < activeLights.size(); ++x) {
+		float radius = activeLights[x]->GetRadius();
+
+		Matrix4 tempModelMatrix = Matrix4::Translation(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition())
+			* activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation().ToMatrix4()
 			* Matrix4::Scale(Vector3(radius, radius, radius));
 
 		//Need to be able to bind vector2 to shader
@@ -299,13 +309,19 @@ void GameTechRenderer::RenderLights() {
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindMatrix4ToShader(identity, "textureMatrix");
-		BindVector3ToShader(directionalLight->GetPosition(), "lightPos");
-		BindVector4ToShader(directionalLight->GetColour(), "lightColour");
+		BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition(), "lightPos");
+		BindVector4ToShader(activeLights[x]->GetColour(), "lightColour");
 		BindFloatToShader(radius, "lightRadius");
-		BindFloatToShader(directionalLight->GetBrightness(), "lightBrightness");
+		BindFloatToShader(activeLights[x]->GetBrightness(), "lightBrightness");
 		BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
 		BindMatrix4ToShader(shadowMatrix, "shadowMatrix");
-		BindIntToShader(drawShadows, "drawShadows");
+
+		if (activeLights[x]->GetGameObject()->GetName() == "Directional Light") {
+			BindIntToShader(drawShadows, "drawShadows");
+		}
+		else {
+			BindIntToShader(false, "drawShadows");
+		}
 
 		//TODO: Overload BindTextureToShader to take GLuint as parameter, as above for all textures
 		//BindTextureToShader(shadowTex, "shadowTex", 20);
@@ -314,9 +330,9 @@ void GameTechRenderer::RenderLights() {
 		glActiveTexture(GL_TEXTURE20);
 		glBindTexture(GL_TEXTURE_2D, shadowTex);
 
-		float dist = (directionalLight->GetPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
+		float dist = (activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
 
-		if (directionalLight->GetType() == LightType::Point) {
+		if (activeLights[x]->GetType() == LightType::Point) {
 			if (dist < radius) {// camera is inside the light volume !
 				pixOps.SetFaceCulling(CULLFACE::FRONT);
 			}
@@ -326,7 +342,7 @@ void GameTechRenderer::RenderLights() {
 
 			BindMesh(lightSphere);
 		}
-		else if (directionalLight->GetType() == LightType::Spot) {
+		else if (activeLights[x]->GetType() == LightType::Spot) {
 			// Different calculation here to determine if inside the cone
 			if (dist < radius) {// camera is inside the light volume !
 				pixOps.SetFaceCulling(CULLFACE::FRONT);

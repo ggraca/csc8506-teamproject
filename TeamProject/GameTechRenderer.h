@@ -57,6 +57,7 @@ namespace NCL {
 			void SetupDebugMatrix(OGLShader*s) override;
 
 			vector<const RenderObject*> activeObjects;
+			vector<const Light*> activeLights;
 
 			//shadow mapping things
 			OGLShader*	shadowShader;
@@ -82,8 +83,6 @@ namespace NCL {
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 
-			Light* directionalLight;
-			
 			GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 			

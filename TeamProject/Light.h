@@ -2,6 +2,7 @@
 
 #include "Component.h"
 #include "Transform.h"
+#include "../Common/Vector4.h"
 
 using namespace NCL::Maths;
 
@@ -13,9 +14,8 @@ enum LightType {
 
 class Light : public Component {
 public:
-	Light(Transform* transform, Vector4 colour, float radius, float brightness, Quaternion orientation) {
+	Light(LightType type, Vector4 colour, float radius, float brightness) {
 		this->type = type;
-		this->transform = transform;
 		this->colour = colour;
 		this->radius = radius;
 		this->brightness = brightness;
@@ -25,8 +25,6 @@ public:
 
 	LightType GetType() const { return type; }
 	void SetType(LightType val) { type = val; }
-
-	Transform* GetTransform() const { return transform; }
 
 	float GetRadius() const { return radius; }
 	void SetRadius(float val) { radius = val; }
@@ -39,7 +37,6 @@ public:
 
 protected:
 	LightType type;
-	Transform* transform;
 	Vector4 colour;
 	float radius;
 	float brightness;
