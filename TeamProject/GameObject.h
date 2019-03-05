@@ -7,7 +7,6 @@
 
 using std::vector;
 
-
 namespace NCL {
 	namespace CSC8503 {
 		class Component;
@@ -76,18 +75,8 @@ namespace NCL {
 				return (this->tag == other.tag);
 			}
 
-			virtual void OnCollisionBegin(GameObject* otherObject);
-
-
-			virtual void OnCollisionEnd(GameObject* otherObject);
-
-
 			void SetParent(GameObject * parent);
-			
-
 			bool IsParent(const Transform* transform);
-			
-
 			void AddChild(GameObject * child);
 			
 			template<class T>
@@ -131,7 +120,7 @@ namespace NCL {
 			static GameObject * GetMainCamera();
 
 			vector<GameObject*> collidingObjects;
-			static GameWorld *gameWorld;
+			static GameWorld* gameWorld;
 
 		protected:
 			Transform			transform;
