@@ -152,5 +152,3 @@ bool CameraControl::GetCameraType() const
 {
 	return isTPS;
 }
-
-

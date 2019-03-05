@@ -7,6 +7,7 @@
 #include "DebugMenu.h"
 #include "Player.h"
 #include "Resource.h"
+#include "InputManager.h"
 #include "CameraControl.h"
 
 namespace NCL {
@@ -20,7 +21,7 @@ namespace NCL {
     protected:
       void ResetWorld();
       void DebugScene(float dt);
-	  void UpdateKeys();
+	    void UpdateKeys();
 
 	  GameObject* bestcube;
 

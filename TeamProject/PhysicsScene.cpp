@@ -4,9 +4,12 @@
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 
+
 #include "../Common/Assets.h"
 #include <fstream>
 #include "Animator.h"
+
+
 
 using namespace NCL;
 using namespace CSC8503;
@@ -102,6 +105,10 @@ void PhysicsScene::ResetWorld() {
   player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
   player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+
+  audio->SetPlayer(player);
+  audio->SetCamera(world->GetMainCamera());
+
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource1->SetName("Resource 1");
   resource1->AddComponent<Resource*>((Component*)new Resource(resource1));
@@ -188,6 +195,8 @@ void PhysicsScene::UpdateGame(float dt) {
   hud.Update(dt, renderer);
 
   renderer->Render();
+
+  audio->Update();
 }
 
 void PhysicsScene::DebugScene(float dt) {

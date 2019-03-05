@@ -131,10 +131,9 @@ namespace NCL {
 			static GameObject * GetMainCamera();
 
 			vector<GameObject*> collidingObjects;
+			static GameWorld *gameWorld;
 
 		protected:
-
-			static GameWorld *gameWorld;
 			Transform			transform;
 			LayerAndTag::ObjectLayer  layer;
 			LayerAndTag::Tags   tag;
