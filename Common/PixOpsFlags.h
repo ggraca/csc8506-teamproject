@@ -21,24 +21,24 @@ public:
 		colorMask = ColorMask(true, true, true, true);
 
 		alphaComparison = COMPARISON::NEVER;
-		alphaBlend = BLEND::GL_ZERO;
+		alphaBlend = BLEND::ZERO;
 	};
 
 	virtual ~PixOpsFlags() = 0;
 
 	
 	enum BLEND {
-		GL_ZERO = 0,
-		GL_ONE = 1,
-		GL_SRC_COLOR = 2,
-		GL_ONE_MINUS_SRC_COLOR = 3,
-		GL_DST_COLOR = 4,
-		GL_ONE_MINUS_DST_COLOR = 5,
-		GL_SRC_ALPHA = 6,
-		GL_ONE_MINUS_SRC_ALPHA = 7,
-		GL_DST_ALPHA = 8,
-		GL_ONE_MINUS_DST_ALPHA = 9,
-		GL_SRC_ALPHA_SATURATE = 10
+		ZERO = 0,
+		ONE = 1,
+		SRC_COLOR = 2,
+		ONE_MINUS_SRC_COLOR = 3,
+		DST_COLOR = 4,
+		ONE_MINUS_DST_COLOR = 5,
+		SRC_ALPHA = 6,
+		ONE_MINUS_SRC_ALPHA = 7,
+		DST_ALPHA = 8,
+		ONE_MINUS_DST_ALPHA = 9,
+		SRC_ALPHA_SATURATE = 10
 	};
 
 	enum CULLFACE {
