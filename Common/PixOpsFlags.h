@@ -48,14 +48,15 @@ public:
 	};
 
 	enum COMPARISON {
-		NEVER = 0,
-		LESS = 1,
-		EQUAL = 2,
-		LEQUAL = 3,
-		GREATER = 4,
-		NOTEQUAL = 5,
-		GEQUAL = 6,
-		ALWAYS = 7
+		NONE = 0,
+		NEVER = 1,
+		LESS = 2,
+		EQUAL = 3,
+		LEQUAL = 4,
+		GREATER = 5,
+		NOTEQUAL = 6,
+		GEQUAL = 7,
+		ALWAYS = 8
 	};
 
 	virtual void SetFaceCulling(CULLFACE cull) = 0;

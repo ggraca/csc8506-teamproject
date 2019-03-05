@@ -34,7 +34,41 @@ public:
 	}
 
 	void SetDepthComparison(COMPARISON comp) override {
+		if (depthComparison == COMPARISON::NONE) {
+			glEnable(GL_DEPTH_TEST);
+		}
 
+		switch (comp)
+		{
+		case PixOpsFlags::NEVER:
+			glDisable(GL_DEPTH_TEST);
+			break;
+		case PixOpsFlags::LESS:
+			glDepthFunc(GL_LESS);
+			break;
+		case PixOpsFlags::EQUAL:
+			glDepthFunc(GL_EQUAL);
+			break;
+		case PixOpsFlags::LEQUAL:
+			glDepthFunc(GL_LEQUAL);
+			break;
+		case PixOpsFlags::GREATER:
+			glDepthFunc(GL_GREATER);
+			break;
+		case PixOpsFlags::NOTEQUAL:
+			glDepthFunc(GL_NOTEQUAL);
+			break;
+		case PixOpsFlags::GEQUAL:
+			glDepthFunc(GL_GEQUAL);
+			break;
+		case PixOpsFlags::ALWAYS:
+			glDepthFunc(GL_ALWAYS);
+			break;
+		default:
+			break;
+		}
+
+		depthComparison = comp;
 	}
 
 	void SetDepthMask(bool mask) = 0;
