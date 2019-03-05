@@ -32,19 +32,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
 		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
 
-	pixOps.SetFaceCulling(CULLFACE::BACK);
-
-	pixOps.SetDepthComparison(COMPARISON::LESS);
-	pixOps.SetDepthMask(true);
-
-	pixOps.SetStencilComparison(COMPARISON::NOCOMPARE, nullptr, nullptr);
-	pixOps.SetStencilMask(false);
-
-	pixOps.SetClearColor(Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-	pixOps.SetColourMask(std::make_tuple(true, true, true, true));
-
-	pixOps.SetSourceFactor(BLEND::ONE);
-	pixOps.SetDestinationFactor(BLEND::ONE);
+	pixOps.Init();
 }
 
 

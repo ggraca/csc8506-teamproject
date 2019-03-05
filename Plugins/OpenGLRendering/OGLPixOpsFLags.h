@@ -11,6 +11,22 @@ namespace NCL {
 			OGLPixOpsFLags() {};
 			~OGLPixOpsFLags() {};
 
+			void Init() override {
+				SetFaceCulling(CULLFACE::BACK);
+
+				SetDepthComparison(COMPARISON::LESS);
+				SetDepthMask(true);
+
+				SetStencilComparison(COMPARISON::NOCOMPARE, nullptr, nullptr);
+				SetStencilMask(false);
+
+				SetClearColor(Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+				SetColourMask(std::make_tuple(true, true, true, true));
+
+				SetSourceFactor(BLEND::ONE);
+				SetDestinationFactor(BLEND::ONE);
+			}
+
 			void SetFaceCulling(CULLFACE cull) override {
 				if (culling == CULLFACE::NOCULL) {
 					glEnable(GL_CULL_FACE);

@@ -80,6 +80,8 @@ namespace NCL {
 			}
 			BLEND GetDestinationFactor() { return destinationFactor; }
 
+			virtual void Init() = 0;
+
 		protected:
 			CULLFACE culling;
 
