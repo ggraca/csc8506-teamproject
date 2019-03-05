@@ -75,20 +75,11 @@ void Animation::UpdateAnimation(GameObject * obj, float dt)
 
 void Animation::UpdateObjectTransform(GameObject * obj)
 {
-	obj->GetTransform().SetLocalScale(obj->GetTransform().GetLocalScale()+interpolation->localScale);
-	obj->GetTransform().SetLocalPosition(obj->GetTransform().GetLocalPosition()+interpolation->localPosition);
+	obj->GetTransform().ForceUpdateScaleWithTransform(obj->GetTransform().GetLocalScale()+interpolation->localScale);
+	obj->GetTransform().ForceUpdateLocalPositionWithTransform(obj->GetTransform().GetLocalPosition()+interpolation->localPosition);
 	auto currentRotation = obj->GetTransform().GetLocalOrientation().ToEuler();
 	currentRotation += interpolation->localRotation;
-	obj->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(currentRotation.x, currentRotation.y, currentRotation.z));
-	obj->GetTransform().UpdateMatrices();
-
-	if (obj->GetComponent<PhysicsObject*>())
-	{
-		PhysicsObject * phy = obj->GetComponent<PhysicsObject*>();
-		phy->ForceUpdateWorldPosition(obj->GetTransform().GetWorldPosition());
-		phy->ForceUpdateLocalRotation(obj->GetTransform().GetLocalOrientation());
-		phy->ForceUpdateScale(obj->GetTransform().GetLocalScale());
-	}
+	obj->GetTransform().ForceUpdateLocalRotationWithTransform(Quaternion::EulerAnglesToQuaternion(currentRotation.x, currentRotation.y, currentRotation.z));
 }
 
 void Animation::CalculateInterpolation()

@@ -16,6 +16,7 @@ GameObject::GameObject(std::string objectName)
 	isAddedToWorld  = false;
 	layer			= LayerAndTag::ObjectLayer::Default;
 	tag				= LayerAndTag::Tags::Untagged;
+	transform.SetGameObject(this);
 }
 
 GameObject::~GameObject()	

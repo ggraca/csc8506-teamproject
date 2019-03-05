@@ -121,16 +121,6 @@ namespace NCL {
 				return body;
 			}
 
-			void ForceUpdateWorldPosition(Vector3 pos);
-			void ForceUpdateBulletWorldTransform(btTransform &temp);
-			void ForceUpdateLocalRotation(Quaternion qt);
-
-			void ForceUpdateWorldPositionWithTransform(Vector3 pos);
-			void ForceUpdateLocalRotationWithTransform(Quaternion qt);
-
-			void ForceUpdateScale(Vector3 scale);
-			void ForceUpdateScaleWithTransform(Vector3 scale);
-
 		protected:
 			const CollisionVolume* volume;
 			Transform*		transform;
