@@ -136,6 +136,7 @@ void GameTechRenderer::BuildObjectList() {
 	gameWorld.GetObjectIterators(first, last);
 
 	activeObjects.clear();
+	activeLights.clear();
 
 	for (std::vector<GameObject*>::const_iterator i = first; i != last; ++i) {
 		if ((*i)->IsActive()) {
