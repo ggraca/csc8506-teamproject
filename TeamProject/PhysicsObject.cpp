@@ -60,8 +60,12 @@ PhysicsObject::~PhysicsObject()	{
 	physics->dynamicsWorld->removeCollisionObject(body);
 	delete body;
 
-	//physics->collisionShapes.erase(remove(physics->collisionShapes.begin(), physics->collisionShapes.end(), shape), physics->collisionShapes.end());
-	delete shape;
+	for (int i = 0; i < physics->collisionShapes.size(); i++) {
+		if (physics->collisionShapes[i] == shape) {
+			physics->collisionShapes[i] = 0;
+			delete shape;
+		}
+	}
 }
 
 void PhysicsObject::SetBulletPhysicsParameters()
