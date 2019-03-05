@@ -4,10 +4,13 @@
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 
+
 #include "../Common/Assets.h"
 #include <fstream>
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
+
+
 
 using namespace NCL;
 using namespace CSC8503;
@@ -121,6 +124,8 @@ void PhysicsScene::UpdateGame(float dt) {
   hud.Update(dt, renderer);
 
   renderer->Render();
+
+  audio->Update();
 }
 
 void PhysicsScene::DebugScene(float dt) {
