@@ -71,7 +71,16 @@ public:
 		depthComparison = comp;
 	}
 
-	void SetDepthMask(bool mask) = 0;
+	void SetDepthMask(bool mask) override {
+		if (mask) {
+			glDepthMask(GL_TRUE);
+		}
+		else {
+			glDepthMask(GL_FALSE);
+		}
+
+		depthMask = mask;
+	}
 
 	void SetStencilComparison(COMPARISON comp) = 0;
 
