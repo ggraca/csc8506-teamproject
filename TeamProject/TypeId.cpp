@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "DamageControl.h"
 #include "CameraControl.h"
+#include "Light.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ int TypeId::GetTypeId(const type_info &info)
 	if (info.hash_code() == typeid(DamageControl*).hash_code()) { return 8; }
 	if (info.hash_code() == typeid(HealthManager*).hash_code()) { return 9; }
 	if (info.hash_code() == typeid(CameraControl*).hash_code()) { return 10; }
+	if (info.hash_code() == typeid(Light*).hash_code()) { return 10; }
 	else
 	{
 		cout << "Component type you are using is not registered. Please first register your component type with a unique id." << endl;

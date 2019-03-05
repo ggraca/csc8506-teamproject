@@ -1,8 +1,7 @@
 #pragma once
 
-#include "../Common/Vector4.h"
-#include "../Common/Vector3.h"
-#include "../Common/Quaternion.h"
+#include "Component.h"
+#include "Transform.h"
 
 using namespace NCL::Maths;
 
@@ -12,12 +11,11 @@ enum LightType {
 	Directional
 };
 
-class Light {
+class Light : public Component {
 public:
-	Light(LightType type, Vector3 position, Vector4 colour, float radius, float brightness, Quaternion orientation) {
+	Light(Transform* transform, Vector4 colour, float radius, float brightness, Quaternion orientation) {
 		this->type = type;
-		this->position = position;
-		this->orientation = orientation;
+		this->transform = transform;
 		this->colour = colour;
 		this->radius = radius;
 		this->brightness = brightness;
@@ -28,11 +26,7 @@ public:
 	LightType GetType() const { return type; }
 	void SetType(LightType val) { type = val; }
 
-	Vector3 GetPosition() const { return position; }
-	void SetPosition(Vector3 val) { position = val; }
-
-	Quaternion GetOrientation() const { return orientation; }
-	void SetOrientation(Quaternion val) { orientation = val; }
+	Transform* GetTransform() const { return transform; }
 
 	float GetRadius() const { return radius; }
 	void SetRadius(float val) { radius = val; }
@@ -45,8 +39,7 @@ public:
 
 protected:
 	LightType type;
-	Vector3 position;
-	Quaternion orientation;
+	Transform* transform;
 	Vector4 colour;
 	float radius;
 	float brightness;
