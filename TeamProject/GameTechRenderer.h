@@ -46,8 +46,6 @@ namespace NCL {
 
 			GameWorld&	gameWorld;
 
-			PixOpsFlags* pixOpsFlags;
-
 			void BuildObjectList();
 			void SortObjectList();
 			void RenderShadowMap();

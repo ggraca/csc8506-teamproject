@@ -28,7 +28,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	AddHUDObjects();
 
-	glClearColor(1, 1, 1, 1);
+	pixOps.SetClearColor(Vector4(1, 1, 1, 1));
 	//Set up the light properties
 	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
 		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
@@ -120,9 +120,9 @@ void GameTechRenderer::GenBuffers() {
 }
 
 void GameTechRenderer::RenderFrame() {
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.3f, 0.8f, 1, 1);
+	pixOps.SetFaceCulling(CULLFACE::NONE);
+	pixOps.SetDepthComparison(COMPARISON::LESS);
+	pixOps.SetClearColor(Vector4(0.3f, 0.8f, 1, 1));
 	BuildObjectList();
 	SortObjectList();
 	RenderShadowMap();
@@ -131,7 +131,7 @@ void GameTechRenderer::RenderFrame() {
 	RenderLights();
 	CombineBuffers();
 	RenderHUD();
-	glDisable(GL_CULL_FACE); //Todo - text indices are going the wrong way...
+	pixOps.SetDepthComparison(COMPARISON::NONE); //Todo - text indices are going the wrong way...
 }
 
 void GameTechRenderer::BuildObjectList() {
@@ -159,10 +159,10 @@ void GameTechRenderer::SortObjectList() {
 void GameTechRenderer::RenderShadowMap() {
 	BindFBO((void*)&shadowFBO);
 	ClearBuffer(true, false, false);
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	SetViewport(0, 0, SHADOWSIZE, SHADOWSIZE);
 
-	glCullFace(GL_FRONT);
+	pixOps.SetColourMask(std::make_tuple(false, false, false, false));
+	pixOps.SetFaceCulling(CULLFACE::FRONT);
 
 	BindShader(shadowShader);
 
@@ -183,10 +183,10 @@ void GameTechRenderer::RenderShadowMap() {
 	shadowCasters++;
 
 	SetViewport(0, 0, currentWidth, currentHeight);
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	BindFBO(nullptr);
 
-	glCullFace(GL_BACK);
+	pixOps.SetColourMask(std::make_tuple(true, true, true, true));
+	pixOps.SetFaceCulling(CULLFACE::BACK);
 }
 
 void GameTechRenderer::RenderSkybox() {
@@ -197,10 +197,10 @@ void GameTechRenderer::RenderSkybox() {
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildViewMatrix();
 	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildProjectionMatrix(screenAspect);
 
-	glDepthMask(GL_FALSE);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
-	glDisable(GL_CULL_FACE);
+	pixOps.SetDepthMask(false);
+	pixOps.SetDepthComparison(COMPARISON::NONE);
+	pixOps.SetSourceFactor(BLEND::NONE);
+	pixOps.SetFaceCulling(CULLFACE::NONE);
 
 	BindShader(skyBoxShader);
 
@@ -213,10 +213,10 @@ void GameTechRenderer::RenderSkybox() {
 	DrawBoundMesh();
 
 	BindShader(nullptr);
-	glDepthMask(GL_TRUE);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glEnable(GL_CULL_FACE);
+	pixOps.SetDepthMask(false);
+	pixOps.SetDepthComparison(COMPARISON::LESS);
+	pixOps.SetSourceFactor(BLEND::ONE);
+	pixOps.SetFaceCulling(CULLFACE::FRONT);
 	BindFBO(nullptr);
 }
 
@@ -265,9 +265,10 @@ void GameTechRenderer::RenderCamera() {
 
 void GameTechRenderer::RenderLights() {
 	BindFBO((void*)&lightFBO);
-	glClearColor(0, 0, 0, 1);
 	ClearBuffer(false, true, false);
-	glBlendFunc(GL_ONE, GL_ONE);
+	pixOps.SetClearColor(Vector4(0, 0, 0, 1));
+	pixOps.SetSourceFactor(BLEND::ONE);
+	pixOps.SetDestinationFactor(BLEND::ONE);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl*>()->BuildViewMatrix();
@@ -288,7 +289,7 @@ void GameTechRenderer::RenderLights() {
 			* directionalLight->GetOrientation().ToMatrix4()
 			* Matrix4::Scale(Vector3(radius, radius, radius));
 
-		//Need to be to bind vector2 to shader
+		//Need to be able to bind vector2 to shader
 		int pixelLocation = glGetUniformLocation(lightShader->GetProgramID(), "pixelSize");
 		glUniform2f(pixelLocation, 1.0f / currentWidth, 1.0f / currentHeight);
 
@@ -315,10 +316,10 @@ void GameTechRenderer::RenderLights() {
 
 		if (directionalLight->GetType() == LightType::Point) {
 			if (dist < radius) {// camera is inside the light volume !
-				glCullFace(GL_FRONT);
+				pixOps.SetFaceCulling(CULLFACE::FRONT);
 			}
 			else {
-				glCullFace(GL_BACK);
+				pixOps.SetFaceCulling(CULLFACE::BACK);
 			}
 
 			BindMesh(lightSphere);
@@ -326,10 +327,10 @@ void GameTechRenderer::RenderLights() {
 		else if (directionalLight->GetType() == LightType::Spot) {
 			// Different calculation here to determine if inside the cone
 			if (dist < radius) {// camera is inside the light volume !
-				glCullFace(GL_FRONT);
+				pixOps.SetFaceCulling(CULLFACE::FRONT);
 			}
 			else {
-				glCullFace(GL_BACK);
+				pixOps.SetFaceCulling(CULLFACE::BACK);
 			}
 
 			//Change to bind cone.
@@ -342,10 +343,11 @@ void GameTechRenderer::RenderLights() {
 		DrawBoundMesh();
 	}
 
-	glCullFace(GL_BACK);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	pixOps.SetFaceCulling(CULLFACE::BACK);
+	pixOps.SetSourceFactor(BLEND::SRC_ALPHA);
+	pixOps.SetDestinationFactor(BLEND::ONE_MINUS_SRC_ALPHA);
 
-	glClearColor(0.2f, 0.2f, 0.2f, 1);
+	pixOps.SetClearColor(Vector4(0.2f, 0.2f, 0.2f, 1));
 
 	BindFBO(nullptr);
 	BindShader(nullptr);
