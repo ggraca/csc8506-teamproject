@@ -68,7 +68,7 @@ public:
 	virtual void SetDepthMask(bool mask) = 0;
 	bool GetDepthMask() { return depthMask; }
 
-	virtual void SetStencilComparison(COMPARISON comp) = 0;
+	virtual void SetStencilComparison(COMPARISON comp, void* ref, void* mask) = 0;
 	COMPARISON GetStencilComparison() { return stencilComparison; }
 
 	virtual void SetStencilMask(bool mask) = 0;

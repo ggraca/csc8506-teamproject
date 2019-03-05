@@ -65,6 +65,7 @@ public:
 			glDepthFunc(GL_ALWAYS);
 			break;
 		default:
+			std::cout << __FUNCTION__ << "called with invalid paramter" << std::endl;
 			break;
 		}
 
@@ -82,7 +83,44 @@ public:
 		depthMask = mask;
 	}
 
-	void SetStencilComparison(COMPARISON comp) = 0;
+	void SetStencilComparison(COMPARISON comp, void* ref, void* mask) override {
+		if (stencilComparison == COMPARISON::NONE) {
+			glEnable(GL_STENCIL_TEST);
+		}
+
+		switch (comp)
+		{
+		case PixOpsFlags::NEVER:
+			glDisable(GL_STENCIL_TEST);
+			break;
+		case PixOpsFlags::LESS:
+			glStencilFunc(GL_LESS, *(int*)ref, *(unsigned int*)mask);
+			break;
+		case PixOpsFlags::EQUAL:
+			glStencilFunc(GL_EQUAL, *(int*)ref, *(unsigned int*)mask);
+			break;
+		case PixOpsFlags::LEQUAL:
+			glStencilFunc(GL_LEQUAL, *(int*)ref, *(unsigned int*)mask);
+			break;
+		case PixOpsFlags::GREATER:
+			glStencilFunc(GL_GREATER, *(int*)ref, *(unsigned int*)mask);
+			break;
+		case PixOpsFlags::NOTEQUAL:
+			glStencilFunc(GL_NOTEQUAL, *(int*)ref, *(unsigned int*)mask);
+			break;
+		case PixOpsFlags::GEQUAL:
+			glStencilFunc(GL_GEQUAL, *(int*)ref, *(unsigned int*)mask);
+			break;
+		case PixOpsFlags::ALWAYS:
+			glStencilFunc(GL_ALWAYS, *(int*)ref, *(unsigned int*)mask);
+			break;
+		default:
+			std::cout << __FUNCTION__ << "called with invalid paramter" << std::endl;
+			break;
+		}
+
+		stencilComparison = comp;
+	}
 
 	void SetStencilMask(bool mask) = 0;
 
