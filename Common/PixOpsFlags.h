@@ -6,7 +6,7 @@
 namespace NCL {
 	namespace Rendering {
 		enum BLEND {
-			NONE = 0,
+			NOBLEND = 0,
 			ZERO = 1,
 			ONE = 2,
 			SRC_COLOR = 3,
@@ -21,13 +21,13 @@ namespace NCL {
 		};
 
 		enum CULLFACE {
-			NONE = 0,
+			NOCULL = 0,
 			FRONT = 1,
 			BACK = 2
 		};
 
 		enum COMPARISON {
-			NONE = 0,
+			NOCOMPARE = 0,
 			NEVER = 1,
 			LESS = 2,
 			EQUAL = 3,
@@ -43,22 +43,7 @@ namespace NCL {
 		public:
 			typedef std::tuple<bool, bool, bool, bool> ColorMask;
 
-			PixOpsFlags() {
-				culling = CULLFACE::NONE;
-
-				depthComparison = COMPARISON::NEVER;
-				depthMask = false;
-
-				stencilComparison = COMPARISON::NEVER;
-				stencilMask = false;
-
-				NCL::Maths::Vector4 clearColor = NCL::Maths::Vector4(0.0f, 0.0f, 0.0f, 1.0f);
-				colorMask = ColorMask(true, true, true, true);
-
-				alphaComparison = COMPARISON::NEVER;
-				sourceFactor = BLEND::ZERO;
-				destinationFactor = BLEND::ZERO;
-			};
+			PixOpsFlags() {};
 
 			virtual ~PixOpsFlags() = 0;
 
@@ -112,5 +97,7 @@ namespace NCL {
 			BLEND destinationFactor;
 			virtual void SetBlendFunc() = 0;
 		};
+
+		inline PixOpsFlags::~PixOpsFlags() { }
 	}
 }

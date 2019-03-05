@@ -28,10 +28,23 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	AddHUDObjects();
 
-	pixOps.SetClearColor(Vector4(1, 1, 1, 1));
 	//Set up the light properties
 	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
 		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
+
+	pixOps.SetFaceCulling(CULLFACE::BACK);
+
+	pixOps.SetDepthComparison(COMPARISON::LESS);
+	pixOps.SetDepthMask(true);
+
+	pixOps.SetStencilComparison(COMPARISON::NOCOMPARE, nullptr, nullptr);
+	pixOps.SetStencilMask(false);
+
+	pixOps.SetClearColor(Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+	pixOps.SetColourMask(std::make_tuple(true, true, true, true));
+
+	pixOps.SetSourceFactor(BLEND::ONE);
+	pixOps.SetDestinationFactor(BLEND::ONE);
 }
 
 
@@ -120,7 +133,7 @@ void GameTechRenderer::GenBuffers() {
 }
 
 void GameTechRenderer::RenderFrame() {
-	pixOps.SetFaceCulling(CULLFACE::NONE);
+	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 	pixOps.SetDepthComparison(COMPARISON::LESS);
 	pixOps.SetClearColor(Vector4(0.3f, 0.8f, 1, 1));
 	BuildObjectList();
@@ -131,7 +144,7 @@ void GameTechRenderer::RenderFrame() {
 	RenderLights();
 	CombineBuffers();
 	RenderHUD();
-	pixOps.SetDepthComparison(COMPARISON::NONE); //Todo - text indices are going the wrong way...
+	pixOps.SetFaceCulling(CULLFACE::NOCULL); //Todo - text indices are going the wrong way...
 }
 
 void GameTechRenderer::BuildObjectList() {
@@ -198,9 +211,9 @@ void GameTechRenderer::RenderSkybox() {
 	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetScript<CameraControl *>()->BuildProjectionMatrix(screenAspect);
 
 	pixOps.SetDepthMask(false);
-	pixOps.SetDepthComparison(COMPARISON::NONE);
-	pixOps.SetSourceFactor(BLEND::NONE);
-	pixOps.SetFaceCulling(CULLFACE::NONE);
+	pixOps.SetDepthComparison(COMPARISON::NOCOMPARE);
+	pixOps.SetSourceFactor(BLEND::NOBLEND);
+	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 
 	BindShader(skyBoxShader);
 
@@ -212,11 +225,12 @@ void GameTechRenderer::RenderSkybox() {
 	BindMesh(screenQuad);
 	DrawBoundMesh();
 
-	BindShader(nullptr);
-	pixOps.SetDepthMask(false);
+	pixOps.SetDepthMask(true);
 	pixOps.SetDepthComparison(COMPARISON::LESS);
 	pixOps.SetSourceFactor(BLEND::ONE);
-	pixOps.SetFaceCulling(CULLFACE::FRONT);
+	pixOps.SetFaceCulling(CULLFACE::BACK);
+
+	BindShader(nullptr);
 	BindFBO(nullptr);
 }
 
@@ -265,8 +279,8 @@ void GameTechRenderer::RenderCamera() {
 
 void GameTechRenderer::RenderLights() {
 	BindFBO((void*)&lightFBO);
-	ClearBuffer(false, true, false);
 	pixOps.SetClearColor(Vector4(0, 0, 0, 1));
+	ClearBuffer(false, true, false);
 	pixOps.SetSourceFactor(BLEND::ONE);
 	pixOps.SetDestinationFactor(BLEND::ONE);
 

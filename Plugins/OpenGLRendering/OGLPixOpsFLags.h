@@ -9,16 +9,16 @@ namespace NCL {
 		{
 		public:
 			OGLPixOpsFLags() {};
-			~OGLPixOpsFLags() override {};
+			~OGLPixOpsFLags() {};
 
 			void SetFaceCulling(CULLFACE cull) override {
-				if (culling == CULLFACE::NONE) {
+				if (culling == CULLFACE::NOCULL) {
 					glEnable(GL_CULL_FACE);
 				}
 
 				switch (cull)
 				{
-				case CULLFACE::NONE:
+				case CULLFACE::NOCULL:
 					glDisable(GL_CULL_FACE);
 					break;
 				case CULLFACE::FRONT:
@@ -36,14 +36,17 @@ namespace NCL {
 			}
 
 			void SetDepthComparison(COMPARISON comp) override {
-				if (depthComparison == COMPARISON::NONE) {
+				if (depthComparison == COMPARISON::NOCOMPARE) {
 					glEnable(GL_DEPTH_TEST);
 				}
 
 				switch (comp)
 				{
-				case COMPARISON::NEVER:
+				case COMPARISON::NOCOMPARE:
 					glDisable(GL_DEPTH_TEST);
+					break;
+				case COMPARISON::NEVER:
+					glDepthFunc(GL_NEVER);
 					break;
 				case COMPARISON::LESS:
 					glDepthFunc(GL_LESS);
@@ -86,14 +89,17 @@ namespace NCL {
 			}
 
 			void SetStencilComparison(COMPARISON comp, void* ref, void* mask) override {
-				if (stencilComparison == COMPARISON::NONE) {
+				if (stencilComparison == COMPARISON::NOCOMPARE) {
 					glEnable(GL_STENCIL_TEST);
 				}
 
 				switch (comp)
 				{
-				case COMPARISON::NEVER:
+				case COMPARISON::NOCOMPARE:
 					glDisable(GL_STENCIL_TEST);
+					break;
+				case COMPARISON::NEVER:
+					glStencilFunc(GL_NEVER, *(int*)ref, *(unsigned int*)mask);
 					break;
 				case COMPARISON::LESS:
 					glStencilFunc(GL_LESS, *(int*)ref, *(unsigned int*)mask);
@@ -152,7 +158,7 @@ namespace NCL {
 
 				switch (sourceFactor)
 				{
-				case BLEND::NONE:
+				case BLEND::NOBLEND:
 					source = GL_NONE;
 					break;
 				case BLEND::ZERO:
@@ -195,7 +201,7 @@ namespace NCL {
 
 				switch (destinationFactor)
 				{
-				case BLEND::NONE:
+				case BLEND::NOBLEND:
 					dest = GL_NONE;
 					break;
 				case BLEND::ZERO:
