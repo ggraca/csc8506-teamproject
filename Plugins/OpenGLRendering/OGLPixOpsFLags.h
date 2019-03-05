@@ -133,7 +133,10 @@ public:
 		stencilMask = mask;
 	}
 
-	void SetClearColor(NCL::Maths::Vector4 color) = 0;
+	void SetClearColor(NCL::Maths::Vector4 color) override {
+		glClearColor(color.x, color.y, color.z, color.w);
+		clearColor = color;
+	}
 
 	void SetColourMask(ColorMask mask) = 0;
 
