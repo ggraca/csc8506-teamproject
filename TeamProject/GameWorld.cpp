@@ -104,7 +104,7 @@ void GameWorld::Destroy(GameObject * obj)
 	RemoveGameObject(obj);
 }
 
-void GameWorld::clearObjectsToDestroy() {
+void GameWorld::ClearObjectsToDestroy() {
 	for (auto go : objectsToDestroy) {
 		Destroy(go);
 	}
