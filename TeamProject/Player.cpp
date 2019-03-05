@@ -93,9 +93,8 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 	cout << "Colliding with: " << otherObject->GetName() << endl;
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
-		GameObject::Destroy(otherObject);
-		// otherObject->GetComponent<Resource*>()->Aquire(gameObject);
-		// UpdateResourceCount(1);
+		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
+		UpdateResourceCount(1);
 	}
 }
 

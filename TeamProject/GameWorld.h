@@ -76,7 +76,7 @@ namespace NCL {
 			vector<GameObject*> GetGameObjectList();
 
 			void LateDestroy(GameObject * obj);
-			void clearObjectsToDestroy();
+			void ClearObjectsToDestroy();
 
 		protected:
 			void UpdateTransforms();
