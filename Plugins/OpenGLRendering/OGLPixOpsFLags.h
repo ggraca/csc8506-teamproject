@@ -138,7 +138,11 @@ public:
 		clearColor = color;
 	}
 
-	void SetColourMask(ColorMask mask) = 0;
+	void SetColourMask(ColorMask mask) override {
+		bool r, g, b, a;
+		std::tie(r, g, b, a) = mask;
+		glColorMask(r, g, b, a);
+	}
 
 	void SetAlphaBlend(BLEND blend) = 0;
 };
