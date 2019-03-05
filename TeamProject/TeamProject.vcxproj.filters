@@ -85,6 +85,9 @@
       <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="TypeId.cpp" />
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -173,6 +176,9 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="TypeId.h" />
+    <ClInclude Include="AudioEngine.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UI">
@@ -192,6 +198,9 @@
     </Filter>
     <Filter Include="Tools">
       <UniqueIdentifier>{a0406ac3-d37e-4681-8652-768347c6e481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{e15e6ec5-41e1-418c-9a73-ee1d18bff769}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
