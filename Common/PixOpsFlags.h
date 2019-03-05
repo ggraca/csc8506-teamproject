@@ -21,24 +21,26 @@ public:
 		colorMask = ColorMask(true, true, true, true);
 
 		alphaComparison = COMPARISON::NEVER;
-		alphaBlend = BLEND::ZERO;
+		sourceFactor = BLEND::ZERO;
+		destinationFactor = BLEND::ZERO;
 	};
 
 	virtual ~PixOpsFlags() = 0;
 
 	
 	enum BLEND {
-		ZERO = 0,
-		ONE = 1,
-		SRC_COLOR = 2,
-		ONE_MINUS_SRC_COLOR = 3,
-		DST_COLOR = 4,
-		ONE_MINUS_DST_COLOR = 5,
-		SRC_ALPHA = 6,
-		ONE_MINUS_SRC_ALPHA = 7,
-		DST_ALPHA = 8,
-		ONE_MINUS_DST_ALPHA = 9,
-		SRC_ALPHA_SATURATE = 10
+		NONE = 0,
+		ZERO = 1,
+		ONE = 2,
+		SRC_COLOR = 3,
+		ONE_MINUS_SRC_COLOR = 4,
+		DST_COLOR = 5,
+		ONE_MINUS_DST_COLOR = 6,
+		SRC_ALPHA = 7,
+		ONE_MINUS_SRC_ALPHA = 8,
+		DST_ALPHA = 9,
+		ONE_MINUS_DST_ALPHA = 10,
+		SRC_ALPHA_SATURATE = 11
 	};
 
 	enum CULLFACE {
@@ -80,8 +82,17 @@ public:
 	virtual void SetColourMask(ColorMask mask) = 0;
 	ColorMask GetColourMask() { return colorMask; }
 
-	virtual void SetAlphaBlend(BLEND blend) = 0;
-	BLEND GetAlphaBlend() { return alphaBlend; }
+	virtual void SetSourceFactor(BLEND blend) {
+		sourceFactor = blend;
+		SetBlendFunc();
+	}
+	BLEND GetSourceFactor() { return sourceFactor; }
+
+	virtual void SetDestinationFactor(BLEND blend) {
+		destinationFactor = blend;
+		SetBlendFunc();
+	}
+	BLEND GetDestinationFactor() { return destinationFactor; }
 
 protected:
 	CULLFACE culling;
@@ -96,6 +107,7 @@ protected:
 	ColorMask colorMask;
 
 	COMPARISON alphaComparison;
-	BLEND alphaBlend;
-
+	BLEND sourceFactor;
+	BLEND destinationFactor;
+	virtual void SetBlendFunc() = 0;
 };

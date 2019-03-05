@@ -144,5 +144,90 @@ public:
 		glColorMask(r, g, b, a);
 	}
 
-	void SetAlphaBlend(BLEND blend) = 0;
+	void SetBlendFunc() override {
+		GLuint source;
+		GLuint dest;
+
+		switch (sourceFactor)
+		{
+		case PixOpsFlags::ZERO:
+			source = GL_ZERO;
+			break;
+		case PixOpsFlags::ONE:
+			source = GL_ONE;
+			break;
+		case PixOpsFlags::SRC_COLOR:
+			source = GL_SRC_COLOR;
+			break;
+		case PixOpsFlags::ONE_MINUS_SRC_COLOR:
+			source = GL_ONE_MINUS_SRC_COLOR;
+			break;
+		case PixOpsFlags::DST_COLOR:
+			source = GL_DST_COLOR;
+			break;
+		case PixOpsFlags::ONE_MINUS_DST_COLOR:
+			source = GL_ONE_MINUS_DST_COLOR;
+			break;
+		case PixOpsFlags::SRC_ALPHA:
+			source = GL_SRC_ALPHA;
+			break;
+		case PixOpsFlags::ONE_MINUS_SRC_ALPHA:
+			source = GL_ONE_MINUS_SRC_ALPHA;
+			break;
+		case PixOpsFlags::DST_ALPHA:
+			source = GL_DST_ALPHA;
+			break;
+		case PixOpsFlags::ONE_MINUS_DST_ALPHA:
+			source = GL_ONE_MINUS_DST_ALPHA;
+			break;
+		case PixOpsFlags::SRC_ALPHA_SATURATE:
+			source = GL_SRC_ALPHA_SATURATE;
+			break;
+		default:
+			std::cout << __FUNCTION__ << "called with invalid paramter" << std::endl;
+			break;
+		}
+
+		switch (destinationFactor)
+		{
+		case PixOpsFlags::ZERO:
+			dest = GL_ZERO;
+			break;
+		case PixOpsFlags::ONE:
+			dest = GL_ONE;
+			break;
+		case PixOpsFlags::SRC_COLOR:
+			dest = GL_SRC_COLOR;
+			break;
+		case PixOpsFlags::ONE_MINUS_SRC_COLOR:
+			dest = GL_ONE_MINUS_SRC_COLOR;
+			break;
+		case PixOpsFlags::DST_COLOR:
+			dest = GL_DST_COLOR;
+			break;
+		case PixOpsFlags::ONE_MINUS_DST_COLOR:
+			dest = GL_ONE_MINUS_DST_COLOR;
+			break;
+		case PixOpsFlags::SRC_ALPHA:
+			dest = GL_SRC_ALPHA;
+			break;
+		case PixOpsFlags::ONE_MINUS_SRC_ALPHA:
+			dest = GL_ONE_MINUS_SRC_ALPHA;
+			break;
+		case PixOpsFlags::DST_ALPHA:
+			dest = GL_DST_ALPHA;
+			break;
+		case PixOpsFlags::ONE_MINUS_DST_ALPHA:
+			dest = GL_ONE_MINUS_DST_ALPHA;
+			break;
+		case PixOpsFlags::SRC_ALPHA_SATURATE:
+			dest = GL_SRC_ALPHA_SATURATE;
+			break;
+		default:
+			std::cout << __FUNCTION__ << "called with invalid paramter" << std::endl;
+			break;
+		}
+
+		glBlendFunc(source, dest);
+	}
 };
