@@ -28,8 +28,13 @@ PhysicsScene::PhysicsScene() : Scene() {
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
-  
+  CAudioEngine* audio = world->GetAudio();
+  int x = audio->PlaySounds(Assets::SOUNDSDIR + "1.mp3");
+
+  auto floor = AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
+  floor->SetName("Floor");
+  floor->SetTag(LayerAndTag::Tags::Occupied);
+
    //Player
   auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
   player->AddComponent<Player*>((Component*)new Player(player));
@@ -43,11 +48,15 @@ void PhysicsScene::ResetWorld() {
 
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource1->SetName("Resource 1");
+  resource1->SetTag(LayerAndTag::Tags::Resources);
   resource1->AddComponent<Resource*>((Component*)new Resource(resource1));
 
   auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource2->SetName("Resource 2");
+  resource2->SetTag(LayerAndTag::Tags::Destructable);
   resource2->AddComponent<Resource*>((Component*)new Resource(resource2));
+
+  AddSphereToWorld(Vector3(40, 10, 20), 5, 1);
 }
 
 PhysicsScene::~PhysicsScene() {

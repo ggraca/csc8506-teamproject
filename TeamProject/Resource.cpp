@@ -44,11 +44,24 @@ void Resource::LateUpdate(float dt)
 
 void Resource::OnCollisionBegin(GameObject * otherObject)
 {
-	if (otherObject && otherObject->CompareTag(LayerAndTag::Tags::Player)) {
+	
+	if (otherObject->CompareTag(LayerAndTag::Tags::Player)) {
 		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
 		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
-		int x = audio->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", pos, 1.0f);
-		audio->SetChannel3dPosition(x, pos);
+		int x = audio->PlaySounds(Assets::SOUNDSDIR + "swords.wav", pos, 10.0f);
+//		audio->SetChannel3dPosition(x, pos);
+	}
+	if (otherObject->CompareTag(LayerAndTag::Tags::Resources)) {
+		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
+		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
+		int x = audio->PlaySounds(Assets::SOUNDSDIR + "bat.wav", pos, 10.0f);
+//		audio->SetChannel3dPosition(x, pos);
+	}
+	if (otherObject->CompareTag(LayerAndTag::Tags::Occupied)) {
+		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
+		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
+//		int x = audio->PlaySounds(Assets::SOUNDSDIR + "ole.wav", pos, 10.0f);
+//		audio->SetChannel3dPosition(x, pos);
 	}
 }
 

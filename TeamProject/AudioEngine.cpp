@@ -38,6 +38,13 @@ CAudioEngine::CAudioEngine() {
 	setNumList(1);
 	setMinMaxDistance(100.0f, 10000.0f);
 	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "bat.wav", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "swords.mp3", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "1.mp3", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "2.mp3", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "ole.wav", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "thud.wav", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "jump.wav", true, false, false);
 }
 
 void CAudioEngine::Init() {
@@ -117,7 +124,7 @@ int CAudioEngine::PlaySounds(const string& strSoundName, const Vector3& vPositio
 }
 
 
-void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition) // sets position of sound use as well as prevoius function
+void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition) // sets position of sound use as well as previous function
 {
 	auto tFoundIt = sgpImplementation->mChannels.find(nChannelId);
 	if (tFoundIt == sgpImplementation->mChannels.end())
@@ -127,7 +134,7 @@ void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition
 	CAudioEngine::ErrorCheck(tFoundIt->second->set3DAttributes(&position, NULL));
 }
 
-void CAudioEngine::SetChannelVolume(int nChannelId, float fVolumedB) // sets volume of sound use as well as prevoius function
+void CAudioEngine::SetChannelVolume(int nChannelId, float fVolumedB) // sets volume of sound use as well as previous function
 {
 	auto tFoundIt = sgpImplementation->mChannels.find(nChannelId);
 	if (tFoundIt == sgpImplementation->mChannels.end())
@@ -137,7 +144,7 @@ void CAudioEngine::SetChannelVolume(int nChannelId, float fVolumedB) // sets vol
 }
 
 
-void CAudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags) { // loads banks, banks stoe information  and sounds for events
+void CAudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags) { // loads banks, banks store information and sounds for events
 	auto tFoundIt = sgpImplementation->mBanks.find(strBankName);
 	if (tFoundIt != sgpImplementation->mBanks.end())
 		return;

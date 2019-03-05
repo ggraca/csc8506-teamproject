@@ -73,6 +73,12 @@ void Player::PlayerMovement(float dt)
 	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
+
+		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
+		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
+		int x = audio->PlaySounds(Assets::SOUNDSDIR + "jump.wav", pos, audio->VolumeTodB(1));
+		audio->SetChannel3dPosition(x, pos);
+
 		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));
 	}
 	if (!keyDown && !reset) {
@@ -96,6 +102,14 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
 		UpdateResourceCount(1);
 	}
+
+	if (otherObject->CompareTag(LayerAndTag::Tags::Occupied)) {
+		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
+		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
+		int x = audio->PlaySounds(Assets::SOUNDSDIR + "clang.wav", pos, 100.0f);
+//		audio->SetChannel3dPosition(x, pos);
+	}
+
 }
 
 void Player::OnCollisionEnd(GameObject * otherObject)
