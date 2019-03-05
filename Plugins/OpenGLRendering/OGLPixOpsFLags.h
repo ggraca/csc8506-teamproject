@@ -122,7 +122,16 @@ public:
 		stencilComparison = comp;
 	}
 
-	void SetStencilMask(bool mask) = 0;
+	void SetStencilMask(bool mask) override {
+		if (mask) {
+			glStencilMask(GL_TRUE);
+		}
+		else {
+			glStencilMask(GL_FALSE);
+		}
+
+		stencilMask = mask;
+	}
 
 	void SetClearColor(NCL::Maths::Vector4 color) = 0;
 
