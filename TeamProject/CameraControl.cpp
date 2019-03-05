@@ -1,5 +1,5 @@
 #include "CameraControl.h"
-#include "../TeamProject/InputManager.h"
+#include "InputManager.h"
 
 
 CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)
@@ -139,7 +139,7 @@ void CameraControl::RotatePlayer()
 	Vector3 playerRot = player->GetTransform().GetLocalOrientation().ToEuler();
 	playerRot.y = gameObject->GetTransform().GetLocalOrientation().ToEuler().y;
 	player->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(playerRot.x,playerRot.y,0));
-	player->GetPhysicsObject()->SetOrientation(Quaternion::EulerAnglesToQuaternion(playerRot.x, playerRot.y, 0));
+	player->GetComponent<PhysicsObject*>()->SetOrientation(Quaternion::EulerAnglesToQuaternion(playerRot.x, playerRot.y, 0));
 	player->GetTransform().UpdateMatrices();
 }
 
@@ -152,5 +152,3 @@ bool CameraControl::GetCameraType() const
 {
 	return isTPS;
 }
-
-

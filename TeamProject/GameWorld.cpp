@@ -1,5 +1,5 @@
 #include "GameWorld.h"
-#include "../TeamProject/GameObject.h"
+#include "GameObject.h"
 #include "../Common/Camera.h"
 #include <algorithm>
 #include "BulletPhysics.h"
@@ -17,7 +17,7 @@ void GameWorld::InitCamera()
 	cameraOffset = Vector3(0, 30, -150);
 
 	mainCamera = new GameObject();
-	mainCamera->AddScript((ScriptObject*)new CameraControl(mainCamera));
+	mainCamera->AddComponent<CameraControl*>((Component*)new CameraControl(mainCamera));
 
 	Transform * child = new Transform();
 	child->SetLocalPosition(cameraOffset);
@@ -35,7 +35,7 @@ void GameWorld::SwitchToFPS()
 	if (child)
 	{
 		child->SetLocalPosition(cameraOffset);
-		mainCamera->GetScript<CameraControl*>()->SetCameraType(false);
+		mainCamera->GetComponent<CameraControl*>()->SetCameraType(false);
 	}
 }
 
@@ -47,7 +47,7 @@ void GameWorld::SwitchToTPS()
 	if (child)
 	{
 		child->SetLocalPosition(cameraOffset);
-		mainCamera->GetScript<CameraControl*>()->SetCameraType(true);
+		mainCamera->GetComponent<CameraControl*>()->SetCameraType(true);
 	}
 }
 
@@ -87,6 +87,10 @@ vector<GameObject*> GameWorld::FindGameObjectsWithTag(LayerAndTag::Tags tag)
 	return temp;
 }
 
+void GameWorld::LateDestroy(GameObject * obj) {
+	objectsToDestroy.push_back(obj);
+}
+
 void GameWorld::Destroy(GameObject * obj)
 {
 	auto children = GetChildrenOfObject(obj);
@@ -96,7 +100,16 @@ void GameWorld::Destroy(GameObject * obj)
 		Destroy(i);
 	}
 
+	RemoveCollisionsFromGameObject(obj);
 	RemoveGameObject(obj);
+}
+
+void GameWorld::ClearObjectsToDestroy() {
+	for (auto go : objectsToDestroy) {
+		Destroy(go);
+	}
+
+	objectsToDestroy.clear();
 }
 
 void GameWorld::Clear() {
@@ -114,7 +127,7 @@ void GameWorld::UpdateGameObjects(float dt)
 {
 	for (auto&i : gameObjects) 
 	{	
-		i->UpdateAttachedScripts(dt);
+		i->UpdateComponents(dt);
 	}
 }
 
@@ -133,20 +146,11 @@ void GameWorld::AddGameObject(GameObject* o)
 	CallInitialObjectFunctions(o);
 	gameObjects.push_back(o);
 
-	btCollisionShape* po = o->GetPhysicsObject()->GetShape();
+	btCollisionShape* po = o->GetComponent<PhysicsObject*>()->GetShape();
 	physics->collisionShapes.push_back(po);
 
-	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
+	btRigidBody* pb = o->GetComponent<PhysicsObject*>()->GetRigidbody();
 	physics->dynamicsWorld->addRigidBody(pb);
-
-	//if (physics->collisionShapes.size() % 2 == 1 ) {
-	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
-	//	physics->dynamicsWorld->addRigidBody(pb, 1, 1111);
-	//}
-	//else {
-	//	btRigidBody* pb = o->GetPhysicsObject()->GetRigidbody();
-	//	physics->dynamicsWorld->addRigidBody(pb, 2, 1101);
-	//}
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
@@ -157,7 +161,7 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	o->SetUpInitialScripts();	
 }
 
-void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
+void GameWorld::AddGameObject(GameObject* o, GameObject* parent )
 {
 	if (!o) { return; }
 
@@ -178,8 +182,23 @@ void GameWorld::RemoveGameObject(GameObject* o)
 			delete gameObjects[i];
 			gameObjects.erase(gameObjects.begin() + i);
 			o = nullptr;
+			return;
 		}
 	}
+}
+
+void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {
+	for (auto collidingGo : obj->collidingObjects) {
+		collidingGo->collidingObjects.erase(
+			remove(
+				collidingGo->collidingObjects.begin(),
+				collidingGo->collidingObjects.end(),
+				obj),
+			collidingGo->collidingObjects.end()
+		);
+	}
+
+	obj->collidingObjects.clear();
 }
 
 void GameWorld::GetObjectIterators(
@@ -209,34 +228,32 @@ void GameWorld::UpdateWorld(float dt)
 	UpdateGameObjects(dt);
 	UpdateTransforms();
 	LateUpdateGameObjects(dt);
-	mainCamera->GetScript<CameraControl*>()->Update(dt);
+	mainCamera->GetComponent<CameraControl*>()->Update(dt);
 }
 
-vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
+vector<GameObject*> GameWorld::GetChildrenOfObject(GameObject* obj)
 {
 	vector<GameObject*> temp;
 
-
 	for (auto& i : gameObjects)
 	{
-		if (i->IsParent(obj->GetRenderObject()->GetTransform()))
+		if (i->IsParent(&obj->GetTransform()))
 		{
 			temp.emplace_back(i);
 		}
 	}
 
-
 	return temp;
 }
 
-vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj,LayerAndTag::Tags tag)
+vector<GameObject*> GameWorld::GetChildrenOfObject(GameObject* obj,LayerAndTag::Tags tag)
 {
 	vector<GameObject*> temp;
 
 	
 	for (auto& i : gameObjects)
 	{
-		if (i->CompareTag(tag) && i->IsParent(obj->GetRenderObject()->GetTransform()))
+		if (i->CompareTag(tag) && i->IsParent(&obj->GetTransform()))
 		{
 			temp.emplace_back(i);
 		}

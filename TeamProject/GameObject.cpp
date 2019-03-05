@@ -1,65 +1,65 @@
 #include "GameObject.h"
-#include "InputManager.h"
+#include "ScriptObject.h"
+#include "Component.h"
+#include "GameWorld.h"
+#include "RenderObject.h"
 
 using namespace NCL;
 using namespace CSC8503;
 
 GameWorld * GameObject::gameWorld = nullptr;
 
-GameObject::GameObject(string objectName)	
+GameObject::GameObject(std::string objectName)	
 {
-	
 	name			= objectName;
 	isActive		= true;
 	isAddedToWorld  = false;
-	boundingVolume	= nullptr;
-	physicsObject	= nullptr;
-	renderObject	= nullptr;
-	networkObject	= nullptr;
 	layer			= LayerAndTag::ObjectLayer::Default;
 	tag				= LayerAndTag::Tags::Untagged;
-	
 }
 
 GameObject::~GameObject()	
 {
-	delete boundingVolume;
-	delete physicsObject;
-	delete renderObject;
-	delete networkObject;
-
-	ClearScripts();
+	ClearComponents();
 	std::cout << name << " Destroyed" << std::endl;
 }
 
-void GameObject::ClearScripts()
+void GameObject::ClearComponents()
 {
-	for (auto&i : scripts)
+	for (auto&i : components)
 	{
-		delete i;
+		if (i.second) { delete i.second; }
 	}
+	components.clear();
 	scripts.clear();
 }
 
-void GameObject::OnCollisionBegin(GameObject * otherObject)
+void GameObject::SetParent(GameObject * parent)
 {
-	if (!HasOtherScriptsAttached()) { return; }
-	
-	for (auto&i : scripts)
+	if (parent)
 	{
-		i->OnCollisionBegin(otherObject);
+		GetTransform().SetParent(&parent->GetTransform());
+		GetTransform().AddChild(&parent->GetTransform());
+	}
+	else
+	{
+		if (GetTransform().GetParent() != nullptr)
+		{
+			GetTransform().GetParent()->RemoveChild(&parent->GetTransform());
+		}
+
+		GetTransform().SetParent(nullptr);
 	}
 }
 
-void GameObject::OnCollisionEnd(GameObject * otherObject)
+bool GameObject::IsParent(const Transform* transform)
 {
-	if (!HasOtherScriptsAttached()) { return; }
+	return (GetTransform().GetParent() == transform);
+}
 
-	for (auto&i : scripts)
-	{
-		i->OnCollisionEnd(otherObject);
-	}
-	
+void GameObject::AddChild(GameObject * child)
+{
+	child->SetParent(this);
 }
 
 void GameObject::AddScript(ScriptObject * obj)
@@ -73,9 +73,9 @@ void GameObject::AddScript(ScriptObject * obj)
 		obj->Awake();
 		obj->Start();
 	}
-
-	
 }
+
+
 
 void GameObject::SetUpInitialScripts()
 {
@@ -83,16 +83,6 @@ void GameObject::SetUpInitialScripts()
 	{
 		i->Awake();
 		i->Start();
-	}
-}
-
-void GameObject::UpdateAttachedScripts(float dt)
-{
-	if (!HasOtherScriptsAttached()) { return; }
-
-	for (auto&i : scripts)
-	{
-		i->Update(dt);
 	}
 }
 
@@ -108,8 +98,6 @@ void GameObject::LateUpdateAttachedScripts(float dt)
 
 void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
 {
-	OnCollisionBegin(otherObject);
-
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)
@@ -120,8 +108,6 @@ void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
 
 void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
 {
-	OnCollisionEnd(otherObject);
-
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)
@@ -130,12 +116,20 @@ void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
 	}
 }
 
+void GameObject::UpdateComponents(float dt)
+{
+	for (auto&i : components)
+	{
+		i.second->Update(dt);
+	}
+}
+
 void GameObject::SetGameWorld(GameWorld * world)
 {
 	gameWorld = world;
 }
 
-GameObject * GameObject::Find(string name)
+GameObject * GameObject::Find(std::string name)
 {
 	if (!gameWorld) { return nullptr; }
 
@@ -156,14 +150,14 @@ vector<GameObject*> GameObject::FindGameObjectsWithTag(LayerAndTag::Tags tag)
 	return gameWorld->FindGameObjectsWithTag(tag);
 }
 
-vector<GameObject*> GameObject::GetChildrenOfObject(const GameObject * obj)
+vector<GameObject*> GameObject::GetChildrenOfObject(GameObject * obj)
 {
 	if (!gameWorld) { return vector<GameObject*>(); }
 
 	return gameWorld->GetChildrenOfObject(obj);
 }
 
-vector<GameObject*> GameObject::GetChildrenOfObject(const GameObject * obj, LayerAndTag::Tags tag)
+vector<GameObject*> GameObject::GetChildrenOfObject(GameObject * obj, LayerAndTag::Tags tag)
 {
 	if (!gameWorld) { return vector<GameObject*>(); }
 
@@ -174,7 +168,7 @@ void GameObject::Destroy(GameObject * obj)
 {
 	if (!gameWorld) { return; }
 
-	return gameWorld->Destroy(obj);
+	return gameWorld->LateDestroy(obj);
 }
 
 void GameObject::AddObjectToWorld(GameObject * obj)
@@ -198,47 +192,6 @@ GameObject * GameObject::GetMainCamera()
 	return gameWorld->GetMainCamera();
 }
 
-///////////////////////////////////Script Object
-ScriptObject::ScriptObject()
-{
-	gameObject = nullptr;
-	
-}
 
-
-ScriptObject::ScriptObject(GameObject * go)
-{
-	this->gameObject = go;
-	
-}
-
-ScriptObject::~ScriptObject()
-{
-	//don"t delete gameobject as it may still meant to live after script is detached
-}
-
-void ScriptObject::Awake()
-{
-}
-
-void ScriptObject::Start()
-{
-}
-
-void ScriptObject::Update(float dt)
-{
-}
-
-void ScriptObject::LateUpdate(float dt)
-{
-}
-
-void ScriptObject::OnCollisionBegin(GameObject * otherObject)
-{
-}
-
-void ScriptObject::OnCollisionEnd(GameObject * otherObject)
-{
-}
 
 
