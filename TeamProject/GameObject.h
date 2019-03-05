@@ -120,8 +120,7 @@ namespace NCL {
 			static GameObject * GetMainCamera();
 
 			vector<GameObject*> collidingObjects;
-			
-			static GameWorld *gameWorld;
+			static GameWorld* gameWorld;
 
 		protected:
 			Transform			transform;

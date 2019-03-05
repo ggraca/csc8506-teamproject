@@ -8,6 +8,7 @@
 using namespace std;
 
 class BulletPhysics;
+class CAudioEngine;
 
 namespace NCL {
 		class Camera;
@@ -67,9 +68,16 @@ namespace NCL {
 				physics = bulletPhysics;
 			}
 
-			BulletPhysics* GetPhysics()
-			{
+			BulletPhysics* GetPhysics() {
 				return physics;
+      }
+      
+			void SetAudio(CAudioEngine* audioEngine) {
+				audio = audioEngine;
+			}
+
+			CAudioEngine* GetAudio() {
+				return audio;
 			}
 
 			GameObject* GetPlayerGameObject();
@@ -90,7 +98,9 @@ namespace NCL {
 			GameObject* mainCamera;
 			LayerAndTag layering;
 			Vector3 cameraOffset;
+
 			BulletPhysics* physics;
+			CAudioEngine* audio;
 		};
 	}
 }
