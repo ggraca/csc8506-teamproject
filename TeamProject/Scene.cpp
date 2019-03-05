@@ -40,9 +40,25 @@ void Scene::InitialiseAssets() {
   coneMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   coneMesh->UploadToGPU();
 
-  wallMesh = new OGLMesh("wall.msh");
-  wallMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  wallMesh->UploadToGPU();
+  frontWallMesh = new OGLMesh("/Castle/front_wall.msh");
+  frontWallMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+  frontWallMesh->UploadToGPU();
+  
+  rightWallMesh = new OGLMesh("/Castle/right_wall.msh");
+  rightWallMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+  rightWallMesh->UploadToGPU();
+  
+  leftWallMesh = new OGLMesh("/Castle/left_wall.msh");
+  leftWallMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+  leftWallMesh->UploadToGPU();
+
+  backWallMesh = new OGLMesh("/Castle/back_wall.msh");
+  backWallMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+  backWallMesh->UploadToGPU();
+
+  towerMesh = new OGLMesh("/Castle/tower.msh");
+  towerMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+  towerMesh->UploadToGPU();
 
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   brickTex = (OGLTexture*)TextureLoader::LoadAPITexture("brick.png");
@@ -90,8 +106,9 @@ void Scene::InitialiseAssets() {
 
   wallMaterial = new Material();
   wallMaterial->SetShader(basicShader);
-  wallMaterial->AddTextureParameter("diffuseTex", (OGLTexture*)Assets::AssetManager::LoadTexture("wall.jpg"));
-  wallMaterial->AddTextureParameter("bumpTex", (OGLTexture*)Assets::AssetManager::LoadTexture("wall_NRM.jpg"));
+  wallMaterial->SetColour(Vector4(1, 0.5f, 0.5f, 1));
+  //wallMaterial->AddTextureParameter("diffuseTex", (OGLTexture*)Assets::AssetManager::LoadTexture("wall.jpg"));
+  //wallMaterial->AddTextureParameter("bumpTex", (OGLTexture*)Assets::AssetManager::LoadTexture("wall_NRM.jpg"));
   //wallMaterial->SetTextureMatrix(texMatrix * Matrix4::Scale(Vector3(2.0f, 2.0f, 2.0f)));
   vector<std::string> faces
   {
@@ -186,7 +203,7 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   return cube;
 }
 
-GameObject* Scene::InstantiateGameObject(ShapeType meshName, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction)
+GameObject* Scene::InstantiateGameObject(ShapeType meshName, OGLMesh* mesh, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction)
 {
 	GameObject* newGameObject = new GameObject();
 
@@ -194,7 +211,7 @@ GameObject* Scene::InstantiateGameObject(ShapeType meshName, const Vector3& posi
 	newGameObject->GetTransform().SetWorldPosition(position);
 	newGameObject->GetTransform().SetLocalOrientation(orient);
 	newGameObject->SetPhysicsObject(new PhysicsObject(&newGameObject->GetTransform(), meshName, mass, restitution, friction));
-	newGameObject->SetRenderObject(new RenderObject(&newGameObject->GetTransform(), wallMesh, wallMaterial));
+	newGameObject->SetRenderObject(new RenderObject(&newGameObject->GetTransform(), mesh, wallMaterial));
 
 	world->AddGameObject(newGameObject);
 	return newGameObject;

@@ -29,7 +29,7 @@ namespace NCL {
 
 			GameObject* AddSphereToWorld(const Vector3& position, float radius, float mass = 10.0f, float restitution = 0.9, float friction = 0.4);
 			GameObject* AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimension, float mass = 10.0f, float restitution = 0.9, float friction = 0.4);
-			GameObject* InstantiateGameObject(ShapeType name, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass = 10.0f, float restitution = 0.9f, float friction = 0.4f);
+			GameObject* InstantiateGameObject(ShapeType name, OGLMesh* mesh, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass = 10.0f, float restitution = 0.9f, float friction = 0.4f);
 
 			GameTechRenderer*	renderer;
 
@@ -44,7 +44,11 @@ namespace NCL {
 			OGLMesh*	cylinderMesh = nullptr;
 			OGLMesh*	coneMesh = nullptr;
 
-			OGLMesh*	wallMesh = nullptr;
+			OGLMesh*	frontWallMesh = nullptr;
+			OGLMesh*	rightWallMesh = nullptr;
+			OGLMesh*	leftWallMesh = nullptr;
+			OGLMesh*	backWallMesh = nullptr;
+			OGLMesh*	towerMesh = nullptr;
 
 			OGLTexture* basicTex	= nullptr;
 			OGLTexture* woodTex	= nullptr;

@@ -42,7 +42,21 @@ void PhysicsScene::ResetWorld() {
   resource2->SetName("Resource 2");
   resource2->AddScript((ScriptObject*)new Resource(resource2));
 
-  auto wall = InstantiateGameObject(ShapeType::wall, Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
+  int frontWallX = 50;
+  int frontWallY = 120;
+  int frontWallZ = 500;
+
+  auto front_wall = InstantiateGameObject(ShapeType::wall, frontWallMesh, Vector3(frontWallX, frontWallY, frontWallZ), Quaternion::AxisAngleToQuaternion(Vector3(-1, 0, 0), 90), Vector3(2, 2, 2), 0, 0, 0);
+  auto front_right_tower = InstantiateGameObject(ShapeType::wall, towerMesh, Vector3(frontWallX + 570, frontWallY - 120, frontWallZ + 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 1.5, 2), 0, 0, 0);
+  auto left_right_tower = InstantiateGameObject(ShapeType::wall, towerMesh, Vector3(frontWallX - 570, frontWallY - 120, frontWallZ + 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 1.5, 2), 0, 0, 0);
+  auto right_wall = InstantiateGameObject(ShapeType::wall, rightWallMesh, Vector3(frontWallX + 570, frontWallY - 120, frontWallZ - 570), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 0, 0, 0);
+  auto left_wall = InstantiateGameObject(ShapeType::wall, leftWallMesh, Vector3(frontWallX - 570, frontWallY - 120, frontWallZ - 570), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 0, 0, 0);
+  auto back_right_tower = InstantiateGameObject(ShapeType::wall, towerMesh, Vector3(frontWallX + 570, frontWallY - 120, frontWallZ - 1140), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 1.5, 2), 0, 0, 0);
+  auto back_left_tower = InstantiateGameObject(ShapeType::wall, towerMesh, Vector3(frontWallX - 570, frontWallY - 120, frontWallZ - 1140), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 1.5, 2), 0, 0, 0);
+  auto back_wall = InstantiateGameObject(ShapeType::wall, backWallMesh, Vector3(frontWallX + 0, frontWallY - 120, frontWallZ - 1140), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(2, 2, 2), 0, 0, 0);
+  
+  //auto wall2 = InstantiateGameObject(ShapeType::wall, wallMesh, Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 10), 0, 0, 0);
+  //auto wall3 = InstantiateGameObject(ShapeType::wall, wallMesh, Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 1, 10), 0, 0, 0);
 }
 
 PhysicsScene::~PhysicsScene() {
