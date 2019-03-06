@@ -212,13 +212,9 @@
     </OrbisWavePsslc>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\Assets\Textures\doge.png">
+    <CustomBuild Include="..\..\Assets\Textures\doge.png">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">"$(SCE_ORBIS_SDK_DIR)\host_tools\bin\orbis-image2gnf" -i "%(FullPath)" -o "%(ProjectDir)%(Filename).gnf" -f Auto</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(SCE_ORBIS_SDK_DIR)\host_tools\bin\orbis-image2gnf" -i "%(FullPath)" -o "%(ProjectDir)%(Filename).gnf" -f Auto</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SCE_ORBIS_SDK_DIR)\host_tools\bin\orbis-image2gnf" -i "%(FullPath)" -o "%(ProjectDir)%(Filename).gnf" -f Auto</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">%(Filename)%(Extension)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)%(Extension)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename)%(Extension)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <Import Condition="'$(ConfigurationType)' == 'Makefile' and Exists('$(VCTargetsPath)\Platforms\$(Platform)\SCE.Makefile.$(Platform).targets')" Project="$(VCTargetsPath)\Platforms\$(Platform)\SCE.Makefile.$(Platform).targets" />

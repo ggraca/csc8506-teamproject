@@ -44,7 +44,7 @@
     </OrbisWavePsslc>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\Assets\Textures\doge.png">
+    <CustomBuild Include="..\..\Assets\Textures\doge.png">
       <Filter>Textures</Filter>
     </CustomBuild>
   </ItemGroup>
