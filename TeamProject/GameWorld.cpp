@@ -1,19 +1,54 @@
 #include "GameWorld.h"
-#include "../TeamProject/GameObject.h"
-#include "../GameTechCommon/CollisionDetection.h"
+#include "GameObject.h"
 #include "../Common/Camera.h"
 #include <algorithm>
+#include "BulletPhysics.h"
 
 using namespace NCL;
 using namespace NCL::CSC8503;
 
 GameWorld::GameWorld()	{
-	mainCamera = new Camera();
-
-	quadTree = nullptr;
-	shuffleConstraints	= false;
-	shuffleObjects		= false;
+	InitCamera();
 	layering = LayerAndTag();
+}
+
+void GameWorld::InitCamera()
+{
+	cameraOffset = Vector3(0, 30, -150);
+
+	mainCamera = new GameObject();
+	mainCamera->AddComponent<CameraControl*>((Component*)new CameraControl(mainCamera));
+
+	Transform * child = new Transform();
+	child->SetLocalPosition(cameraOffset);
+	child->SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(-10,-180, 0));
+	child->SetParent(&(mainCamera->GetTransform()));
+
+	mainCamera->GetTransform().AddChild(child);
+}
+
+void GameWorld::SwitchToFPS()
+{
+	cameraOffset = Vector3(0, 0, 10);
+	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
+
+	if (child)
+	{
+		child->SetLocalPosition(cameraOffset);
+		mainCamera->GetComponent<CameraControl*>()->SetCameraType(false);
+	}
+}
+
+void GameWorld::SwitchToTPS()
+{
+	cameraOffset = Vector3(0, 30, -150);
+	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
+
+	if (child)
+	{
+		child->SetLocalPosition(cameraOffset);
+		mainCamera->GetComponent<CameraControl*>()->SetCameraType(true);
+	}
 }
 
 GameWorld::~GameWorld()	{
@@ -52,6 +87,10 @@ vector<GameObject*> GameWorld::FindGameObjectsWithTag(LayerAndTag::Tags tag)
 	return temp;
 }
 
+void GameWorld::LateDestroy(GameObject * obj) {
+	objectsToDestroy.push_back(obj);
+}
+
 void GameWorld::Destroy(GameObject * obj)
 {
 	auto children = GetChildrenOfObject(obj);
@@ -61,31 +100,34 @@ void GameWorld::Destroy(GameObject * obj)
 		Destroy(i);
 	}
 
+	RemoveCollisionsFromGameObject(obj);
 	RemoveGameObject(obj);
+}
+
+void GameWorld::ClearObjectsToDestroy() {
+	for (auto go : objectsToDestroy) {
+		Destroy(go);
+	}
+
+	objectsToDestroy.clear();
 }
 
 void GameWorld::Clear() {
 	gameObjects.clear();
-	constraints.clear();
 }
 
 void GameWorld::ClearAndErase() {
 	for (auto& i : gameObjects) {
 		delete i;
 	}
-	for(auto& i : constraints) {
-		delete i;
-	}
 	Clear();
 }
-
-
 
 void GameWorld::UpdateGameObjects(float dt)
 {
 	for (auto&i : gameObjects) 
 	{	
-		i->UpdateAttachedScripts(dt);
+		i->UpdateComponents(dt);
 	}
 }
 
@@ -103,7 +145,12 @@ void GameWorld::AddGameObject(GameObject* o)
 	
 	CallInitialObjectFunctions(o);
 	gameObjects.push_back(o);
-	
+
+	btCollisionShape* po = o->GetComponent<PhysicsObject*>()->GetShape();
+	physics->collisionShapes.push_back(po);
+
+	btRigidBody* pb = o->GetComponent<PhysicsObject*>()->GetRigidbody();
+	physics->dynamicsWorld->addRigidBody(pb);
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
@@ -111,11 +158,10 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	if (!o) { return; }
 
 	o->SetIsAddedToWorld(true);
-	o->SetUpInitialScripts();
-	
+	o->SetUpInitialScripts();	
 }
 
-void GameWorld::AddGameObject(GameObject* o,const GameObject* parent )
+void GameWorld::AddGameObject(GameObject* o, GameObject* parent )
 {
 	if (!o) { return; }
 
@@ -136,8 +182,23 @@ void GameWorld::RemoveGameObject(GameObject* o)
 			delete gameObjects[i];
 			gameObjects.erase(gameObjects.begin() + i);
 			o = nullptr;
+			return;
 		}
 	}
+}
+
+void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {
+	for (auto collidingGo : obj->collidingObjects) {
+		collidingGo->collidingObjects.erase(
+			remove(
+				collidingGo->collidingObjects.begin(),
+				collidingGo->collidingObjects.end(),
+				obj),
+			collidingGo->collidingObjects.end()
+		);
+	}
+
+	obj->collidingObjects.clear();
 }
 
 void GameWorld::GetObjectIterators(
@@ -146,6 +207,16 @@ void GameWorld::GetObjectIterators(
 
 	first	= gameObjects.begin();
 	last	= gameObjects.end();
+}
+
+GameObject* GameWorld::GetPlayerGameObject()
+{
+	return gameObjects.at(1);
+}
+
+vector<GameObject*> NCL::CSC8503::GameWorld::GetGameObjectList()
+{
+  return gameObjects;
 }
 
 int GameWorld::GetObjectCount(){
@@ -157,41 +228,32 @@ void GameWorld::UpdateWorld(float dt)
 	UpdateGameObjects(dt);
 	UpdateTransforms();
 	LateUpdateGameObjects(dt);
-
-	if (shuffleObjects) {
-		std::random_shuffle(gameObjects.begin(), gameObjects.end());
-	}
-
-	if (shuffleConstraints) {
-		std::random_shuffle(constraints.begin(), constraints.end());
-	}
+	mainCamera->GetComponent<CameraControl*>()->Update(dt);
 }
 
-vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj)
+vector<GameObject*> GameWorld::GetChildrenOfObject(GameObject* obj)
 {
 	vector<GameObject*> temp;
 
-
 	for (auto& i : gameObjects)
 	{
-		if (i->IsParent(obj->GetRenderObject()->GetTransform()))
+		if (i->IsParent(&obj->GetTransform()))
 		{
 			temp.emplace_back(i);
 		}
 	}
 
-
 	return temp;
 }
 
-vector<GameObject*> GameWorld::GetChildrenOfObject(const GameObject* obj,LayerAndTag::Tags tag)
+vector<GameObject*> GameWorld::GetChildrenOfObject(GameObject* obj,LayerAndTag::Tags tag)
 {
 	vector<GameObject*> temp;
 
 	
 	for (auto& i : gameObjects)
 	{
-		if (i->CompareTag(tag) && i->IsParent(obj->GetRenderObject()->GetTransform()))
+		if (i->CompareTag(tag) && i->IsParent(&obj->GetTransform()))
 		{
 			temp.emplace_back(i);
 		}
@@ -207,66 +269,4 @@ void GameWorld::UpdateTransforms() {
 	{
 		i->GetTransform().UpdateMatrices();
 	}
-}
-
-void GameWorld::UpdateQuadTree() {
-	delete quadTree;
-
-	quadTree = new QuadTree<GameObject*>(Vector2(512, 512), 6);
-
-	for (auto& i : gameObjects) {
-		quadTree->Insert(i);
-	}
-}
-
-bool GameWorld::Raycast(Ray& r, RayCollision& closestCollision, bool closestObject) const {
-	//The simplest raycast just goes through each object and sees if there's a collision
-	RayCollision collision;
-
-	for (auto& i : gameObjects) {
-		if (!i->GetBoundingVolume()) { //objects might not be collideable etc...
-			continue;
-		}
-		RayCollision thisCollision;
-		if (CollisionDetection::RayIntersection(r, *i, thisCollision)) {
-
-			if (!closestObject) {
-				closestCollision		= collision;
-				closestCollision.node = i;
-				return true;
-			}
-			else {
-				if (thisCollision.rayDistance < collision.rayDistance) {
-					thisCollision.node = i;
-					collision = thisCollision;
-				}
-			}
-		}
-	}
-	if (collision.node) {
-		closestCollision		= collision;
-		closestCollision.node	= collision.node;
-		return true;
-	}
-	return false;
-}
-
-
-/*
-Constraint Tutorial Stuff
-*/
-
-void GameWorld::AddConstraint(Constraint* c) {
-	constraints.emplace_back(c);
-}
-
-void GameWorld::RemoveConstraint(Constraint* c) {
-	std::remove(constraints.begin(), constraints.end(), c);
-}
-
-void GameWorld::GetConstraintIterators(
-	std::vector<Constraint*>::const_iterator& first,
-	std::vector<Constraint*>::const_iterator& last) const {
-	first	= constraints.begin();
-	last	= constraints.end();
 }

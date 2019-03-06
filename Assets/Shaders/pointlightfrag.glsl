@@ -50,10 +50,13 @@ void main (void) {
 	float sFactor = pow(rFactor, 33.0);
 
 	vec4 finalCol = vec4(lightColour.xyz * lambert * atten, 1.0) * lightBrightness;
+	vec4 specularCol = vec4(lightColour.xyz * sFactor * atten, 1.0);
+	
 	if (drawShadows){
 		finalCol = finalCol * shadow;
+		specularCol = specularCol * shadow;
 	}
 	
 	fragColour [0] = finalCol;
-	fragColour [1] = vec4(lightColour.xyz * sFactor * atten, 1.0);
+	fragColour [1] = specularCol;
 }

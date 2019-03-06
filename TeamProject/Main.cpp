@@ -16,16 +16,21 @@ int main(int argc, char** argv) {
 
 	w->ShowOSPointer(false);
 	w->LockMouseToWindow(true);
-  w->ShowConsole(true);
+	w->ShowConsole(true);
   
+<<<<<<< HEAD
 	Scene* scene = new ExampleScene();
   // Scene* scene = new PhysicsScene();
+=======
+	//Scene* scene = new ExampleScene();
+	Scene* scene = new PhysicsScene();
+>>>>>>> master
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;
 
-		if (dt > 1.0f) {
-			continue; //must have hit a breakpoint or something to have a 1 second frame time!
+		if (dt > 3.0f) {
+			continue; //must have hit a breakpoint or something to have a 3 second frame time!
 		}
 
 		scene->UpdateGame(dt);
