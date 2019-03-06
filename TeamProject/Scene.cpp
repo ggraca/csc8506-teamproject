@@ -11,7 +11,10 @@ using namespace CSC8503;
 
 Scene::Scene() {
   world = new GameWorld();
+  GameObject::SetGameWorld(world);
+
   renderer = new GameTechRenderer(*world);
+
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
   world->SetPhysics(physics);

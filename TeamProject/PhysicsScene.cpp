@@ -14,9 +14,6 @@ PhysicsScene::PhysicsScene() : Scene() {
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
-
-  GameObject::SetGameWorld(world);
-
 }
 
 void PhysicsScene::ResetWorld() {

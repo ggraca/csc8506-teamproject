@@ -13,7 +13,7 @@ namespace NCL {
 		class Scene {
 		public:
 			Scene();
-			~Scene();
+			virtual ~Scene();
 
 			virtual void UpdateGame(float dt);
 			BulletPhysics*		physics; //TODO Make protected again?

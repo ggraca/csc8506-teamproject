@@ -14,7 +14,7 @@ namespace NCL {
     class PhysicsScene : public Scene {
     public:
       PhysicsScene();
-      ~PhysicsScene();
+      virtual ~PhysicsScene();
       void UpdateGame(float dt);
 
     protected:

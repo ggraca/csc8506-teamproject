@@ -1,17 +1,13 @@
+#include <fstream>
+#include <string>
+
 #include "ExampleScene.h"
 #include "GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
-
 #include "../Common/Assets.h"
-
-#include <fstream>
-#include <string>
-
-
-
 
 using namespace NCL;
 using namespace CSC8503;
@@ -23,14 +19,7 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
-
-  GameObject::SetGameWorld(world);
-
-
 }
-
-
-
 
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
@@ -95,7 +84,6 @@ void ExampleScene::UpdateGame(float dt) {
   }*/
 
   renderer->Render();
-  
 }
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {

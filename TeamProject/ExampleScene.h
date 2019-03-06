@@ -17,7 +17,7 @@ namespace NCL {
     class ExampleScene : public Scene {
     public:
       ExampleScene();
-      ~ExampleScene();
+      virtual ~ExampleScene();
       void UpdateGame(float dt);
 
     protected:
