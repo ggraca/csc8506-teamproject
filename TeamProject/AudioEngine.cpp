@@ -175,7 +175,15 @@ void CAudioEngine::LoadEvent(const string& strEventName, const Vector3& vPositio
 	test.forward = forward;
 	test.up = up;
 	test.velocity = VectorToFmod(Vector3(0,0,0));
-//	test.position = VectorToFmod(Vector3(-19, 0, 5));
+	test.position = VectorToFmod(Vector3(-19, 0, 5));
+
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) { test.position = VectorToFmod(Vector3(-19, 0, 0)); }
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_X)) { test.position = VectorToFmod(Vector3(-10, 0, 0)); }
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_N)) { test.position = VectorToFmod(Vector3(10, 0, 0)); }
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) { test.position = VectorToFmod(Vector3(19, 0, 0)); }
+
+//	cout << "New event 1";
+
 	pEventInstance->set3DAttributes(&test);
 //	CAudioEngine::ErrorCheck(tFoundit->second->set3DAttributes(&position, NULL));
 }
@@ -188,6 +196,29 @@ void CAudioEngine::PlayEvent(const string& strEventName, const Vector3& vPositio
 		if (tFoundit == sgpImplementation->mEvents.end())
 			return;
 	}
+//	cout << "New event 2";
+
+
+	FMOD::Studio::EventDescription* pEventDescription = NULL;
+	CAudioEngine::ErrorCheck(sgpImplementation->mpStudioSystem->getEvent(strEventName.c_str(), &pEventDescription));
+	FMOD::Studio::EventInstance* pEventInstance = NULL;
+	if (pEventDescription) {
+
+		CAudioEngine::ErrorCheck(pEventDescription->createInstance(&pEventInstance));
+		if (pEventInstance) {
+			sgpImplementation->mEvents[strEventName] = pEventInstance;
+		}
+	}
+	pEventInstance->setReverbLevel(10, 100);
+
+	FMOD_3D_ATTRIBUTES test;
+	test.position = VectorToFmod(vPosition);
+	/*test.forward = forward;
+	test.up = up;
+	test.velocity = VectorToFmod(Vector3(0, 0, 0));*/
+
+	pEventInstance->set3DAttributes(&test);
+
 	tFoundit->second->start();
 }
 

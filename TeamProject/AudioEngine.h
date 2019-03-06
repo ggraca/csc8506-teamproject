@@ -11,6 +11,9 @@
 #include "../../Common/Assets.h"
 #include "GameObject.h"
 
+
+#include "../Common/Window.h" //TODO Remove this
+
 using namespace std;
 using namespace NCL;
 using namespace NCL::Maths;
