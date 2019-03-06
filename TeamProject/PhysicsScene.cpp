@@ -28,8 +28,25 @@ PhysicsScene::PhysicsScene() : Scene() {
 void PhysicsScene::ResetWorld() {
   world->ClearAndErase();
 
-  CAudioEngine* audio = world->GetAudio();
-  int x = audio->PlaySounds(Assets::SOUNDSDIR + "1.mp3");
+  audio->LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+  audio->LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+ /* audio->LoadEvent("event:/Music");
+  audio->LoadEvent("event:/Jump");
+  audio->LoadEvent("event:/Land");*/
+
+  audio->PlayEvent("event:/Music", Vector3(0, 0, 0));
+  audio->PlayEvent("event:/bat", Vector3(0, 0, 0));
+
+
+
+  //audio->  getEvent("event:/UI/Cancel", &cancelDescription);
+  //cancelDescription->createInstance(&cancelInstance);
+
+  //cancelInstance->start();
+  //cancelInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+
+
+ // int x = audio->PlaySounds(Assets::SOUNDSDIR + "1.mp3");
 
   auto floor = AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
   floor->SetName("Floor");

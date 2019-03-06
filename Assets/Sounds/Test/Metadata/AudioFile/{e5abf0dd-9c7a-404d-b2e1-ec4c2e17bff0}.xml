@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{e5abf0dd-9c7a-404d-b2e1-ec4c2e17bff0}">
+        <property name="assetPath">
+            <value>grenade.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>8</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>1.206</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{b1469510-5698-41cf-a348-de60632d2758}</destination>
+        </relationship>
+    </object>
+</objects>

@@ -36,7 +36,7 @@ void Implementation::Update() {   // if channel stops playing this will delete i
 CAudioEngine::CAudioEngine() {
 	Init();
 	setNumList(1);
-	setMinMaxDistance(100.0f, 10000.0f);
+	setMinMaxDistance(10.0f, 10000.0f);
 	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, false, false);
 	LoadSound(Assets::SOUNDSDIR + "bat.wav", true, false, false);
 	LoadSound(Assets::SOUNDSDIR + "swords.mp3", true, false, false);
@@ -49,7 +49,7 @@ CAudioEngine::CAudioEngine() {
 
 void CAudioEngine::Init() {
 	sgpImplementation = new Implementation();
-	sgpImplementation->mpSystem->set3DSettings(NULL, DISTANCEFACTOR, 1.0f);
+	sgpImplementation->mpSystem->set3DSettings(NULL, DISTANCEFACTOR, 0.1f);
 	listenerpos = { 0.0f, 0.0f, 0.0f };
 	//FMOD::System_Create(&system);
 }
@@ -112,8 +112,7 @@ int CAudioEngine::PlaySounds(const string& strSoundName, const Vector3& vPositio
 		tFoundIt->second->getMode(&currMode);
 		if (currMode & FMOD_3D) {
 			FMOD_VECTOR position = VectorToFmod(vPosition);
-			CAudioEngine::ErrorCheck(pChannel->set3DAttributes(&position, nullptr));
-						
+			CAudioEngine::ErrorCheck(pChannel->set3DAttributes(&position, nullptr));					
 		}
 		CAudioEngine::ErrorCheck(pChannel->setVolume(dbToVolume(fVolumedB)));
 		CAudioEngine::ErrorCheck(pChannel->setPaused(false));
@@ -155,25 +154,36 @@ void CAudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BAN
 	}
 }
 
-void CAudioEngine::LoadEvent(const std::string& strEventName) { // load events, each event loaded seperately to save memory 
+void CAudioEngine::LoadEvent(const string& strEventName, const Vector3& vPosition) { // load events, each event loaded separately to save memory 
 	auto tFoundit = sgpImplementation->mEvents.find(strEventName);
 	if (tFoundit != sgpImplementation->mEvents.end())
 		return;
 	FMOD::Studio::EventDescription* pEventDescription = NULL;
 	CAudioEngine::ErrorCheck(sgpImplementation->mpStudioSystem->getEvent(strEventName.c_str(), &pEventDescription));
+	FMOD::Studio::EventInstance* pEventInstance = NULL;
 	if (pEventDescription) {
-		FMOD::Studio::EventInstance* pEventInstance = NULL;
+		
 		CAudioEngine::ErrorCheck(pEventDescription->createInstance(&pEventInstance));
 		if (pEventInstance) {
 			sgpImplementation->mEvents[strEventName] = pEventInstance;
 		}
 	}
+	pEventInstance->setReverbLevel(10, 100);
+
+	FMOD_3D_ATTRIBUTES test;
+	test.position = VectorToFmod(vPosition);
+	test.forward = forward;
+	test.up = up;
+	test.velocity = VectorToFmod(Vector3(0,0,0));
+//	test.position = VectorToFmod(Vector3(-19, 0, 5));
+	pEventInstance->set3DAttributes(&test);
+//	CAudioEngine::ErrorCheck(tFoundit->second->set3DAttributes(&position, NULL));
 }
 
-void CAudioEngine::PlayEvent(const string &strEventName) { // play event, if not loaded this will load it
+void CAudioEngine::PlayEvent(const string& strEventName, const Vector3& vPosition) { // play event, if not loaded this will load it
 	auto tFoundit = sgpImplementation->mEvents.find(strEventName);
 	if (tFoundit == sgpImplementation->mEvents.end()) {
-		LoadEvent(strEventName);
+		LoadEvent(strEventName, vPosition);
 		tFoundit = sgpImplementation->mEvents.find(strEventName);
 		if (tFoundit == sgpImplementation->mEvents.end())
 			return;
@@ -203,7 +213,7 @@ bool CAudioEngine::IsEventPlaying(const string &strEventName) const { // will te
 	return false;
 }
 
-void CAudioEngine::GetEventParameter(const string &strEventName, const string &strParameterName, float* parameter) { //allows to get events dyamically, allows sound scapes
+void CAudioEngine::GetEventParameter(const string &strEventName, const string &strParameterName, float* parameter) { //allows to get events dynamically, allows sound scapes
 	auto tFoundIt = sgpImplementation->mEvents.find(strEventName);
 	if (tFoundIt == sgpImplementation->mEvents.end())
 		return;
@@ -213,7 +223,7 @@ void CAudioEngine::GetEventParameter(const string &strEventName, const string &s
 	CAudioEngine::ErrorCheck(pParameter->getValue(parameter));
 }
 
-void CAudioEngine::SetEventParameter(const string &strEventName, const string &strParameterName, float fValue) { //allows to set events dyamically
+void CAudioEngine::SetEventParameter(const string &strEventName, const string &strParameterName, float fValue) { //allows to set events dynamically
 	auto tFoundIt = sgpImplementation->mEvents.find(strEventName);
 	if (tFoundIt == sgpImplementation->mEvents.end())
 		return;
@@ -223,7 +233,7 @@ void CAudioEngine::SetEventParameter(const string &strEventName, const string &s
 	CAudioEngine::ErrorCheck(pParameter->setValue(fValue));
 }
 
-FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world sapce to fmod co ord
+FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world space to fmod co ord
 	FMOD_VECTOR fVec;
 	fVec.x = vPosition.x;
 	fVec.y = vPosition.y;
@@ -231,7 +241,7 @@ FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world
 	return fVec;
 }
 
-void CAudioEngine::SetCamera(GameObject* cam) { // sets world sapce to fmod co ord
+void CAudioEngine::SetCamera(GameObject* cam) { // sets world space to fmod coord
 	
 	camera = cam;
 }

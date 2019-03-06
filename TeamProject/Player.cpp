@@ -76,11 +76,16 @@ void Player::PlayerMovement(float dt)
 
 		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
 		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
-		int x = audio->PlaySounds(Assets::SOUNDSDIR + "jump.wav", pos, audio->VolumeTodB(1));
-		audio->SetChannel3dPosition(x, pos);
+		//int x = audio->PlaySounds(Assets::SOUNDSDIR + "jump.wav", pos, audio->VolumeTodB(1));
+		//audio->SetChannel3dPosition(x, pos);
 
 		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));
+
+		audio->PlayEvent("event:/Jump", pos);
+		
 	}
+
+
 	if (!keyDown && !reset) {
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 		reset = true;
@@ -105,8 +110,15 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 	if (otherObject->CompareTag(LayerAndTag::Tags::Occupied)) {
 		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
+
+	/*	FMOD_3D_ATTRIBUTES attr;
+		attr.position = audio->VectorToFmod(gameObject->GetTransform().GetWorldPosition());*/
+	//	attr.forward = audio->VectorToFmod(gameObject->);
+	//	audio->SetEventParameter("event:/Land", "Volume", 10);
 		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
-		int x = audio->PlaySounds(Assets::SOUNDSDIR + "clang.wav", pos, 100.0f);
+		audio->PlayEvent("event:/Land", pos);
+		
+		//int x = audio->PlaySounds(Assets::SOUNDSDIR + "clang.wav", pos, 100.0f);
 //		audio->SetChannel3dPosition(x, pos);
 	}
 
