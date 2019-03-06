@@ -61,7 +61,7 @@ void Resource::OnCollisionBegin(GameObject * otherObject)
 	if (otherObject->CompareTag(LayerAndTag::Tags::Occupied)) {
 		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
 		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
-		audio->PlayEvent("event:/bomb", pos);
+		audio->PlayEvent("event:/Swords", pos);
 //		int x = audio->PlaySounds(Assets::SOUNDSDIR + "ole.wav", pos, 10.0f);
 //		audio->SetChannel3dPosition(x, pos);
 	}

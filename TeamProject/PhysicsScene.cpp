@@ -35,9 +35,6 @@ void PhysicsScene::ResetWorld() {
   audio->LoadEvent("event:/Land");*/
 
   audio->PlayEvent("event:/Music", Vector3(0, 0, 0));
-  audio->PlayEvent("event:/bat", Vector3(0, 0, 0));
-
-
 
   //audio->  getEvent("event:/UI/Cancel", &cancelDescription);
   //cancelDescription->createInstance(&cancelInstance);
