@@ -3,9 +3,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "./stb/stb_image.h"
-#include <filesystem>
+
 #include "Assets.h"
+
+#ifdef WIN32
+#include <filesystem>
 using namespace std::experimental::filesystem::v1;
+#endif
 
 using namespace NCL;
 using namespace Rendering;
@@ -44,11 +48,15 @@ void TextureLoader::RegisterTextureLoadFunction(TextureLoadFunction f, const std
 }
 
 std::string TextureLoader::GetFileExtension(const std::string& fileExtension) {
+#ifdef WIN32
 	path p = path(fileExtension);
 
 	path ext = p.extension();
 
 	return ext.string();
+#else
+	return std::string();
+#endif
 }
 
 void TextureLoader::RegisterAPILoadFunction(APILoadFunction f) {

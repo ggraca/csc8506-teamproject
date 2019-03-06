@@ -12,9 +12,10 @@ namespace NCL {
 			SHADER_MAX
 		};
 
-		class ShaderBase
-		{
+		class ShaderBase	{
 		public:
+			ShaderBase() {
+			}
 			ShaderBase(const string& vertex, const string& fragment, const string& geometry = "", const string& domain = "", const string& hull = "");
 			virtual ~ShaderBase();
 

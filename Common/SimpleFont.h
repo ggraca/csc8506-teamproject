@@ -16,7 +16,7 @@ namespace NCL {
 			SimpleFont(const std::string&fontName, const std::string&texName);
 			~SimpleFont();
 
-			int BuildVerticesForString(std::string &text, Maths::Vector2&startPos, Maths::Vector4&colour, std::vector<Maths::Vector3>&positions, std::vector<Maths::Vector2>&texCoords, std::vector<Maths::Vector4>&colours, float size = 1.0f);
+			int BuildVerticesForString(std::string &text, Maths::Vector2&startPos, Maths::Vector4&colour, std::vector<Maths::Vector3>&positions, std::vector<Maths::Vector2>&texCoords, std::vector<Maths::Vector4>&colours);
 
 			const TextureBase* GetTexture() const {
 				return texture;

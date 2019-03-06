@@ -1,6 +1,6 @@
 #include "Win32Window.h"
-#include "Windowsx.h"
 #ifdef _WIN32
+#include "Windowsx.h"
 
 using namespace NCL;
 using namespace Win32Code;

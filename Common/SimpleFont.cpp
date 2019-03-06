@@ -47,7 +47,7 @@ SimpleFont::~SimpleFont()
 	delete		texture;
 }
 
-int SimpleFont::BuildVerticesForString(std::string &text, Vector2&startPos, Vector4&colour, std::vector<Vector3>&positions, std::vector<Vector2>&texCoords, std::vector<Vector4>&colours, float size) {
+int SimpleFont::BuildVerticesForString(std::string &text, Vector2&startPos, Vector4&colour, std::vector<Vector3>&positions, std::vector<Vector2>&texCoords, std::vector<Vector4>&colours) {
 	int vertsWritten = 0;
 
 	int endChar = startChar + numChars;
@@ -65,13 +65,13 @@ int SimpleFont::BuildVerticesForString(std::string &text, Vector2&startPos, Vect
 		}
 		FontChar& charData = allCharData[charIndex - startChar];
 
-		float scale = size;
+		float scale = 0.5f;
 		//For basic vertex buffers, we're assuming we should add 6 vertices
 
-		float charWidth  = (float)((charData.x1 - charData.x0)/ texWidth) * scale * 0.5;
+		float charWidth  = (float)((charData.x1 - charData.x0)/ texWidth) * scale;
 		float charHeight = (float)(charData.y1 - charData.y0);
 
-		float xStart	= ((charData.xOff + currentX) / texWidth) * scale * 0.5;
+		float xStart	= ((charData.xOff + currentX) / texWidth) * scale;
 		float yStart	= startPos.y;
 		float yHeight	= (charHeight / texWidth) * scale;
 		float yOff		= -((charHeight + charData.yOff) / texWidth) * scale;

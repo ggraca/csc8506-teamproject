@@ -2,7 +2,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 
 #include "./stb/stb_image_write.h"
-#include <filesystem>
 #include "Assets.h"
 using namespace NCL;
 

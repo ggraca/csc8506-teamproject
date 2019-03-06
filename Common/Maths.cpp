@@ -24,6 +24,12 @@ namespace NCL {
 			return (area * 0.5f);
 		}
 
+		float CrossAreaOfTri(const Vector3 &a, const Vector3 &b, const Vector3 & c) {
+			Vector3 area = Vector3::Cross(a - b, a - c);
+			return area.Length() * 0.5f;
+		}
+	
+
 		Vector3 Clamp(const Vector3& a, const Vector3&mins, const Vector3& maxs) {
 			return Vector3(
 				Clamp(a.x, mins.x, maxs.x),

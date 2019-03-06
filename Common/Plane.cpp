@@ -48,3 +48,9 @@ Plane Plane::PlaneFromTri(const Vector3 &v0, const Vector3 &v1, const Vector3 &v
 float	Plane::DistanceFromPlane(const Vector3 &in) const{
 	return Vector3::Dot(in,normal)+distance;
 }
+
+Vector3 Plane::ProjectPointOntoPlane(const Vector3 &point) const {
+	float distance = DistanceFromPlane(point);
+
+	return point - (normal * distance);
+}

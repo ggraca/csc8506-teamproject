@@ -56,10 +56,33 @@ namespace NCL {
 				return Vector2(x / a.x, y / a.y);
 			};
 
+			inline Vector2  operator*(float f) const {
+				return Vector2(x * f, y * f);
+			};
 
 			inline Vector2  operator/(float f) const {
 				return Vector2(x / f, y / f);
 			};
+
+			inline void operator+=(const Vector2  &a) {
+				x += a.x;
+				y += a.y;
+			}
+
+			inline void operator-=(const Vector2  &a) {
+				x -= a.x;
+				y -= a.y;
+			}
+
+			inline void operator*=(float f) {
+				x *= f;
+				y *= f;
+			}
+
+			inline void operator/=(float f) {
+				x /= f;
+				y /= f;
+			}
 		};
 	}
 }
