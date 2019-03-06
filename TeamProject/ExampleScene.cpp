@@ -1,19 +1,14 @@
+#include <fstream>
+#include <string>
+
 #include "ExampleScene.h"
 #include "GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
-
 #include "../Common/Assets.h"
 #include "../TeamProject/OBJMesh.h"
-
-
-#include <fstream>
-#include <string>
-
-
-
 
 using namespace NCL;
 using namespace CSC8503;
@@ -53,17 +48,13 @@ void ExampleScene::ResetWorld() {
 
   // OBJ file example
   //MeshGeometry* mesh = Assets::AssetManager::LoadMesh("tree_sample.obj");
-
   OBJLoader* objLoader = new OBJLoader(Assets::MESHDIR + "tree_sample.obj");
-  for (int i = 0; i < objLoader->GetChildren().size(); i++) {
-	  ((OBJMesh*)objLoader->GetChildren()[i])->material = basicMaterial;
-  }
 
   // We need to pass world because father/son relationship is only possible among gameObjects in the world
   // We might want to change this to allow any gameobject to have a vector of children
   GameObject* go = objLoader->ToGameObject(world);
   go->GetTransform().SetWorldPosition(Vector3(0, 5, 0));
-  go->GetTransform().SetLocalScale(Vector3(10, 10, 10));
+  go->GetTransform().SetLocalScale(Vector3(1, 1, 1));
   // world->AddGameObject(go); // TODO: We can uncomment this once we fix the bug mentioned above
 
 
