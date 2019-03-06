@@ -8,13 +8,13 @@
 #include "GameWorld.h"
 #include "HUDObject.h"
 #include "CameraControl.h"
+#include "RenderObject.h"
 
 class Light;
 class HUDObject;
 
 namespace NCL {
 	namespace CSC8503 {
-		class RenderObject;
 		class GameTechRenderer : public OGLRenderer	{
 		public:
 			GameTechRenderer(GameWorld& world);

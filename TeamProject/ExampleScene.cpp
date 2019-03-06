@@ -52,15 +52,21 @@ void ExampleScene::ResetWorld() {
   resource2->AddComponent<Resource*>((ScriptObject*)new Resource(resource2));
 
   // OBJ file example
-  GameObject* go = new GameObject();
+  //MeshGeometry* mesh = Assets::AssetManager::LoadMesh("tree_sample.obj");
+
+  OBJLoader* objLoader = new OBJLoader(Assets::MESHDIR + "tree_sample.obj");
+  for (int i = 0; i < objLoader->GetChildren().size(); i++) {
+	  ((OBJMesh*)objLoader->GetChildren()[i])->material = basicMaterial;
+  }
+
+  // We need to pass world because father/son relationship is only possible among gameObjects in the world
+  // We might want to change this to allow any gameobject to have a vector of children
+  GameObject* go = objLoader->ToGameObject(world);
   go->GetTransform().SetWorldPosition(Vector3(0, 5, 0));
   go->GetTransform().SetLocalScale(Vector3(10, 10, 10));
-  go->AddComponent<RenderObject*>((RenderObject*)new RenderObject(
-    &go->GetTransform(),
-    new OBJMesh(Assets::MESHDIR + "tree_sample.obj"),
-	basicMaterial
-  ));
-  world->AddGameObject(go);
+  // world->AddGameObject(go); // TODO: We can uncomment this once we fix the bug mentioned above
+
+
 }
 
 ExampleScene::~ExampleScene() {

@@ -1,8 +1,7 @@
 #include "OBJMesh.h"
+#include "Resource.h"
 
-
-
-bool	OBJMesh::LoadOBJMesh(std::string filename) {
+bool OBJLoader::LoadOBJMesh(std::string filename) {
   std::ifstream f(filename.c_str(), std::ios::in);
   if (!f) return false;
 
@@ -69,65 +68,53 @@ bool	OBJMesh::LoadOBJMesh(std::string filename) {
 
   f.close();
 
-  //We now have all our mesh data loaded in...Now to convert it into OpenGL vertex buffers!
-  for (unsigned int i = 0; i < inputSubMeshes.size(); ) {
-    OBJSubMesh*sm = inputSubMeshes[i];
-
-    /*
-    We're going to be lazy and turn the indices into an absolute list
-    of vertex attributes (it makes handling the submesh list easier)
-    */
-    if (sm->vertIndices.empty()) {
-      delete sm;
-      inputSubMeshes.erase(inputSubMeshes.begin() + i);
-      continue;
-    }
-    else {
-      OBJMesh*m;
-
-      if (i == 0) m = this;
-      else m = new OBJMesh();
-
-      m->SetTexturesFromMTL(sm->mtlSrc, sm->mtlType);
-
-      for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
-        m->positions.push_back(inputVertices[sm->vertIndices[j] - 1]);
-      }
-
-      if (!sm->texIndices.empty()) {
-        for (unsigned int j = 0; j < sm->texIndices.size(); ++j) {
-          m->texCoords.push_back(inputTexCoords[sm->texIndices[j] - 1]);
-        }
-      }
-
-      if (sm->normIndices.empty()) {
-        m->RecalculateNormals();
-      }
-      else {
-        for (unsigned int j = 0; j < sm->normIndices.size(); ++j) {
-          m->normals.push_back(inputNormals[sm->normIndices[j] - 1]);
-        }
-      }
-
-      for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
-        m->colours.push_back(Vector4(0, 0, 1, 1));
-      }
-
-      // TODO: Tangents
-      // m->GenerateTangents();
-
-      m->UploadToGPU();
-
-      if (i != 0) AddChild(m);
-    }
-
-    delete inputSubMeshes[i];
-    ++i;
-  }
-  return true;
+	//We now have all our mesh data loaded in...Now to convert it into OpenGL vertex buffers!
+	for (unsigned int i = 0; i < inputSubMeshes.size(); ++i) {	
+		OBJMesh* m = OBJMesh::FromSubMesh(inputSubMeshes[i], inputVertices, inputTexCoords, inputNormals);
+		if (m) AddChild(m);
+		delete inputSubMeshes[i];
+	}
+	return true;
 }
 
-void OBJMesh::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes) {
+OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals) {
+	if (sm->vertIndices.empty()) return nullptr;
+
+	OBJMesh* m = new OBJMesh();
+	m->SetTexturesFromMTL(sm->mtlSrc, sm->mtlType);
+
+	for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
+		m->positions.push_back(inputVertices[sm->vertIndices[j] - 1]);
+	}
+
+	if (!sm->texIndices.empty()) {
+		for (unsigned int j = 0; j < sm->texIndices.size(); ++j) {
+			m->texCoords.push_back(inputTexCoords[sm->texIndices[j] - 1]);
+		}
+	}
+
+	if (sm->normIndices.empty()) {
+		m->RecalculateNormals();
+	}
+	else {
+		for (unsigned int j = 0; j < sm->normIndices.size(); ++j) {
+			m->normals.push_back(inputNormals[sm->normIndices[j] - 1]);
+		}
+	}
+
+	for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
+		m->colours.push_back(Vector4(0, 0, 1, 1));
+	}
+
+	// TODO: Tangents
+	// m->GenerateTangents();
+
+	m->UploadToGPU();
+
+	return m;
+}
+
+void OBJLoader::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes) {
   if (!currentMesh) {
     currentMesh = new OBJSubMesh();
     inputSubMeshes.push_back(currentMesh);
@@ -212,7 +199,7 @@ void OBJMesh::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::
   }
 }
 
-void	OBJMesh::SetTexturesFromMTL(string &mtlFile, string &mtlType) {
+void OBJMesh::SetTexturesFromMTL(string &mtlFile, string &mtlType) {
   if (mtlType.empty() || mtlFile.empty()) {
     return;
   }
@@ -296,4 +283,24 @@ void	OBJMesh::SetTexturesFromMTL(string &mtlFile, string &mtlType) {
   materials.insert(std::make_pair(currentMTLName, currentMTL));
 
   SetTexturesFromMTL(mtlFile, mtlType);
+}
+
+GameObject* OBJLoader::ToGameObject(GameWorld* world) {
+	GameObject* root = new GameObject();
+	
+	world->AddGameObject(root);
+	
+	for (auto& mesh : children) {
+		GameObject* go = new GameObject();
+
+		go->AddComponent<RenderObject*>(new RenderObject(
+			&go->GetTransform(),
+			mesh,
+			((OBJMesh*)mesh)->material
+		));
+
+		world->AddGameObject(go);
+		root->AddChild(go);
+	}
+	return root;
 }

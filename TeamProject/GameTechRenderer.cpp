@@ -180,15 +180,6 @@ void GameTechRenderer::RenderShadowMap() {
 		BindMatrix4ToShader(mvpMatrix, "mvpMatrix");
 		BindMesh((*i).GetMesh());
 		DrawBoundMesh();
-
-		// OGL Meshes have additional meshes as children
-		if (dynamic_cast<OBJMesh*>(i->GetMesh())) {
-			for (auto child : ((OBJMesh*)i->GetMesh())->GetChildren()) {
-				BindMesh(child);
-				vertsDrawn += child->GetVertexCount();
-				DrawBoundMesh();
-			}
-		}
 	}
 
 	// Calculates how many shadow casting lights are currently being renderered
@@ -262,36 +253,10 @@ void GameTechRenderer::RenderCamera() {
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
 		BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");
 		BindMatrix4ToShader(currentMaterial->GetTextureMatrix(), "textureMatrix");
-
 		BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
 
 		BindMesh((*i).GetMesh());
-
-		// OGL Meshes have additional meshes as children
-		if (dynamic_cast<OBJMesh*>(i->GetMesh())) {
-			Vector4 colour = ((OBJMesh*)(*i).GetMesh())->colour;
-			BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
-			BindMesh((*i).GetMesh());
-			vertsDrawn += (*i).GetMesh()->GetVertexCount();
-			DrawBoundMesh();
-
-			for (auto child : ((OBJMesh*)i->GetMesh())->GetChildren()) {
-
-				Vector4 colour = ((OBJMesh*)child)->colour;
-				BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
-
-				BindMesh(child);
-				vertsDrawn += child->GetVertexCount();
-				DrawBoundMesh();
-			}
-		}
-		else {
-			BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
-			BindMesh((*i).GetMesh());
-			vertsDrawn += (*i).GetMesh()->GetVertexCount();
-			DrawBoundMesh();
-		}
-
+		vertsDrawn += (*i).GetMesh()->GetVertexCount();
 		DrawBoundMesh();
 	}
 

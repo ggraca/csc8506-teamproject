@@ -13,6 +13,10 @@
 #include "../Common/Assets.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
+#include "../Common/Material.h"
+#include "GameWorld.h"
+#include "GameObject.h"
+#include "RenderObject.h"
 
 
 #define OBJCOMMENT	"#"			  //The current line of the obj file is a comment
@@ -44,66 +48,73 @@
 using namespace std;
 using namespace NCL;
 using namespace NCL::Rendering;
+using namespace NCL::CSC8503;
 
 class ChildMeshInterface {
 public:
-  void AddChild(OGLMesh*m) {
-    children.push_back(m);
-  }
+	void AddChild(OGLMesh* m) {
+		children.push_back(m);
+	}
 
-  virtual ~ChildMeshInterface() {
-    for(unsigned int i = 0; i < children.size(); ++i) {
-      delete children.at(i);
-    }
-  }
+	virtual ~ChildMeshInterface() {
+		for(unsigned int i = 0; i < children.size(); ++i) {
+			delete children.at(i);
+		}
+	}
 
-  vector<OGLMesh*> GetChildren() const { return children; }
+	vector<OGLMesh*> GetChildren() const { return children; }
   
 protected:
-  vector<OGLMesh*>children;
-  ChildMeshInterface(void){};
+	vector<OGLMesh*>children;
+	ChildMeshInterface(void){};
 };
 
 
 struct OBJSubMesh {
-  std::vector<int> texIndices;
-  std::vector<int> vertIndices;
-  std::vector<int> normIndices;
+	std::vector<int> texIndices;
+	std::vector<int> vertIndices;
+	std::vector<int> normIndices;
 
-  int indexOffset;
-  string mtlType;
-  string mtlSrc;
+	int indexOffset;
+	string mtlType;
+	string mtlSrc;
 };
 
 
 struct MTLInfo {
-  string bump;
-  string diffuse;
+	string bump;
+	string diffuse;
 
-  OGLTexture* bumpTex;
-  OGLTexture* diffuseTex;
+	OGLTexture* bumpTex;
+	OGLTexture* diffuseTex;
 
-  Vector4 colour;
+	Vector4 colour;
 
-  MTLInfo() {
-    bumpTex = nullptr;
-    diffuseTex = nullptr;
-  }
+	MTLInfo() {
+		bumpTex = nullptr;
+		diffuseTex = nullptr;
+	}
 };
 
-
-class OBJMesh : public OGLMesh, public ChildMeshInterface {
+class OBJMesh : public OGLMesh {
 public:
-  OBJMesh(void) {};
-  OBJMesh(std::string filename) { LoadOBJMesh(filename); };
-  ~OBJMesh(void) {};
-  bool	LoadOBJMesh(std::string filename);
-  Vector4 colour;
+	//OBJMesh(Material* mat) : material(mat) {};
+	NCL::Rendering::Material*   material = nullptr; // TODO: fix this naming
+	Vector4 colour;
+	void SetTexturesFromMTL(string &mtlFile, string &mtlType);
+	map <string, MTLInfo> materials;
+	static OBJMesh* FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals);
+};
+
+class OBJLoader : public OGLMesh, public ChildMeshInterface {
+public:
+	OBJLoader(void) {};
+	OBJLoader(std::string filename) { LoadOBJMesh(filename); };
+	~OBJLoader(void) {};
+	bool	LoadOBJMesh(std::string filename);
+	Vector4 colour;
+	GameObject* ToGameObject(GameWorld* world);
 
 protected:
-  void SetTexturesFromMTL(string &mtlFile, string &mtlType);
-  void LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes);
-
-  map <string, MTLInfo> materials;
-
+	void LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes);
 };
