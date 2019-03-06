@@ -30,12 +30,7 @@ ExampleScene::ExampleScene() : Scene() {
   RegisterConsoleCommands();
 
   GameObject::SetGameWorld(world);
-
-
 }
-
-
-
 
 void ExampleScene::ResetWorld() {
   world->ClearAndErase();
@@ -60,15 +55,11 @@ void ExampleScene::ResetWorld() {
   GameObject* go = new GameObject();
   go->GetTransform().SetWorldPosition(Vector3(0, 5, 0));
   go->GetTransform().SetLocalScale(Vector3(10, 10, 10));
-  go->SetRenderObject(new RenderObject(
+  go->AddComponent<RenderObject*>((RenderObject*)new RenderObject(
     &go->GetTransform(),
     new OBJMesh(Assets::MESHDIR + "tree_sample.obj"),
-    basicTex,
-    basicShader
+	basicMaterial
   ));
-  go->SetPhysicsObject(new PhysicsObject(&go->GetTransform(), go->GetBoundingVolume()));
-  btCollisionShape* Shape = new btBoxShape(btVector3(btScalar(1), btScalar(1), btScalar(1)));
-  SetBulletPhysicsParameters(Shape, go->GetTransform().GetWorldPosition(), 0, 1, 1);
   world->AddGameObject(go);
 }
 

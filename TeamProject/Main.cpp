@@ -17,14 +17,9 @@ int main(int argc, char** argv) {
 	w->ShowOSPointer(false);
 	w->LockMouseToWindow(true);
 	w->ShowConsole(true);
-  
-<<<<<<< HEAD
+
 	Scene* scene = new ExampleScene();
-  // Scene* scene = new PhysicsScene();
-=======
-	//Scene* scene = new ExampleScene();
-	Scene* scene = new PhysicsScene();
->>>>>>> master
+	// Scene* scene = new PhysicsScene();
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;

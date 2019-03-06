@@ -13,7 +13,7 @@ using namespace CSC8503;
 Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
-  
+
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4, -60.81, 0));
   world->SetPhysics(physics);
@@ -45,20 +45,11 @@ void Scene::InitialiseAssets() {
   coneMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
   coneMesh->UploadToGPU();
 
-<<<<<<< HEAD
-  basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("white.jpg");
-=======
   basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
   brickTex = (OGLTexture*)TextureLoader::LoadAPITexture("brick.png");
->>>>>>> master
   woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
   dogsTex = (OGLTexture*)TextureLoader::LoadAPITexture("dogs.jpg");
   grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
-<<<<<<< HEAD
-  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("ball.png");
-  basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
-=======
->>>>>>> master
 
   ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
   dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
@@ -124,7 +115,7 @@ Scene::~Scene() {
 }
 
 void Scene::UpdateKeys() {
-	
+
 }
 
 void Scene::InitCamera() {
@@ -146,7 +137,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   sphere->GetTransform().SetWorldPosition(position);
   sphere->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
   sphere->AddComponent<RenderObject*>((Component*)new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
-    
+
   world->AddGameObject(sphere);
   return sphere;
 }
