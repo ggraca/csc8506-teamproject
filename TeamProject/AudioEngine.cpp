@@ -37,7 +37,7 @@ CAudioEngine::CAudioEngine() {
 	Init();
 	setNumList(1);
 	setMinMaxDistance(10.0f, 10000.0f);
-	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, true, false);
 	LoadSound(Assets::SOUNDSDIR + "bat.wav", true, false, false);
 	LoadSound(Assets::SOUNDSDIR + "swords.mp3", true, false, false);
 	LoadSound(Assets::SOUNDSDIR + "1.mp3", true, false, false);
@@ -51,13 +51,18 @@ void CAudioEngine::Init() {
 	sgpImplementation = new Implementation();
 	sgpImplementation->mpSystem->set3DSettings(NULL, DISTANCEFACTOR, 0.1f);
 	listenerpos = { 0.0f, 0.0f, 0.0f };
-	//FMOD::System_Create(&system);
 }
 
 void CAudioEngine::Update() {
 	SetOrientation();
 	SetCameraPos();
 	sgpImplementation->mpSystem->set3DListenerAttributes(0, &cPos, NULL,&forward, &up);
+	FMOD_3D_ATTRIBUTES lisPos;
+	lisPos.position = cPos;
+	lisPos.forward = forward;
+	lisPos.up = up;
+	lisPos.velocity = Vel;
+	sgpImplementation->mpStudioSystem->setListenerAttributes(0,&lisPos);
 	sgpImplementation->Update();
 }
 
@@ -77,7 +82,6 @@ void CAudioEngine::LoadSound(const string &strSoundName, bool b3d, bool bLooping
 	if (pSound) {
 		sgpImplementation->mSounds[strSoundName] = pSound;
 		pSound->set3DMinMaxDistance(min * DISTANCEFACTOR, max*DISTANCEFACTOR);
-		//sgpImplementation->mpSystem->set3DListenerAttributes(0, &listenerpos, NULL, &forward, &up);
 	}
 }
 
@@ -169,13 +173,15 @@ void CAudioEngine::LoadEvent(const string& strEventName, const Vector3& vPositio
 		}
 	}
 	pEventInstance->setReverbLevel(10, 100);
+	//pEventInstance->
+		//set3DMinMaxDistance(min * DISTANCEFACTOR, max*DISTANCEFACTOR);
 
 	FMOD_3D_ATTRIBUTES test;
 	test.position = VectorToFmod(vPosition);
-	test.forward = forward;
+	test.forward = VectorToFmod(Vector3(1.0,1.0,1.0));
 	test.up = up;
-	test.velocity = VectorToFmod(Vector3(0,0,0));
-	test.position = VectorToFmod(Vector3(-19, 0, 5));
+	test.velocity = Vel;
+	
 
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) { test.position = VectorToFmod(Vector3(-19, 0, 0)); }
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_X)) { test.position = VectorToFmod(Vector3(-10, 0, 0)); }
@@ -213,9 +219,9 @@ void CAudioEngine::PlayEvent(const string& strEventName, const Vector3& vPositio
 
 	FMOD_3D_ATTRIBUTES test;
 	test.position = VectorToFmod(vPosition);
-	/*test.forward = forward;
+	test.forward = VectorToFmod(Vector3(1.0, 1.0, 1.0));
 	test.up = up;
-	test.velocity = VectorToFmod(Vector3(0, 0, 0));*/
+	test.velocity = Vel;
 
 	pEventInstance->set3DAttributes(&test);
 
@@ -314,6 +320,7 @@ void CAudioEngine::setMinMaxDistance(float x, float y) {
 
 void CAudioEngine::setNumList(int num) {
 	sgpImplementation->mpSystem->set3DNumListeners(num);
+	sgpImplementation->mpStudioSystem->setNumListeners(num);
 }
 
 void CAudioEngine::SetPlayer(GameObject* player1) {

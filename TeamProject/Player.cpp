@@ -76,8 +76,8 @@ void Player::PlayerMovement(float dt)
 
 		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
 		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
-		//int x = audio->PlaySounds(Assets::SOUNDSDIR + "jump.wav", pos, audio->VolumeTodB(1));
-		//audio->SetChannel3dPosition(x, pos);
+		/*int x = audio->PlaySounds(Assets::SOUNDSDIR + "jump.wav", pos, audio->VolumeTodB(1));
+		audio->SetChannel3dPosition(x, pos);*/
 
 		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));
 

@@ -34,14 +34,14 @@ void PhysicsScene::ResetWorld() {
   audio->LoadEvent("event:/Jump");
   audio->LoadEvent("event:/Land");*/
 
-  audio->PlayEvent("event:/Music", Vector3(0, 0, 0));
+ audio->PlayEvent("event:/Music", Vector3(0, 0, 0));
 
   //audio->  getEvent("event:/UI/Cancel", &cancelDescription);
   //cancelDescription->createInstance(&cancelInstance);
 
   //cancelInstance->start();
   //cancelInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
-
+  //audio->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", Vector3(0, 0, 0), 1.0);
 
  // int x = audio->PlaySounds(Assets::SOUNDSDIR + "1.mp3");
 

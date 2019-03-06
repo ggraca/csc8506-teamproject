@@ -79,6 +79,7 @@ private:
 	FMOD_VECTOR cPos;
 	FMOD_VECTOR forward;
 	FMOD_VECTOR up = { 0.0f,1.0f,0.0f };
+	FMOD_VECTOR Vel = { 0.0f,0.0f,0.0f };
 	float M_PI = 3.14159265358979323846;
 	GameObject* camera;
 	GameObject* player;
