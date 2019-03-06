@@ -96,7 +96,10 @@ namespace NCL {
 			T GetComponent()
 			{
 				int index = TypeId::GetTypeId(typeid(T));
-				return dynamic_cast<T>(components[index]);
+				if (components.find(index) != components.end()) {
+					return dynamic_cast<T>(components[index]);
+				}
+				return nullptr;
 			}
 
 			void SetUpInitialScripts();

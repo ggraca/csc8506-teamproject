@@ -67,30 +67,9 @@ void GameTechRenderer::AddHUDObjects()
 }
 
 void GameTechRenderer::GenBuffers() {
-	glGenTextures(1, &shadowTex);
-	glBindTexture(GL_TEXTURE_2D, shadowTex);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		SHADOWSIZE, SHADOWSIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	//Generate Shadow FBO
-	glGenFramebuffers(1, &shadowFBO);
-
-	//Attach shadow texture to FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowTex, 0);
-	glDrawBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	//Shader doesn't like this code for some reason?
-	//Use 2 lines below to generate texture and FBO when shader draws correctly
-	//shadowTex = OGLTexture::EmptyTexture(SHADOWSIZE, SHADOWSIZE, true);
-	//GenerateFrameBuffer(&shadowFBO, nullptr, shadowTex);
+	shadowTex = OGLTexture::ShadowTexture(SHADOWSIZE, SHADOWSIZE);
+	vector<TextureBase*> emptytextures;
+	GenerateFrameBuffer(&shadowFBO, emptytextures, shadowTex);
 
 	//Generate G-Buffer textures
 	gBufferDepthTex = OGLTexture::EmptyTexture(currentWidth, currentHeight, true);
@@ -324,12 +303,7 @@ void GameTechRenderer::RenderLights() {
 			BindIntToShader(false, "drawShadows");
 		}
 
-		//TODO: Overload BindTextureToShader to take GLuint as parameter, as above for all textures
-		//BindTextureToShader(shadowTex, "shadowTex", 20);
-		glUniform1i(glGetUniformLocation(lightShader->GetProgramID(),
-			"shadowTex"), 20);
-		glActiveTexture(GL_TEXTURE20);
-		glBindTexture(GL_TEXTURE_2D, shadowTex);
+		BindTextureToShader(shadowTex, "shadowTex", 20);
 
 		float dist = (activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
 
