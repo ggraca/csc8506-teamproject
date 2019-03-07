@@ -54,7 +54,18 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 }
 
 PhysicsObject::~PhysicsObject()	{
+	BulletPhysics* physics = gameObject->gameWorld->GetPhysics();
 
+	delete body->getMotionState();
+	physics->dynamicsWorld->removeCollisionObject(body);
+	delete body;
+
+	for (int i = 0; i < physics->collisionShapes.size(); i++) {
+		if (physics->collisionShapes[i] == shape) {
+			physics->collisionShapes[i] = 0;
+			delete shape;
+		}
+	}
 }
 
 void PhysicsObject::SetBulletPhysicsParameters()
