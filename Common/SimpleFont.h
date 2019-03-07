@@ -45,33 +45,3 @@ namespace NCL {
 		};
 	}
 }
-
-
-			const TextureBase* GetTexture() const {
-				return texture;
-			}
-
-		protected:
-			//matches stbtt_bakedchar
-			struct FontChar {
-				unsigned short x0;
-				unsigned short y0;
-				unsigned short x1;
-				unsigned short y1;
-				float xOff;
-				float yOff;
-				float xAdvance;
-			};
-
-			FontChar*		allCharData;
-			TextureBase*	texture;
-
-			int startChar;
-			int numChars;
-
-			float texWidth;
-			float texHeight;
-		};
-	}
-}
-

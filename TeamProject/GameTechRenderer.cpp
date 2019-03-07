@@ -11,6 +11,7 @@ using namespace CSC8503;
 
 Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
+#ifdef _WIN32
 GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetWindow()), gameWorld(world)	{
 	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
@@ -33,6 +34,32 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
 		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
 }
+#endif
+
+#ifdef __ORBIS__
+GameTechRenderer::GameTechRenderer(GameWorld& world) : PS4::PS4RendererBase((PS4::PS4Window*)Window::GetWindow()), gameWorld(world) {
+	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
+	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
+	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
+	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
+
+
+	hudShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
+
+	GenBuffers();
+
+	screenQuad = OGLMesh::GenerateQuad();
+	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
+	screenQuad->UploadToGPU();
+
+	AddHUDObjects();
+
+	ClearColor(Vector4(1, 1, 1, 1));
+	//Set up the light properties
+	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
+		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
+}
+#endif
 
 
 GameTechRenderer::~GameTechRenderer()	{
@@ -427,20 +454,6 @@ void GameTechRenderer::WeaponState(int index, bool state)
 {
 	hudObjects[index]->SetWeaponState(state);
 }
-
-void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
-	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
-
-	Matrix4 vp = projMatrix * viewMatrix;
-
-	int matLocation = glGetUniformLocation(s->GetProgramID(), "viewProjMatrix");
-
-	glUniformMatrix4fv(matLocation, 1, false, (float*)&vp);
-}
-
-
 
 /*void GameTechRenderer::UpdateHealthQuad()
 {

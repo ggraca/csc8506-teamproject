@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Common/RendererBase.h"
+
 #include "PS4MemoryAware.h"
 
 #include <gnm.h>
@@ -56,6 +57,8 @@ namespace NCL {
 			void	SwapCommandBuffer();
 			
 			void	DrawMesh(PS4Mesh& mesh);
+			void	BindFBO(void*buffer);
+			void	ClearBuffer(bool colour, bool depth, bool stencil);
 
 		private:
 			void	InitialiseMemoryAllocators();
@@ -66,8 +69,6 @@ namespace NCL {
 			void	DestroyVideoSystem();
 			void	DestroyGCMRendering();
 
-			void	SetRenderBuffer(PS4ScreenBuffer*buffer, bool clearColour, bool clearDepth, bool clearStencil);
-			void	ClearBuffer(bool colour, bool depth, bool stencil);
 
 			PS4ScreenBuffer* GenerateScreenBuffer(uint width, uint height, bool colour = true, bool depth = true, bool stencil = false);
 

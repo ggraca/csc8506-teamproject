@@ -22,7 +22,7 @@ using namespace NCL::PS4;
 sce::Gnmx::Toolkit::IAllocator	oAllocator;
 sce::Gnmx::Toolkit::IAllocator	gAllocator;
 
-PS4RendererBase::PS4RendererBase(PS4Window*window)
+PS4RendererBase::PS4RendererBase(PS4Window* window)
 	: RendererBase(*window),
 	_MaxCMDBufferCount(3),
 	  _bufferCount(3),
@@ -213,7 +213,8 @@ void PS4RendererBase::RenderFrame()			{
 
 	currentGFXContext->waitUntilSafeForRendering(videoHandle, currentGPUBuffer);
 
-	SetRenderBuffer(currentPS4Buffer, true, true, true);
+	BindFBO(currentPS4Buffer);
+	ClearBuffer(true, true, true);
 
 	defaultShader->SubmitShaderSwitch(*currentGFXContext);
 
@@ -283,8 +284,8 @@ void	PS4RendererBase::SwapCommandBuffer() {
 	currentGFXContext	= &currentFrame->GetCommandBuffer();
 }
  
-void	PS4RendererBase::SetRenderBuffer(PS4ScreenBuffer*buffer, bool clearColour, bool clearDepth, bool clearStencil) {
-	currentPS4Buffer = buffer;
+void	PS4RendererBase::BindFBO(void* buffer) {
+	currentPS4Buffer = (PS4ScreenBuffer*)buffer;
 	currentGFXContext->setRenderTargetMask(0xF);
 	currentGFXContext->setRenderTarget(0, &currentPS4Buffer->colourTarget);
 	currentGFXContext->setDepthRenderTarget(&currentPS4Buffer->depthTarget);
@@ -293,8 +294,6 @@ void	PS4RendererBase::SetRenderBuffer(PS4ScreenBuffer*buffer, bool clearColour, 
 	currentGFXContext->setScreenScissor(0, 0, currentPS4Buffer->colourTarget.getWidth(), currentPS4Buffer->colourTarget.getHeight());
 	currentGFXContext->setWindowScissor(0, 0, currentPS4Buffer->colourTarget.getWidth(), currentPS4Buffer->colourTarget.getHeight(), sce::Gnm::WindowOffsetMode::kWindowOffsetDisable);
 	currentGFXContext->setGenericScissor(0, 0, currentPS4Buffer->colourTarget.getWidth(), currentPS4Buffer->colourTarget.getHeight(), sce::Gnm::WindowOffsetMode::kWindowOffsetDisable);
-
-	ClearBuffer(clearColour, clearDepth, clearStencil);
 }
 
 void	PS4RendererBase::ClearBuffer(bool colour, bool depth, bool stencil) {

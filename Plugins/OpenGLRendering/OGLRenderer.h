@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 
+
 namespace NCL {
 	class MeshGeometry;
 	namespace Rendering {
