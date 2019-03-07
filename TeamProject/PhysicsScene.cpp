@@ -37,7 +37,6 @@ void PhysicsScene::ResetWorld() {
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
   player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
-  player->RemoveComponent<Player*>();
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
   audio->SetPlayer(player);

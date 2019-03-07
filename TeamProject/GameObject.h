@@ -171,10 +171,13 @@ namespace NCL {
 
 			int index = TypeId::GetTypeId(typeid(T));
 
-			if (components[index])
+			if (index == -1) { return; }
+			auto it = components.find(index);
+
+			if (it != components.end())
 			{
 				if (dynamic_cast<ScriptObject*>(obj)) { RemoveScript<T>(); }
-				delete components[index];
+				delete it->second;
 			}
 
 			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
