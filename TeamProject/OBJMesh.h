@@ -9,9 +9,10 @@
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
 #include "../Common/Vector4.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
+#include "../Common/MeshGeometry.h"
 #include "../Common/Assets.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
+#include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Common/TextureLoader.h"
 #include "../Common/Material.h"
 #include "GameWorld.h"
@@ -55,7 +56,7 @@ using namespace NCL::CSC8503;
 
 class ChildMeshInterface {
 public:
-	void AddChild(OGLMesh* m) {
+	void AddChild(MeshGeometry* m) {
 		children.push_back(m);
 	}
 
@@ -65,10 +66,10 @@ public:
 		}
 	}
 
-	vector<OGLMesh*> GetChildren() const { return children; }
+	vector<MeshGeometry*> GetChildren() const { return children; }
   
 protected:
-	vector<OGLMesh*>children;
+	vector<MeshGeometry*>children;
 	ChildMeshInterface(void){};
 };
 
@@ -81,6 +82,7 @@ struct OBJSubMesh {
 	string mtlSrc;
 };
 
+// TODO: Make this compatible with PS4
 class OBJMesh : public OGLMesh {
 public:
 	OBJMesh(NCL::Rendering::Material* mat) : material(mat) {};
@@ -88,7 +90,7 @@ public:
 	static OBJMesh* FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals);
 };
 
-class OBJLoader : public OGLMesh, public ChildMeshInterface {
+class OBJLoader : public ChildMeshInterface {
 public:
 	OBJLoader(void) {};
 	OBJLoader(std::string filename) { LoadOBJMesh(filename); };

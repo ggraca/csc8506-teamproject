@@ -28,13 +28,13 @@ Scene::Scene() {
    }
 
 void Scene::InitialiseAssets() {
-  cubeMesh = Assets::AssetManager::LoadMesh("Cube.msh");
+  cubeMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("Cube.msh");
   
-  sphereMesh = Assets::AssetManager::LoadMesh("sphere2.msh");
+  sphereMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("sphere2.msh");
   renderer->SetLightMesh(sphereMesh);
 
-  cylinderMesh = Assets::AssetManager::LoadMesh("cylinder.obj");
-  coneMesh = Assets::AssetManager::LoadMesh("cone.obj");
+  cylinderMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cylinder.obj");
+  coneMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cone.obj");
 
   basicTex = (OGLTexture*)Assets::AssetManager::LoadTexture("checkerboard.png");
   brickTex = (OGLTexture*)Assets::AssetManager::LoadTexture("brick.png");

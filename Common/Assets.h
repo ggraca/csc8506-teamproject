@@ -4,8 +4,7 @@
 
 #include "TextureLoader.h"
 #include "Material.h"
-#include "../TeamProject/OBJMesh.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
+#include "MeshGeometry.h"
 
 
 namespace NCL {
@@ -31,7 +30,7 @@ namespace NCL {
 			}
 
 			static Rendering::TextureBase* LoadTexture(const std::string& filename);
-			static Rendering::OGLMesh* LoadMesh(const std::string& filename);
+			static MeshGeometry* LoadMesh(const std::string& filename);
 			static Rendering::Material* LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader);
 
 			static void FlushTextures();
@@ -40,7 +39,7 @@ namespace NCL {
 			static void FlushAssets();
 		protected:
 			std::map<std::string, Rendering::TextureBase*> loadedTextures;
-			std::map<std::string, Rendering::OGLMesh*> loadedMeshes;
+			std::map<std::string, MeshGeometry*> loadedMeshes;
 			std::map<std::string, Rendering::ShaderBase*> loadedShaders;
 			std::map<std::string, Rendering::Material*> loadedMaterials;
 			

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "../Plugins/OpenGLRendering/OGLMesh.h"
+
 using namespace NCL;
 
 bool Assets::ReadTextFile(const std::string &filepath, std::string& result) {
@@ -36,14 +38,15 @@ Rendering::TextureBase* Assets::AssetManager::LoadTexture(const std::string& fil
 	return newTexture;
 }
 
-Rendering::OGLMesh* Assets::AssetManager::LoadMesh(const std::string& filename) {
+MeshGeometry* Assets::AssetManager::LoadMesh(const std::string& filename) {
 	auto iter = GetInstance().loadedMeshes.find(filename);
 
 	if (iter != GetInstance().loadedMeshes.end()) {
 		return (*iter).second;
 	}
 
-	Rendering::OGLMesh* newMesh = new OGLMesh(filename);
+	// TODO: Make this compatible with PS4
+	MeshGeometry* newMesh = (MeshGeometry*) new Rendering::OGLMesh(filename);
 	// .msh files have always triangles as faces
 	newMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
 	newMesh->UploadToGPU();
