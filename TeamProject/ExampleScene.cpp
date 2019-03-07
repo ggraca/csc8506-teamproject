@@ -90,13 +90,13 @@ void ExampleScene::UpdateGame(float dt) {
 
   /*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
 	  delete hammer;
-	  hammer = (OGLTexture*)TextureLoader::LoadAPITexture("hammer.png");
+	  hammer = (OGLTexture*)Assets::AssetManager::LoadTexture("hammer.png");
 	  renderer->hammer = hammer->GetObjectID();
 	  delete gun;
-	  gun = (OGLTexture*)TextureLoader::LoadAPITexture("gun.png");
+	  gun = (OGLTexture*)Assets::AssetManager::LoadTexture("gun.png");
 	  renderer->gun = gun->GetObjectID();
 	  delete bomb;
-	  bomb = (OGLTexture*)TextureLoader::LoadAPITexture("bomb.png");
+	  bomb = (OGLTexture*)Assets::AssetManager::LoadTexture("bomb.png");
 	  renderer->bomb = bomb->GetObjectID();
   }*/
 

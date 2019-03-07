@@ -36,6 +36,21 @@ Rendering::TextureBase* Assets::AssetManager::LoadTexture(const std::string& fil
 	return newTexture;
 }
 
+Rendering::OGLMesh* Assets::AssetManager::LoadMesh(const std::string& filename) {
+	auto iter = GetInstance().loadedMeshes.find(filename);
+
+	if (iter != GetInstance().loadedMeshes.end()) {
+		return (*iter).second;
+	}
+
+	Rendering::OGLMesh* newMesh = new OGLMesh(filename);
+	// .msh files have always triangles as faces
+	newMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+	newMesh->UploadToGPU();
+	GetInstance().loadedMeshes.insert(std::make_pair(filename, newMesh));
+	return newMesh;
+}
+
 Rendering::Material* Assets::AssetManager::LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader) {
 	auto iter = GetInstance().loadedMaterials.find(materialname);
 

@@ -51,26 +51,26 @@ void GameTechRenderer::AddHUDObjects()
 
 	//Green HealthBar
 	vector<OGLTexture*> textures1;
-	textures1.push_back((OGLTexture*)TextureLoader::LoadAPITexture("healthBarGreen.png"));
+	textures1.push_back((OGLTexture*)Assets::AssetManager::LoadTexture("healthBarGreen.png"));
 	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures1, Transform(), false));
 	//Red HealthBar
 	vector<OGLTexture*> textures2;
-	textures2.push_back((OGLTexture*)TextureLoader::LoadAPITexture("healthBarRed.png"));
+	textures2.push_back((OGLTexture*)Assets::AssetManager::LoadTexture("healthBarRed.png"));
 	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures2, Transform(), false));
 	//Hammer
 	vector<OGLTexture*> textures3;
-	textures3.push_back((OGLTexture*)TextureLoader::LoadAPITexture("hammer_gray.png"));
-	textures3.push_back((OGLTexture*)TextureLoader::LoadAPITexture("hammer.png"));
+	textures3.push_back((OGLTexture*)Assets::AssetManager::LoadTexture("hammer_gray.png"));
+	textures3.push_back((OGLTexture*)Assets::AssetManager::LoadTexture("hammer.png"));
 	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 106, (GameTechRenderer::GetRendererWidth() / 2) - 42, 20, 84), textures3, Transform(), false));
 	//Gun
 	vector<OGLTexture*> textures4;
-	textures4.push_back((OGLTexture*)TextureLoader::LoadAPITexture("gun_gray.png"));
-	textures4.push_back((OGLTexture*)TextureLoader::LoadAPITexture("gun.png"));
+	textures4.push_back((OGLTexture*)Assets::AssetManager::LoadTexture("gun_gray.png"));
+	textures4.push_back((OGLTexture*)Assets::AssetManager::LoadTexture("gun.png"));
 	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 32, (GameTechRenderer::GetRendererWidth() / 2) + 32, 20, 84), textures4, Transform(), false));
 	//Bomb
 	vector<OGLTexture*> textures5;
-	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb_gray.png"));
-	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb.png"));
+	textures5.push_back((OGLTexture*)Assets::AssetManager::LoadTexture("bomb_gray.png"));
+	textures5.push_back((OGLTexture*)Assets::AssetManager::LoadTexture("bomb.png"));
 	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) + 42, (GameTechRenderer::GetRendererWidth() / 2) + 106, 20, 84), textures5, Transform(), false));
 }
 

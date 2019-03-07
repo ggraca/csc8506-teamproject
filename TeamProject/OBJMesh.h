@@ -9,7 +9,7 @@
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
 #include "../Common/Vector4.h"
-#include "OGLMesh.h"
+#include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Common/Assets.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
@@ -17,7 +17,7 @@
 #include "GameWorld.h"
 #include "GameObject.h"
 #include "RenderObject.h"
-#include "OGLShader.h"
+#include "../Plugins/OpenGLRendering/OGLShader.h"
 
 
 #define OBJCOMMENT		"#"			//The current line of the obj file is a comment
