@@ -120,7 +120,7 @@ void GameObject::UpdateComponents(float dt)
 {
 	for (auto&i : components)
 	{
-		i.second->Update(dt);
+		if (components[i.first]) { i.second->Update(dt); }
 	}
 }
 
@@ -192,6 +192,23 @@ GameObject * GameObject::GetMainCamera()
 	return gameWorld->GetMainCamera();
 }
 
+GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
+	if (!gameWorld) { return nullptr; }
 
+	GameObject* root = new GameObject();
+	gameWorld->AddGameObject(root);
 
+	for (auto& mesh : obj->GetChildren()) {
+		GameObject* go = new GameObject();
 
+		go->AddComponent<RenderObject*>(new RenderObject(
+			&go->GetTransform(),
+			mesh,
+			((OBJMesh*)mesh)->material
+		));
+
+		gameWorld->AddGameObject(go);
+		root->AddChild(go);
+	}
+	return root;
+}

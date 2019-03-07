@@ -126,8 +126,8 @@ void	Win32Window::SetFullScreen(bool fullScreen) {
 		DEVMODEA settings;
 		EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &settings);
 
-		size.x = settings.dmPelsWidth;
-		size.y = settings.dmPelsHeight;
+		size.x = (float)settings.dmPelsWidth;
+		size.y = (float)settings.dmPelsHeight;
 
 		dmScreenSettings.dmSize				= sizeof(dmScreenSettings);			// Size Of The Devmode Structure
 		dmScreenSettings.dmPelsWidth		= (DWORD)size.x;		// Selected Screen Width

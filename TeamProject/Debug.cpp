@@ -52,9 +52,9 @@ void Debug::FlushRenderables() {
 		renderer->DrawLine(i.start, i.end, i.colour);
 	}
 
-	for (int i = 0; i < DebugMenu.size(); i++)
+	for (unsigned int i = 0; i < DebugMenu.size(); i++)
 	{
-		renderer->DrawString(DebugMenu[i].data, Vector2(20, (DebugMenu.size() - i) * 20), Vector4(1, 1, 1, 1), DebugMenu[i].size);
+		renderer->DrawString(DebugMenu[i].data, Vector2(20.0f, (DebugMenu.size() - i) * 20.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), DebugMenu[i].size);
 	}
 
 	DebugMenu.clear();

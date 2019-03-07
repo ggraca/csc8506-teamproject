@@ -68,13 +68,13 @@ int SimpleFont::BuildVerticesForString(std::string &text, Vector2&startPos, Vect
 		float scale = size;
 		//For basic vertex buffers, we're assuming we should add 6 vertices
 
-		float charWidth = (float)((charData.x1 - charData.x0) / texWidth) * scale * 0.5;
+		float charWidth  = (float)((charData.x1 - charData.x0)/ texWidth) * scale * 0.5f;
 		float charHeight = (float)(charData.y1 - charData.y0);
 
-		float xStart = ((charData.xOff + currentX) / texWidth) * scale * 0.5;
-		float yStart = startPos.y;
-		float yHeight = (charHeight / texWidth) * scale;
-		float yOff = -((charHeight + charData.yOff) / texWidth) * scale;
+		float xStart	= ((charData.xOff + currentX) / texWidth) * scale * 0.5f;
+		float yStart	= startPos.y;
+		float yHeight	= (charHeight / texWidth) * scale;
+		float yOff		= -((charHeight + charData.yOff) / texWidth) * scale;
 
 		positions.emplace_back(Vector3(startPos.x + xStart, yOff + yStart, 0));
 		positions.emplace_back(Vector3(startPos.x + xStart, yOff + yStart + yHeight, 0));

@@ -14,7 +14,7 @@ HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform
 HUDObject::~HUDObject()
 {
 	delete objectMesh;
-	for (int i = 0; i < texture.size(); i++)
+	for (unsigned int i = 0; i < texture.size(); i++)
 	{
 		delete texture[i];
 	}
