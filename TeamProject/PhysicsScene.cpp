@@ -29,7 +29,7 @@ void PhysicsScene::ResetWorld() {
   floor->SetName("Floor");
 
    //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 0, 0.2f, 0.4f);
+  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
   player->AddScript((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
@@ -37,11 +37,11 @@ void PhysicsScene::ResetWorld() {
   player->SetLayer(LayerAndTag::ObjectLayer::UI);
   world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
 
-  auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(7, 7, 7), 1000, 0.2f);
   resource1->SetName("Resource 1");
   resource1->AddScript((ScriptObject*)new Resource(resource1));
 
-  auto resource2 = AddCubeToWorld(Vector3(120, 300, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 0, 0.2f);
+  auto resource2 = AddCubeToWorld(Vector3(120, 300, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(7, 7, 7), 1000, 0.2f);
   resource2->SetName("Resource 2");
   resource2->AddScript((ScriptObject*)new Resource(resource2));
 }
@@ -109,18 +109,9 @@ const btCollisionObject* PhysicsScene::Raycast(const Vector3& Start, const Vecto
 	return nullptr;
 }
 
-const btCollisionObject* PhysicsScene::RaycastPosDir(const Vector3& Pos, const Vector3& Dir, float t, Vector3& NewEnd) {
-	btVector3 btStart = btVector3(Pos.x, Pos.y, Pos.z);
+const btCollisionObject* PhysicsScene::RaycastPosDir(const Vector3& Pos, const Vector3& Dir, float t, Vector3& NewEnd) {	
 	Vector3 End = Pos + Vector3(t * Dir.x, t * Dir.y, t * Dir.z);
-	btVector3 btEnd = btVector3(End.x, End.y, End.z);
-	btCollisionWorld::ClosestRayResultCallback RayCallback(btStart, btEnd);
-	physics->dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
-	if (RayCallback.hasHit()) {
-		btVector3 btNewEnd = RayCallback.m_hitPointWorld;
-		NewEnd = Vector3(btNewEnd.getX(), btNewEnd.getY(), btNewEnd.getZ());
-		return RayCallback.m_collisionObject;
-	}
-	return nullptr;
+	return Raycast(Pos, End, NewEnd);
 }
 
 void PhysicsScene::UpdateGame(float dt) {
@@ -144,11 +135,17 @@ void PhysicsScene::UpdateGame(float dt) {
   //bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
 
   Vector3 newend;
-  const btCollisionObject* test1 = Raycast(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), world->FindGameObjectWithTag(LayerAndTag::Tags::Resources)->GetTransform().GetWorldPosition(), newend);
-  Debug::DrawLine(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), newend, Vector4(1, 0, 0, 1));
+  Vector3 pos = world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition();
+  Vector3 pos2 = world->FindGameObjectWithTag(LayerAndTag::Tags::Resources)->GetTransform().GetWorldPosition();
 
-  const btCollisionObject* test2 = RaycastPosDir(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), Vector3(0,1,0), 200.0f, newend);
-  Debug::DrawLine(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), newend, Vector4(1, 1, 0, 1));
+  const btCollisionObject* test1 = Raycast(pos, pos2, newend);
+  Debug::DrawLine(pos, test1 == nullptr ? pos2 : newend, Vector4(1, 0, 0, 1));
+
+  Vector3 dir = Vector3(1, 0, 0);
+  float mag = 200.0f;
+  Vector3 fulldir = Vector3(mag * dir.x, mag * dir.y, mag * dir.z);
+  const btCollisionObject* test2 = RaycastPosDir(pos, dir, mag, newend);
+  Debug::DrawLine(pos, test2 == nullptr ? pos + fulldir : newend, Vector4(1, 1, 0, 1));
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
