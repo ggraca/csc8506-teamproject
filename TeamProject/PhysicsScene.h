@@ -21,7 +21,7 @@ namespace NCL {
     protected:
       void ResetWorld();
       void DebugScene(float dt);
-	    void UpdateKeys();
+	  void UpdateKeys();
 
 	  GameObject* bestcube;
 
