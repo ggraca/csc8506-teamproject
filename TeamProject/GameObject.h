@@ -87,7 +87,7 @@ namespace NCL {
 			{
 				int index = TypeId::GetTypeId(typeid(T));
 
-				//if (dynamic_cast<ScriptObject*>(T)) { RemoveScript<T>(); }
+				if (dynamic_cast<ScriptObject*>(components[index])) { RemoveScript<T>(); }
 				delete components[index];
 				components.erase(index);
 			}
@@ -145,7 +145,6 @@ namespace NCL {
 				{
 					if (dynamic_cast<T>(scripts[i]))
 					{
-						delete scripts[i];
 						scripts.erase(scripts.begin() + i);
 
 						return;
@@ -159,15 +158,15 @@ namespace NCL {
 		{
 			if (!obj) { return; }
 
-			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
-
 			int index = TypeId::GetTypeId(typeid(T));
 
 			if (components[index])
 			{
+				if (dynamic_cast<ScriptObject*>(obj)) { RemoveScript<T>(); }
 				delete components[index];
 			}
 
+			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
 			components[index] = obj;
 		}
 
