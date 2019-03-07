@@ -1,7 +1,7 @@
-#include "OBJMesh.h"
-#include "Resource.h"
+#include "OBJGeometry.h"
+#include "../TeamProject/Resource.h"
 
-bool OBJLoader::LoadOBJMesh(std::string filename) {
+bool OBJGeometry::LoadOBJMesh(std::string filename) {
   std::ifstream f(filename.c_str(), std::ios::in);
   if (!f) return false;
 
@@ -127,7 +127,7 @@ OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, ve
 	return m;
 }
 
-void OBJLoader::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes) {
+void OBJGeometry::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes) {
   if (!currentMesh) {
     currentMesh = new OBJSubMesh();
     inputSubMeshes.push_back(currentMesh);
@@ -212,7 +212,7 @@ void OBJLoader::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std
   }
 }
 
-void OBJLoader::LoadMaterialsFromMTL(string filename) {
+void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 	std::ifstream f(string(Assets::MESHDIR + filename).c_str(), std::ios::in);
 	if (!f) return;
 
@@ -268,7 +268,7 @@ void OBJLoader::LoadMaterialsFromMTL(string filename) {
 	//material->AddTextureParameter("metalnessTex", (OGLTexture*)Assets::AssetManager::LoadTexture("black.jpg"));
 }
 
-string OBJLoader::NormalisePath(string path) {
+string OBJGeometry::NormalisePath(string path) {
 	if (path.find_last_of('/') != string::npos) {
 		int at = path.find_last_of('/');
 		path = path.substr(at + 1);
@@ -280,7 +280,7 @@ string OBJLoader::NormalisePath(string path) {
 	return path;
 }
 
-GameObject* OBJLoader::ToGameObject(GameWorld* world) {
+GameObject* OBJGeometry::ToGameObject(GameWorld* world) {
 	GameObject* root = new GameObject();
 	
 	world->AddGameObject(root);

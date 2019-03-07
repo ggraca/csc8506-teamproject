@@ -88,9 +88,6 @@
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
-    <ClCompile Include="OBJMesh.cpp">
-      <Filter>GraphicsTools</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -167,9 +164,6 @@
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="OBJMesh.h">
-      <Filter>GraphicsTools</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>Tools</Filter>

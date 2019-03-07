@@ -99,6 +99,9 @@
     <ClCompile Include="Material.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="OBJGeometry.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -177,6 +180,9 @@
       <Filter>Asset Handling</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJGeometry.h">
       <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>

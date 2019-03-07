@@ -6,6 +6,7 @@
 #include "Material.h"
 #include "MeshGeometry.h"
 
+class OBJGeometry;
 
 namespace NCL {
 	namespace Assets {
@@ -31,6 +32,7 @@ namespace NCL {
 
 			static Rendering::TextureBase* LoadTexture(const std::string& filename);
 			static MeshGeometry* LoadMesh(const std::string& filename);
+			static OBJGeometry* LoadOBJ(const std::string& filename);
 			static Rendering::Material* LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader);
 
 			static void FlushTextures();
@@ -40,6 +42,7 @@ namespace NCL {
 		protected:
 			std::map<std::string, Rendering::TextureBase*> loadedTextures;
 			std::map<std::string, MeshGeometry*> loadedMeshes;
+			std::map<std::string, OBJGeometry*> loadedOBJs;
 			std::map<std::string, Rendering::ShaderBase*> loadedShaders;
 			std::map<std::string, Rendering::Material*> loadedMaterials;
 			

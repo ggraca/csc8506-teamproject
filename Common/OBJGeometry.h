@@ -6,18 +6,18 @@
 #include <sstream>
 #include <map>
 
-#include "../Common/Vector2.h"
-#include "../Common/Vector3.h"
-#include "../Common/Vector4.h"
-#include "../Common/MeshGeometry.h"
-#include "../Common/Assets.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
+#include "MeshGeometry.h"
+#include "Assets.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
-#include "../Common/TextureLoader.h"
-#include "../Common/Material.h"
-#include "GameWorld.h"
-#include "GameObject.h"
-#include "RenderObject.h"
+#include "TextureLoader.h"
+#include "Material.h"
+#include "../TeamProject/GameWorld.h"
+#include "../TeamProject/GameObject.h"
+#include "../TeamProject/RenderObject.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 
 
@@ -90,11 +90,11 @@ public:
 	static OBJMesh* FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals);
 };
 
-class OBJLoader : public ChildMeshInterface {
+class OBJGeometry : public ChildMeshInterface {
 public:
-	OBJLoader(void) {};
-	OBJLoader(std::string filename) { LoadOBJMesh(filename); };
-	~OBJLoader(void) {};
+	OBJGeometry(void) {};
+	OBJGeometry(std::string filename) { LoadOBJMesh(filename); };
+	~OBJGeometry(void) {};
 	bool	LoadOBJMesh(std::string filename);
 	Vector4 colour;
 	GameObject* ToGameObject(GameWorld* world);

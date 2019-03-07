@@ -3,7 +3,7 @@
 #include "../Common/Camera.h"
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
-#include "OBJMesh.h"
+#include "../Common/OBJGeometry.h"
 #include "Light.h"
 
 using namespace NCL;

@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
+#include "OBJGeometry.h"
 
 using namespace NCL;
 
@@ -52,6 +53,19 @@ MeshGeometry* Assets::AssetManager::LoadMesh(const std::string& filename) {
 	newMesh->UploadToGPU();
 	GetInstance().loadedMeshes.insert(std::make_pair(filename, newMesh));
 	return newMesh;
+}
+
+OBJGeometry* Assets::AssetManager::LoadOBJ(const std::string& filename) {
+	auto iter = GetInstance().loadedOBJs.find(filename);
+
+	if (iter != GetInstance().loadedOBJs.end()) {
+		return (*iter).second;
+	}
+
+	// TODO: Make this compatible with PS4
+	OBJGeometry* newOBJ = new OBJGeometry(Assets::MESHDIR + filename);
+	GetInstance().loadedOBJs.insert(std::make_pair(filename, newOBJ));
+	return newOBJ;
 }
 
 Rendering::Material* Assets::AssetManager::LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader) {
