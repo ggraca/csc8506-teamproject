@@ -87,8 +87,13 @@ namespace NCL {
 			{
 				int index = TypeId::GetTypeId(typeid(T));
 
-				if (dynamic_cast<ScriptObject*>(components[index])) { RemoveScript<T>(); }
-				delete components[index];
+				if (index == -1) { return; }
+				auto it = components.find(index);
+
+				if (it == components.end()) { return; }
+
+				if (dynamic_cast<ScriptObject*>(it->second)) { RemoveScript<T>(); }
+				delete it->second;
 				components.erase(index);
 			}
 
