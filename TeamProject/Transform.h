@@ -2,7 +2,7 @@
 #include "../Common/Matrix4.h"
 #include "../Common/Vector3.h"
 #include "../Common/Quaternion.h"
-#include "BulletPhysics.h"
+#include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 #include <vector>
 
@@ -12,6 +12,9 @@ using namespace NCL::Maths;
 
 namespace NCL {
 	namespace CSC8503 {
+		class PhysicsObject;
+		class GameObject;
+		
 		class Transform
 		{
 		public:
