@@ -226,16 +226,20 @@ void OBJLoader::LoadMaterialsFromMTL(string filename) {
 
 		if (lineHeader == MTLNEW) {
 			f >> data;
+			if (material) {
+				//material->AddTextureParameter("bumpTex", (OGLTexture*)Assets::AssetManager::LoadTexture("white.jpg"));
+				//material->AddTextureParameter("specularTex", (OGLTexture*)Assets::AssetManager::LoadTexture("white.jpg"));
+				//material->AddTextureParameter("metalnessTex", (OGLTexture*)Assets::AssetManager::LoadTexture("black.jpg"));
+			}
 			material = Assets::AssetManager::LoadMaterial(data, basicShader);
-			/*material->AddTextureParameter("diffuseTex", (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg"));
-			material->AddTextureParameter("bumpTex", (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg"));
-			material->AddTextureParameter("specularTex", (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg"));
-			material->AddTextureParameter("metalnessTex", (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg"));*/
 		}
 		else if (lineHeader == MTLDIFFUSE) {
 			float r, g, b;
 			f >> r >> g >> b;
-			if (material) material->SetColour(Vector4(r, g, b, 1));
+			if (material) {
+				Vector4 currentColour = material->GetColour();
+				material->SetColour(Vector4(r, g, b, currentColour.w));
+			}
 		}
 		else if (lineHeader == MTLDIFFUSEMAP) {
 			f >> data;
@@ -250,7 +254,18 @@ void OBJLoader::LoadMaterialsFromMTL(string filename) {
 			f >> data;
 			material->AddTextureParameter("specularTex", (OGLTexture*)Assets::AssetManager::LoadTexture(NormalisePath(data)));
 		}
+		else if (lineHeader == MTLTRANS2) {
+			float alpha;
+			f >> alpha >> alpha >> alpha;
+			if (material) {
+				Vector4 currentColour = material->GetColour();
+				material->SetColour(Vector4(currentColour.x, currentColour.y, currentColour.z, alpha));
+			}
+		}
 	}
+	//material->AddTextureParameter("bumpTex", (OGLTexture*)Assets::AssetManager::LoadTexture("white.jpg"));
+	//material->AddTextureParameter("specularTex", (OGLTexture*)Assets::AssetManager::LoadTexture("white.jpg"));
+	//material->AddTextureParameter("metalnessTex", (OGLTexture*)Assets::AssetManager::LoadTexture("black.jpg"));
 }
 
 string OBJLoader::NormalisePath(string path) {

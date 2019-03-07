@@ -39,6 +39,7 @@
 #define MTLSPECWT		"Ns"
 #define MTLTRANS		"d"
 #define MTLTRANSALT		"Tr"
+#define MTLTRANS2		"Tf"
 #define MTLILLUM		"illum"
 #define MTLDIFFUSEMAP	"map_Kd"
 #define MTLSPECMAP		"map_Ks"

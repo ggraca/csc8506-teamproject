@@ -48,7 +48,7 @@ void ExampleScene::ResetWorld() {
 
   // OBJ file example
   //MeshGeometry* mesh = Assets::AssetManager::LoadMesh("tree_sample.obj");
-  OBJLoader* objLoader = new OBJLoader(Assets::MESHDIR + "tree_sample.obj");
+  OBJLoader* objLoader = new OBJLoader(Assets::MESHDIR + "Lamborghini_Aventador.obj");
 
   // We need to pass world because father/son relationship is only possible among gameObjects in the world
   // We might want to change this to allow any gameobject to have a vector of children
@@ -56,8 +56,6 @@ void ExampleScene::ResetWorld() {
   go->GetTransform().SetWorldPosition(Vector3(0, 5, 0));
   go->GetTransform().SetLocalScale(Vector3(1, 1, 1));
   // world->AddGameObject(go); // TODO: We can uncomment this once we fix the bug mentioned above
-
-
 }
 
 ExampleScene::~ExampleScene() {
