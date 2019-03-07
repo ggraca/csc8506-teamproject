@@ -5,6 +5,8 @@
 #include <map>
 #include "TypeId.h"
 
+#include "../Common/OBJGeometry.h"
+
 using std::vector;
 
 namespace NCL {
@@ -12,7 +14,6 @@ namespace NCL {
 		class Component;
 		class ScriptObject;
 		class GameWorld;
-
 
 		class GameObject {
 		public:
@@ -121,9 +122,11 @@ namespace NCL {
 			static void AddObjectToWorld(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj, GameObject * parent);
 			static GameObject * GetMainCamera();
+			static GameObject* FromOBJ(OBJGeometry* obj);
 
 			vector<GameObject*> collidingObjects;
 			static GameWorld* gameWorld;
+
 
 		protected:
 			Transform			transform;

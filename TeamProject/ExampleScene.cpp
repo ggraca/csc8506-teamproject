@@ -23,13 +23,9 @@ ExampleScene::ExampleScene() : Scene() {
   debugMenu = DebugMenu();
   console = Console();
   RegisterConsoleCommands();
-
-  GameObject::SetGameWorld(world);
 }
 
 void ExampleScene::ResetWorld() {
-  world->ClearAndErase();
-
   // Floor
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
 
@@ -47,11 +43,11 @@ void ExampleScene::ResetWorld() {
   resource2->AddComponent<Resource*>((ScriptObject*)new Resource(resource2));
 
   // OBJ file example
-  OBJGeometry* objLoader = Assets::AssetManager::LoadOBJ("TradeTent1.obj");
+  OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("Lamborghini_Aventador.obj");
 
   // We need to pass world because father/son relationship is only possible among gameObjects in the world
   // We might want to change this to allow any gameobject to have a vector of children
-  GameObject* go = objLoader->ToGameObject(world);
+  GameObject* go = GameObject::FromOBJ(objGeometry);
   go->GetTransform().SetWorldPosition(Vector3(0, 5, 0));
   go->GetTransform().SetLocalScale(Vector3(1, 1, 1));
   // world->AddGameObject(go); // TODO: We can uncomment this once we fix the bug mentioned above

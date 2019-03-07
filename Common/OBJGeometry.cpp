@@ -1,5 +1,4 @@
 #include "OBJGeometry.h"
-#include "../TeamProject/Resource.h"
 
 bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	std::ifstream f(filename.c_str(), std::ios::in);
@@ -90,10 +89,6 @@ OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, ve
 
 	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
 	Material* material = Assets::AssetManager::LoadMaterial(sm->mtlType, basicShader);
-	cout << sm->mtlType << endl;
-	cout << "r: " << material->GetColour().x << endl;
-	cout << "g: " << material->GetColour().y << endl;
-	cout << "b: " << material->GetColour().z << endl;
 	OBJMesh* m = new OBJMesh(material);
 
 	for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
@@ -135,8 +130,6 @@ void OBJGeometry::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, s
 
 	std::string faceData;
 	getline(f, faceData);
-
-	cout << faceData << endl;
 
 	// f <vertex index>//<normal index>
 	bool skipTex = false;
@@ -272,24 +265,4 @@ string OBJGeometry::NormalisePath(string path) {
 		path = path.substr(at + 1);
 	}
 	return path;
-}
-
-GameObject* OBJGeometry::ToGameObject(GameWorld* world) {
-	GameObject* root = new GameObject();
-	
-	world->AddGameObject(root);
-	
-	for (auto& mesh : children) {
-		GameObject* go = new GameObject();
-
-		go->AddComponent<RenderObject*>(new RenderObject(
-			&go->GetTransform(),
-			mesh,
-			((OBJMesh*)mesh)->material
-		));
-
-		world->AddGameObject(go);
-		root->AddChild(go);
-	}
-	return root;
 }

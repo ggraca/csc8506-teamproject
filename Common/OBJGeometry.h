@@ -15,9 +15,6 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "TextureLoader.h"
 #include "Material.h"
-#include "../TeamProject/GameWorld.h"
-#include "../TeamProject/GameObject.h"
-#include "../TeamProject/RenderObject.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 
 
@@ -51,7 +48,6 @@
 using namespace std;
 using namespace NCL;
 using namespace NCL::Rendering;
-using namespace NCL::CSC8503;
 
 
 class ChildMeshInterface {
@@ -97,7 +93,6 @@ public:
 	~OBJGeometry(void) {}
 	bool	LoadOBJMesh(std::string filename);
 	Vector4 colour;
-	GameObject* ToGameObject(GameWorld* world);
 
 protected:
 	void LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes);
