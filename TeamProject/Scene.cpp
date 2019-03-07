@@ -6,6 +6,7 @@
 #include "GameWorld.h"
 #include "AudioEngine.h"
 #include "InputManager.h"
+#include "Light.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -111,6 +112,11 @@ void Scene::InitCamera() {
 
 void Scene::InitWorld() {
   world->ClearAndErase();
+
+  GameObject* light = new GameObject("Directional Light");
+  light->GetTransform().SetWorldPosition(Vector3(1000.0f, 1000.0f, 0.0f));
+  light->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f));
+  world->AddGameObject(light);
 }
 
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float mass, float restitution, float friction) {

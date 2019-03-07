@@ -35,7 +35,6 @@ namespace NCL {
 			GameTechRenderer*	renderer;
 			CAudioEngine* audio;
 
-
 			GameWorld*		world;
 
 			bool useGravity;

@@ -170,6 +170,7 @@
     <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="OBJGeometry.h" />
+    <ClInclude Include="PixOpsFlags.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RendererBase.h" />

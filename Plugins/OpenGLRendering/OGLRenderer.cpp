@@ -330,10 +330,6 @@ void OGLRenderer::ClearBuffer(bool depth, bool color, bool stencil) const {
 	glClear(bit);
 }
 
-void OGLRenderer::ClearColor(const Vector4& color) const {
-	glClearColor(color.x, color.y, color.z, color.w);
-}
-
 void OGLRenderer::SetViewport(int x, int y, int width, int height) const {
 	glViewport(x, y, width, height);
 }

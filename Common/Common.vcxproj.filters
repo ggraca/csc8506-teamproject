@@ -185,5 +185,8 @@
     <ClInclude Include="OBJGeometry.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="PixOpsFlags.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
