@@ -153,11 +153,6 @@ void GameWorld::AddGameObject(GameObject* o)
 		btRigidBody* pb = o->GetComponent<PhysicsObject*>()->GetRigidbody();
 		physics->dynamicsWorld->addRigidBody(pb);
 	}
-
-	for (auto child : GetChildrenOfObject(o)) {
-		AddGameObject(child);
-		cout << "avb" << endl;
-	}
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)

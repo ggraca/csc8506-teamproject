@@ -39,6 +39,7 @@ namespace NCL {
 			static void FlushShaders();
 			static void FlushMaterials();
 			static void FlushAssets();
+
 		protected:
 			std::map<std::string, Rendering::TextureBase*> loadedTextures;
 			std::map<std::string, MeshGeometry*> loadedMeshes;
@@ -46,15 +47,12 @@ namespace NCL {
 			std::map<std::string, Rendering::ShaderBase*> loadedShaders;
 			std::map<std::string, Rendering::Material*> loadedMaterials;
 			
-
 			// For later use when meshes and sounds can be loaded from one place.
-			//Also create add and flush functions
-			
-			//std::map<std::string, Rendering::Material*> loadedSounds;
+			// Also create add and flush functions
+			// std::map<std::string, Rendering::Material*> loadedSounds;
+
 		private:
 			AssetManager() {};
 		};
-
-		//static inline bool ReadBinaryFile(const std::string &filepath, std::string& result);
 	}
 }

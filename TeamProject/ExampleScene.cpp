@@ -47,7 +47,7 @@ void ExampleScene::ResetWorld() {
   resource2->AddComponent<Resource*>((ScriptObject*)new Resource(resource2));
 
   // OBJ file example
-  OBJGeometry* objLoader = Assets::AssetManager::LoadOBJ("Lamborghini_Aventador.obj");
+  OBJGeometry* objLoader = Assets::AssetManager::LoadOBJ("TradeTent1.obj");
 
   // We need to pass world because father/son relationship is only possible among gameObjects in the world
   // We might want to change this to allow any gameobject to have a vector of children
