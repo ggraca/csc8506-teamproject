@@ -87,6 +87,10 @@ vector<GameObject*> GameWorld::FindGameObjectsWithTag(LayerAndTag::Tags tag)
 	return temp;
 }
 
+void GameWorld::LateDestroy(GameObject * obj) {
+	objectsToDestroy.push_back(obj);
+}
+
 void GameWorld::Destroy(GameObject * obj)
 {
 	auto children = GetChildrenOfObject(obj);
@@ -96,7 +100,16 @@ void GameWorld::Destroy(GameObject * obj)
 		Destroy(i);
 	}
 
+	RemoveCollisionsFromGameObject(obj);
 	RemoveGameObject(obj);
+}
+
+void GameWorld::ClearObjectsToDestroy() {
+	for (auto go : objectsToDestroy) {
+		Destroy(go);
+	}
+
+	objectsToDestroy.clear();
 }
 
 void GameWorld::Clear() {
@@ -172,6 +185,20 @@ void GameWorld::RemoveGameObject(GameObject* o)
 			return;
 		}
 	}
+}
+
+void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {
+	for (auto collidingGo : obj->collidingObjects) {
+		collidingGo->collidingObjects.erase(
+			remove(
+				collidingGo->collidingObjects.begin(),
+				collidingGo->collidingObjects.end(),
+				obj),
+			collidingGo->collidingObjects.end()
+		);
+	}
+
+	obj->collidingObjects.clear();
 }
 
 void GameWorld::GetObjectIterators(

@@ -73,9 +73,9 @@ void ExampleScene::UpdateGame(float dt) {
 	}
 
   world->UpdateWorld(dt);
-
-  renderer->Update(dt);
   physics->Update(dt);
+  renderer->Update(dt);
+  world->ClearObjectsToDestroy();
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);

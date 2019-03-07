@@ -29,8 +29,10 @@ BulletPhysics::~BulletPhysics()
 	for (int j = 0; j < collisionShapes.size(); j++)
 	{
 		btCollisionShape* shape = collisionShapes[j];
-		collisionShapes[j] = 0;
-		delete shape;
+		if (shape) {
+			collisionShapes[j] = 0;
+			delete shape;
+		}
 	}
 
 	delete dynamicsWorld;
