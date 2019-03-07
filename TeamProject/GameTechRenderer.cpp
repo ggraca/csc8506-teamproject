@@ -69,6 +69,12 @@ void GameTechRenderer::AddHUDObjects()
 	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb_gray.png"));
 	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb.png"));
 	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) + 42, (GameTechRenderer::GetRendererWidth() / 2) + 106, 20, 84), textures5, Transform(), false));
+	//Crosshair
+	vector<OGLTexture*> textures6;
+	textures6.push_back((OGLTexture*)TextureLoader::LoadAPITexture("crosshair.png"));
+	cout << GameTechRenderer::GetRendererHeight() / 2;
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 36, (GameTechRenderer::GetRendererWidth() / 2) + 36, 
+		(GameTechRenderer::GetRendererHeight() / 2) - 36, GameTechRenderer::GetRendererHeight() / 2 + 36), textures6, Transform(), false));
 }
 
 void GameTechRenderer::GenBuffers() {
