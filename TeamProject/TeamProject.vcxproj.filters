@@ -71,9 +71,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="utils.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -160,9 +157,6 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
