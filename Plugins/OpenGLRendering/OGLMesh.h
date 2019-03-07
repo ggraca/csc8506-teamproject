@@ -6,7 +6,7 @@
 
 namespace NCL {
 	namespace Rendering {
-		class OGLMesh : public NCL::MeshGeometry
+		class OGLMesh : public MeshGeometry
 		{
 		public:
 			enum MeshBuffer {

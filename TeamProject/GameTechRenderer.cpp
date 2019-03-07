@@ -1,6 +1,9 @@
 #include "GameTechRenderer.h"
 #include "RenderObject.h"
 #include "../Common/Camera.h"
+#include "../Common/Vector2.h"
+#include "../Common/Vector3.h"
+#include "../Common/OBJGeometry.h"
 #include "Light.h"
 
 using namespace NCL;
@@ -39,7 +42,7 @@ GameTechRenderer::~GameTechRenderer()	{
 }
 
 void GameTechRenderer::AddHUDObjects()
-{	
+{
 
 	//Green HealthBar
 	vector<OGLTexture*> textures1;
@@ -187,7 +190,7 @@ void GameTechRenderer::RenderShadowMap() {
 void GameTechRenderer::RenderSkybox() {
 	BindFBO((void*)&gBufferFBO);
 	ClearBuffer(true, true, false);
-	
+
 	float screenAspect = (float)currentWidth / (float)currentHeight;
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl *>()->BuildViewMatrix();
 	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl *>()->BuildProjectionMatrix(screenAspect);
@@ -242,17 +245,14 @@ void GameTechRenderer::RenderCamera() {
 		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
 
 		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
-		BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
 		BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");
 		BindMatrix4ToShader(currentMaterial->GetTextureMatrix(), "textureMatrix");
+		BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
 
 		BindMesh((*i).GetMesh());
-
-		//Calculates how many vertices are drawn per frame
 		vertsDrawn += (*i).GetMesh()->GetVertexCount();
-
 		DrawBoundMesh();
 	}
 
@@ -381,7 +381,7 @@ void GameTechRenderer::CombineBuffers() {
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
-	
+
 	BindShader(nullptr);
 }
 

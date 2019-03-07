@@ -146,13 +146,14 @@ void GameWorld::AddGameObject(GameObject* o)
 	CallInitialObjectFunctions(o);
 	gameObjects.push_back(o);
 
-	PhysicsObject* physicsO = o->GetComponent<PhysicsObject*>();
-
-	if (physicsO) {
-		btCollisionShape* po = o->GetComponent<PhysicsObject*>()->GetShape();
+	PhysicsObject* pc = o->GetComponent<PhysicsObject*>();
+  
+	if (pc)
+  {
+		btCollisionShape* po = pc->GetShape();
 		physics->collisionShapes.push_back(po);
 
-		btRigidBody* pb = o->GetComponent<PhysicsObject*>()->GetRigidbody();
+		btRigidBody* pb = pc->GetRigidbody();
 		physics->dynamicsWorld->addRigidBody(pb);
 	}
 }

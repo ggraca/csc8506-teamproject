@@ -14,7 +14,7 @@ using namespace CSC8503;
 Scene::Scene() {
   world = new GameWorld();
   renderer = new GameTechRenderer(*world);
-  
+
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4.0f, -60.81f, 0.0f));
   world->SetPhysics(physics);
@@ -29,31 +29,22 @@ Scene::Scene() {
    }
 
 void Scene::InitialiseAssets() {
-  cubeMesh = new OGLMesh("Cube.msh");
-  cubeMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  cubeMesh->UploadToGPU();
-
-  sphereMesh = new OGLMesh("sphere2.msh");
-  sphereMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  sphereMesh->UploadToGPU();
+  cubeMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("Cube.msh");
+  
+  sphereMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("sphere2.msh");
   renderer->SetLightMesh(sphereMesh);
 
-  cylinderMesh = new OGLMesh("cylinder.obj");
-  cylinderMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  cylinderMesh->UploadToGPU();
+  cylinderMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cylinder.obj");
+  coneMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cone.obj");
 
-  coneMesh = new OGLMesh("cone.obj");
-  coneMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  coneMesh->UploadToGPU();
+  basicTex = (OGLTexture*)Assets::AssetManager::LoadTexture("checkerboard.png");
+  brickTex = (OGLTexture*)Assets::AssetManager::LoadTexture("brick.png");
+  woodTex = (OGLTexture*)Assets::AssetManager::LoadTexture("wood1.jpg");
+  dogsTex = (OGLTexture*)Assets::AssetManager::LoadTexture("dogs.jpg");
+  grassTex = (OGLTexture*)Assets::AssetManager::LoadTexture("grass.jpg");
 
-  basicTex = (OGLTexture*)TextureLoader::LoadAPITexture("checkerboard.png");
-  brickTex = (OGLTexture*)TextureLoader::LoadAPITexture("brick.png");
-  woodTex = (OGLTexture*)TextureLoader::LoadAPITexture("wood1.jpg");
-  dogsTex = (OGLTexture*)TextureLoader::LoadAPITexture("dogs.jpg");
-  grassTex = (OGLTexture*)TextureLoader::LoadAPITexture("grass.jpg");
-
-  ballTex = (OGLTexture*)TextureLoader::LoadAPITexture("smileyface.png");
-  dogTex = (OGLTexture*)TextureLoader::LoadAPITexture("doge.png");
+  ballTex = (OGLTexture*)Assets::AssetManager::LoadTexture("smileyface.png");
+  dogTex = (OGLTexture*)Assets::AssetManager::LoadTexture("doge.png");
 
   pbrWoodDiff = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
   pbrWoodBump = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
@@ -96,14 +87,6 @@ void Scene::InitialiseAssets() {
 }
 
 Scene::~Scene() {
-  delete cubeMesh;
-  delete sphereMesh;
-  delete cylinderMesh;
-  delete coneMesh;
-  delete basicTex;
-  delete woodTex;
-  delete grassTex;
-  delete ballTex;
   delete basicShader;
   delete basicMaterial;
 
@@ -116,7 +99,7 @@ Scene::~Scene() {
 }
 
 void Scene::UpdateKeys() {
-	
+
 }
 
 void Scene::InitCamera() {
@@ -143,7 +126,7 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
   sphere->GetTransform().SetWorldPosition(position);
   sphere->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
   sphere->AddComponent<RenderObject*>((Component*)new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
-    
+
   world->AddGameObject(sphere);
   return sphere;
 }
