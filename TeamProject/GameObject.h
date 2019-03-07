@@ -96,7 +96,7 @@ namespace NCL {
 			T GetComponent()
 			{
 				int index = TypeId::GetTypeId(typeid(T));
-				return (index == -1)? return nullptr:dynamic_cast<T>(components[index]);
+				return ((index == -1)? nullptr:dynamic_cast<T>(components[index]));
 			}
 
 			void SetUpInitialScripts();
