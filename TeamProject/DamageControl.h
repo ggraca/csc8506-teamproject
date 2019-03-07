@@ -12,7 +12,7 @@ public:
 	DamageControl(GameObject * obj);
 	~DamageControl();
 
-	static enum DamageType 
+	enum DamageType 
 	{
 		SingleShot,
 		Continuous

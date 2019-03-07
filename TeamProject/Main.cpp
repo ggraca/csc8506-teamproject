@@ -8,7 +8,7 @@ using namespace NCL;
 using namespace CSC8503;
 
 int main(int argc, char** argv) {
-	srand(time(NULL));
+	srand(unsigned(time(NULL)));
 
 	Window*w = Window::CreateGameWindow("Team Project!", 1280, 720);
 	//Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, true);

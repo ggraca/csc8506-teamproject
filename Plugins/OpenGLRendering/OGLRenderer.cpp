@@ -289,7 +289,7 @@ void OGLRenderer::GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& b
 
 	if (bufferTexs.size() != 0) {
 		GLenum* drawBuffer = new GLenum[bufferTexs.size()];
-		for (int i = 0; i < bufferTexs.size(); i++)
+		for (unsigned int i = 0; i < bufferTexs.size(); i++)
 		{
 			drawBuffer[i] = GL_COLOR_ATTACHMENT0 + i;
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i,

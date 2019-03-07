@@ -15,7 +15,7 @@ Scene::Scene() {
   renderer = new GameTechRenderer(*world);
   
   physics = new BulletPhysics(*world);
-  physics->SetGravity(Vector3(-4, -60.81, 0));
+  physics->SetGravity(Vector3(-4.0f, -60.81f, 0.0f));
   world->SetPhysics(physics);
   InputManager::InitializeButtonRelations();
 
@@ -159,12 +159,12 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
 	for (int i = 0; i < numCols; ++i) {
 		for (int j = 0; j < numRows; ++j) {
-			float sphereRadius = 0.5 + 3.0 * (rand() % 100) / (float)100;
-			float x = 1 + 10.0 * (rand() % 100) / (float)100;
-			float y = 1 + 10.0 * (rand() % 100) / (float)100;
-			float z = 1 + 10.0 * (rand() % 100) / (float)100;
+			float sphereRadius = 0.5f + 3.0f * (rand() % 100) / 100.0f;
+			float x = 1.0f + 10.0f * (rand() % 100) / 100.0f;
+			float y = 1.0f + 10.0f * (rand() % 100) / 100.0f;
+			float z = 1.0f + 10.0f * (rand() % 100) / 100.0f;
 			Vector3 cubeDims = Vector3(x, y, z);
-			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
+			Vector3 position = Vector3(i * colSpacing, 15.0f + positiony.y * ((rand() % 100) / 100.0f), j * rowSpacing);
 			if (rand() % 2) {
 				tempTex = dogsTex;
 			}
@@ -172,10 +172,10 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 				tempTex = dogTex;
 			}
 			if (rand() % 2) {
-				GameObject* go = AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				GameObject* go = AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f), (float)(rand() % 45)), cubeDims, 10.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f);
 			}
 			else {
-				AddSphereToWorld(position, sphereRadius, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				AddSphereToWorld(position, sphereRadius, 10.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f);
 			}
 		}
 	}
