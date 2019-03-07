@@ -21,7 +21,8 @@ namespace NCL {
       void ResetWorld();
       void DebugScene(float dt);
 	  void UpdateKeys();
-	  const btCollisionObject* Raycast(const Vector3& Start, Vector3& End, Vector3& NewEnd, Vector3& Normal);
+	  const btCollisionObject* Raycast(const Vector3& Start, const Vector3& End, Vector3& NewEnd);
+	  const btCollisionObject* RaycastPosDir(const Vector3& Pos, const Vector3& Dir, float t, Vector3& NewEnd);
 
 	  GameObject* bestcube;
 

@@ -29,7 +29,7 @@ void PhysicsScene::ResetWorld() {
   floor->SetName("Floor");
 
    //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 0, 0.2f, 0.4f);
   player->AddScript((ScriptObject*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
@@ -41,7 +41,7 @@ void PhysicsScene::ResetWorld() {
   resource1->SetName("Resource 1");
   resource1->AddScript((ScriptObject*)new Resource(resource1));
 
-  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto resource2 = AddCubeToWorld(Vector3(120, 300, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 0, 0.2f);
   resource2->SetName("Resource 2");
   resource2->AddScript((ScriptObject*)new Resource(resource2));
 }
@@ -96,23 +96,31 @@ void PhysicsScene::UpdateKeys() {
 	//HUD TESTING ENDS
 }
 
-const btCollisionObject* PhysicsScene::Raycast(const Vector3& Start, Vector3& End, Vector3& NewEnd, Vector3& Normal) {
+const btCollisionObject* PhysicsScene::Raycast(const Vector3& Start, const Vector3& End, Vector3& NewEnd) {
 	btVector3 btStart = btVector3(Start.x, Start.y, Start.z);
-	btVector3 btEnd = btVector3(End.x, End.y, End.z);
-	bool Enabled = true;
-	if (Enabled) {
-		btCollisionWorld::ClosestRayResultCallback RayCallback(btStart, btEnd);
-		//RayCallback.m_collisionFilterMask = FILTER_CAMERA;
-		physics->dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
-		if (RayCallback.hasHit()) {
-			btVector3 btNewEnd = RayCallback.m_hitPointWorld;
-			btVector3 btNormal = RayCallback.m_hitNormalWorld;
-			NewEnd = Vector3(btNewEnd.getX(), btNewEnd.getY(), btNewEnd.getZ());
-			Normal = Vector3(btNormal.getX(), btNormal.getY(), btNormal.getZ());
-			return RayCallback.m_collisionObject;
-		}
+	btVector3 btEnd = btVector3(End.x, End.y, End.z);	
+	btCollisionWorld::ClosestRayResultCallback RayCallback(btStart, btEnd);
+	physics->dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
+	if (RayCallback.hasHit()) {
+		btVector3 btNewEnd = RayCallback.m_hitPointWorld;
+		NewEnd = Vector3(btNewEnd.getX(), btNewEnd.getY(), btNewEnd.getZ());
+		return RayCallback.m_collisionObject;
 	}
-	//	return false;
+	return nullptr;
+}
+
+const btCollisionObject* PhysicsScene::RaycastPosDir(const Vector3& Pos, const Vector3& Dir, float t, Vector3& NewEnd) {
+	btVector3 btStart = btVector3(Pos.x, Pos.y, Pos.z);
+	Vector3 End = Pos + Vector3(t * Dir.x, t * Dir.y, t * Dir.z);
+	btVector3 btEnd = btVector3(End.x, End.y, End.z);
+	btCollisionWorld::ClosestRayResultCallback RayCallback(btStart, btEnd);
+	physics->dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
+	if (RayCallback.hasHit()) {
+		btVector3 btNewEnd = RayCallback.m_hitPointWorld;
+		NewEnd = Vector3(btNewEnd.getX(), btNewEnd.getY(), btNewEnd.getZ());
+		return RayCallback.m_collisionObject;
+	}
+	return nullptr;
 }
 
 void PhysicsScene::UpdateGame(float dt) {
@@ -135,19 +143,12 @@ void PhysicsScene::UpdateGame(float dt) {
   //bestcube->GetPhysicsObject()->ApplyForce(Vector3(100000, 0, 10), Vector3(0, -10, 0));
   //bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
 
-  Vector3 end = Vector3(2000, 5, 2000);
-  Vector3 normal;
-  Vector3 newend = Vector3(2000, 5, 2000);
- // const btCollisionObject* test = Raycast(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), world->FindGameObjectWithTag(LayerAndTag::Tags::Resources)->GetTransform().GetWorldPosition());
-  const btCollisionObject* test = Raycast(Vector3(0, 0, 0), end, newend, normal);
-  cout << test << ' ' << newend << ' ' << normal << endl;
-  Debug::DrawLine(Vector3(100, 20, 300), end, Vector4(1, 0, 0, 1));
-  Debug::DrawLine(Vector3(100, 20, 300), newend, Vector4(0, 1, 0, 1));
+  Vector3 newend;
+  const btCollisionObject* test1 = Raycast(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), world->FindGameObjectWithTag(LayerAndTag::Tags::Resources)->GetTransform().GetWorldPosition(), newend);
+  Debug::DrawLine(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), newend, Vector4(1, 0, 0, 1));
 
-  //bestcube->GetPhysicsObject()->SetPosition(normal);
-
- 
-
+  const btCollisionObject* test2 = RaycastPosDir(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), Vector3(0,1,0), 200.0f, newend);
+  Debug::DrawLine(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), newend, Vector4(1, 1, 0, 1));
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
