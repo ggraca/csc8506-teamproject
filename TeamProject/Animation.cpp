@@ -24,7 +24,7 @@ Animation::~Animation()
 
 void Animation::AddKeyFrame(KeyFrame * keyFrame)
 {
-	for (int i = 0; i < keyFrames.size(); i++)
+	for (unsigned int i = 0; i < keyFrames.size(); i++)
 	{
 		if (keyFrames[i]->time > keyFrame->time)
 		{
@@ -62,7 +62,7 @@ void Animation::UpdateAnimation(GameObject * obj, float dt)
 	{
 		currentIndex++;
 
-		if (keyFrames.size() <= currentIndex+1) { hasAnimationFinished = true; return; }
+		if ((int)keyFrames.size() <= currentIndex+1) { hasAnimationFinished = true; return; }
 
 		ShiftFrames(obj);
 		CalculateInterpolation();
@@ -91,7 +91,7 @@ void Animation::CalculateInterpolation()
 	interpolation = new KeyFrame();
 
 	float frameTimeDifference = nextFrame->time - currentFrame->time;
-	int frameCountDifference = targetFPS * frameTimeDifference;
+	float frameCountDifference = (targetFPS * frameTimeDifference);
 
 	Vector3 positionDifferencePerFrame = (nextFrame->localPosition - currentFrame->localPosition) / frameCountDifference;
 	Vector3 scaleDifferencePerFrame = (nextFrame->localScale - currentFrame->localScale) / frameCountDifference;

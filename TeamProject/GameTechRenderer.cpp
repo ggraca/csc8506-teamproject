@@ -49,32 +49,31 @@ void GameTechRenderer::AddHUDObjects()
 	//Green HealthBar
 	vector<OGLTexture*> textures1;
 	textures1.push_back((OGLTexture*)TextureLoader::LoadAPITexture("healthBarGreen.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures1, Transform(), false));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180.0f, 10.0f, (float)(currentHeight - 60.0f), (float)(currentHeight - 30.0f), currentWidth, currentHeight), textures1, Transform(), false));
 	//Red HealthBar
 	vector<OGLTexture*> textures2;
 	textures2.push_back((OGLTexture*)TextureLoader::LoadAPITexture("healthBarRed.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180, 10, 655, 685), textures2, Transform(), false));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad(180.0f, 10.0f, (float)(currentHeight - 60.0f), (float)(currentHeight - 30.0f), currentWidth, currentHeight), textures2, Transform(), false));
 	//Hammer
 	vector<OGLTexture*> textures3;
 	textures3.push_back((OGLTexture*)TextureLoader::LoadAPITexture("hammer_gray.png"));
 	textures3.push_back((OGLTexture*)TextureLoader::LoadAPITexture("hammer.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 106, (GameTechRenderer::GetRendererWidth() / 2) - 42, 20, 84), textures3, Transform(), false));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((currentWidth / 2) - 106.0f, (currentWidth / 2) - 42.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures3, Transform(), false));
 	//Gun
 	vector<OGLTexture*> textures4;
 	textures4.push_back((OGLTexture*)TextureLoader::LoadAPITexture("gun_gray.png"));
 	textures4.push_back((OGLTexture*)TextureLoader::LoadAPITexture("gun.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 32, (GameTechRenderer::GetRendererWidth() / 2) + 32, 20, 84), textures4, Transform(), false));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((currentWidth / 2) - 32.0f, (currentWidth / 2) + 32.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures4, Transform(), false));
 	//Bomb
 	vector<OGLTexture*> textures5;
 	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb_gray.png"));
 	textures5.push_back((OGLTexture*)TextureLoader::LoadAPITexture("bomb.png"));
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) + 42, (GameTechRenderer::GetRendererWidth() / 2) + 106, 20, 84), textures5, Transform(), false));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((currentWidth / 2) + 42.0f, (currentWidth / 2) + 106.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures5, Transform(), false));
 	//Crosshair
 	vector<OGLTexture*> textures6;
 	textures6.push_back((OGLTexture*)TextureLoader::LoadAPITexture("crosshair.png"));
-	cout << GameTechRenderer::GetRendererHeight() / 2;
-	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((GameTechRenderer::GetRendererWidth() / 2) - 36, (GameTechRenderer::GetRendererWidth() / 2) + 36, 
-		(GameTechRenderer::GetRendererHeight() / 2) - 36, GameTechRenderer::GetRendererHeight() / 2 + 36), textures6, Transform(), false));
+	hudObjects.push_back(new HUDObject(OGLMesh::GenerateQuad((currentWidth / 2.0f) - 36.0f, (currentWidth / 2.0f) + 36.0f,
+		(currentHeight / 2) - 36.0f, (currentHeight / 2) + 36.0f, currentWidth, currentHeight), textures6, Transform(), false));
 }
 
 void GameTechRenderer::GenBuffers() {
@@ -242,7 +241,7 @@ void GameTechRenderer::RenderCamera() {
 		OGLShader* shader = (OGLShader*)currentMaterial->GetShader();
 		BindShader(shader);
 
-		for (int j = 0; j < currentMaterial->GetTextureParameters()->size(); j++)
+		for (unsigned int j = 0; j < currentMaterial->GetTextureParameters()->size(); j++)
 		{
 			//Gets texture, then gets texture shader param name, and binds it to texture slot = iteration
 			BindTextureToShader((*(currentMaterial->GetTextureParameters()))[j].second,
@@ -396,12 +395,12 @@ void GameTechRenderer::RenderHUD()
 	ClearBuffer(true, false, false);
 	glDisable(GL_CULL_FACE);
 	BindShader(hudShader);
-	for (int i = 0; i < hudObjects.size(); i++)
+	for (unsigned int i = 0; i < hudObjects.size(); i++)
 	{
 		if (i == 0)
 		{
 			glEnable(GL_SCISSOR_TEST);
-			glScissor(10 + 170 * (1- health), 180, 655, 685);
+			glScissor(GLint(10.0f + 170.0f * (1.0f - health)), 180, 655, 685);
 		}
 
 		glActiveTexture(GL_TEXTURE8);
