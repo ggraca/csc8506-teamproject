@@ -12,7 +12,7 @@ namespace NCL
 		class InputManager
 		{
 		public:
-			static enum ActionButton
+			enum ActionButton
 			{
 				FORWARD,
 				BACKWARD,

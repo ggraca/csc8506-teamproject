@@ -98,6 +98,10 @@ void PhysicsScene::UpdateKeys() {
 		renderer->health = 1.0f;
 	}
 	//HUD TESTING ENDS
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
+		console.Toggle();
+		debugMenu.Toggle();
+	}
 }
 
 void PhysicsScene::UpdateGame(float dt) {
