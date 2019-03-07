@@ -96,6 +96,25 @@ void PhysicsScene::UpdateKeys() {
 	//HUD TESTING ENDS
 }
 
+const btCollisionObject* PhysicsScene::Raycast(const Vector3& Start, Vector3& End, Vector3& NewEnd, Vector3& Normal) {
+	btVector3 btStart = btVector3(Start.x, Start.y, Start.z);
+	btVector3 btEnd = btVector3(End.x, End.y, End.z);
+	bool Enabled = true;
+	if (Enabled) {
+		btCollisionWorld::ClosestRayResultCallback RayCallback(btStart, btEnd);
+		//RayCallback.m_collisionFilterMask = FILTER_CAMERA;
+		physics->dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
+		if (RayCallback.hasHit()) {
+			btVector3 btNewEnd = RayCallback.m_hitPointWorld;
+			btVector3 btNormal = RayCallback.m_hitNormalWorld;
+			NewEnd = Vector3(btNewEnd.getX(), btNewEnd.getY(), btNewEnd.getZ());
+			Normal = Vector3(btNormal.getX(), btNormal.getY(), btNormal.getZ());
+			return RayCallback.m_collisionObject;
+		}
+	}
+	//	return false;
+}
+
 void PhysicsScene::UpdateGame(float dt) {
 //  world->GetMainCamera()->UpdateCamera(dt);
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
@@ -115,6 +134,20 @@ void PhysicsScene::UpdateGame(float dt) {
   //bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
   //bestcube->GetPhysicsObject()->ApplyForce(Vector3(100000, 0, 10), Vector3(0, -10, 0));
   //bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
+
+  Vector3 end = Vector3(2000, 5, 2000);
+  Vector3 normal;
+  Vector3 newend = Vector3(2000, 5, 2000);
+ // const btCollisionObject* test = Raycast(world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition(), world->FindGameObjectWithTag(LayerAndTag::Tags::Resources)->GetTransform().GetWorldPosition());
+  const btCollisionObject* test = Raycast(Vector3(0, 0, 0), end, newend, normal);
+  cout << test << ' ' << newend << ' ' << normal << endl;
+  Debug::DrawLine(Vector3(100, 20, 300), end, Vector4(1, 0, 0, 1));
+  Debug::DrawLine(Vector3(100, 20, 300), newend, Vector4(0, 1, 0, 1));
+
+  //bestcube->GetPhysicsObject()->SetPosition(normal);
+
+ 
+
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
