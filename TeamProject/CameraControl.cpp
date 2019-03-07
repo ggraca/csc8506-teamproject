@@ -138,9 +138,7 @@ void CameraControl::RotatePlayer()
 
 	Vector3 playerRot = player->GetTransform().GetLocalOrientation().ToEuler();
 	playerRot.y = gameObject->GetTransform().GetLocalOrientation().ToEuler().y;
-	player->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(playerRot.x,playerRot.y,0));
-	player->GetComponent<PhysicsObject*>()->ForceUpdateLocalRotation(Quaternion::EulerAnglesToQuaternion(playerRot.x, playerRot.y, 0));
-	player->GetTransform().UpdateMatrices();
+	player->GetTransform().ForceUpdateLocalRotation(Quaternion::EulerAnglesToQuaternion(playerRot.x, playerRot.y, 0));
 }
 
 void CameraControl::SetCameraType(bool isTPSType)

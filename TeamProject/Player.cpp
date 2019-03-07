@@ -5,7 +5,6 @@
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
 	ResetPlayer();
-	keyDown = false;
 }
 
 void Player::Awake()
@@ -33,22 +32,22 @@ void Player::PlayerMovement(float dt)
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
 		playerPos += forward * movementSpeed * dt;
-		gameObject->GetComponent<PhysicsObject*>()->ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
 		playerPos -= forward * movementSpeed * dt;
-		gameObject->GetComponent<PhysicsObject*>()->ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
 	{
 		playerPos += left * movementSpeed * dt;
-		gameObject->GetComponent<PhysicsObject*>()->ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
 		playerPos -= left * movementSpeed * dt;
-		gameObject->GetComponent<PhysicsObject*>()->ForceUpdateWorldPositionWithTransform(playerPos);	
+		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
