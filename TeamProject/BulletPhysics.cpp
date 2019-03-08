@@ -82,7 +82,7 @@ void BulletPhysics::UpdateObjectTransform(GameObject* go, btRigidBody* body) {
 	btQuaternion orientation = trans.getRotation();
 	Vector3 position = Vector3(float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
 	transform.SetLocalPosition(position);
-	Quaternion orient = Quaternion(orientation.x(), orientation.y(), orientation.z(), orientation.w());
+	Quaternion orient = Quaternion((float)orientation.x(), (float)orientation.y(), (float)orientation.z(), (float)orientation.w());
 	transform.SetLocalOrientation(orient);
 }
 

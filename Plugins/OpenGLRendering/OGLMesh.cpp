@@ -126,10 +126,10 @@ OGLMesh* OGLMesh::GenerateQuad() {
 	return newMesh;
 }
 
-OGLMesh* OGLMesh::GenerateQuad(float minX, float maxX, float minY, float maxY) {
+OGLMesh* OGLMesh::GenerateQuad(float minX, float maxX, float minY, float maxY, int currentWidth, int currentHeight) {
 	OGLMesh* newMesh = new OGLMesh();
-	float width = 1280;
-	float height = 720;
+	float width = (float)currentWidth;
+	float height = (float)currentHeight;
 	vector<Vector3> vertices;
 	vertices.push_back(Vector3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
 	vertices.push_back(Vector3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));

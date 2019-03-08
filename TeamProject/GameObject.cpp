@@ -120,7 +120,7 @@ void GameObject::UpdateComponents(float dt)
 {
 	for (auto&i : components)
 	{
-		i.second->Update(dt);
+		if (components[i.first]) { i.second->Update(dt); }
 	}
 }
 

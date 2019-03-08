@@ -146,11 +146,16 @@ void GameWorld::AddGameObject(GameObject* o)
 	CallInitialObjectFunctions(o);
 	gameObjects.push_back(o);
 
-	btCollisionShape* po = o->GetComponent<PhysicsObject*>()->GetShape();
-	physics->collisionShapes.push_back(po);
+	PhysicsObject* pc = o->GetComponent<PhysicsObject*>();
+  
+	if (pc)
+  {
+		btCollisionShape* po = pc->GetShape();
+		physics->collisionShapes.push_back(po);
 
-	btRigidBody* pb = o->GetComponent<PhysicsObject*>()->GetRigidbody();
-	physics->dynamicsWorld->addRigidBody(pb);
+		btRigidBody* pb = pc->GetRigidbody();
+		physics->dynamicsWorld->addRigidBody(pb);
+	}
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
@@ -175,7 +180,7 @@ void GameWorld::RemoveGameObject(GameObject* o)
 
 	o->SetParent(nullptr);
 
-	for (int i = 0; i < gameObjects.size(); i++)
+	for (unsigned int i = 0; i < gameObjects.size(); i++)
 	{
 		if (gameObjects[i] == o)
 		{

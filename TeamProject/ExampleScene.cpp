@@ -1,10 +1,12 @@
+#include <fstream>
+#include <string>
+
 #include "ExampleScene.h"
 #include "GameWorld.h"
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
-
 #include "../Common/Assets.h"
 
 
@@ -15,13 +17,14 @@
 
 
 
+#include "../Common/OBJGeometry.h"
 
 using namespace NCL;
 using namespace CSC8503;
 
 ExampleScene::ExampleScene() : Scene() {
   physics->SetGravity(Vector3(0, -4, 0));
-  
+
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
 
@@ -89,21 +92,21 @@ void ExampleScene::UpdateGame(float dt) {
 	  debugMenu.Toggle();
   }
 
-  
+
   /*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
 	  delete hammer;
-	  hammer = (OGLTexture*)TextureLoader::LoadAPITexture("hammer.png");
+	  hammer = (OGLTexture*)Assets::AssetManager::LoadTexture("hammer.png");
 	  renderer->hammer = hammer->GetObjectID();
 	  delete gun;
-	  gun = (OGLTexture*)TextureLoader::LoadAPITexture("gun.png");
+	  gun = (OGLTexture*)Assets::AssetManager::LoadTexture("gun.png");
 	  renderer->gun = gun->GetObjectID();
 	  delete bomb;
-	  bomb = (OGLTexture*)TextureLoader::LoadAPITexture("bomb.png");
+	  bomb = (OGLTexture*)Assets::AssetManager::LoadTexture("bomb.png");
 	  renderer->bomb = bomb->GetObjectID();
   }*/
 
   renderer->Render();
-  
+
 }
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {
