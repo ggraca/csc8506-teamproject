@@ -47,7 +47,7 @@ void Scene::InitialiseAssets() {
 
   pbrWoodDiff = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
   pbrWoodBump = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
-  pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
+  pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
   pbrWoodMet = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
 
   pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");

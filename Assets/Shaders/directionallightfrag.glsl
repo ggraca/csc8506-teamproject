@@ -25,7 +25,7 @@ void main (void) {
 	vec3 normal = normalize(texture(normTex, pos.xy).xyz * 2.0 - 1.0);
 
 	vec4 clip = inverseProjView * vec4(pos * 2.0 - 1.0, 1.0);
-	
+
 	if(pos.z == 1.0) {
 		discard ;
 	}
