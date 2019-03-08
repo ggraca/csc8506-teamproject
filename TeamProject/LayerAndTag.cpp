@@ -24,9 +24,5 @@ void LayerAndTag::SetLayerMatrixElement(ObjectLayer layer1, ObjectLayer layer2, 
 void LayerAndTag::InitializeLayerMatrixCollisions()
 {
 	LayerMatrix[ObjectLayer::Default][ObjectLayer::Default] = true;
-	LayerMatrix[ObjectLayer::Default][ObjectLayer::UI] = true;
-	LayerMatrix[ObjectLayer::UI][ObjectLayer::Default] = true;
-	LayerMatrix[ObjectLayer::UI][ObjectLayer::UI] = true;
-
 	//Be careful about collision indexing
 }
