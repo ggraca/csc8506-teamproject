@@ -29,24 +29,7 @@ void Player::PlayerMovement(float dt)
 	if (!GameObject::GetMainCamera()->GetComponent<CameraControl*>()->GetCameraType()) { forward *= -1; }
 	Vector3 left = Vector3::Cross(up, forward).Normalised();
 
-	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
-	{
-		playerPos += forward * movementSpeed * dt;
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
-	}
-
-	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
-	{
-		playerPos -= forward * movementSpeed * dt;
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
-	}
-
-	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
-	{
-		playerPos += left * movementSpeed * dt;
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
-	}
-
+	
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
 	{
 		playerPos -= left * movementSpeed * dt;
@@ -55,21 +38,41 @@ void Player::PlayerMovement(float dt)
 
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
+		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+		{
+			playerPos += forward * movementSpeed * dt;
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+		}
 		playerPos += forward * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
+		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+		{
+			playerPos -= forward * movementSpeed * dt;
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+		}
 		playerPos -= forward * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
 	{
+		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+		{
+			playerPos += left * movementSpeed * dt;
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
+		}
 		playerPos += left * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
+		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+		{
+			playerPos -= left * movementSpeed * dt;
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
+		}
 		playerPos -= left * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
