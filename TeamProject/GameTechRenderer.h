@@ -25,6 +25,7 @@ namespace NCL {
 	namespace CSC8503 {
 		class RenderObject;
 		class PixOpsFlags;
+		#ifdef _WIN32
 		class GameTechRenderer : public OGLRenderer	{
 		public:
 			GameTechRenderer(GameWorld& world);
