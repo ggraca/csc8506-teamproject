@@ -20,6 +20,7 @@ namespace NCL
 				RIGHT,
 				JUMP,
 				FIRE,
+				DODGE,
 				MAX
 			};
 

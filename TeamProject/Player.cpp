@@ -78,7 +78,7 @@ void Player::PlayerMovement(float dt)
 	if (!keyDown && !reset) {
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 		reset = true;
-	}
+	} 
 	keyDown = false;
 }
 
