@@ -42,7 +42,7 @@ void CameraControl::Update(float dt)
 void CameraControl::UpdateCamera()
 {
 	roll -= 5.0f * (Window::GetMouse()->GetWheelMovement());
-	pitch -= (Window::GetMouse()->GetRelativePosition().y);
+	pitch += (Window::GetMouse()->GetRelativePosition().y);
 	yaw -= (Window::GetMouse()->GetRelativePosition().x);
 
 	roll = min(roll, 90.0f);
@@ -138,9 +138,7 @@ void CameraControl::RotatePlayer()
 
 	Vector3 playerRot = player->GetTransform().GetLocalOrientation().ToEuler();
 	playerRot.y = gameObject->GetTransform().GetLocalOrientation().ToEuler().y;
-	player->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(playerRot.x,playerRot.y,0));
-	player->GetComponent<PhysicsObject*>()->SetOrientation(Quaternion::EulerAnglesToQuaternion(playerRot.x, playerRot.y, 0));
-	player->GetTransform().UpdateMatrices();
+	player->GetTransform().ForceUpdateLocalRotation(Quaternion::EulerAnglesToQuaternion(playerRot.x, playerRot.y, 0));
 }
 
 void CameraControl::SetCameraType(bool isTPSType)

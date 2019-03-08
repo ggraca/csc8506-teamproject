@@ -1,5 +1,5 @@
 #include "OBJGeometry.h"
-#include "../TeamProject/Resource.h"
+#include "Utils.h"
 
 bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	std::ifstream f(filename.c_str(), std::ios::in);
@@ -90,10 +90,6 @@ OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, ve
 
 	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
 	Material* material = Assets::AssetManager::LoadMaterial(sm->mtlType, basicShader);
-	cout << sm->mtlType << endl;
-	cout << "r: " << material->GetColour().x << endl;
-	cout << "g: " << material->GetColour().y << endl;
-	cout << "b: " << material->GetColour().z << endl;
 	OBJMesh* m = new OBJMesh(material);
 
 	for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
@@ -133,84 +129,53 @@ void OBJGeometry::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, s
 		inputSubMeshes.push_back(currentMesh);
 	}
 
-	std::string faceData;
-	getline(f, faceData);
+	std::string data;
+	getline(f, data);
 
-	cout << faceData << endl;
+	vector<VertData> verts;
+	vector<string> faceData = split_string(data, ' ');
 
-	// f <vertex index>//<normal index>
-	bool skipTex = false;
-	if (faceData.find("//") != std::string::npos) {
-		skipTex = true;
-	}
+	for (auto vertData : faceData) {
+		VertData vert;
+		bool hasTex = true;
+		if (vertData.find("//") != std::string::npos) hasTex = false;
 
-	// "f  0/0/0" becomes "f 0 0 0" etc
-	for (size_t i = 0; i < faceData.length(); ++i) {
-		if (faceData[i] == '/') {
-			faceData[i] = ' ';
+		vector<string> attribues = split_string(vertData, '/');
+		vert.vertIndex = stoi(attribues[0]);
+
+		if (attribues.size() == 3) {
+			vert.vertTex = stoi(attribues[1]);
+			vert.vertNormal = stoi(attribues[2]);
 		}
-	}
-
-	int tempIndex;
-	std::vector<int> faceIndices;
-	std::stringstream ss(faceData);
-	while (ss >> tempIndex) {
-		faceIndices.push_back(tempIndex);
-	}
-
-	// This face has only vertex information;
-	if (faceIndices.size() == 3) {
-		currentMesh->vertIndices.push_back(faceIndices.at(0));
-		currentMesh->vertIndices.push_back(faceIndices.at(1));
-		currentMesh->vertIndices.push_back(faceIndices.at(2));
-	}
-
-	// This face has vertex, normal and tex information!
-	else if (faceIndices.size() == 9) {
-		for (int i = 0; i < 9; i += 3) {
-			currentMesh->vertIndices.push_back(faceIndices.at(i));
-			currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-			currentMesh->normIndices.push_back(faceIndices.at(i + 2));
+		else if (attribues.size() == 2) {
+			if (hasTex) vert.vertTex = stoi(attribues[1]);
+			else vert.vertNormal = stoi(attribues[1]);
 		}
+
+		verts.push_back(vert);
 	}
 
-	// This face has vertex, and one other index...
-	else if (faceIndices.size() == 6) {
-		for (int i = 0; i < 6; i += 2) {
-			currentMesh->vertIndices.push_back(faceIndices.at(i));
-			if (!skipTex) {		// a double slash means it's skipping tex info...
-				currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-			}
-			else {
-				currentMesh->normIndices.push_back(faceIndices.at(i + 1));
-			}
-		}
-	}
-
-	// This face has more than 3 vertices. We assume it has all 3 properties
-	else {
-
+	
 	// First Face
-	for (int i = 0; i < 9; i += 3) {
-		currentMesh->vertIndices.push_back(faceIndices.at(i));
-		currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-		currentMesh->normIndices.push_back(faceIndices.at(i + 2));
+	for (int i = 0; i < 3; i++) {
+		currentMesh->vertIndices.push_back(verts[i].vertIndex);
+		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[i].vertTex);
+		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[i].vertNormal);
 	}
 
-	// Following Faces
-	for (int i = 6; i < faceIndices.size() - 3; i += 3) {
-		currentMesh->vertIndices.push_back(faceIndices.at(i));
-		currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-		currentMesh->normIndices.push_back(faceIndices.at(i + 2));
+	//// Following Faces
+	for (int i = 2; i < verts.size(); i++) {
+		currentMesh->vertIndices.push_back(verts[i - 1].vertIndex);
+		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[i - 1].vertTex);
+		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[i - 1].vertNormal);
 
-		currentMesh->vertIndices.push_back(faceIndices.at(i + 3));
-		currentMesh->texIndices.push_back(faceIndices.at(i + 4));
-		currentMesh->normIndices.push_back(faceIndices.at(i + 5));
+		currentMesh->vertIndices.push_back(verts[i].vertIndex);
+		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[i].vertTex);
+		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[i].vertNormal);
 
-		currentMesh->vertIndices.push_back(faceIndices.at(0));
-		currentMesh->texIndices.push_back(faceIndices.at(1));
-		currentMesh->normIndices.push_back(faceIndices.at(2));
-	}
+		currentMesh->vertIndices.push_back(verts[0].vertIndex);
+		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[0].vertTex);
+		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[0].vertNormal);
 	}
 }
 
@@ -272,24 +237,4 @@ string OBJGeometry::NormalisePath(string path) {
 		path = path.substr(at + 1);
 	}
 	return path;
-}
-
-GameObject* OBJGeometry::ToGameObject(GameWorld* world) {
-	GameObject* root = new GameObject();
-	
-	world->AddGameObject(root);
-	
-	for (auto& mesh : children) {
-		GameObject* go = new GameObject();
-
-		go->AddComponent<RenderObject*>(new RenderObject(
-			&go->GetTransform(),
-			mesh,
-			((OBJMesh*)mesh)->material
-		));
-
-		world->AddGameObject(go);
-		root->AddChild(go);
-	}
-	return root;
 }

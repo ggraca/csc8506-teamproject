@@ -6,4 +6,4 @@
 
 using namespace std;
 
-vector<string> split_string(const string &s, char delimiter);
+vector<string> split_string(const string &s, char delimiter = ' ');

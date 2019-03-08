@@ -16,6 +16,7 @@ GameObject::GameObject(std::string objectName)
 	isAddedToWorld  = false;
 	layer			= LayerAndTag::ObjectLayer::Default;
 	tag				= LayerAndTag::Tags::Untagged;
+	transform.SetGameObject(this);
 }
 
 GameObject::~GameObject()	
@@ -192,5 +193,23 @@ GameObject * GameObject::GetMainCamera()
 	return gameWorld->GetMainCamera();
 }
 
+GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
+	if (!gameWorld) { return nullptr; }
 
+	GameObject* root = new GameObject();
+	gameWorld->AddGameObject(root);
 
+	for (auto& mesh : obj->GetChildren()) {
+		GameObject* go = new GameObject();
+
+		go->AddComponent<RenderObject*>(new RenderObject(
+			&go->GetTransform(),
+			mesh,
+			((OBJMesh*)mesh)->material
+		));
+
+		gameWorld->AddGameObject(go);
+		root->AddChild(go);
+	}
+	return root;
+}

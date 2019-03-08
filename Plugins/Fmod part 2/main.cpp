@@ -18,14 +18,14 @@ void main() {
 		
 	/*NCL::Maths::Vector3 origin = NCL::Maths::Vector3(0.0f, 0.0f, 0.0f);
 
-	CAudioEngine ae = CAudioEngine();
+	//CAudioEngine ae = CAudioEngine();
 
-	if (exists_test0(Assets::SOUNDSDIR + "jaguar.wav")) {
+	//if (exists_test0(Assets::SOUNDSDIR + "jaguar.wav")) {
 
-		ae.Init();
-		ae.setMinMaxDistance(5.0f, 1000.0f);
-		ae.LoadSound(Assets::SOUNDSDIR + "jaguar.wav",false, true, false);
-		ae.PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", origin, 10.0f);
+	//	ae.Init();
+	//	ae.setMinMaxDistance(5.0f, 1000.0f);
+	//	ae.LoadSound(Assets::SOUNDSDIR + "jaguar.wav",false, true, false);
+	//	ae.PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", origin, 10.0f);
 
 		int i = 0;
 		do

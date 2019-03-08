@@ -16,6 +16,7 @@ using namespace CSC8503;
 
 Scene::Scene() {
   world = new GameWorld();
+  GameObject::SetGameWorld(world);
   renderer = new GameTechRenderer(*world);
 
   physics = new BulletPhysics(*world);
@@ -27,7 +28,6 @@ Scene::Scene() {
   world->SetAudio(audio);
 
   Debug::SetRenderer(renderer);
-
   InitialiseAssets();
 }
 
