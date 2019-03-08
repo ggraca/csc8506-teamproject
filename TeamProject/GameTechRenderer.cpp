@@ -18,7 +18,7 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	shadowShader = Assets::AssetManager::LoadShader("GameTechShadowShader", "GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
 	skyBoxShader = Assets::AssetManager::LoadShader("SkyboxShader", "skyboxVertex.glsl", "skyboxFragment.glsl");
 	pointLightShader = Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl");
-	pointLightShader = Assets::AssetManager::LoadShader("DirectionalLightShader", "directionallightvert.glsl", "directionallightfrag.glsl");
+	directionalLightShader = Assets::AssetManager::LoadShader("DirectionalLightShader", "directionallightvert.glsl", "directionallightfrag.glsl");
 	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
 
 
@@ -276,50 +276,27 @@ void GameTechRenderer::RenderLights() {
 	Matrix4 identity;
 	identity.ToIdentity();
 
-	BindTextureToShader(gBufferDepthTex, "depthTex", 3);
-	BindTextureToShader(gBufferNormalTex, "normTex", 4);
-
-
 	for (int x = 0; x < (int)activeLights.size(); ++x) {
 		float radius = activeLights[x]->GetRadius();
-
-		Matrix4 tempModelMatrix = Matrix4::Translation(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition())
-			* activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation().ToMatrix4()
-			* Matrix4::Scale(Vector3(radius, radius, radius));
-
-		//Need to be able to bind vector2 to shader
-		int pixelLocation = glGetUniformLocation(((OGLShader*)lightShader)->GetProgramID(), "pixelSize");
-		glUniform2f(pixelLocation, 1.0f / currentWidth, 1.0f / currentHeight);
-
-		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
-		BindMatrix4ToShader(viewMatrix, "viewMatrix");
-		BindMatrix4ToShader(projMatrix, "projMatrix");
-		BindMatrix4ToShader(identity, "textureMatrix");
-		BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition(), "lightPos");
-		BindVector4ToShader(activeLights[x]->GetColour(), "lightColour");
-		BindFloatToShader(radius, "lightRadius");
-		BindFloatToShader(activeLights[x]->GetBrightness(), "lightBrightness");
-		BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
-		BindMatrix4ToShader(shadowMatrix, "shadowMatrix");
-
-		////TODO: Overload BindTextureToShader to take GLuint as parameter, as above for all textures
-		////BindTextureToShader(shadowTex, "shadowTex", 20);
-		//glUniform1i(glGetUniformLocation(((OGLShader*)lightShader)->GetProgramID(),
-		//	"shadowTex"), 20);
-		//glActiveTexture(GL_TEXTURE20);
-
-		if (activeLights[x]->GetGameObject()->GetName() == "Directional Light") {
-			BindIntToShader(drawShadows, "drawShadows");
-		}
-		else {
-			BindIntToShader(false, "drawShadows");
-		}
-
-		BindTextureToShader(shadowTex, "shadowTex", 20);
-
-		float dist = (activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
+		float dist = (activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition() -
+			gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
+		Matrix4 tempModelMatrix;
 
 		if (activeLights[x]->GetType() == LightType::Point) {
+			BindShader(pointLightShader);
+
+			tempModelMatrix = Matrix4::Translation(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition())
+				* activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation().ToMatrix4()
+				* Matrix4::Scale(Vector3(radius, radius, radius));
+
+			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
+			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindMatrix4ToShader(projMatrix, "projMatrix");
+			BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
+			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition(), "lightPos");
+			BindFloatToShader(radius, "lightRadius");
+			//Turning shadows off until we can do point light shadows
+			BindIntToShader(false, "drawShadows");
 			if (dist < radius) {// camera is inside the light volume !
 				pixOps.SetFaceCulling(CULLFACE::FRONT);
 			}
@@ -329,7 +306,36 @@ void GameTechRenderer::RenderLights() {
 
 			BindMesh(lightSphere);
 		}
+		else if (activeLights[x]->GetType() == LightType::Directional) {
+			BindShader(directionalLightShader);
+
+			Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
+
+			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
+			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindMatrix4ToShader(tempProjMatrix, "projMatrix");
+			Vector3 rot = activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1);
+			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1), "lightDir");
+			BindIntToShader(drawShadows, "drawShadows");
+			BindTextureToShader(shadowTex, "shadowTex", 20);
+			BindMesh(screenQuad);
+		}
 		else if (activeLights[x]->GetType() == LightType::Spot) {
+			//Spotlight shader when ready
+			BindShader(pointLightShader);
+
+			tempModelMatrix = Matrix4::Translation(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition())
+				* activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation().ToMatrix4()
+				* Matrix4::Scale(Vector3(radius, radius, radius));
+
+			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
+			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindMatrix4ToShader(projMatrix, "projMatrix");
+			BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
+			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition(), "lightPos");
+			BindFloatToShader(radius, "lightRadius");
+			//Turning shadows off until we can do point light shadows
+			BindIntToShader(false, "drawShadows");
 			// Different calculation here to determine if inside the cone
 			if (dist < radius) {// camera is inside the light volume !
 				pixOps.SetFaceCulling(CULLFACE::FRONT);
@@ -341,6 +347,14 @@ void GameTechRenderer::RenderLights() {
 			//Change to bind cone.
 			BindMesh(lightSphere);
 		}
+
+		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
+		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
+		BindMatrix4ToShader(viewMatrix, "viewMatrix");
+		BindMatrix4ToShader(identity, "textureMatrix");
+		BindVector4ToShader(activeLights[x]->GetColour(), "lightColour");
+		BindFloatToShader(activeLights[x]->GetBrightness(), "lightBrightness");
+		BindMatrix4ToShader(shadowMatrix, "shadowMatrix");
 
 		//Calculates how many vertices are drawn per frame
 		vertsDrawn += lightSphere->GetVertexCount();

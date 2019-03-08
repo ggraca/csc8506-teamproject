@@ -97,7 +97,8 @@ void Scene::InitWorld() {
 
   GameObject* light = new GameObject("Directional Light");
   light->GetTransform().SetWorldPosition(Vector3(1000.0f, 1000.0f, 0.0f));
-  light->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f));
+  light->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(90.0f, 30.0f, 0.0f));
+  light->AddComponent<Light*>(new Light(LightType::Directional, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 1.0f));
   world->AddGameObject(light);
 }
 

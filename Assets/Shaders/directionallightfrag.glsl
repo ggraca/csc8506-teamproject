@@ -25,11 +25,12 @@ void main (void) {
 	vec3 normal = normalize(texture(normTex, pos.xy).xyz * 2.0 - 1.0);
 
 	vec4 clip = inverseProjView * vec4(pos * 2.0 - 1.0, 1.0);
-	pos = clip.xyz / clip.w;
-
+	
 	if(pos.z == 1.0) {
 		discard ;
 	}
+	
+	pos = clip.xyz / clip.w;
 	
 	vec4 shadowProj = (shadowMatrix * vec4(pos + (normal * 1.5), 1));
 	float shadow = 1.0; // New !
