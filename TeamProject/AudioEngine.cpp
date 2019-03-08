@@ -172,7 +172,7 @@ void CAudioEngine::LoadEvent(const string& strEventName, const Vector3& vPositio
 			sgpImplementation->mEvents[strEventName] = pEventInstance;
 		}
 	}
-	pEventInstance->setReverbLevel(10, 100);
+	/*pEventInstance->setReverbLevel(10, 100);*/
 	//pEventInstance->
 		//set3DMinMaxDistance(min * DISTANCEFACTOR, max*DISTANCEFACTOR);
 
@@ -183,10 +183,10 @@ void CAudioEngine::LoadEvent(const string& strEventName, const Vector3& vPositio
 	test.velocity = Vel;
 	
 
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) { test.position = VectorToFmod(Vector3(-19, 0, 0)); }
+	/*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) { test.position = VectorToFmod(Vector3(-19, 0, 0)); }
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_X)) { test.position = VectorToFmod(Vector3(-10, 0, 0)); }
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_N)) { test.position = VectorToFmod(Vector3(10, 0, 0)); }
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) { test.position = VectorToFmod(Vector3(19, 0, 0)); }
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) { test.position = VectorToFmod(Vector3(19, 0, 0)); }*/
 
 //	cout << "New event 1";
 
@@ -215,7 +215,7 @@ void CAudioEngine::PlayEvent(const string& strEventName, const Vector3& vPositio
 			sgpImplementation->mEvents[strEventName] = pEventInstance;
 		}
 	}
-	pEventInstance->setReverbLevel(10, 100);
+	/*pEventInstance->setReverbLevel(10, 100);*/
 
 	FMOD_3D_ATTRIBUTES test;
 	test.position = VectorToFmod(vPosition);
