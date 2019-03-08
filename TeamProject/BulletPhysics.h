@@ -5,9 +5,9 @@
 
 #include "../Common/Vector3.h"
 #include "../Common/Vector4.h"
-#include "../TeamProject/Transform.h"
-#include "../TeamProject/GameWorld.h"
-#include "../TeamProject/GameObject.h"
+#include "Transform.h"
+#include "GameWorld.h"
+#include "PhysicsObject.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 using namespace NCL;

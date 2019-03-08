@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "ScriptObject.h"
 #include "HealthManager.h"
 #include "Player.h"
 
@@ -12,7 +12,7 @@ public:
 	DamageControl(GameObject * obj);
 	~DamageControl();
 
-	static enum DamageType 
+	enum DamageType 
 	{
 		SingleShot,
 		Continuous
@@ -23,6 +23,7 @@ public:
 	void OnCollisionBegin(GameObject * otherObject);
 	void ResolveDamage(GameObject * obj);
 	void ResetDamageControl();
+	void SetDamage(int d);
 
 private:
 	int damage = 0;

@@ -3,6 +3,7 @@
 #include "../Common/Matrix3.h"
 #include "../Common/Quaternion.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
+#include "Component.h"
 
 using namespace NCL::Maths;
 
@@ -13,12 +14,12 @@ namespace NCL {
 	
 	namespace CSC8503 {
 		class Transform;
-
-		class PhysicsObject	{
+		
+		class PhysicsObject : virtual public Component{
 		public:
 			PhysicsObject();
-			PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction);
-			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction);
+			PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution = 0.9f, float friction = 0.5f);
+			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution = 0.9f, float friction = 0.5f);
 			~PhysicsObject();
 
 			ShapeType GetType() const {

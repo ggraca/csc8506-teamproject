@@ -1,5 +1,6 @@
 #pragma once
-#include "GameObject.h"
+#include "ScriptObject.h"
+
 
 using namespace NCL;
 using namespace CSC8503;
@@ -19,6 +20,7 @@ public:
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
+	
 
 	float GetFieldOfVision() const {
 		return fov;

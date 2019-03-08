@@ -1,19 +1,19 @@
 #include "Resource.h"
-#include "../TeamProject/InputManager.h"
+#include "InputManager.h"
+
 
 
 Resource::Resource(GameObject * obj) : ScriptObject(obj)
-{
-	Reset();
+{	
 }
 
 Resource::~Resource()
 {
 }
 
-
 void Resource::Awake()
 {
+	Reset();
 }
 
 void Resource::Start()
@@ -34,7 +34,7 @@ void Resource::FollowTarget(float &dt)
 		auto pos = (gameObject->GetTransform().GetWorldPosition());
 		pos += amount;
 		gameObject->GetTransform().SetWorldPosition(pos);
-		gameObject->GetPhysicsObject()->SetPosition(pos);
+		gameObject->GetComponent<PhysicsObject*>()->SetPosition(pos);
 	}
 }
 
@@ -44,7 +44,6 @@ void Resource::LateUpdate(float dt)
 
 void Resource::OnCollisionBegin(GameObject * otherObject)
 {
-	
 }
 
 void Resource::OnCollisionEnd(GameObject * otherObject)
@@ -55,6 +54,7 @@ void Resource::Aquire(GameObject * obj)
 {
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
 	gameObject->SetTag(LayerAndTag::Tags::Occupied);
+	gameObject->GetComponent<RenderObject*>()->GetMaterial()->SetColour(obj->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	SetTarget(obj);
 }
 
@@ -62,6 +62,8 @@ void Resource::Reset()
 {
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::ResourceParent));
+	gameObject->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1,1,1,1));
+	gameObject->GetComponent<DamageControl*>()->ResetDamageControl();
 	moveSpeed = 100.0f;
 	minDistance = 50.0f;
 	SetTarget(nullptr);

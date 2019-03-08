@@ -1,6 +1,6 @@
 #pragma once
-#include "GameObject.h"
-#include "ExampleScene.h"
+#include "ScriptObject.h"
+#include "DamageControl.h"
 
 using namespace NCL;
 using namespace CSC8503;

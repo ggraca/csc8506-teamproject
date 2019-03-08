@@ -18,7 +18,12 @@ class HUD
 
 		void Update(const float dt, GameTechRenderer* renderer);
 		
-		int ammo = 100;
+		int resources = 0;
 		int hp = 100;
+		string ready = "Ready! ";
+		string readySet = "Ready! Set! ";
+		string readySetGo = "Ready! Set! Go!";
 	protected:
+		float timestepCounter = 0.0f;
+
 };

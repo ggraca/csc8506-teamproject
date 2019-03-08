@@ -8,7 +8,7 @@
 #include "GameWorld.h"
 #include "HUDObject.h"
 #include "CameraControl.h"
-#include "../Common/Matrix4.h"
+#include "RenderObject.h"
 
 class Light;
 class HUDObject;
@@ -16,6 +16,7 @@ class HUDObject;
 namespace NCL {
 	namespace CSC8503 {
 		class RenderObject;
+		class PixOpsFlags;
 		class GameTechRenderer : public OGLRenderer	{
 		public:
 			GameTechRenderer(GameWorld& world);
@@ -27,14 +28,12 @@ namespace NCL {
 			int GetShadowCasters() const { return shadowCasters; }
 
 			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
-
-			void GenerateScreenTexture(GLuint& into, bool depth = false);
 			
-			GLuint skybox;
+			TextureBase* skybox;
 
 			//HUD
 			void AddHUDObjects();
-
+			void WeaponState(int index, bool state);
 			float health = 1; //(100%);
 			//void UpdateHealthQuad();
 
@@ -59,41 +58,40 @@ namespace NCL {
 			void SetupDebugMatrix(OGLShader*s) override;
 
 			vector<const RenderObject*> activeObjects;
+			vector<const Light*> activeLights;
 
 			//shadow mapping things
-			OGLShader*	shadowShader;
-			GLuint		shadowTex;
+			ShaderBase*	shadowShader;
+			TextureBase* shadowTex;
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
-			OGLShader* skyBoxShader;
+			ShaderBase* skyBoxShader;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
-			GLuint gBufferDepthTex; // Depth goes here
-			GLuint gBufferColourTex; // Albedo goes here
-			GLuint gBufferNormalTex; // Normals go here
-			GLuint gBufferSpecularTex; // Specular goes here
-			GLuint hudTex;
+			TextureBase* gBufferDepthTex; // Depth goes here
+			TextureBase* gBufferColourTex; // Albedo goes here
+			TextureBase* gBufferNormalTex; // Normals go here
+			TextureBase* gBufferSpecularTex; // Specular goes here
 
 			GLuint lightFBO; // FBO for our lighting pass
-			GLuint lightEmissiveTex; // emissive lighting
-			GLuint lightSpecularTex; // specular lighting
+			TextureBase* lightEmissiveTex; // emissive lighting
+			TextureBase* lightSpecularTex; // specular lighting
 
-			OGLShader* combineShader;
-			OGLShader* lightShader;
-			OGLShader* hudShader;
+			ShaderBase* combineShader;
+			ShaderBase* lightShader;
+			ShaderBase* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 
-			Light* directionalLight;
-			
+			GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 			
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
-
+			bool drawShadows = true;
 		};
 	}
 }

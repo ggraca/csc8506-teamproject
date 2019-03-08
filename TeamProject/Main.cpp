@@ -9,7 +9,7 @@ using namespace NCL;
 using namespace CSC8503;
 
 int main(int argc, char** argv) {
-	srand(time(NULL));
+	srand(unsigned(time(NULL)));
 
 	Window*w = Window::CreateGameWindow("Team Project!", 1280, 720);
 	//Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, true);
@@ -20,7 +20,8 @@ int main(int argc, char** argv) {
 	w->ShowConsole(true);
   
 	//Scene* scene = new ExampleScene();
-	Scene* scene = new NetworkScene();
+	//Scene* scene = new NetworkScene();
+	Scene* scene = new PhysicsScene();
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;
