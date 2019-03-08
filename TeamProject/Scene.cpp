@@ -47,7 +47,7 @@ void Scene::InitialiseAssets() {
   pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
   pbrWoodMet = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
 
-  pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl", "", "", "");
+  pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
 
   basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", pbrShader);
   basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);

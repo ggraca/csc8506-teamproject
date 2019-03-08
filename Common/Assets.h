@@ -32,7 +32,7 @@ namespace NCL {
 			}
 
 			static Rendering::TextureBase* LoadTexture(const std::string& filename);
-			static Rendering::ShaderBase* LoadShader(const std::string& shadername, const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull);
+			static Rendering::ShaderBase* LoadShader(const std::string& shadername, const string& vertex, const string& fragment, const string& geometry = "", const string& domain = "", const string& hull = "");
 			static MeshGeometry* LoadMesh(const std::string& filename);
 			static OBJGeometry* LoadOBJ(const std::string& filename);
 			static Rendering::Material* LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader);

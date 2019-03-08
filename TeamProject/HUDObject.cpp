@@ -9,7 +9,7 @@ HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform
 	texture = objTexture;
 	transform = objTransform;
 	activeTexture = activeTex;
-	shader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl", "", "", "");
+	shader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl");
 }
 
 HUDObject::~HUDObject()

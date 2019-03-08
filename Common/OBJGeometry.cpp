@@ -88,8 +88,8 @@ bool OBJGeometry::LoadOBJMesh(std::string filename) {
 OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals) {
 	if (sm->vertIndices.empty()) return nullptr;
 
-	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-	Material* material = Assets::AssetManager::LoadMaterial(sm->mtlType, basicShader);
+	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
+	Material* material = Assets::AssetManager::LoadMaterial(sm->mtlType, pbrShader);
 	OBJMesh* m = new OBJMesh(material);
 
 	for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
@@ -183,7 +183,7 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 	std::ifstream f(string(Assets::MESHDIR + filename).c_str(), std::ios::in);
 	if (!f) return;
 
-	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
+	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
 	Material* material = nullptr;
 
 	int counter = 0;
@@ -193,7 +193,7 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 
 		if (lineHeader == MTLNEW) {
 			f >> data;
-			material = Assets::AssetManager::LoadMaterial(data, basicShader);
+			material = Assets::AssetManager::LoadMaterial(data, pbrShader);
 		}
 		else if (lineHeader == MTLDIFFUSE) {
 			float r, g, b;
