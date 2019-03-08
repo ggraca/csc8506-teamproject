@@ -8,7 +8,7 @@ CubePrefab::CubePrefab()
 	GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, 0, 0));
 	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, 10, 0.8f, 0.4f));
 	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("CubeMesh"), Assets::AssetManager::LoadMaterial("Basic Material", basicShader)));
+	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", basicShader)));
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
 }
 
@@ -19,7 +19,7 @@ CubePrefab::CubePrefab(const Vector3& position, const Quaternion& orient, Vector
 	GetTransform().SetLocalOrientation(orient);
 	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, mass, restitution, friction));
 	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("CubeMesh"), Assets::AssetManager::LoadMaterial("Basic Material", basicShader)));
+	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", basicShader)));
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
 }
 

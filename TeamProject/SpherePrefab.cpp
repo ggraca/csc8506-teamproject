@@ -6,7 +6,7 @@ SpherePrefab::SpherePrefab()
 	GetTransform().SetWorldPosition(Vector3(0,0,0));
 	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::sphere, 10, 0.8f, 0.4f));
 	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("sphere"), Assets::AssetManager::LoadMaterial("Basic Material", basicShader)));
+	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("sphere.msh"), Assets::AssetManager::LoadMaterial("Basic Material", basicShader)));
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
 }
 
@@ -16,7 +16,7 @@ SpherePrefab::SpherePrefab(const Vector3& position, float radius, float mass, fl
 	GetTransform().SetWorldPosition(position);
 	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::sphere, mass, restitution, friction));
 	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("sphere"), Assets::AssetManager::LoadMaterial("Basic Material", basicShader)));
+	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("sphere.msh"), Assets::AssetManager::LoadMaterial("Basic Material", basicShader)));
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
 }
 
