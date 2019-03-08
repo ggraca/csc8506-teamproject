@@ -48,10 +48,10 @@ void CAudioEngine::Init() {
 }
 
 void CAudioEngine::Update() {
-	/*SetOrientation();
+	SetOrientation();
 	SetCameraPos();
 	sgpImplementation->mpSystem->set3DListenerAttributes(0, &cPos, NULL,&forward, &up);
-	sgpImplementation->Update();*/
+	sgpImplementation->Update();
 }
 
 void CAudioEngine::LoadSound(const string &strSoundName, bool b3d, bool bLooping, bool bStream) // loads sounds (filename, streaming (Y/N), looping (Y/N), 3D sound (Y/N)) this will store it in the sound cloud
