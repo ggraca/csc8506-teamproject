@@ -11,7 +11,7 @@ uniform bool drawShadows;
 
 uniform float lightRadius;
 uniform float lightBrightness;
-uniform vec3 lightPos;
+uniform vec3 lightDir;
 uniform vec4 lightColour;
 
 in mat4 inverseProjView;
@@ -27,10 +27,7 @@ void main (void) {
 	vec4 clip = inverseProjView * vec4(pos * 2.0 - 1.0, 1.0);
 	pos = clip.xyz / clip.w;
 
-	float dist = length(lightPos - pos);
-	float atten = 1.0 - clamp(dist / (lightRadius * lightRadius), 0.0, 1.0);
-
-	if( atten == 0.0) {
+	if(pos.z == 1.0) {
 		discard ;
 	}
 	
@@ -41,7 +38,7 @@ void main (void) {
 		shadow = textureProj(shadowTex, shadowProj);
 	}
 
-	vec3 incident = normalize(lightPos - pos);
+	vec3 incident = lightDir;
 	vec3 viewDir = normalize(cameraPos - pos);
 	vec3 halfDir = normalize(incident + viewDir);
 
@@ -49,8 +46,8 @@ void main (void) {
 	float rFactor = clamp(dot(halfDir , normal), 0.0, 1.0);
 	float sFactor = pow(rFactor, 33.0);
 
-	vec4 finalCol = vec4(lightColour.xyz * lambert * atten, 1.0) * lightBrightness;
-	vec4 specularCol = vec4(lightColour.xyz * sFactor * atten, 1.0);
+	vec4 finalCol = vec4(lightColour.xyz * lambert, 1.0) * lightBrightness;
+	vec4 specularCol = vec4(lightColour.xyz * sFactor, 1.0);
 	
 	if (drawShadows){
 		finalCol = finalCol * shadow;
