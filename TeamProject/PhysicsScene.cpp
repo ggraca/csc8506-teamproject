@@ -24,7 +24,7 @@ PhysicsScene::PhysicsScene() : Scene() {
   else CreateClient();
 }
 
-void PhysicsScene::CreatePlayer()
+/*void PhysicsScene::CreatePlayer()
 {
 	//Player
 	auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
@@ -32,7 +32,7 @@ void PhysicsScene::CreatePlayer()
 	player->SetTag(LayerAndTag::Tags::Player);
 	player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
-}
+}*/
 
 void PhysicsScene::ResetWorld() {
  
