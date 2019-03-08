@@ -79,7 +79,8 @@ namespace NCL {
 			TextureBase* lightSpecularTex; // specular lighting
 
 			ShaderBase* combineShader;
-			ShaderBase* lightShader;
+			ShaderBase* pointLightShader;
+			ShaderBase* directionalLightShader;
 			ShaderBase* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;

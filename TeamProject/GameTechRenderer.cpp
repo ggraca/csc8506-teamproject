@@ -17,7 +17,8 @@ Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Sca
 GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetWindow()), gameWorld(world)	{
 	shadowShader = Assets::AssetManager::LoadShader("GameTechShadowShader", "GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
 	skyBoxShader = Assets::AssetManager::LoadShader("SkyboxShader", "skyboxVertex.glsl", "skyboxFragment.glsl");
-	lightShader = Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl");
+	pointLightShader = Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl");
+	pointLightShader = Assets::AssetManager::LoadShader("DirectionalLightShader", "directionallightvert.glsl", "directionallightfrag.glsl");
 	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
 
 
