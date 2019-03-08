@@ -27,14 +27,14 @@ void Destructable::Update(float dt)
 
 void Destructable::CheckIfDestroyed()
 {
-	HealthManager * health = gameObject->GetScript<HealthManager*>();
+	HealthManager * health = gameObject->GetComponent<HealthManager*>();
 	if (health->IsDead())
 	{
-		for (int i = 0; i < (health->GetHealth()/25);i++)
+		for (int i = 0; i < 10;i++)
 		{
 			GenerateResource();
 		}
-		GameObject::Destroy(gameObject);
+		GameObject::gameWorld->LateDestroy(gameObject);
 	}
 }
 
@@ -70,11 +70,7 @@ void Destructable::GenerateResource()
 	float resourceY = (rand() % (int)(maxY - minY)) + minY;
 	float resourceZ = (rand() % (int)(maxZ - minZ)) + minZ;
 
-	/*ExampleScene * es = new ExampleScene();
-	GameObject* resource = es->AddCube(Vector3(resourceX, resourceY, resourceZ), Quaternion::EulerAnglesToQuaternion(0, 0, 0), resourceDimensions);*/
-	
-	resource->AddScript((ScriptObject*)new Resource(resource));
-	resource->GetScript<Resource*>()->Reset();
-
-	GameObject::AddObjectToWorld(resource);
+	ResourcePrefab * resource = new ResourcePrefab(Vector3(resourceX, resourceY, resourceZ),Quaternion::AxisAngleToQuaternion(Vector3(0,0,0),0),Vector3(5,5,5),1000,0.8f,0.4f);
+	resource->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, -100, 0));
+	GameObject::gameWorld->LateInstantiate(resource);
 }

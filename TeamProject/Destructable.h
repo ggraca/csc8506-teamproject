@@ -4,6 +4,7 @@
 #include "HealthManager.h"
 #include "ExampleScene.h"
 #include "ScriptObject.h"
+#include "ResourcePrefab.h"
 
 using namespace NCL;
 using namespace CSC8503;

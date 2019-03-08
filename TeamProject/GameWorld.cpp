@@ -104,7 +104,7 @@ void GameWorld::Destroy(GameObject * obj)
 	RemoveGameObject(obj);
 }
 
-void GameWorld::ClearObjectsToDestroy() {
+void GameWorld::HandleObjectsToDestroy() {
 	for (auto go : objectsToDestroy) {
 		Destroy(go);
 	}
@@ -123,6 +123,21 @@ void GameWorld::ClearAndErase() {
 	Clear();
 }
 
+void GameWorld::LateInstantiate(GameObject * obj)
+{
+	objectsToInstantiate.push_back(obj);
+}
+
+void GameWorld::HandleObjectsToInstantiate()
+{
+	for (auto&i : objectsToInstantiate)
+	{
+		Instantiate(i);
+	}
+
+	objectsToInstantiate.clear();
+}
+
 void GameWorld::UpdateGameObjects(float dt)
 {
 	for (auto&i : gameObjects) 
@@ -139,7 +154,7 @@ void GameWorld::LateUpdateGameObjects(float dt)
 	}
 }
 
-void GameWorld::AddGameObject(GameObject* o)
+void GameWorld::Instantiate(GameObject* o)
 {
 	if (!o) { return; }
 	
@@ -166,12 +181,12 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	o->SetUpInitialScripts();	
 }
 
-void GameWorld::AddGameObject(GameObject* o, GameObject* parent )
+void GameWorld::Instantiate(GameObject* o, GameObject* parent )
 {
 	if (!o) { return; }
 
 	o->SetParent(parent);
-	AddGameObject(o);
+	Instantiate(o);
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 
@@ -206,6 +221,7 @@ void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {
 	obj->collidingObjects.clear();
 }
 
+
 void GameWorld::GetObjectIterators(
 	std::vector<GameObject*>::const_iterator& first,
 	std::vector<GameObject*>::const_iterator& last) const {
@@ -219,7 +235,7 @@ GameObject* GameWorld::GetPlayerGameObject()
 	return gameObjects.at(1);
 }
 
-vector<GameObject*> NCL::CSC8503::GameWorld::GetGameObjectList()
+vector<GameObject*> GameWorld::GetGameObjectList()
 {
   return gameObjects;
 }
@@ -233,6 +249,8 @@ void GameWorld::UpdateWorld(float dt)
 	UpdateGameObjects(dt);
 	UpdateTransforms();
 	LateUpdateGameObjects(dt);
+	HandleObjectsToDestroy();
+	HandleObjectsToInstantiate();
 	mainCamera->GetComponent<CameraControl*>()->Update(dt);
 }
 
