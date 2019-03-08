@@ -30,6 +30,7 @@ protected:
 	int resourceCount;
 	float movementSpeed;
 	float jumpSpeed;
+	float dodgeAmount;
 	bool keyDown;
 	bool reset;
 };

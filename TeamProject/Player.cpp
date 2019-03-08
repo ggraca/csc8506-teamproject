@@ -75,10 +75,45 @@ void Player::PlayerMovement(float dt)
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
 		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));
 	}
+	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+	{
+		playerPos += forward * movementSpeed * dt;
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+		keyDown = true;
+		reset = false;
+	}
+
+	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+	{
+		playerPos -= forward * movementSpeed * dt;
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+		keyDown = true;
+		reset = false;
+	}
+
+	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+	{
+		playerPos += left * movementSpeed * dt;
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
+		keyDown = true;
+		reset = false;
+	}
+
+	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT) && InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+	{
+		playerPos -= left * movementSpeed * dt;
+		
+
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
+		keyDown = true;
+		reset = false;
+	}
+
 	if (!keyDown && !reset) {
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 0, 0));
 		reset = true;
-	} 
+	}
+	
 	keyDown = false;
 }
 
@@ -113,6 +148,7 @@ void Player::ResetPlayer()
 	resourceCount = 0;
 	movementSpeed = 200;
 	jumpSpeed = 400;
+	dodgeAmount = 3;
 }
 
 void Player::UpdateResourceCount(int amount)
