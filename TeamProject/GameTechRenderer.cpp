@@ -157,16 +157,19 @@ void GameTechRenderer::RenderShadowMap() {
 	BindShader(shadowShader);
 
 	//Temporary code to work out which light is the directional
-	Vector3 directionalLightPos;
+	Vector3 cameraPosition = gameWorld.GetMainCamera()->GetTransform().GetWorldPosition();
+	Quaternion lightRot;
 	for (int i = 0; i < (int)activeLights.size(); i++)
 	{
-		if (activeLights[i]->GetGameObject()->GetName() == "Directional Light") {
-			directionalLightPos = activeLights[i]->GetGameObject()->GetTransform().GetWorldPosition();
+		if (activeLights[i]->GetType() == LightType::Directional) {
+			lightRot = activeLights[i]->GetGameObject()->GetTransform().GetWorldOrientation();
 		}
 	}
+	Vector3 newlightPos = (lightRot * Vector3(0, 0, 1)) * 500.0f;
+	Vector3 newlightPosUp = (lightRot * Vector3(0, 1, 0));
 
-	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(directionalLightPos, Vector3(0, 0, 0));
-	Matrix4 shadowProjMatrix = Matrix4::Perspective(100.0f, 5000.0f, 1, 45.0f);
+	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(cameraPosition + newlightPos, cameraPosition, newlightPosUp);
+	Matrix4 shadowProjMatrix = Matrix4::Orthographic(-10, 1000, -100, 100, -100, 100);
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
 	shadowMatrix = biasMatrix * mvMatrix; //we'll use this one later on
 
