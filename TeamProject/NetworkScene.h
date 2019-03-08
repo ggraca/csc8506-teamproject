@@ -14,12 +14,16 @@ namespace NCL {
 		virtual ~NetworkScene();
 		void UpdateGame(float dt);
 
+		bool CreateServer();
+		void CreateClient();
+
 	protected:
 		void InitNetwork();
 		void ReceivePacket(int type, GamePacket* payload, int source);
 
 		bool isServer = false;
+
 		GameServer* server;
-		GameClient* client;
+		vector<GameClient*> clients;
 	};
 }

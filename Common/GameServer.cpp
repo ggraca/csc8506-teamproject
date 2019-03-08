@@ -12,7 +12,7 @@ GameServer::GameServer(int onPort, int maxClients)	{
 	netHandle	= nullptr;
 	threadAlive = false;
 
-	Initialise();
+	//Initialise();
 }
 
 GameServer::~GameServer()	{

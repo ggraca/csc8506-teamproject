@@ -2,7 +2,11 @@
 
 #include <enet/enet.h>
 #include <map>
+#include <iostream>
 #include <string>
+
+using namespace std;
+
 
 enum BasicNetworkMessages {
 	None,
@@ -14,7 +18,8 @@ enum BasicNetworkMessages {
 	Received_State, //received from a client, informs that its received packet n
 	Player_Connected,
 	Player_Disconnected,
-	Shutdown
+	Shutdown,
+	PlayerPos
 };
 
 struct GamePacket {
@@ -52,6 +57,33 @@ struct StringPacket : public GamePacket {
 	}
 };
 
+struct PlayerPosPacket : public GamePacket {
+	float	x;
+	float	y;
+	float	z;
+
+	PlayerPosPacket(const float& newX, const float& newY, const float& newZ) 
+	{
+		type = BasicNetworkMessages::PlayerPos;
+		size = sizeof(float) * 3;
+
+		x = newX;
+		y = newY;
+		z = newZ;
+		//memcpy(x, newX, size);
+		//memcpy(y, newY, size);
+		//memcpy(z, newZ, size);
+	}
+
+	float* GetPosFromData() {
+		float* posData = new float[3];
+		posData[0] = x;
+		posData[1] = y;
+		posData[2] = z;
+		return posData;
+	}
+};
+
 struct NewPlayerPacket : public GamePacket {
 	int playerID;
 	NewPlayerPacket(int p ) {
@@ -75,6 +107,32 @@ public:
 	virtual void ReceivePacket(int type, GamePacket* payload, int source = -1) = 0;
 };
 
+class TestPacketReceiver : public PacketReceiver {
+public:
+	TestPacketReceiver(string name)
+	{
+		this->name = name;
+	}
+
+	void ReceivePacket(int type, GamePacket* payload, int source) override {
+		if (type == StringMessage)
+		{
+			StringPacket* realPacket = (StringPacket*)payload;
+			string msg = realPacket->GetStringFromData();
+			cout << "received message: " << msg << endl;
+		}
+		else if (type == PlayerPos)
+		{
+			PlayerPosPacket* realPacket = (PlayerPosPacket*)payload;
+			float* pos = realPacket->GetPosFromData();
+
+			std::cout << "X: " << pos[0] << " Y: " << pos[1] << " Z: " << pos[2] << std::endl;
+		}
+	}
+protected:
+	string name;
+};
+
 class NetworkBase	{
 public:
 	static void Initialise();
@@ -84,7 +142,8 @@ public:
 		return 1234;
 	}
 
-	void RegisterPacketHandler(int msgID, PacketReceiver* receiver) {
+	void RegisterPacketHandler(int msgID, TestPacketReceiver* receiver) {
+		//receiver = new TestPacketReceiver("Server");
 		packetHandlers.insert(std::make_pair(msgID, receiver));
 	}
 
@@ -94,7 +153,7 @@ protected:
 
 	bool ProcessPacket(GamePacket* p, int peerID = -1);
 
-	typedef std::multimap<int, PacketReceiver*>::const_iterator PacketHandlerIterator;
+	typedef std::multimap<int, TestPacketReceiver*>::const_iterator PacketHandlerIterator;
 
 	bool GetPackethandlers(int msgID, PacketHandlerIterator& first, PacketHandlerIterator& last) const {
 		auto range = packetHandlers.equal_range(msgID);
@@ -109,5 +168,5 @@ protected:
 
 	ENetHost* netHandle;
 
-	std::multimap<int, PacketReceiver*> packetHandlers;
+	std::multimap<int, TestPacketReceiver*> packetHandlers;
 };
