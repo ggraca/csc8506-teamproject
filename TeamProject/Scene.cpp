@@ -80,7 +80,6 @@ void Scene::InitialiseAssets() {
   cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
   renderer->skybox = cubeMap;
 
-  InitCamera();
   InitWorld();
 }
 
@@ -93,18 +92,6 @@ Scene::~Scene() {
   InputManager::Dispose();
 }
 
-void Scene::UpdateKeys() {
-
-}
-
-void Scene::InitCamera() {
-  //world->GetMainCamera()->SetNearPlane(3.0f);
-  //world->GetMainCamera()->SetFarPlane(4200.0f);
-  //world->GetMainCamera()->SetPitch(-10.0f);
-  //world->GetMainCamera()->SetYaw(250.0f);
-  //world->GetMainCamera()->SetPosition(Vector3(-50, 120, 200));
-}
-
 void Scene::InitWorld() {
   world->ClearAndErase();
 
@@ -114,46 +101,3 @@ void Scene::InitWorld() {
   world->AddGameObject(light);
 }
 
-GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float mass, float restitution, float friction) {
-
-  GameObject* sphere = new SpherePrefab(position, radius, mass, restitution, friction);
-  sphere->AddComponent<RenderObject*>((Component *)new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
-
-  world->AddGameObject(sphere);
-  return sphere;
-}
-
-GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
-  
-  GameObject* cube = new CubePrefab(position, orient, dimensions, mass, restitution, friction);
-  cube->AddComponent<RenderObject*>((Component *)new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
-  cube->GetComponent<RenderObject*>()->SetMaterialInstanced();
-
-  world->AddGameObject(cube);
-  return cube;
-}
-
-void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
-	for (int i = 0; i < numCols; ++i) {
-		for (int j = 0; j < numRows; ++j) {
-			float sphereRadius = 0.5f + 3.0f * (rand() % 100) / 100.0f;
-			float x = 1.0f + 10.0f * (rand() % 100) / 100.0f;
-			float y = 1.0f + 10.0f * (rand() % 100) / 100.0f;
-			float z = 1.0f + 10.0f * (rand() % 100) / 100.0f;
-			Vector3 cubeDims = Vector3(x, y, z);
-			Vector3 position = Vector3(i * colSpacing, 15.0f + positiony.y * ((rand() % 100) / 100.0f), j * rowSpacing);
-			if (rand() % 2) {
-				tempTex = dogsTex;
-			}
-			else {
-				tempTex = dogTex;
-			}
-			if (rand() % 2) {
-				GameObject* go = AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f), (float)(rand() % 45)), cubeDims, 10.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f);
-			}
-			else {
-				AddSphereToWorld(position, sphereRadius, 10.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f);
-			}
-		}
-	}
-}
