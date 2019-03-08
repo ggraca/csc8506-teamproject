@@ -51,6 +51,9 @@ void ExampleScene::ResetWorld() {
   go->GetTransform().SetWorldPosition(Vector3(0, 5, 0));
   go->GetTransform().SetLocalScale(Vector3(1, 1, 1));
   // world->AddGameObject(go); // TODO: We can uncomment this once we fix the bug mentioned above
+
+  /*int size = objGeometry->GetChildren().size();
+  MeshGeometry* mesh = objGeometry->GetChildren()[size - 1];*/
 }
 
 ExampleScene::~ExampleScene() {
