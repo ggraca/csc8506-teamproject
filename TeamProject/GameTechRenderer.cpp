@@ -271,7 +271,7 @@ void GameTechRenderer::RenderLights() {
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
 	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
-	BindShader(lightShader);
+	BindShader(directionalLightShader);
 
 	Matrix4 identity;
 	identity.ToIdentity();
