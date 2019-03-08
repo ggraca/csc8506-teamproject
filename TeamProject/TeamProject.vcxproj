@@ -172,6 +172,7 @@
     <ClCompile Include="BulletPhysics.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="CubePrefab.cpp" />
     <ClCompile Include="DamageControl.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
@@ -190,9 +191,12 @@
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerPrefab.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourcePrefab.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SpherePrefab.cpp" />
     <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TypeId.cpp" />
@@ -205,6 +209,7 @@
     <ClInclude Include="BulletPhysics.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="CubePrefab.h" />
     <ClInclude Include="DamageControl.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugMenu.h" />
@@ -223,9 +228,12 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="PhysicsScene.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerPrefab.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourcePrefab.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SpherePrefab.h" />
     <ClInclude Include="ScriptObject.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TypeId.h" />
