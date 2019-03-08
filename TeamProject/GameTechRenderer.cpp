@@ -157,7 +157,7 @@ void GameTechRenderer::RenderShadowMap() {
 
 	//Temporary code to work out which light is the directional
 	Vector3 directionalLightPos;
-	for (int i = 0; i < activeLights.size(); i++)
+	for (int i = 0; i < (int)activeLights.size(); i++)
 	{
 		if (activeLights[i]->GetGameObject()->GetName() == "Directional Light") {
 			directionalLightPos = activeLights[i]->GetGameObject()->GetTransform().GetWorldPosition();
@@ -279,7 +279,7 @@ void GameTechRenderer::RenderLights() {
 	BindTextureToShader(gBufferNormalTex, "normTex", 4);
 
 
-	for (int x = 0; x < activeLights.size(); ++x) {
+	for (int x = 0; x < (int)activeLights.size(); ++x) {
 		float radius = activeLights[x]->GetRadius();
 
 		Matrix4 tempModelMatrix = Matrix4::Translation(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition())

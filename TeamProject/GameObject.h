@@ -155,7 +155,7 @@ namespace NCL {
 			void RemoveScript()
 			{
 
-				for (int i = 0; i < scripts.size(); i++)
+				for (int i = 0; i < (int)scripts.size(); i++)
 				{
 					if (dynamic_cast<T>(scripts[i]))
 					{
