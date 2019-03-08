@@ -49,6 +49,30 @@ void PhysicsScene::ResetWorld() {
   auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource2->SetName("Resource 2");
   resource2->AddComponent<Resource*>((Component*)new Resource(resource2));
+
+ // AddCubeToWorld(Vector3(100, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+
+  AddCylinderToWorld(Vector3(0, 10, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1, 0.5f, 0.5f);
+  AddCylinderToWorld(Vector3(0, 10, 80), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1, 0.5f, 0.5f);
+  AddCylinderToWorld(Vector3(0, 10, 110), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1, 0.5f, 0.5f);
+  AddSphereToWorld(Vector3(30, 10, 110), 10, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+
+
+  OBJGeometry* coneMesh = Assets::AssetManager::LoadOBJ("cone.obj");
+  GameObject* cylinder = GameObject::FromOBJ(coneMesh);
+  cylinder->GetTransform().SetWorldPosition(Vector3(0, 0, 0));
+  cylinder->GetTransform().SetLocalScale(Vector3(1, 1, 1));
+  cylinder->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cylinder->GetTransform(), ShapeType::cylinder, 1, 1, 1));
+
+  OBJGeometry* cylinderMesh = Assets::AssetManager::LoadOBJ("cylinder.obj");
+  GameObject* cone = GameObject::FromOBJ(cylinderMesh);
+  cone->GetTransform().SetWorldPosition(Vector3(40, 0, 0));
+  cone->GetTransform().SetLocalScale(Vector3(1, 1, 1));
+  cone->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cone->GetTransform(), ShapeType::cone, 1, 1, 1));
+
+
+
+ // AddConeToWorld(Vector3(50, 10, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1, 0.5f, 0.5f);
 }
 
 PhysicsScene::~PhysicsScene() {

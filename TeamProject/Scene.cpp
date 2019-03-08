@@ -17,7 +17,7 @@ Scene::Scene() {
   renderer = new GameTechRenderer(*world);
 
   physics = new BulletPhysics(*world);
-  physics->SetGravity(Vector3(-4.0f, -60.81f, 0.0f));
+  physics->SetGravity(Vector3(0.0f, -60.81f, 0.0f));
   world->SetPhysics(physics);
   InputManager::InitializeButtonRelations();
 
@@ -34,7 +34,7 @@ void Scene::InitialiseAssets() {
   sphereMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("sphere2.msh");
   renderer->SetLightMesh(sphereMesh);
 
-  cylinderMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cylinder.obj");
+  cylinderMesh = Assets::AssetManager::LoadOBJ("cylinder.obj");
   coneMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cone.obj");
 
   basicTex = (OGLTexture*)Assets::AssetManager::LoadTexture("checkerboard.png");
@@ -143,6 +143,33 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
 
   world->AddGameObject(cube);
   return cube;
+}
+
+GameObject* Scene::AddCylinderToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
+	GameObject* cylinder = GameObject::FromOBJ(cylinderMesh);
+	cylinder->GetTransform().SetWorldScale(dimensions);
+	cylinder->GetTransform().SetWorldPosition(position);
+	cylinder->GetTransform().SetLocalOrientation(orient);
+	cylinder->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cylinder->GetTransform(), ShapeType::cylinder, mass, restitution, friction));
+//	cylinder->AddComponent<RenderObject*>((Component*)new RenderObject(&cylinder->GetTransform(), cylinderMesh, basicMaterial));
+//	cylinder->GetComponent<RenderObject*>()->SetMaterialInstanced();
+
+	world->AddGameObject(cylinder);
+	return cylinder;
+}
+
+GameObject* Scene::AddConeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
+	GameObject* cone = new GameObject();
+
+	cone->GetTransform().SetWorldScale(dimensions);
+	cone->GetTransform().SetWorldPosition(position);
+	cone->GetTransform().SetLocalOrientation(orient);
+	cone->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cone->GetTransform(), ShapeType::cone, mass, restitution, friction));
+	cone->AddComponent<RenderObject*>((Component*)new RenderObject(&cone->GetTransform(), cubeMesh, basicMaterial));
+	cone->GetComponent<RenderObject*>()->SetMaterialInstanced();
+
+	world->AddGameObject(cone);
+	return cone;
 }
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
