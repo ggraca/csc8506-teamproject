@@ -13,8 +13,7 @@ Resource::~Resource()
 
 void Resource::Awake()
 {
-	//Reset(); Problem here, since the render object cannot be attached during creation of a resource object, we cannot do that on awake. Global access
-	//to mesh and textures are needed.
+	Reset();
 }
 
 void Resource::Start()

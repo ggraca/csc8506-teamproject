@@ -50,6 +50,9 @@ void ExampleScene::ResetWorld() {
 	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
 
+	world->AddGameObject(player);
+	world->AddGameObject(resource1);
+	world->AddGameObject(resource2);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
   

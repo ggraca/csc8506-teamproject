@@ -26,11 +26,18 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="utils.cpp" />
-    <ClCompile Include="CubePrefab.cpp" />
-    <ClCompile Include="SpherePrefab.cpp" />
-    <ClCompile Include="PlayerPrefab.cpp" />
-    <ClCompile Include="ResourcePrefab.cpp" />
+    <ClCompile Include="CubePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="SpherePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -58,11 +65,6 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="utils.h" />
-    <ClInclude Include="CubePrefab.h" />
-    <ClInclude Include="SpherePrefab.h" />
-    <ClInclude Include="PlayerPrefab.h" />
-    <ClInclude Include="ResourcePrefab.h" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Debug.cpp">
       <Filter>UI</Filter>
@@ -148,6 +150,18 @@
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
+    <ClInclude Include="CubePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="SpherePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -259,6 +273,9 @@
     </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{e15e6ec5-41e1-418c-9a73-ee1d18bff769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs">
+      <UniqueIdentifier>{3a1915d8-f7c4-42ae-adbe-08b929077eee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
