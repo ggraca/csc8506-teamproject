@@ -2,7 +2,7 @@
 class LayerAndTag
 {
 public:
-	static enum ObjectLayer 
+	enum ObjectLayer 
 	{
 		Default,
 		UI,
@@ -10,7 +10,7 @@ public:
 	};
 
 
-	static enum Tags
+	enum Tags
 	{
 		Untagged,
 		Player,

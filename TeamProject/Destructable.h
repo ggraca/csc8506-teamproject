@@ -3,6 +3,7 @@
 #include "Resource.h"
 #include "HealthManager.h"
 #include "ExampleScene.h"
+#include "ScriptObject.h"
 
 using namespace NCL;
 using namespace CSC8503;

@@ -1,8 +1,12 @@
 #pragma once
 #include "../../Common/RendererBase.h"
+#include "../../Common/Assets.h"
+#include "OGLPixOpsFLags.h"
 
+#include "../../Common/Vector2.h"
 #include "../../Common/Vector3.h"
 #include "../../Common/Vector4.h"
+#include "../../Common/Matrix4.h"
 
 
 #ifdef _WIN32
@@ -47,10 +51,26 @@ namespace NCL {
 			virtual void SetupDebugMatrix(OGLShader*s) {
 			}
 
+			void GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& bufferTexs, TextureBase* depth);
+			void DeleteFrameBuffer(void* buffer);
+			void BindFBO(void* buffer);
+
 			void BindShader(ShaderBase*s);
 			void BindTextureToShader(const TextureBase*t, const std::string& uniform, int texUnit) const;
+			void BindTextureCubeToShader(const TextureBase*t, const std::string& uniform, int texUnit) const;
+			void BindBoolToShader(const bool val, const std::string& uniform) const;
+			void BindIntToShader(const int val, const std::string& uniform) const;
+			void BindFloatToShader(const float val, const std::string& uniform) const;
+			void BindVector3ToShader(const Vector3& val, const std::string& uniform) const;
+			void BindVector4ToShader(const Vector4& val, const std::string& uniform) const;
+			void BindMatrix4ToShader(const Matrix4& val, const std::string& uniform) const;
 			void BindMesh(MeshGeometry*m);
 			void DrawBoundMesh(int subLayer = 0, int numInstances = 1);
+
+			void ClearBuffer(bool depth, bool color, bool stencil) const;
+			void SetViewport(int x, int y, int width, int height) const;
+
+			OGLPixOpsFLags pixOps;
 #ifdef _WIN32
 			void InitWithWin32(Window& w);
 			void DestroyWithWin32();

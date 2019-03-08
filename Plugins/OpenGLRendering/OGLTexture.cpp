@@ -82,6 +82,41 @@ TextureBase* OGLTexture::RGBATextureFromFilename(const std::string&name) {
 	return glTex;
 }
 
+TextureBase* OGLTexture::EmptyTexture(int width, int height, bool depth) {
+	OGLTexture* tex = new OGLTexture();
+
+	glBindTexture(GL_TEXTURE_2D, tex->texID);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, depth ? GL_DEPTH_COMPONENT : GL_RGBA8, width, height, 0,
+		depth ? GL_DEPTH_COMPONENT : GL_RGBA, depth ? GL_FLOAT : GL_UNSIGNED_BYTE, NULL);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return tex;
+}
+
+TextureBase* OGLTexture::ShadowTexture(int width, int height) {
+	OGLTexture* tex = new OGLTexture();
+
+	glBindTexture(GL_TEXTURE_2D, tex->texID);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return tex;
+}
+
 TextureBase* OGLTexture::CubeTextureFromFilename(const std::vector<std::string>& faces) {
 	char* texData[6];
 	int width = 0;

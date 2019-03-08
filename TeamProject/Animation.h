@@ -29,6 +29,7 @@ public:
 	void CalculateInterpolation();
 	void ShiftFrames(GameObject * obj);
 	void SetupFirstFrameIterations(GameObject * obj);
+	void ResetAnimation();
 protected:
 	vector<KeyFrame*> keyFrames;
 	KeyFrame* currentFrame;

@@ -126,6 +126,60 @@ OGLMesh* OGLMesh::GenerateQuad() {
 	return newMesh;
 }
 
+OGLMesh* OGLMesh::GenerateQuad(float minX, float maxX, float minY, float maxY, int currentWidth, int currentHeight) {
+	OGLMesh* newMesh = new OGLMesh();
+	float width = (float)currentWidth;
+	float height = (float)currentHeight;
+	vector<Vector3> vertices;
+	vertices.push_back(Vector3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vector3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vector3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vector3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
+	newMesh->SetVertexPositions(vertices);
+
+	vector<Vector2> textureCoords;
+	textureCoords.push_back(Vector2(0.0f, 1.0f));
+	textureCoords.push_back(Vector2(0.0f, 0.0f));
+	textureCoords.push_back(Vector2(1.0f, 1.0f));
+	textureCoords.push_back(Vector2(1.0f, 0.0f));
+	newMesh->SetVertexTextureCoords(textureCoords);
+
+	vector<Vector4> colours;
+	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	newMesh->SetVertexColours(colours);
+
+	vector<Vector3> normals;
+	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
+	newMesh->SetVertexNormals(normals);
+
+	//vector<Vector3> tangents;
+	//tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
+	//tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
+	//tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
+	//tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
+	//newMesh->SetVertexTangents(tangents);
+
+	return newMesh;
+}
+
+void OGLMesh::ChangeQuad(OGLMesh* quad, float minX, float maxX, float minY, float maxY) {
+
+	float width = 1280;
+	float height = 720;
+	vector<Vector3> vertices;
+	vertices.push_back(Vector3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vector3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vector3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vector3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
+	quad->SetVertexPositions(vertices);
+}
+
 void OGLMesh::RecalculateNormals() {
 	normals.clear();
 

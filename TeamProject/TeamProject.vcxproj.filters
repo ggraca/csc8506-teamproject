@@ -1,75 +1,112 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Scripts">
-      <UniqueIdentifier>{7ba694c3-35aa-497d-bd5d-364f79bd83e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes">
-      <UniqueIdentifier>{d51b9ff3-8054-4142-8dcc-9716a96e57ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{b8d82ce0-f790-42f5-85a0-fdc82c1845ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI">
-      <UniqueIdentifier>{ea1036a1-5381-4f4d-bb84-1d08c002da3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameplayTools">
-      <UniqueIdentifier>{e45761f4-5c3f-4268-9422-8d0f3f4a26cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rendering">
-      <UniqueIdentifier>{794ac502-dedb-47d1-9138-d83fcb0b244a}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="CameraControl.cpp" />
+    <ClCompile Include="BulletPhysics.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="DamageControl.cpp" />
+    <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DebugMenu.cpp" />
+    <ClCompile Include="Destructable.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="ExampleScene.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameTechRenderer.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="HealthManager.cpp" />
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LayerAndTag.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="PhysicsScene.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="CubePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="SpherePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTechRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="utils.cpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="CameraControl.h" />
+    <ClInclude Include="BulletPhysics.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="DamageControl.h" />
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="DebugMenu.h" />
+    <ClInclude Include="Destructable.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ExampleScene.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameTechRenderer.h" />
+    <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="HealthManager.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LayerAndTag.h" />
+    <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="PhysicsScene.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="RenderObject.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Transform.h" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Debug.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="HUD.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="HUDObject.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="LayerAndTag.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="CameraControl.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="GameWorld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Scripts</Filter>
+    <ClCompile Include="DamageControl.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Destructable.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthManager.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletPhysics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsObject.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="LayerAndTag.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="ExampleScene.cpp">
       <Filter>Scenes</Filter>
@@ -80,90 +117,94 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="HUD.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugMenu.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="LayerAndTag.cpp">
-      <Filter>GameplayTools</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>GameplayTools</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>GameplayTools</Filter>
-    <ClCompile Include="..\GameTechCommon\BulletPhysics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExampleScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControl.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletPhysics.cpp">
-      <Filter>Physics</Filter>
+    <ClCompile Include="GameTechRenderer.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="RenderObject.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Debug.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsObject.cpp">
-      <Filter>Physics</Filter>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="DamageControl.cpp">
-      <Filter>Scripts</Filter>
+    <ClCompile Include="GameWorld.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="HealthManager.cpp">
-      <Filter>Scripts</Filter>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugMenu.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ScriptObject.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeId.cpp" />
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
+    <ClInclude Include="CubePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="SpherePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameTechRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Debug.h">
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="HUD.h">
-      <Filter>Header Files</Filter>
+      <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="HUDObject.h">
+      <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="LayerAndTag.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="CameraControl.h">
+      <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="GameWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Scripts</Filter>
+    <ClInclude Include="DamageControl.h">
+      <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Destructable.h">
-      <Filter>Scripts</Filter>
+      <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Enemy.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthManager.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletPhysics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsObject.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerAndTag.h">
+      <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="ExampleScene.h">
       <Filter>Scenes</Filter>
@@ -174,52 +215,67 @@
     <ClInclude Include="Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>UI</Filter>
+    <ClInclude Include="Light.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="DebugMenu.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="HUD.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="LayerAndTag.h">
-      <Filter>GameplayTools</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>GameplayTools</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>GameplayTools</Filter>
-    <ClInclude Include="..\GameTechCommon\BulletPhysics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExampleScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControl.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletPhysics.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="GameTechRenderer.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="RenderObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Debug.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Transform.h">
+      <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsObject.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="GameObject.h">
+      <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Rendering</Filter>
+    <ClInclude Include="GameWorld.h">
+      <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="DamageControl.h">
-      <Filter>Scripts</Filter>
+    <ClInclude Include="InputManager.h">
+      <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="HealthManager.h">
-      <Filter>Scripts</Filter>
+    <ClInclude Include="Console.h">
+      <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="DebugMenu.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ScriptObject.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeId.h" />
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="AudioEngine.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="UI">
+      <UniqueIdentifier>{65185d74-661f-44bf-a15c-da10dd11a234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gameplay">
+      <UniqueIdentifier>{29a05a70-3273-440e-9e90-2bbd34176227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{a7768226-a3cd-4f3d-9786-9bb882951e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{7cac2c00-a07f-4124-843d-4dec22310e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{16844d55-9d89-4aa1-9b52-fb2595c310ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{a0406ac3-d37e-4681-8652-768347c6e481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{e15e6ec5-41e1-418c-9a73-ee1d18bff769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs">
+      <UniqueIdentifier>{3a1915d8-f7c4-42ae-adbe-08b929077eee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

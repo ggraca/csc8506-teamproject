@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{7A22CD41-A2EE-49F0-8B06-E01B4526CA41}</ProjectGuid>
     <RootNamespace>Common</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -143,14 +143,17 @@
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="OBJGeometry.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RendererBase.cpp" />
     <ClCompile Include="ShaderBase.cpp" />
+    <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="SimpleFont.cpp" />
     <ClCompile Include="TextureBase.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="TextureWriter.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Win32Keyboard.cpp" />
     <ClCompile Include="Win32Mouse.cpp" />
     <ClCompile Include="Win32Window.cpp" />
@@ -168,14 +171,18 @@
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="OBJGeometry.h" />
+    <ClInclude Include="PixOpsFlags.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RendererBase.h" />
     <ClInclude Include="ShaderBase.h" />
+    <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="SimpleFont.h" />
     <ClInclude Include="TextureBase.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="TextureWriter.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />

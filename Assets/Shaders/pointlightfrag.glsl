@@ -18,7 +18,7 @@ in mat4 inverseProjView;
 in vec4 shadowProj;
 out vec4 fragColour [2];
 
-void main (void) {
+void main (void) {	
 	vec3 pos = vec3((gl_FragCoord.x * pixelSize.x ), (gl_FragCoord.y * pixelSize.y), 0.0);
 	pos.z = texture(depthTex, pos.xy ).r;
 
@@ -50,10 +50,13 @@ void main (void) {
 	float sFactor = pow(rFactor, 33.0);
 
 	vec4 finalCol = vec4(lightColour.xyz * lambert * atten, 1.0) * lightBrightness;
+	vec4 specularCol = vec4(lightColour.xyz * sFactor * atten, 1.0);
+	
 	if (drawShadows){
 		finalCol = finalCol * shadow;
+		specularCol = specularCol * shadow;
 	}
 	
 	fragColour [0] = finalCol;
-	fragColour [1] = vec4(lightColour.xyz * sFactor * atten, 1.0);
+	fragColour [1] = specularCol;
 }

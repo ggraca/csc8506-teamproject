@@ -3,13 +3,18 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
+#include "Light.h"
+
 
 #include "../Common/Assets.h"
 #include <fstream>
+#include "PlayerPrefab.h"
+#include "ResourcePrefab.h"
+
+
 
 using namespace NCL;
 using namespace CSC8503;
-InputManager * PhysicsScene::inputManager = nullptr;
 
 PhysicsScene::PhysicsScene() : Scene() {
   Window::GetWindow()->ShowOSPointer(false);
@@ -18,37 +23,27 @@ PhysicsScene::PhysicsScene() : Scene() {
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
-
-  GameObject::SetGameWorld(world);
-  if (!inputManager) { inputManager = new InputManager(); }//Static guy initializations
-
 }
 
 void PhysicsScene::ResetWorld() {
-  world->ClearAndErase();
-
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f)->SetName("Floor"); //TODO Do these need to be deleted in destructor?!?!?!
-  
+ 
+  auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
    //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-  player->AddScript((ScriptObject*)new Player(player));
-  player->SetTag(LayerAndTag::Tags::Player);
-  player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-  player->SetName("Player");
-
-  world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
-
-  auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+  
+  auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);
   resource1->SetName("Resource 1");
-  resource1->AddScript((ScriptObject*)new Resource(resource1));
 
-  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
   resource2->SetName("Resource 2");
-  resource2->AddScript((ScriptObject*)new Resource(resource2));
+  
+  world->AddGameObject(player);
+  world->AddGameObject(resource1);
+  world->AddGameObject(resource2);
+  world->AddGameObject(floor);
 
-  auto wall1 = AddCubeToWorld(Vector3(200,0,200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(50, 50, 50), 1000, 0.2f);
-  wall1->SetName("Wall");
-  wall1->AddScript((ScriptObject*)new Destructable(wall1));
+
+  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
 
 PhysicsScene::~PhysicsScene() {
@@ -76,6 +71,33 @@ void PhysicsScene::UpdateKeys() {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -10));
 	}
+
+	//HUD TESTING BEGINS
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
+		renderer->WeaponState(2, true); //Hammer
+		renderer->WeaponState(3, true); //Gun
+		renderer->WeaponState(4, true); //Bomb
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_I)) {
+		renderer->WeaponState(2, false); //Hammer
+		renderer->WeaponState(3, false); //Gun
+		renderer->WeaponState(4, false); //Bomb
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Y))
+	{
+		hud.hp -= 5;
+		renderer->health -= 0.05f;
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_T))
+	{
+		hud.hp = 100;
+		renderer->health = 1.0f;
+	}
+	//HUD TESTING ENDS
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
+		console.Toggle();
+		debugMenu.Toggle();
+	}
 }
 
 void PhysicsScene::UpdateGame(float dt) {
@@ -89,8 +111,10 @@ void PhysicsScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   UpdateKeys();
-  renderer->Update(dt);
   physics->Update(dt);
+  renderer->Update(dt);
+  world->ClearObjectsToDestroy();
+  
   //bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
   //bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));
   //bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
@@ -100,8 +124,11 @@ void PhysicsScene::UpdateGame(float dt) {
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
   console.Update();
+  hud.Update(dt, renderer);
 
   renderer->Render();
+
+  audio->Update();
 }
 
 void PhysicsScene::DebugScene(float dt) {

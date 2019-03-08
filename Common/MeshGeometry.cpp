@@ -8,6 +8,7 @@
 #include <string>
 
 using namespace NCL;
+using namespace NCL::Rendering;
 using namespace Maths;
 
 MeshGeometry::MeshGeometry()

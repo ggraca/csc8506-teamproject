@@ -6,7 +6,7 @@
 
 namespace NCL {
 	namespace Rendering {
-		class OGLMesh : public NCL::MeshGeometry
+		class OGLMesh : public MeshGeometry
 		{
 		public:
 			enum MeshBuffer {
@@ -31,6 +31,8 @@ namespace NCL {
 			void UploadToGPU() override;
 
 			static OGLMesh* GenerateQuad();
+			static OGLMesh* GenerateQuad(float minX, float maxX, float minY, float maxY, int currentWidth, int currentHeight);
+			static void ChangeQuad(OGLMesh* quad, float minX, float maxX, float minY, float maxY);
 
 		protected:
 			GLuint	GetVAO()			const { return vao;			}

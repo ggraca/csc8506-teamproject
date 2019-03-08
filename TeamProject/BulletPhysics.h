@@ -1,13 +1,13 @@
 #pragma once
 
-#include <set>
 #include <map>
+#include <utility>
 
 #include "../Common/Vector3.h"
 #include "../Common/Vector4.h"
-#include "../TeamProject/Transform.h"
-#include "../TeamProject/GameWorld.h"
-#include "../TeamProject/GameObject.h"
+#include "Transform.h"
+#include "GameWorld.h"
+#include "PhysicsObject.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 using namespace NCL;
@@ -22,7 +22,8 @@ public:
 	btDiscreteDynamicsWorld* dynamicsWorld;
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	void Update(float dt);
-  void UpdateBullet(float dt, int iterations);
+	
+	void UpdateBullet(float dt, int iterations);
 	void SetGravity(Vector3 gravity);
 
 private:
@@ -32,8 +33,9 @@ private:
 	btCollisionDispatcher* dispatcher;
 	btBroadphaseInterface* overlappingPairCache;
 	btSequentialImpulseConstraintSolver* solver;
-	int loopNum;
 
-  map<const btCollisionObject*, const btCollisionObject*> GenerateCollisionPairs();
-  void UpdateObjectTransform(GameObject* go, btRigidBody* body);
+	map<btRigidBody*, vector<btRigidBody*>> GenerateCollisionPairs();
+	void EmitOnCollisionEndEvents(map<btRigidBody *, vector<btRigidBody *>> &collisionPairs, btRigidBody * body, GameObject *& go);
+	void EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair);
+	void UpdateObjectTransform(GameObject* go, btRigidBody* body);
 };
