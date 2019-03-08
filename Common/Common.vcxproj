@@ -152,6 +152,7 @@
     <ClCompile Include="TextureBase.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="TextureWriter.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Win32Keyboard.cpp" />
     <ClCompile Include="Win32Mouse.cpp" />
     <ClCompile Include="Win32Window.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="TextureBase.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="TextureWriter.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
