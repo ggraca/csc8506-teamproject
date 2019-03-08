@@ -1,0 +1,24 @@
+struct VS_INPUT
+{
+	float3 position : POSITION0;
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+};
+
+struct VS_OUTPUT
+{
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float3 position: S_POSITION;
+};
+
+VS_OUTPUT main(VS_INPUT Input)
+{
+	VS_OUTPUT Output;
+	
+	Output.position = float4(Input.position, 1.0);
+	Output.texCoord = Input.texCoord;
+	Output.colour = Input.colour;
+	
+	return Output;
+}

@@ -1,0 +1,50 @@
+SamplerState samp0 : register(s0);
+Texture2D mainTex : register(t0);
+
+SamplerState samp1 : register(s1);
+Texture2D shadowTex : register(t1);
+
+ConstantBuffer ShaderConstants
+{
+	float4 objectColour;
+	float3 lightPos;
+	float lightRadius;
+	float4 lightColour;
+	float3 cameraPos;
+};
+
+struct VS_INPUT
+{
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float4 shadowProj : TEXCOORD3;
+	float3 normal : NORMAL0;
+	float3 worldPos : POSITION1;
+};
+
+float4 main(VS_INPUT In) : S_TARGET_OUTPUT
+{
+	float shadow = 1.0;
+	if(In.shadowProj.w > 0.0)
+	{
+		shadow = shadowTex.Sample(samp1, Input.shadowProj) * 0.5f;
+	}
+	
+	float3 incident = normalize(lightPos - Input.worldPos);
+	float lambert = max(0.0, dot(incident, Input.normal)) * 0.9;
+	
+	float3 viewDir = normalize(cameraPos - Input.worldPos);
+	float3 halfDir = normalize(incident + viewDir);
+	
+	float rFactor = max(0.0, dot(halfDir, Input.normal));
+	float sFactor = pow(rFactor, 80.0);
+	
+	float4 albedo = Input.colour * mainTex.Sample(samp0, Input.texCoord);
+	
+	fragColor.rgb = albedo.rgb * 0.1f; //ambient
+	fragColor.rgb += albedo.rgb * lightColour.rgb * lambert * shadow; //diffuse light
+	fragColor.rgb += lightColour.rgb * sFactor * shadow; //specular light
+	fragColor.a = albedo.a;
+	
+	return fragColour;
+}

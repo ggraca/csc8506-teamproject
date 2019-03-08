@@ -1,0 +1,44 @@
+ConstantBuffer ShaderConstants
+{
+	column_major matrix modelMatrix;
+	column_major matrix viewMatrix;
+	column_major matrix projMatrix;
+	column_major matrix textureMatrix;
+};
+
+struct VS_INPUT
+{
+	float3 position : POSITION0;
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float3 normal : NORMAL0;
+	float3 tangent : TANGENT0;
+};
+
+struct VS_OUTPUT
+{
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float3 normal : NORMAL0;
+	float3 tangent : TANGENT0;
+	float3 binormal : BINORMAL0;
+	float3 worldPos : POSITION1;
+	float3 position : S_POSITION;
+};
+
+VS_OUTPUT main(VS_INPUT Input)
+{
+	VS_OUTPUT Output;
+	
+	matrix normalMatrix = transpose(inverse(modelMatrix));
+	
+	Output.colour = Input.colour;
+	Output.texCoord = (textureMatrix * float4(Input.texCoord, 0.0, 1.0)).xy;
+	Output.normal = normalize(normalMatrix * normalize(Input.normal));
+	Output.tangent = normalize(normalMatrix * normalize(Input.tangent));
+	Output.binormal = normalize(normalMatrix * normalize(cross(Input.normal, Input.tangent)));
+	Output.worldPos = (modelMatrix * float4(Input.position, 1)).xyz;
+	Output.position = mul(mul(projMatrix, viewMatrix), modelMatrix) * float4(Input.position, 1.0);
+	
+	return Output;
+}

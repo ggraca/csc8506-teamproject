@@ -1,0 +1,31 @@
+ConstantBuffer ShaderConstants
+{
+	matrix viewMatrix;
+	matrix projMatrix;
+};
+
+struct VS_INPUT
+{
+	float3 position : POSITION0;
+};
+
+struct VS_OUTPUT
+{
+	float3 normal : NORMAL0;
+	float4 position : S_POSITION;
+}
+
+VS_OUTPUT main(VS_INPUT Input)
+{
+	VS_OUTPUT Output;
+	
+	float3 multiply = float3(0,0,0);
+	multiply.x = 1.0f / projMatrix[0][0];
+	multiply.y = 1.0f / projMatrix[1][1];
+	
+	float3 tempPos = (Input.position * multiply) - float3(0,0,1);
+	Ouput.normal = transpose(viewMatrix * normalize(tempPos));
+	Output.position = float4(Input.position, 1.0);
+	
+	return Output;
+}

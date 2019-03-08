@@ -1,0 +1,44 @@
+SamplerState samp0 : register(s0);
+SamplerState samp1 : register(s1);
+SamplerState samp2 : register(s2);
+SamplerState samp3 : register(s3);
+SamplerState samp4 : register(s4);
+
+Texture2D diffuseTex : register(t0);
+Texture2D bumpTex : register(t1);
+Texture2D specularTex : register(t2);
+Texture2D metalnessTex : register(t3);
+TextureCube cubeTex : register(t4);
+
+ConstantBuffer ShaderConstants
+{
+	float3 cameraPos;
+	float4 objectColour;
+};
+
+struct VS_INPUT
+{
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float3 normal : NORMAL0;
+	float3 tangent : TANGENT0;
+	float3 binormal : BINORMAL0;
+	float3 worldPos : POSITION1;
+}
+
+float4 main(VS_INPUT Input) : S_TARGET_OUTPUT
+{
+	column_major matrix TBN = matrix(Input.tangent, Input.binormal, Input.normal); //unsure on matrix notation
+	float3 normal = normalize(TBN * normalize(bumpTex.Sample(samp1, float2(Input.texCoord.x, 1-Input.texCoord.y)).rgb) * 2.0 - 1.0);
+	float4 metalness = metalnessTex.Sample(samp3, float2(Input.texCoord.x, 1-Input.texCoord.y));
+	
+	float3 incident = normalize(Input.worldPos - cameraPos);
+	float4 reflection = cubeTex.Sample(samp4, reflect(incident, normalize(Input.normal).xyz));
+	
+	float4 fragColour[3];
+	fragColour[0] = mix(diffuseTex.Sample(samp0, float2(Input.texCoord,x, 1-Input.texCoord.y)), float4((reflection.xyz * metalness.xyz), 1.0), metalness.r) * objectColour;
+	fragColour[1] = float4(Input.normal.xyz * 0.5 + 0.5, 1.0);
+	fragColour[2] = specularTex.Sample(samp2, float2(Input.texCoord.x, 1-Input.texCoord.y));
+	
+	return fragColour;
+}

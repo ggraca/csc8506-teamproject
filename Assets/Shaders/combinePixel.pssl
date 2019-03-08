@@ -1,0 +1,48 @@
+SamplerState samp0 : register(s0);
+SamplerState samp1 : register(s1);
+SamplerState samp2 : register(s2);
+SamplerState samp3 : register(s3);
+SamplerState samp4 : register(s4);
+SamplerState samp5 : register(s5);
+
+Texture2D diffuseTex : register(t0);
+Texture2D depthTex : register(t1);
+Texture2D normTex : register(t2);
+Texture2D emissiveTex : register(t3);
+Texture2D lightSpecularTex : register(t4);
+Texture2D specularTex : register(t5);
+
+ConstantBuffer ShaderConstants
+{
+	float4 ambientColour;
+};
+
+struct VS_INPUT
+{
+	float2 texCoord : TEXCOORD1;
+};
+
+float4 main(VS_INPUT Input) : S_TARGET_OUTPUT
+{
+	float3 diffuse = diffuseTex.Sample(samp0, Input.texCoord).xyz;
+	float3 depth = depthTex.Sample(samp1, Input.texCoord).xyz;
+	float4 normal = normTex.Sample(samp2, Input.texCoord).xyz;
+	float3 light = emissiveTex.Sample(samp3, Input.texCoord).xyz;
+	float3 lightSpecular = lightSpecularTex.Sample(samp4, Input.texCoord).xyz;
+	float3 specular = specularTex.Sample(samp5, Input.texCoord).xyz;
+
+	float3 ambient = ambientColour.xyz;
+	
+	if (normal.w == 0.0f) 
+	{ //(normal.x == 1.0f && normal.y == 1.0f && normal.z == 1.0f){
+		ambient = float3(1.0f, 1.0f, 1.0f);
+	}
+	float4 fragColour;
+	
+	fragColour.xyz = diffuse * ambient; // ambient
+	fragColour.xyz += (diffuse * light);// lambert
+	fragColour.xyz += lightSpecular * specular; // Specular
+	fragColour.a = 1.0;
+	
+	return fragColour;
+}

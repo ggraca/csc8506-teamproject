@@ -1,0 +1,25 @@
+ConstantBuffer ShaderConstants
+{
+	column_major matrix mvpMatrix;
+};
+
+struct VS_INPUT
+{
+	float3 position : POSITION0;
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+};
+
+struct VS_OUTPUT
+{
+	float4 position : S_POSITION;
+};
+
+VS_OUTPUT main(VS_INPUT Input)
+{
+	VS_OUTPUT Output;
+	
+	Output.position = mvpMatrix * float4(Input.position, 1.0);
+	
+	return Output;
+}

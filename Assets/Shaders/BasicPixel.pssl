@@ -1,0 +1,16 @@
+SamplerState samp0 : register(s0);
+Texture2D basicTex : register(t0);
+
+struct VS_INPUT
+{
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+};
+
+
+float4 main(VS_INPUT IN) : S_TARGET_OUTPUT
+{
+	float4 fragColour = Input.colour * basicTex.Sample(samp0, Input.texCoord);
+	
+	return fragColour;
+}
