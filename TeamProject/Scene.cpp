@@ -19,7 +19,7 @@ Scene::Scene() {
   renderer = new GameTechRenderer(*world);
 
   physics = new BulletPhysics(*world);
-  physics->SetGravity(Vector3(-4.0f, -60.81f, 0.0f));
+  physics->SetGravity(Vector3(-4.0f, -2000.81f, 0.0f));
   world->SetPhysics(physics);
   InputManager::InitializeButtonRelations();
   GameObject::SetGameWorld(world);

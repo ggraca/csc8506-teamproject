@@ -30,23 +30,13 @@ void PhysicsScene::ResetWorld() {
   
    //Player
   auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-  player->AddComponent<RenderObject*>(new RenderObject(&player->GetTransform(), cubeMesh, basicMaterial)); //These parts need to be put in prefab classes with access to mesh and material globally.
-  player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
-  player->GetComponent<RenderObject*>()->SetMaterialInstanced();
-  player->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 0.0f, 0.0f, 1.0f), 100.0f, 6.0f));
-  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-
+  
   auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);
   resource1->SetName("Resource 1");
-  resource1->AddComponent<RenderObject*>(new RenderObject(&resource1->GetTransform(), cubeMesh, basicMaterial)); //Same goes here
-  resource1->GetComponent<RenderObject*>()->SetMaterialInstanced();
-  resource1->GetComponent<Resource*>()->Reset();
 
   auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
   resource2->SetName("Resource 2");
-  resource2->AddComponent<RenderObject*>(new RenderObject(&resource2->GetTransform(), cubeMesh, basicMaterial)); //Same goes here
-  resource2->GetComponent<RenderObject*>()->SetMaterialInstanced();
-  resource2->GetComponent<Resource*>()->Reset();
+  
 
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }

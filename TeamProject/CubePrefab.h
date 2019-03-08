@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "BulletPhysics.h"
 #include "../Common/Material.h"
+#include "../Common/Assets.h"
+#include "OGLShader.h"
 
 using namespace NCL;
 using namespace NCL::CSC8503;

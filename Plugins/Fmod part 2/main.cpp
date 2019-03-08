@@ -16,7 +16,7 @@ inline bool exists_test0(const std::string& name) {
 
 void main() {
 		
-	NCL::Maths::Vector3 origin = NCL::Maths::Vector3(0.0f, 0.0f, 0.0f);
+	/*NCL::Maths::Vector3 origin = NCL::Maths::Vector3(0.0f, 0.0f, 0.0f);
 
 	CAudioEngine ae = CAudioEngine();
 
@@ -34,6 +34,6 @@ void main() {
 			i++;
 			Sleep(10);
 		} while (i < 10000);
-	}
+	}*/
 }
 	

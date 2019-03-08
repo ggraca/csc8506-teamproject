@@ -170,23 +170,5 @@ namespace NCL {
 				}
 			}
 		};
-
-		template<class T>
-		void GameObject::AddComponent(Component * obj)
-		{
-			if (!obj) { return; }
-
-			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
-
-			int index = TypeId::GetTypeId(typeid(T));
-
-			if (components[index])
-			{
-				delete components[index];
-			}
-
-			obj->SetGameObject(this);
-			components[index] = obj;
-		}
 	}
 }
