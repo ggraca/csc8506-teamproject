@@ -39,6 +39,19 @@ Rendering::TextureBase* Assets::AssetManager::LoadTexture(const std::string& fil
 	return newTexture;
 }
 
+Rendering::ShaderBase* Assets::AssetManager::LoadShader(const string& shadername, const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull) {
+	auto iter = GetInstance().loadedShaders.find(shadername);
+
+	if (iter != GetInstance().loadedShaders.end()) {
+		return (*iter).second;
+	}
+
+	Rendering::ShaderBase* newShader;
+	newShader = ShaderLoader::LoadAPIShader(vertex, fragment, geometry, domain, hull);
+	GetInstance().loadedShaders.insert(std::make_pair(shadername, newShader));
+	return newShader;
+}
+
 MeshGeometry* Assets::AssetManager::LoadMesh(const std::string& filename) {
 	auto iter = GetInstance().loadedMeshes.find(filename);
 
@@ -62,10 +75,10 @@ OBJGeometry* Assets::AssetManager::LoadOBJ(const std::string& filename) {
 		return (*iter).second;
 	}
 
-	// TODO: Make this compatible with PS4
 	OBJGeometry* newOBJ = new OBJGeometry(Assets::MESHDIR + filename);
 	GetInstance().loadedOBJs.insert(std::make_pair(filename, newOBJ));
 	return newOBJ;
+
 }
 
 Rendering::Material* Assets::AssetManager::LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader) {

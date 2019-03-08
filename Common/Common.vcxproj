@@ -148,6 +148,7 @@
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RendererBase.cpp" />
     <ClCompile Include="ShaderBase.cpp" />
+    <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="SimpleFont.cpp" />
     <ClCompile Include="TextureBase.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RendererBase.h" />
     <ClInclude Include="ShaderBase.h" />
+    <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="SimpleFont.h" />
     <ClInclude Include="TextureBase.h" />
     <ClInclude Include="TextureLoader.h" />

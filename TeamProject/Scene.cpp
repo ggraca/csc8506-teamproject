@@ -1,7 +1,4 @@
 #include "Scene.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/Assets.h"
 #include "GameWorld.h"
 #include "AudioEngine.h"
@@ -37,30 +34,28 @@ void Scene::InitialiseAssets() {
   cylinderMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cylinder.obj");
   coneMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cone.obj");
 
-  basicTex = (OGLTexture*)Assets::AssetManager::LoadTexture("checkerboard.png");
-  brickTex = (OGLTexture*)Assets::AssetManager::LoadTexture("brick.png");
-  woodTex = (OGLTexture*)Assets::AssetManager::LoadTexture("wood1.jpg");
-  dogsTex = (OGLTexture*)Assets::AssetManager::LoadTexture("dogs.jpg");
-  grassTex = (OGLTexture*)Assets::AssetManager::LoadTexture("grass.jpg");
+  basicTex = Assets::AssetManager::LoadTexture("checkerboard.png");
+  brickTex = Assets::AssetManager::LoadTexture("brick.png");
+  woodTex = Assets::AssetManager::LoadTexture("wood1.jpg");
+  dogsTex = Assets::AssetManager::LoadTexture("dogs.jpg");
+  grassTex = Assets::AssetManager::LoadTexture("grass.jpg");
+  ballTex = Assets::AssetManager::LoadTexture("smileyface.png");
+  dogTex = Assets::AssetManager::LoadTexture("doge.png");
 
-  ballTex = (OGLTexture*)Assets::AssetManager::LoadTexture("smileyface.png");
-  dogTex = (OGLTexture*)Assets::AssetManager::LoadTexture("doge.png");
+  pbrWoodDiff = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
+  pbrWoodBump = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
+  pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
+  pbrWoodMet = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
 
-  pbrWoodDiff = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
-  pbrWoodBump = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
-  pbrWoodSpec = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
-  pbrWoodMet = (OGLTexture*)Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl", "", "", "");
 
-  basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-  //basicShader = new OGLShader("pbrverttemp.glsl", "pbrfragtemp.glsl");
-
-  basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", basicShader);
+  basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", pbrShader);
   basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
   basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
   basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
   basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 
-  floorMat = Assets::AssetManager::LoadMaterial("Floor Material", basicShader);
+  floorMat = Assets::AssetManager::LoadMaterial("Floor Material", pbrShader);
   floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
   floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
   floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
@@ -87,9 +82,6 @@ void Scene::InitialiseAssets() {
 }
 
 Scene::~Scene() {
-  delete basicShader;
-  delete basicMaterial;
-
   delete physics;
   delete renderer;
   delete world;

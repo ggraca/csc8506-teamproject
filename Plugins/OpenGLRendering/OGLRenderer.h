@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Common/RendererBase.h"
+#include "../../Common/Assets.h"
 #include "OGLPixOpsFLags.h"
 
 #include "../../Common/Vector2.h"
