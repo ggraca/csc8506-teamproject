@@ -1,6 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="CameraControl.cpp" />
+    <ClCompile Include="BulletPhysics.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="DamageControl.cpp" />
+    <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DebugMenu.cpp" />
+    <ClCompile Include="Destructable.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="ExampleScene.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameTechRenderer.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="HealthManager.cpp" />
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LayerAndTag.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="PhysicsScene.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="CubePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="SpherePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="CameraControl.h" />
+    <ClInclude Include="BulletPhysics.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="DamageControl.h" />
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="DebugMenu.h" />
+    <ClInclude Include="Destructable.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ExampleScene.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameTechRenderer.h" />
+    <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="HealthManager.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LayerAndTag.h" />
+    <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="PhysicsScene.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="RenderObject.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Transform.h" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Debug.cpp">
       <Filter>UI</Filter>
@@ -71,9 +135,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="utils.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -85,9 +146,22 @@
       <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="TypeId.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
+    <ClInclude Include="CubePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="SpherePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -162,9 +236,6 @@
     <ClInclude Include="InputManager.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -176,6 +247,7 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="TypeId.h" />
+    <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioEngine.h">
       <Filter>Audio</Filter>
     </ClInclude>
@@ -201,6 +273,9 @@
     </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{e15e6ec5-41e1-418c-9a73-ee1d18bff769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prefabs">
+      <UniqueIdentifier>{3a1915d8-f7c4-42ae-adbe-08b929077eee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

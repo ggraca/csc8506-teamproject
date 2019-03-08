@@ -5,7 +5,6 @@
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
 	ResetPlayer();
-	keyDown = false;
 }
 
 void Player::Awake()
@@ -32,43 +31,23 @@ void Player::PlayerMovement(float dt)
 
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
-		playerPos += forward *movementSpeed * dt;
-		/*gameObject->GetTransform().SetWorldPosition(playerPos);
-		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
-
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z));
-		keyDown = true;
-		reset = false;
+		playerPos += forward * movementSpeed * dt;
+		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
 		playerPos -= forward * movementSpeed * dt;
-		/*gameObject->GetTransform().SetWorldPosition(playerPos);
-		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
-
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(forward.x, forward.y, forward.z));
-		keyDown = true;
-		reset = false;
+		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
 	{
 		playerPos += left * movementSpeed * dt;
-		/*gameObject->GetTransform().SetWorldPosition(playerPos);
-		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
-
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(left.x, left.y, left.z));
-		keyDown = true;
-		reset = false;
+		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
 		playerPos -= left * movementSpeed * dt;
-		/*gameObject->GetTransform().SetWorldPosition(playerPos);
-		gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
-
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(left.x, left.y, left.z));
-		keyDown = true;
-		reset = false;
+		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{

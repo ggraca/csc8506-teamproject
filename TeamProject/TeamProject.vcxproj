@@ -78,7 +78,7 @@
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
@@ -166,11 +166,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="CubePrefab.cpp" />
     <ClCompile Include="DamageControl.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
@@ -189,21 +191,25 @@
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerPrefab.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourcePrefab.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SpherePrefab.cpp" />
     <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TypeId.cpp" />
-    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="CubePrefab.h" />
     <ClInclude Include="DamageControl.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugMenu.h" />
@@ -222,13 +228,15 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="PhysicsScene.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerPrefab.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourcePrefab.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SpherePrefab.h" />
     <ClInclude Include="ScriptObject.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TypeId.h" />
-    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

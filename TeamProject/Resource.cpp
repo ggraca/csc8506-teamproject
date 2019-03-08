@@ -1,19 +1,19 @@
 #include "Resource.h"
-#include "../TeamProject/InputManager.h"
+#include "InputManager.h"
+
 
 
 Resource::Resource(GameObject * obj) : ScriptObject(obj)
-{
-	Reset();
+{	
 }
 
 Resource::~Resource()
 {
 }
 
-
 void Resource::Awake()
 {
+	Reset();
 }
 
 void Resource::Start()
@@ -44,12 +44,6 @@ void Resource::LateUpdate(float dt)
 
 void Resource::OnCollisionBegin(GameObject * otherObject)
 {
-	if (otherObject && otherObject->CompareTag(LayerAndTag::Tags::Player)) {
-		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
-		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
-		int x = audio->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", pos, 1.0f);
-		audio->SetChannel3dPosition(x, pos);
-	}
 }
 
 void Resource::OnCollisionEnd(GameObject * otherObject)
@@ -69,6 +63,7 @@ void Resource::Reset()
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::ResourceParent));
 	gameObject->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1,1,1,1));
+	gameObject->GetComponent<DamageControl*>()->ResetDamageControl();
 	moveSpeed = 100.0f;
 	minDistance = 50.0f;
 	SetTarget(nullptr);
