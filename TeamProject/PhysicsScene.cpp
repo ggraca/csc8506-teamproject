@@ -26,8 +26,8 @@ PhysicsScene::PhysicsScene() : Scene() {
 }
 
 void PhysicsScene::ResetWorld() {
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
  
+  auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
    //Player
   auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
   
@@ -40,6 +40,8 @@ void PhysicsScene::ResetWorld() {
   world->AddGameObject(player);
   world->AddGameObject(resource1);
   world->AddGameObject(resource2);
+  world->AddGameObject(floor);
+
 
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
