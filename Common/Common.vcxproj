@@ -143,6 +143,7 @@
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="OBJGeometry.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RendererBase.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="TextureBase.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="TextureWriter.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Win32Keyboard.cpp" />
     <ClCompile Include="Win32Mouse.cpp" />
     <ClCompile Include="Win32Window.cpp" />
@@ -168,6 +170,8 @@
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="OBJGeometry.h" />
+    <ClInclude Include="PixOpsFlags.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RendererBase.h" />
@@ -176,6 +180,7 @@
     <ClInclude Include="TextureBase.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="TextureWriter.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />

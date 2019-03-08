@@ -54,7 +54,18 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 }
 
 PhysicsObject::~PhysicsObject()	{
+	BulletPhysics* physics = gameObject->gameWorld->GetPhysics();
 
+	delete body->getMotionState();
+	physics->dynamicsWorld->removeCollisionObject(body);
+	delete body;
+
+	for (int i = 0; i < physics->collisionShapes.size(); i++) {
+		if (physics->collisionShapes[i] == shape) {
+			physics->collisionShapes[i] = 0;
+			delete shape;
+		}
+	}
 }
 
 void PhysicsObject::SetBulletPhysicsParameters()
@@ -75,7 +86,7 @@ void PhysicsObject::SetBulletPhysicsParameters()
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btMass, myMotionState, shape, localInertia);
 
 	body = new btRigidBody(rbInfo);
-
+	
 	//body->setLinearVelocity(btVector3(10, 100, 0));
 	//body->setAngularVelocity(btVector3(0, 10, 0));
 

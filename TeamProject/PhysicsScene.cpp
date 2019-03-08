@@ -3,9 +3,14 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
+#include "Light.h"
+
 
 #include "../Common/Assets.h"
 #include <fstream>
+#include "Animator.h"
+
+
 
 using namespace NCL;
 using namespace CSC8503;
@@ -23,27 +28,27 @@ PhysicsScene::PhysicsScene() : Scene() {
 }
 
 void PhysicsScene::ResetWorld() {
-  world->ClearAndErase();
-
-  auto floor = AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
-  floor->SetName("Floor");
-
+  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
+ 
    //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
-  player->AddScript((ScriptObject*)new Player(player));
+  auto player = AddCubeToWorld(Vector3(0,20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
+  player->AddComponent<Player*>((Component*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
-  player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-  player->GetRenderObject()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
-  player->SetLayer(LayerAndTag::ObjectLayer::UI);
-  world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
+  player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
+  player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
+  player->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 0.0f, 0.0f, 1.0f), 100.0f, 6.0f));
+  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+
+  audio->SetPlayer(player);
+  audio->SetCamera(world->GetMainCamera());
 
   auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(7, 7, 7), 1000, 0.2f);
   resource1->SetName("Resource 1");
-  resource1->AddScript((ScriptObject*)new Resource(resource1));
+  resource1->AddComponent<Resource*>((Component*)new Resource(resource1));
 
   auto resource2 = AddCubeToWorld(Vector3(120, 300, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(7, 7, 7), 1000, 0.2f);
   resource2->SetName("Resource 2");
-  resource2->AddScript((ScriptObject*)new Resource(resource2));
+  resource2->AddComponent<Resource*>((Component*)new Resource(resource2));
 }
 
 PhysicsScene::~PhysicsScene() {
@@ -94,6 +99,10 @@ void PhysicsScene::UpdateKeys() {
 		renderer->health = 1.0f;
 	}
 	//HUD TESTING ENDS
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
+		console.Toggle();
+		debugMenu.Toggle();
+	}
 }
 
 const btCollisionObject* PhysicsScene::Raycast(const Vector3& Start, const Vector3& End, Vector3& NewEnd) {
@@ -125,8 +134,9 @@ void PhysicsScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   UpdateKeys();
-  renderer->Update(dt);
   physics->Update(dt);
+  renderer->Update(dt);
+  world->ClearObjectsToDestroy();
   
   //bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
   //bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));
@@ -153,6 +163,8 @@ void PhysicsScene::UpdateGame(float dt) {
   hud.Update(dt, renderer);
 
   renderer->Render();
+
+  audio->Update();
 }
 
 void PhysicsScene::DebugScene(float dt) {

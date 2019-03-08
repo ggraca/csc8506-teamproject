@@ -1,12 +1,14 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "../TeamProject/LayerAndTag.h"
+#include "LayerAndTag.h"
 #include "CameraControl.h"
+#include "RenderObject.h"
 
 using namespace std;
 
 class BulletPhysics;
+class CAudioEngine;
 
 namespace NCL {
 		class Camera;
@@ -25,7 +27,6 @@ namespace NCL {
 			GameObject * Find(string name);
 			GameObject * FindGameObjectWithTag(LayerAndTag::Tags tag);
 			vector<GameObject *> FindGameObjectsWithTag(LayerAndTag::Tags tag);
-			void Destroy(GameObject * obj);
 
 			void Clear();
 			void ClearAndErase();
@@ -34,7 +35,7 @@ namespace NCL {
 			void LateUpdateGameObjects(float dt);
 			void AddGameObject(GameObject* o);
 			void CallInitialObjectFunctions(NCL::CSC8503::GameObject * o);
-			void AddGameObject(GameObject* o, const GameObject* parent);
+			void AddGameObject(GameObject* o,GameObject* parent);
 			void RemoveGameObject(GameObject* o);
 
 			GameObject* GetMainCamera() const {
@@ -47,8 +48,8 @@ namespace NCL {
 				std::vector<GameObject*>::const_iterator& first,
 				std::vector<GameObject*>::const_iterator& last) const;
 
-			vector<GameObject*> GetChildrenOfObject(const GameObject* obj);
-			vector<GameObject*> GetChildrenOfObject(const GameObject* obj, LayerAndTag::Tags tag);
+			vector<GameObject*> GetChildrenOfObject(GameObject* obj);
+			vector<GameObject*> GetChildrenOfObject(GameObject* obj, LayerAndTag::Tags tag);
       
 			int GetObjectCount();
 
@@ -67,19 +68,39 @@ namespace NCL {
 				physics = bulletPhysics;
 			}
 
+			BulletPhysics* GetPhysics() {
+				return physics;
+      }
+      
+			void SetAudio(CAudioEngine* audioEngine) {
+				audio = audioEngine;
+			}
+
+			CAudioEngine* GetAudio() {
+				return audio;
+			}
+
 			GameObject* GetPlayerGameObject();
-      vector<GameObject*> GetGameObjectList();
+			vector<GameObject*> GetGameObjectList();
+
+			void LateDestroy(GameObject * obj);
+			void ClearObjectsToDestroy();
 
 		protected:
 			void UpdateTransforms();
 
+			void Destroy(GameObject * obj);
+			void RemoveCollisionsFromGameObject(GameObject * obj);
+
 			std::vector<GameObject*> gameObjects;
+			std::vector<GameObject*> objectsToDestroy;
 
 			GameObject* mainCamera;
 			LayerAndTag layering;
 			Vector3 cameraOffset;
-			BulletPhysics* physics;
 
+			BulletPhysics* physics;
+			CAudioEngine* audio;
 		};
 	}
 }
