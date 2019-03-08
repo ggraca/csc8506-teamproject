@@ -46,7 +46,7 @@ namespace NCL {
 			OGLMesh*	cubeMesh	= nullptr;
 			OGLMesh*	sphereMesh	= nullptr;
 			OBJGeometry*	cylinderMesh = nullptr;
-			OGLMesh*	coneMesh = nullptr;
+			OBJGeometry*	coneMesh = nullptr;
 			OGLTexture* basicTex	= nullptr;
 			OGLTexture* woodTex	= nullptr;
 			OGLTexture* grassTex	= nullptr;

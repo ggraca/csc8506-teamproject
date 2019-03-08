@@ -35,7 +35,7 @@ void Scene::InitialiseAssets() {
   renderer->SetLightMesh(sphereMesh);
 
   cylinderMesh = Assets::AssetManager::LoadOBJ("cylinder.obj");
-  coneMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cone.obj");
+  coneMesh = Assets::AssetManager::LoadOBJ("cone.obj");
 
   basicTex = (OGLTexture*)Assets::AssetManager::LoadTexture("checkerboard.png");
   brickTex = (OGLTexture*)Assets::AssetManager::LoadTexture("brick.png");
@@ -159,14 +159,14 @@ GameObject* Scene::AddCylinderToWorld(const Vector3& position, const Quaternion&
 }
 
 GameObject* Scene::AddConeToWorld(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
-	GameObject* cone = new GameObject();
+	GameObject* cone = GameObject::FromOBJ(coneMesh);
 
 	cone->GetTransform().SetWorldScale(dimensions);
 	cone->GetTransform().SetWorldPosition(position);
 	cone->GetTransform().SetLocalOrientation(orient);
 	cone->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cone->GetTransform(), ShapeType::cone, mass, restitution, friction));
-	cone->AddComponent<RenderObject*>((Component*)new RenderObject(&cone->GetTransform(), cubeMesh, basicMaterial));
-	cone->GetComponent<RenderObject*>()->SetMaterialInstanced();
+//	cone->AddComponent<RenderObject*>((Component*)new RenderObject(&cone->GetTransform(), cubeMesh, basicMaterial));
+//	cone->GetComponent<RenderObject*>()->SetMaterialInstanced();
 
 	world->AddGameObject(cone);
 	return cone;
@@ -181,12 +181,12 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 			float z = 1.0f + 10.0f * (rand() % 100) / 100.0f;
 			Vector3 cubeDims = Vector3(x, y, z);
 			Vector3 position = Vector3(i * colSpacing, 15.0f + positiony.y * ((rand() % 100) / 100.0f), j * rowSpacing);
-			if (rand() % 2) {
+			/*if (rand() % 2) {
 				tempTex = dogsTex;
 			}
 			else {
 				tempTex = dogTex;
-			}
+			}*/
 			if (rand() % 2) {
 				GameObject* go = AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f), (float)(rand() % 45)), cubeDims, 10.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f);
 			}
