@@ -16,24 +16,24 @@ inline bool exists_test0(const std::string& name) {
 
 void main() {
 		
-	NCL::Maths::Vector3 origin = NCL::Maths::Vector3(0.0f, 0.0f, 0.0f);
+	//NCL::Maths::Vector3 origin = NCL::Maths::Vector3(0.0f, 0.0f, 0.0f); //Vector3 here is ambiguous, does not work like that
 
-	CAudioEngine ae = CAudioEngine();
+	//CAudioEngine ae = CAudioEngine();
 
-	if (exists_test0(Assets::SOUNDSDIR + "jaguar.wav")) {
+	//if (exists_test0(Assets::SOUNDSDIR + "jaguar.wav")) {
 
-		ae.Init();
-		ae.setMinMaxDistance(5.0f, 1000.0f);
-		ae.LoadSound(Assets::SOUNDSDIR + "jaguar.wav",false, true, false);
-		ae.PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", origin, 10.0f);
+	//	ae.Init();
+	//	ae.setMinMaxDistance(5.0f, 1000.0f);
+	//	ae.LoadSound(Assets::SOUNDSDIR + "jaguar.wav",false, true, false);
+	//	ae.PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", origin, 10.0f);
 
-		int i = 0;
-		do
-		{
-			ae.Update();
-			i++;
-			Sleep(10);
-		} while (i < 10000);
-	}
+	//	int i = 0;
+	//	do
+	//	{
+	//		ae.Update();
+	//		i++;
+	//		Sleep(10);
+	//	} while (i < 10000);
+	//}
 }
 	

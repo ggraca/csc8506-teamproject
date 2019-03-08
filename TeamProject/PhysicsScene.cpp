@@ -8,6 +8,7 @@
 
 #include "../Common/Assets.h"
 #include <fstream>
+#include "Animator.h"
 
 
 
@@ -28,9 +29,9 @@ PhysicsScene::PhysicsScene() : Scene() {
 
 void PhysicsScene::ResetWorld() {
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
-  
+ 
    //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+  auto player = AddCubeToWorld(Vector3(0,20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
   player->AddComponent<Player*>((Component*)new Player(player));
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);

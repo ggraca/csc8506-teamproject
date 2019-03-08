@@ -82,6 +82,7 @@
       <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="TypeId.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
@@ -170,6 +171,7 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="TypeId.h" />
+    <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioEngine.h">
       <Filter>Audio</Filter>
     </ClInclude>
