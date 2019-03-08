@@ -22,6 +22,8 @@ namespace NCL {
 
 			static TextureBase* EmptyTexture(int width, int height, bool depth = false);
 
+			static TextureBase* ShadowTexture(int width, int height);
+
 			static TextureBase* CubeTextureFromFilename(const std::vector<std::string>& faces);
 
 			GLuint GetObjectID() const	{

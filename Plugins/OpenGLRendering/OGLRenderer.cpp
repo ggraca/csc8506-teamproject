@@ -288,7 +288,7 @@ void OGLRenderer::GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& b
 
 	if (bufferTexs.size() != 0) {
 		GLenum* drawBuffer = new GLenum[bufferTexs.size()];
-		for (int i = 0; i < bufferTexs.size(); i++)
+		for (unsigned int i = 0; i < bufferTexs.size(); i++)
 		{
 			drawBuffer[i] = GL_COLOR_ATTACHMENT0 + i;
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i,
@@ -327,10 +327,6 @@ void OGLRenderer::ClearBuffer(bool depth, bool color, bool stencil) const {
 		bit = bit | GL_STENCIL_BUFFER_BIT;
 	}
 	glClear(bit);
-}
-
-void OGLRenderer::ClearColor(const Vector4& color) const {
-	glClearColor(color.x, color.y, color.z, color.w);
 }
 
 void OGLRenderer::SetViewport(int x, int y, int width, int height) const {

@@ -1,50 +1,46 @@
 #include "Scene.h"
 #include "../Common/Assets.h"
 #include "GameWorld.h"
+#include "AudioEngine.h"
 #include "InputManager.h"
+#include "Light.h"
 
 using namespace NCL;
 using namespace CSC8503;
 
 Scene::Scene() {
   world = new GameWorld();
+  GameObject::SetGameWorld(world);
   renderer = new GameTechRenderer(*world);
+
   physics = new BulletPhysics(*world);
-  physics->SetGravity(Vector3(-4, -60.81, 0));
+  physics->SetGravity(Vector3(-4.0f, -60.81f, 0.0f));
   world->SetPhysics(physics);
   InputManager::InitializeButtonRelations();
 
-  Debug::SetRenderer(renderer);
+  audio = new CAudioEngine();
+  world->SetAudio(audio);
 
+  Debug::SetRenderer(renderer);
   InitialiseAssets();
 }
 
 void Scene::InitialiseAssets() {
-  cubeMesh = new OGLMesh("Cube.msh");
-  cubeMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  cubeMesh->UploadToGPU();
-
-  sphereMesh = new OGLMesh("sphere2.msh");
-  sphereMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  sphereMesh->UploadToGPU();
+  cubeMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("Cube.msh");
+  
+  sphereMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("sphere2.msh");
   renderer->SetLightMesh(sphereMesh);
 
-  cylinderMesh = new OGLMesh("cylinder.obj");
-  cylinderMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  cylinderMesh->UploadToGPU();
+  cylinderMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cylinder.obj");
+  coneMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cone.obj");
 
-  coneMesh = new OGLMesh("cone.obj");
-  coneMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-  coneMesh->UploadToGPU();
-
-  basicTex = TextureLoader::LoadAPITexture("checkerboard.png");
-  brickTex = TextureLoader::LoadAPITexture("brick.png");
-  woodTex = TextureLoader::LoadAPITexture("wood1.jpg");
-  dogsTex = TextureLoader::LoadAPITexture("dogs.jpg");
-  grassTex = TextureLoader::LoadAPITexture("grass.jpg");
-
-  ballTex = TextureLoader::LoadAPITexture("smileyface.png");
-  dogTex = TextureLoader::LoadAPITexture("doge.png");
+  basicTex = Assets::AssetManager::LoadTexture("checkerboard.png");
+  brickTex = Assets::AssetManager::LoadTexture("brick.png");
+  woodTex = Assets::AssetManager::LoadTexture("wood1.jpg");
+  dogsTex = Assets::AssetManager::LoadTexture("dogs.jpg");
+  grassTex = Assets::AssetManager::LoadTexture("grass.jpg");
+  ballTex = Assets::AssetManager::LoadTexture("smileyface.png");
+  dogTex = Assets::AssetManager::LoadTexture("doge.png");
 
   pbrWoodDiff = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
   pbrWoodBump = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
@@ -86,11 +82,6 @@ void Scene::InitialiseAssets() {
 }
 
 Scene::~Scene() {
-  delete cubeMesh;
-  delete sphereMesh;
-  delete cylinderMesh;
-  delete coneMesh;
-
   delete physics;
   delete renderer;
   delete world;
@@ -99,23 +90,8 @@ Scene::~Scene() {
   InputManager::Dispose();
 }
 
-void Scene::UpdateGame(float dt) {
-
-
-  //UpdateKeys();
-  //SelectObject();
-  //MoveSelectedObject();
-
-  world->UpdateWorld(dt);
-  renderer->Update(dt);
-  physics->Update(dt);
-
-  Debug::FlushRenderables();
-  renderer->Render();
-}
-
 void Scene::UpdateKeys() {
-	
+
 }
 
 void Scene::InitCamera() {
@@ -128,6 +104,11 @@ void Scene::InitCamera() {
 
 void Scene::InitWorld() {
   world->ClearAndErase();
+
+  GameObject* light = new GameObject("Directional Light");
+  light->GetTransform().SetWorldPosition(Vector3(1000.0f, 1000.0f, 0.0f));
+  light->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f));
+  world->AddGameObject(light);
 }
 
 GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float mass, float restitution, float friction) {
@@ -135,8 +116,8 @@ GameObject* Scene::AddSphereToWorld(const Vector3& position, float radius, float
 
   sphere->GetTransform().SetWorldScale(Vector3(radius, radius, radius));
   sphere->GetTransform().SetWorldPosition(position);
-  sphere->SetPhysicsObject(new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
-  sphere->SetRenderObject(new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
+  sphere->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&sphere->GetTransform(), ShapeType::sphere, mass, restitution, friction));
+  sphere->AddComponent<RenderObject*>((Component*)new RenderObject(&sphere->GetTransform(), sphereMesh, basicMaterial));
 
   world->AddGameObject(sphere);
   return sphere;
@@ -148,9 +129,9 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
   cube->GetTransform().SetWorldScale(dimensions);
   cube->GetTransform().SetWorldPosition(position);
   cube->GetTransform().SetLocalOrientation(orient);
-  cube->SetPhysicsObject(new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
-  cube->SetRenderObject(new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
-  cube->GetRenderObject()->SetMaterialInstanced();
+  cube->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cube->GetTransform(), ShapeType::cube, mass, restitution, friction));
+  cube->AddComponent<RenderObject*>((Component*)new RenderObject(&cube->GetTransform(), cubeMesh, basicMaterial));
+  cube->GetComponent<RenderObject*>()->SetMaterialInstanced();
 
   world->AddGameObject(cube);
   return cube;
@@ -159,12 +140,12 @@ GameObject* Scene::AddCubeToWorld(const Vector3& position, const Quaternion& ori
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
 	for (int i = 0; i < numCols; ++i) {
 		for (int j = 0; j < numRows; ++j) {
-			float sphereRadius = 0.5 + 3.0 * (rand() % 100) / (float)100;
-			float x = 1 + 10.0 * (rand() % 100) / (float)100;
-			float y = 1 + 10.0 * (rand() % 100) / (float)100;
-			float z = 1 + 10.0 * (rand() % 100) / (float)100;
+			float sphereRadius = 0.5f + 3.0f * (rand() % 100) / 100.0f;
+			float x = 1.0f + 10.0f * (rand() % 100) / 100.0f;
+			float y = 1.0f + 10.0f * (rand() % 100) / 100.0f;
+			float z = 1.0f + 10.0f * (rand() % 100) / 100.0f;
 			Vector3 cubeDims = Vector3(x, y, z);
-			Vector3 position = Vector3(i * colSpacing, 15 + positiony.y * ((rand() % 100) / (float)100), j * rowSpacing);
+			Vector3 position = Vector3(i * colSpacing, 15.0f + positiony.y * ((rand() % 100) / 100.0f), j * rowSpacing);
 			if (rand() % 2) {
 				tempTex = dogsTex;
 			}
@@ -172,10 +153,10 @@ void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCol
 				tempTex = dogTex;
 			}
 			if (rand() % 2) {
-				GameObject* go = AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((rand() % 100) / (float)100, (rand() % 100) / (float)100, (rand() % 100) / (float)100), rand() % 45), cubeDims, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				GameObject* go = AddCubeToWorld(position, Quaternion::AxisAngleToQuaternion(Vector3((float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f), (float)(rand() % 45)), cubeDims, 10.0f, (float)(rand() % 100) / 100.0f, (float)(rand() % 100) / 100.0f);
 			}
 			else {
-				AddSphereToWorld(position, sphereRadius, 10, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
+				AddSphereToWorld(position, sphereRadius, 10.0f, (rand() % 100) / 100.0f, (rand() % 100) / 100.0f);
 			}
 		}
 	}

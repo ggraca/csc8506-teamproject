@@ -8,6 +8,7 @@
 #include "GameWorld.h"
 #include "HUDObject.h"
 #include "CameraControl.h"
+#include "RenderObject.h"
 
 class Light;
 class HUDObject;
@@ -15,6 +16,7 @@ class HUDObject;
 namespace NCL {
 	namespace CSC8503 {
 		class RenderObject;
+		class PixOpsFlags;
 		class GameTechRenderer : public OGLRenderer	{
 		public:
 			GameTechRenderer(GameWorld& world);
@@ -56,6 +58,7 @@ namespace NCL {
 			void SetupDebugMatrix(OGLShader*s) override;
 
 			vector<const RenderObject*> activeObjects;
+			vector<const Light*> activeLights;
 
 			//shadow mapping things
 			ShaderBase*	shadowShader;
@@ -81,8 +84,6 @@ namespace NCL {
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 
-			Light* directionalLight;
-			
 			GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 			
