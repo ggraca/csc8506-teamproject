@@ -87,6 +87,9 @@
     <ClCompile Include="Material.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>Asset Handling</Filter>
+    </ClCompile>
     <ClCompile Include="OBJGeometry.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Asset Handling</Filter>
     </ClInclude>
     <ClInclude Include="OBJGeometry.h">
       <Filter>Rendering</Filter>

@@ -44,21 +44,21 @@ namespace NCL {
 			OGLMesh*	sphereMesh	= nullptr;
 			OGLMesh*	cylinderMesh = nullptr;
 			OGLMesh*	coneMesh = nullptr;
-			OGLTexture* basicTex	= nullptr;
-			OGLTexture* woodTex	= nullptr;
-			OGLTexture* grassTex	= nullptr;
-			OGLTexture* ballTex	= nullptr;
+			TextureBase* basicTex	= nullptr;
+			TextureBase* woodTex	= nullptr;
+			TextureBase* grassTex	= nullptr;
+			TextureBase* ballTex	= nullptr;
 
-			OGLTexture* brickTex = nullptr;
-			OGLTexture* dogTex = nullptr;
-			OGLTexture* dogsTex = nullptr;
-			OGLTexture* tempTex = nullptr;
-			OGLTexture* cubeMap = nullptr;
-			OGLTexture* pbrWoodDiff = nullptr;
-			OGLTexture* pbrWoodBump = nullptr;
-			OGLTexture* pbrWoodSpec = nullptr;
-			OGLTexture* pbrWoodMet = nullptr;
-			OGLShader*	basicShader = nullptr;
+			TextureBase* brickTex = nullptr;
+			TextureBase* dogTex = nullptr;
+			TextureBase* dogsTex = nullptr;
+			TextureBase* tempTex = nullptr;
+			TextureBase* cubeMap = nullptr;
+			TextureBase* pbrWoodDiff = nullptr;
+			TextureBase* pbrWoodBump = nullptr;
+			TextureBase* pbrWoodSpec = nullptr;
+			TextureBase* pbrWoodMet = nullptr;
+			ShaderBase*	pbrShader = nullptr;
 			Material*   basicMaterial = nullptr;
 			Material* floorMat = nullptr;
 

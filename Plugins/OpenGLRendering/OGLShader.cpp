@@ -21,54 +21,61 @@ string ShaderNames[ShaderStages::SHADER_MAX] = {
 	"Tess. Eval"
 };
 
-OGLShader::OGLShader(const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull) :
-	ShaderBase(vertex, fragment, geometry, domain, hull) {
-	ReloadShader();
+OGLShader::OGLShader() {
+
 }
 
 OGLShader::~OGLShader()	{
 	DeleteIDs();
 }
 
-void OGLShader::ReloadShader() {
-	DeleteIDs();
-	programID = glCreateProgram();
+ShaderBase* OGLShader::LoadShader(const string& vertex, const string& fragment, const string& geometry, const string& domain, const string& hull) {
+	OGLShader* newShader = new OGLShader();
+
+	newShader->shaderFiles[ShaderStages::SHADER_VERTEX] = vertex;
+	newShader->shaderFiles[ShaderStages::SHADER_FRAGMENT] = fragment;
+	newShader->shaderFiles[ShaderStages::SHADER_GEOMETRY] = geometry;
+	newShader->shaderFiles[ShaderStages::SHADER_DOMAIN] = domain;
+	newShader->shaderFiles[ShaderStages::SHADER_HULL] = hull;
+
+	newShader->programID = glCreateProgram();
 	string fileContents = "";
 	for (int i = 0; i < ShaderStages::SHADER_MAX; ++i) {
-		if (!shaderFiles[i].empty()) {
-			if (Assets::ReadTextFile(Assets::SHADERDIR + shaderFiles[i], fileContents)) {
-				shaderIDs[i] = glCreateShader(shaderTypes[i]);
+		if (!newShader->shaderFiles[i].empty()) {
+			if (Assets::ReadTextFile(Assets::SHADERDIR + newShader->shaderFiles[i], fileContents)) {
+				newShader->shaderIDs[i] = glCreateShader(shaderTypes[i]);
 
-				std::cout << "Reading " << ShaderNames[i] << " shader " << shaderFiles[i] << std::endl;
+				std::cout << "Reading " << ShaderNames[i] << " shader " << newShader->shaderFiles[i] << std::endl;
 
 				const char* stringData	 = fileContents.c_str();
 				int			stringLength = fileContents.length();
-				glShaderSource(shaderIDs[i], 1, &stringData, &stringLength);
-				glCompileShader(shaderIDs[i]);
+				glShaderSource(newShader->shaderIDs[i], 1, &stringData, &stringLength);
+				glCompileShader(newShader->shaderIDs[i]);
 
-				glGetShaderiv(shaderIDs[i], GL_COMPILE_STATUS, &shaderValid[i]);
+				glGetShaderiv(newShader->shaderIDs[i], GL_COMPILE_STATUS, &newShader->shaderValid[i]);
 		
-				if (shaderValid[i] != GL_TRUE) {
+				if (newShader->shaderValid[i] != GL_TRUE) {
 					std::cout << ShaderNames[i] << " shader " << " has failed!" << std::endl;
 				}
 				else {
-					glAttachShader(programID, shaderIDs[i]);
+					glAttachShader(newShader->programID, newShader->shaderIDs[i]);
 				}
-				PrintCompileLog(shaderIDs[i]);
+				newShader->PrintCompileLog(newShader->shaderIDs[i]);
 			}
 		}
 	}	
-	glLinkProgram(programID);
-	glGetProgramiv(programID, GL_LINK_STATUS, &programValid);
+	glLinkProgram(newShader->programID);
+	glGetProgramiv(newShader->programID, GL_LINK_STATUS, &newShader->programValid);
 
-	PrintLinkLog();
+	newShader->PrintLinkLog();
 
-	if (programValid != GL_TRUE) {
+	if (newShader->programValid != GL_TRUE) {
 		std::cout << "This shader has failed!" << std::endl;
 	}
 	else {
 		std::cout << "Shader loaded!" << std::endl;
 	}
+	return newShader;
 }
 
 void	OGLShader::DeleteIDs() {
