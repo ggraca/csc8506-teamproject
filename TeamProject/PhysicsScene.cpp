@@ -3,6 +3,7 @@
 #include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "../Plugins/OpenGLRendering/OGLShader.h"
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
+#include "Light.h"
 
 
 #include "../Common/Assets.h"
@@ -27,8 +28,6 @@ PhysicsScene::PhysicsScene() : Scene() {
 }
 
 void PhysicsScene::ResetWorld() {
-  world->ClearAndErase();
-
   AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
  
    //Player
@@ -37,6 +36,7 @@ void PhysicsScene::ResetWorld() {
   player->SetTag(LayerAndTag::Tags::Player);
   player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
   player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
+  player->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 0.0f, 0.0f, 1.0f), 100.0f, 6.0f));
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
   audio->SetPlayer(player);
@@ -99,6 +99,10 @@ void PhysicsScene::UpdateKeys() {
 		renderer->health = 1.0f;
 	}
 	//HUD TESTING ENDS
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
+		console.Toggle();
+		debugMenu.Toggle();
+	}
 }
 
 void PhysicsScene::UpdateGame(float dt) {

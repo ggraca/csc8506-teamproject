@@ -5,6 +5,8 @@
 #include <map>
 #include "TypeId.h"
 
+#include "../Common/OBJGeometry.h"
+
 using std::vector;
 
 namespace NCL {
@@ -12,9 +14,8 @@ namespace NCL {
 		class Component;
 		class ScriptObject;
 		class GameWorld;
-		
 
-		class GameObject	{
+		class GameObject {
 		public:
 			GameObject(std::string name = "");
 			virtual ~GameObject();
@@ -78,7 +79,7 @@ namespace NCL {
 			void SetParent(GameObject * parent);
 			bool IsParent(const Transform* transform);
 			void AddChild(GameObject * child);
-			
+
 			template<class T>
 			void AddComponent(Component * obj);
 
@@ -127,11 +128,13 @@ namespace NCL {
 			static vector<GameObject*> GetChildrenOfObject(GameObject* obj, LayerAndTag::Tags tag);
 			static  void Destroy(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj);
-			static void AddObjectToWorld(GameObject * obj,GameObject * parent);
+			static void AddObjectToWorld(GameObject * obj, GameObject * parent);
 			static GameObject * GetMainCamera();
+			static GameObject* FromOBJ(OBJGeometry* obj);
 
 			vector<GameObject*> collidingObjects;
 			static GameWorld* gameWorld;
+
 
 		protected:
 			Transform			transform;
@@ -152,7 +155,7 @@ namespace NCL {
 			void RemoveScript()
 			{
 
-				for (int i = 0; i < scripts.size();i++)
+				for (int i = 0; i < scripts.size(); i++)
 				{
 					if (dynamic_cast<T>(scripts[i]))
 					{
@@ -181,8 +184,8 @@ namespace NCL {
 			}
 
 			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
+			obj->SetGameObject(this);
 			components[index] = obj;
 		}
-
-}
+	}
 }

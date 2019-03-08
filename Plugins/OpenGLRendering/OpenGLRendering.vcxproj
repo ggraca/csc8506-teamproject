@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="OGLMesh.h" />
+    <ClInclude Include="OGLPixOpsFLags.h" />
     <ClInclude Include="OGLRenderer.h" />
     <ClInclude Include="OGLShader.h" />
     <ClInclude Include="OGLTexture.h" />
