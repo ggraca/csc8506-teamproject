@@ -1,5 +1,5 @@
 #include "Resource.h"
-#include "../TeamProject/InputManager.h"
+#include "InputManager.h"
 
 
 
@@ -64,6 +64,7 @@ void Resource::Reset()
 	gameObject->SetTag(LayerAndTag::Tags::Resources);
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::ResourceParent));
 	gameObject->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1,1,1,1));
+	gameObject->GetComponent<DamageControl*>()->ResetDamageControl();
 	moveSpeed = 100.0f;
 	minDistance = 50.0f;
 	SetTarget(nullptr);

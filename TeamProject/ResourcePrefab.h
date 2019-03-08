@@ -1,6 +1,7 @@
 #pragma once
 #include "Resource.h"
 #include "CubePrefab.h"
+#include "DamageControl.h"
 
 using namespace NCL;
 using namespace CSC8503;
