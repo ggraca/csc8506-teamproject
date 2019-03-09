@@ -54,11 +54,13 @@ namespace NCL {
 			void RenderCamera();
 			void RenderLights();
 			void CombineBuffers();
+			void RenderPostProcess();
 
 			void SetupDebugMatrix(OGLShader*s) override;
 
 			vector<const RenderObject*> activeObjects;
 			vector<const Light*> activeLights;
+			vector<ShaderBase*> postProcessShaders;
 
 			//shadow mapping things
 			ShaderBase*	shadowShader;
@@ -77,6 +79,9 @@ namespace NCL {
 			GLuint lightFBO; // FBO for our lighting pass
 			TextureBase* lightEmissiveTex; // emissive lighting
 			TextureBase* lightSpecularTex; // specular lighting
+
+			GLuint postFBO; // FBO for our post process pass
+			TextureBase* postTexture[2]; // post process texture [0] and [1]
 
 			ShaderBase* combineShader;
 			ShaderBase* pointLightShader;
