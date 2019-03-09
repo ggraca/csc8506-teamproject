@@ -55,6 +55,7 @@ namespace NCL {
 			void RenderLights();
 			void CombineBuffers();
 			void RenderPostProcess();
+			void PresentScene();
 
 			void SetupDebugMatrix(OGLShader*s) override;
 
@@ -85,6 +86,7 @@ namespace NCL {
 			int lastRendererdPostTex = 0;
 
 			ShaderBase* combineShader;
+			ShaderBase* presentShader;
 			ShaderBase* pointLightShader;
 			ShaderBase* directionalLightShader;
 			ShaderBase* hudShader;

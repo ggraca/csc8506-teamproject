@@ -419,6 +419,9 @@ void GameTechRenderer::CombineBuffers() {
 
 void GameTechRenderer::RenderPostProcess() {
 	BindFBO((void*)&postFBO);
+
+	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
+
 	for (int i = 0; i < postProcessShaders.size(); i++)
 	{
 		int currentRendererdPostTex = (i + 1) % 2;
@@ -435,6 +438,7 @@ void GameTechRenderer::RenderPostProcess() {
 		//These lines are just setup for a blur shader
 		//Should really be handled by a post process shader class (maybe material?)
 		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
+		BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 		for (int x = 0; x < 10; ++x) {
 			currentRendererdPostTex = (i + x + 1) % 2;
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
@@ -460,6 +464,23 @@ void GameTechRenderer::RenderPostProcess() {
 
 		lastRendererdPostTex = currentRendererdPostTex;
 	}
+	BindFBO(nullptr);
+	BindShader(nullptr);
+}
+
+void GameTechRenderer::PresentScene() {
+	BindFBO(nullptr);
+	BindShader(presentShader);
+
+	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
+
+	BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+	BindMatrix4ToShader(tempProjMatrix, "projMatrix");
+
+	BindMesh(screenQuad);
+	DrawBoundMesh();
+
+	BindShader(nullptr);
 }
 
 void GameTechRenderer::RenderHUD()
