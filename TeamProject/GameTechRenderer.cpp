@@ -472,6 +472,7 @@ void GameTechRenderer::RenderPostProcess() {
 
 		lastRendererdPostTex = currentRendererdPostTex;
 	}
+
 	BindFBO(nullptr);
 	BindShader(nullptr);
 }
