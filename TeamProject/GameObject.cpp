@@ -211,5 +211,6 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 		gameWorld->AddGameObject(go);
 		root->AddChild(go);
 	}
+	gameWorld->LateDestroy(GameObject::GetChildrenOfObject(root)[GameObject::GetChildrenOfObject(root).size() - 1]);
 	return root;
 }
