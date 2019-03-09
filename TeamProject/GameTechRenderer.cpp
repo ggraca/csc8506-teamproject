@@ -88,6 +88,9 @@ void GameTechRenderer::GenBuffers() {
 	//Generate light buffer textures
 	lightEmissiveTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	lightSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	//Generate post process buffer textures
+	postTexture[0] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	postTexture[1] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 
 	vector<TextureBase*> gBufferTexes;
 	gBufferTexes.push_back(gBufferColourTex);
@@ -98,8 +101,12 @@ void GameTechRenderer::GenBuffers() {
 	lightBufferTexes.push_back(lightEmissiveTex);
 	lightBufferTexes.push_back(lightSpecularTex);
 
+	vector<TextureBase*> postBufferTexes;
+	postBufferTexes.push_back(postTexture[0]);
+
 	GenerateFrameBuffer(&gBufferFBO, gBufferTexes, gBufferDepthTex);
 	GenerateFrameBuffer(&lightFBO, lightBufferTexes, nullptr);
+	GenerateFrameBuffer(&postFBO, postBufferTexes, nullptr);
 }
 
 void GameTechRenderer::RenderFrame() {
@@ -377,10 +384,10 @@ void GameTechRenderer::RenderLights() {
 }
 
 void GameTechRenderer::CombineBuffers() {
-	////Keep this here for now ready for when post processes are to be implemented
-	//glBindFramebuffer(GL_FRAMEBUFFER, postProcessFBO);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-	//	GL_TEXTURE_2D, postProcessTex[1], 0);
+	//Keep this here for now ready for when post processes are to be implemented
+	glBindFramebuffer(GL_FRAMEBUFFER, postFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+		GL_TEXTURE_2D, ((OGLTexture*)postTexture[0])->GetObjectID(), 0);
 	BindFBO(nullptr);
 	ClearBuffer(true, true, false);
 
@@ -409,6 +416,8 @@ void GameTechRenderer::CombineBuffers() {
 
 	BindShader(nullptr);
 }
+
+
 
 void GameTechRenderer::RenderHUD()
 {
