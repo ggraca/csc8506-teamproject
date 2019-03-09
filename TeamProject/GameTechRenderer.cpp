@@ -20,7 +20,10 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	pointLightShader = Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl");
 	directionalLightShader = Assets::AssetManager::LoadShader("DirectionalLightShader", "directionallightvert.glsl", "directionallightfrag.glsl");
 	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
+	presentShader = Assets::AssetManager::LoadShader("PresentShader", "TexturedVertex.glsl", "TexturedFragment.glsl");
 
+	//Temporary until post process material or something is set up
+	postProcessShaders.push_back(Assets::AssetManager::LoadShader("PostShader", "TexturedVertex.glsl", "blurfrag.glsl"));
 
 	hudShader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl");
 
@@ -120,6 +123,8 @@ void GameTechRenderer::RenderFrame() {
 	RenderCamera();
 	RenderLights();
 	CombineBuffers();
+	RenderPostProcess();
+	PresentScene();
 	RenderHUD();
 	pixOps.SetFaceCulling(CULLFACE::NOCULL); //Todo - text indices are going the wrong way...
 }
@@ -412,6 +417,7 @@ void GameTechRenderer::CombineBuffers() {
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
+	lastRendererdPostTex = 0;
 
 	BindShader(nullptr);
 	BindFBO(nullptr);
@@ -424,7 +430,7 @@ void GameTechRenderer::RenderPostProcess() {
 
 	for (int i = 0; i < postProcessShaders.size(); i++)
 	{
-		int currentRendererdPostTex = (i + 1) % 2;
+		int currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
 		//Create bind texture to framebuffer color attachment
 		//Like this:
 		//							TextureBase*								Attachment slot
@@ -439,10 +445,11 @@ void GameTechRenderer::RenderPostProcess() {
 		//Should really be handled by a post process shader class (maybe material?)
 		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
 		BindMatrix4ToShader(tempProjMatrix, "projMatrix");
-		for (int x = 0; x < 10; ++x) {
-			currentRendererdPostTex = (i + x + 1) % 2;
+		for (int x = 0; x < 2; ++x) {
+			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+			ClearBuffer(true, true, false);
 			BindIntToShader(0, "isVertical");
 
 			BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
@@ -454,6 +461,7 @@ void GameTechRenderer::RenderPostProcess() {
 			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+			ClearBuffer(true, true, false);
 			BindIntToShader(1, "isVertical");
 
 			BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
