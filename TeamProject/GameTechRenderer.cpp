@@ -385,10 +385,9 @@ void GameTechRenderer::RenderLights() {
 
 void GameTechRenderer::CombineBuffers() {
 	//Keep this here for now ready for when post processes are to be implemented
-	glBindFramebuffer(GL_FRAMEBUFFER, postFBO);
+	BindFBO((void*)&postFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 		GL_TEXTURE_2D, ((OGLTexture*)postTexture[0])->GetObjectID(), 0);
-	BindFBO(nullptr);
 	ClearBuffer(true, true, false);
 
 	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
@@ -415,9 +414,53 @@ void GameTechRenderer::CombineBuffers() {
 	DrawBoundMesh();
 
 	BindShader(nullptr);
+	BindFBO(nullptr);
 }
 
+void GameTechRenderer::RenderPostProcess() {
+	BindFBO((void*)&postFBO);
+	for (int i = 0; i < postProcessShaders.size(); i++)
+	{
+		int currentRendererdPostTex = (i + 1) % 2;
+		//Create bind texture to framebuffer color attachment
+		//Like this:
+		//							TextureBase*								Attachment slot
+		//BindTextureToFBO(((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+		ClearBuffer(true, true, false);
 
+		BindShader(postProcessShaders[i]);
+
+		//These lines are just setup for a blur shader
+		//Should really be handled by a post process shader class (maybe material?)
+		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
+		for (int x = 0; x < 10; ++x) {
+			currentRendererdPostTex = (i + x + 1) % 2;
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+			BindIntToShader(0, "isVertical");
+
+			BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+			BindMesh(screenQuad);
+			DrawBoundMesh();
+			lastRendererdPostTex = currentRendererdPostTex;
+
+			// Now to swap the colour buffers , and do the second blur pass
+			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+			BindIntToShader(1, "isVertical");
+
+			BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+			BindMesh(screenQuad);
+			DrawBoundMesh();
+			lastRendererdPostTex = currentRendererdPostTex;
+		}
+
+		lastRendererdPostTex = currentRendererdPostTex;
+	}
+}
 
 void GameTechRenderer::RenderHUD()
 {

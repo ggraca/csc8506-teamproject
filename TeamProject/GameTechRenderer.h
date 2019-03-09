@@ -82,6 +82,7 @@ namespace NCL {
 
 			GLuint postFBO; // FBO for our post process pass
 			TextureBase* postTexture[2]; // post process texture [0] and [1]
+			int lastRendererdPostTex = 0;
 
 			ShaderBase* combineShader;
 			ShaderBase* pointLightShader;
