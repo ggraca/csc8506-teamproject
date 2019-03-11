@@ -50,6 +50,7 @@ namespace NCL {
 			TextureBase* pbrWoodBump = nullptr;
 			TextureBase* pbrWoodSpec = nullptr;
 			TextureBase* pbrWoodMet = nullptr;
+			TextureBase* pbrWoodAO = nullptr;
 			ShaderBase*	pbrShader = nullptr;
 			Material*   basicMaterial = nullptr;
 			Material* floorMat = nullptr;

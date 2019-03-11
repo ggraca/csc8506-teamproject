@@ -75,7 +75,7 @@ namespace NCL {
 			TextureBase* gBufferDepthTex; // Depth goes here
 			TextureBase* gBufferColourTex; // Albedo goes here
 			TextureBase* gBufferNormalTex; // Normals go here
-			TextureBase* gBufferSpecularTex; // Specular goes here
+			TextureBase* gBufferMaterialTex; // Specular goes here
 
 			GLuint lightFBO; // FBO for our lighting pass
 			TextureBase* lightEmissiveTex; // emissive lighting
@@ -84,6 +84,7 @@ namespace NCL {
 			GLuint postFBO; // FBO for our post process pass
 			TextureBase* postTexture[2]; // post process texture [0] and [1]
 			int lastRendererdPostTex = 0;
+			bool DoPostProcess = true;
 
 			ShaderBase* combineShader;
 			ShaderBase* presentShader;

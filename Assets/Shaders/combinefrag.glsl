@@ -3,9 +3,9 @@
 uniform sampler2D diffuseTex;
 uniform sampler2D depthTex;
 uniform sampler2D normTex;
+uniform sampler2D materialTex;
 uniform sampler2D emissiveTex;
 uniform sampler2D lightSpecularTex;
-uniform sampler2D specularTex;
 
 uniform vec4 ambientColour;
 
@@ -19,7 +19,12 @@ void main (void) {
 	vec3 diffuse = texture(diffuseTex, IN.texCoord).xyz;
 	vec3 depth = texture(depthTex, IN.texCoord).xyz;
 	vec4 normal = texture(normTex, IN.texCoord);
-	vec3 specular = texture(specularTex, IN.texCoord).xyz;
+	vec4 material = texture(materialTex, IN.texCoord);
+
+	float specular = material.r;
+	float metalness = material.g;
+	float ao = material.b;
+
 	vec3 light = texture(emissiveTex, IN.texCoord).xyz;
 	vec3 lightSpecular = texture(lightSpecularTex, IN.texCoord).xyz;
 
@@ -31,5 +36,6 @@ void main (void) {
 	fragColour.xyz = diffuse * ambient; // ambient
 	fragColour.xyz += (diffuse * light);// lambert
 	fragColour.xyz += lightSpecular * specular; // Specular
+	fragColour.xyz *= ao; // Specular
 	fragColour.a = 1.0;
 }

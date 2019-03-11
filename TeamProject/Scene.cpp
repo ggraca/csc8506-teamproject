@@ -47,8 +47,9 @@ void Scene::InitialiseAssets() {
 
   pbrWoodDiff = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
   pbrWoodBump = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
-  pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
   pbrWoodMet = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
+  pbrWoodAO = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_OCC.jpg");
 
   pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
 
@@ -57,6 +58,7 @@ void Scene::InitialiseAssets() {
   basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
   basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
   basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
+  basicMaterial->AddTextureParameter("aoTex", pbrWoodAO);
 
   floorMat = Assets::AssetManager::LoadMaterial("Floor Material", pbrShader);
   floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);

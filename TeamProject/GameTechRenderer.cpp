@@ -87,7 +87,7 @@ void GameTechRenderer::GenBuffers() {
 	gBufferDepthTex = OGLTexture::EmptyTexture(currentWidth, currentHeight, true);
 	gBufferColourTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	gBufferNormalTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
-	gBufferSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	gBufferMaterialTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	//Generate light buffer textures
 	lightEmissiveTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	lightSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
@@ -98,7 +98,7 @@ void GameTechRenderer::GenBuffers() {
 	vector<TextureBase*> gBufferTexes;
 	gBufferTexes.push_back(gBufferColourTex);
 	gBufferTexes.push_back(gBufferNormalTex);
-	gBufferTexes.push_back(gBufferSpecularTex);
+	gBufferTexes.push_back(gBufferMaterialTex);
 
 	vector<TextureBase*> lightBufferTexes;
 	lightBufferTexes.push_back(lightEmissiveTex);
@@ -258,8 +258,6 @@ void GameTechRenderer::RenderCamera() {
 				(*(currentMaterial->GetTextureParameters()))[j].first, j);
 		}
 
-		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
-
 		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
@@ -411,7 +409,7 @@ void GameTechRenderer::CombineBuffers() {
 	BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 	BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 	BindTextureToShader(gBufferNormalTex, "normTex", 4);
-	BindTextureToShader(gBufferSpecularTex, "specularTex", 5);
+	BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
 	BindTextureToShader(lightEmissiveTex, "emissiveTex", 6);
 	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 7);
 
@@ -428,51 +426,53 @@ void GameTechRenderer::RenderPostProcess() {
 
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 
-	for (int i = 0; i < postProcessShaders.size(); i++)
-	{
-		int currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
-		//Create bind texture to framebuffer color attachment
-		//Like this:
-		//							TextureBase*								Attachment slot
-		//BindTextureToFBO(((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
-		ClearBuffer(true, true, false);
-
-		BindShader(postProcessShaders[i]);
-
-		//These lines are just setup for a blur shader
-		//Should really be handled by a post process shader class (maybe material?)
-		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
-		BindMatrix4ToShader(tempProjMatrix, "projMatrix");
-		for (int x = 0; x < 2; ++x) {
-			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+	DoPostProcess = false;
+	if (DoPostProcess) {
+		for (int i = 0; i < postProcessShaders.size(); i++)
+		{
+			int currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+			//Create bind texture to framebuffer color attachment
+			//Like this:
+			//							TextureBase*								Attachment slot
+			//BindTextureToFBO(((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
 			ClearBuffer(true, true, false);
-			BindIntToShader(0, "isVertical");
 
-			BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
-			BindMesh(screenQuad);
-			DrawBoundMesh();
-			lastRendererdPostTex = currentRendererdPostTex;
+			BindShader(postProcessShaders[i]);
 
-			// Now to swap the colour buffers , and do the second blur pass
-			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
-			ClearBuffer(true, true, false);
-			BindIntToShader(1, "isVertical");
+			//These lines are just setup for a blur shader
+			//Should really be handled by a post process shader class (maybe material?)
+			BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
+			BindMatrix4ToShader(tempProjMatrix, "projMatrix");
+			for (int x = 0; x < 2; ++x) {
+				currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+					GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+				ClearBuffer(true, true, false);
+				BindIntToShader(0, "isVertical");
 
-			BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
-			BindMesh(screenQuad);
-			DrawBoundMesh();
+				BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+				BindMesh(screenQuad);
+				DrawBoundMesh();
+				lastRendererdPostTex = currentRendererdPostTex;
+
+				// Now to swap the colour buffers , and do the second blur pass
+				currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+					GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+				ClearBuffer(true, true, false);
+				BindIntToShader(1, "isVertical");
+
+				BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+				BindMesh(screenQuad);
+				DrawBoundMesh();
+				lastRendererdPostTex = currentRendererdPostTex;
+			}
+
 			lastRendererdPostTex = currentRendererdPostTex;
 		}
-
-		lastRendererdPostTex = currentRendererdPostTex;
 	}
-
 	BindFBO(nullptr);
 	BindShader(nullptr);
 }
