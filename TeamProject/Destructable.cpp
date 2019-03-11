@@ -30,7 +30,7 @@ void Destructable::CheckIfDestroyed()
 	HealthManager * health = gameObject->GetComponent<HealthManager*>();
 	if (health->IsDead())
 	{
-		for (int i = 0; i < 10;i++)
+		for (int i = 0; i < (health->GetHealth()/25);i++)
 		{
 			GenerateResource();
 		}
