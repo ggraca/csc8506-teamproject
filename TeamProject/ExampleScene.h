@@ -19,6 +19,7 @@ namespace NCL {
       ExampleScene();
       ~ExampleScene();
       void UpdateGame(float dt);
+	  void LoadWorld();
 
     protected:
       void ResetWorld();

@@ -27,7 +27,7 @@ ExampleScene::ExampleScene() : Scene() {
 
 void ExampleScene::ResetWorld() {
   // Floor
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0,0.2f);
+  AddCubeToWorld(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(3100, 10, 3100), 0,0.2f);
 
   //Player
   auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
@@ -43,14 +43,25 @@ void ExampleScene::ResetWorld() {
   resource2->AddComponent<Resource*>((ScriptObject*)new Resource(resource2));
 
   // OBJ file example
-  OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("Lamborghini_Aventador.obj");
+  //OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("full_shop.obj");
 
+  LoadWorld();
   // We need to pass world because father/son relationship is only possible among gameObjects in the world
   // We might want to change this to allow any gameobject to have a vector of children
-  GameObject* go = GameObject::FromOBJ(objGeometry);
-  go->GetTransform().SetWorldPosition(Vector3(0, 5, 0));
-  go->GetTransform().SetLocalScale(Vector3(1, 1, 1));
+  //GameObject* go = GameObject::FromOBJ(objGeometry);
+  //go->GetTransform().SetWorldPosition(Vector3(0, 30, 0));
+  //go->GetTransform().SetLocalScale(Vector3(5, 5, 5));
   // world->AddGameObject(go); // TODO: We can uncomment this once we fix the bug mentioned above
+
+  //OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("vws.obj");
+  //GameObject* go = GameObject::FromOBJ(objGeometry);
+  //go->GetTransform().SetWorldPosition(Vector3(0, 30, 0));
+  //go->GetTransform().SetLocalScale(Vector3(0.5, 0.5, 0.5));
+
+
+  
+
+
 }
 
 ExampleScene::~ExampleScene() {
@@ -110,4 +121,50 @@ void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 
 void ExampleScene::RegisterConsoleCommands() {
 	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
+}
+
+void ExampleScene::LoadWorld() {
+	std::ifstream infile(Assets::DATADIR + "level1.txt");
+	int size, x_length, z_length;
+	infile >> size;
+	infile >> x_length;
+	infile >> z_length;
+
+	if (!infile) { std::cout << "no file" << std::endl; }
+	
+	
+	for (unsigned i = 0; i < (x_length);i++) {
+		for (unsigned j = 0; j < (z_length); j++) {
+			char a;
+			infile >> a;
+
+			if (a == 't') {
+				OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("KofarGari.obj");
+				GameObject* go = GameObject::FromOBJ(objGeometry);
+				go->GetTransform().SetLocalScale(Vector3(1, 5, 1.31));
+				go->GetTransform().SetWorldPosition(Vector3(size*i, 0, size*j));
+				go->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 90));			
+			}
+			if (a == 's') {
+				OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("KofarGari.obj");
+				GameObject* go = GameObject::FromOBJ(objGeometry);
+				go->GetTransform().SetLocalScale(Vector3(1, 5, 1.31));
+				go->GetTransform().SetWorldPosition(Vector3(size*i, 0, size*j));
+				go->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
+
+			if (a == 'c') {
+				OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("vws.obj");
+				GameObject* go = GameObject::FromOBJ(objGeometry);
+				go->GetTransform().SetLocalScale(Vector3(0.7,0.7,0.7));
+				go->GetTransform().SetWorldPosition(Vector3(size*i, 42, size*j));
+				go->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
+
+
+
+		}
+	}
+
+	infile.close();
 }
