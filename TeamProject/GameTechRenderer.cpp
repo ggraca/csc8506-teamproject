@@ -14,7 +14,7 @@ using namespace CSC8503;
 
 Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
-GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetWindow()), gameWorld(world)	{
+GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
 	shadowShader = Assets::AssetManager::LoadShader("GameTechShadowShader", "GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
 	skyBoxShader = Assets::AssetManager::LoadShader("SkyboxShader", "skyboxVertex.glsl", "skyboxFragment.glsl");
 	pointLightShader = Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl");
@@ -22,8 +22,8 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
 	presentShader = Assets::AssetManager::LoadShader("PresentShader", "TexturedVertex.glsl", "TexturedFragment.glsl");
 
-	//Temporary until post process material or something is set up
-	postProcessShaders.push_back(Assets::AssetManager::LoadShader("PostShader", "TexturedVertex.glsl", "blurfrag.glsl"));
+	// Temporary until post process material or something is set up
+	// postProcessShaders.push_back(Assets::AssetManager::LoadShader("PostShader", "TexturedVertex.glsl", "blurfrag.glsl"));
 
 	hudShader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl");
 
@@ -133,7 +133,7 @@ void GameTechRenderer::BuildObjectList() {
 	std::vector<GameObject*>::const_iterator first;
 	std::vector<GameObject*>::const_iterator last;
 
-	gameWorld.GetObjectIterators(first, last);
+	gameWorld->GetObjectIterators(first, last);
 
 	activeObjects.clear();
 	activeLights.clear();
@@ -169,7 +169,7 @@ void GameTechRenderer::RenderShadowMap() {
 	BindShader(shadowShader);
 
 	//Temporary code to work out which light is the directional
-	Vector3 cameraPosition = gameWorld.GetMainCamera()->GetTransform().GetWorldPosition();
+	Vector3 cameraPosition = gameWorld->GetMainCamera()->GetTransform().GetWorldPosition();
 	Quaternion lightRot;
 	for (int i = 0; i < (int)activeLights.size(); i++)
 	{
@@ -208,8 +208,8 @@ void GameTechRenderer::RenderSkybox() {
 	ClearBuffer(true, true, false);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl *>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl *>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl *>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl *>()->BuildProjectionMatrix(screenAspect);
 
 	pixOps.SetDepthMask(false);
 	pixOps.SetDepthComparison(COMPARISON::NOCOMPARE);
@@ -219,7 +219,7 @@ void GameTechRenderer::RenderSkybox() {
 	BindShader(skyBoxShader);
 
 	BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 2);
-	BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
+	BindVector3ToShader(gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
 	BindMatrix4ToShader(viewMatrix, "viewMatrix");
 	BindMatrix4ToShader(projMatrix, "projMatrix");
 
@@ -240,8 +240,8 @@ void GameTechRenderer::RenderCamera() {
 	ClearBuffer(true, false, false);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	shadowCasters = 0;
 	vertsDrawn = 0;
@@ -260,7 +260,7 @@ void GameTechRenderer::RenderCamera() {
 
 		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
 
-		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
+		BindVector3ToShader(gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
 		BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");
@@ -283,8 +283,8 @@ void GameTechRenderer::RenderLights() {
 	pixOps.SetDestinationFactor(BLEND::ONE);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	BindShader(directionalLightShader);
 
@@ -294,7 +294,7 @@ void GameTechRenderer::RenderLights() {
 	for (int x = 0; x < (int)activeLights.size(); ++x) {
 		float radius = activeLights[x]->GetRadius();
 		float dist = (activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition() -
-			gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
+			gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
 		Matrix4 tempModelMatrix;
 
 		if (activeLights[x]->GetType() == LightType::Point) {
@@ -365,7 +365,7 @@ void GameTechRenderer::RenderLights() {
 		}
 
 		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
-		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
+		BindVector3ToShader(gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
 		BindMatrix4ToShader(identity, "textureMatrix");
 		BindVector4ToShader(activeLights[x]->GetColour(), "lightColour");
@@ -395,7 +395,7 @@ void GameTechRenderer::CombineBuffers() {
 		GL_TEXTURE_2D, ((OGLTexture*)postTexture[0])->GetObjectID(), 0);
 	ClearBuffer(true, true, false);
 
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 	Matrix4 identity;
 	identity.ToIdentity();
@@ -537,8 +537,8 @@ void GameTechRenderer::WeaponState(int index, bool state)
 
 void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	Matrix4 viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
-	Matrix4 projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	Matrix4 vp = projMatrix * viewMatrix;
 

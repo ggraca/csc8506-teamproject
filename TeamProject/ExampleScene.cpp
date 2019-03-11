@@ -90,12 +90,12 @@ void ExampleScene::UpdateGame(float dt) {
 
   physics->Update(dt);
   world->UpdateWorld(dt);
-  renderer->Update(dt);
+  /*renderer->Update(dt);
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);
   console.Update();
-  hud.Update(dt, renderer);
+  hud.Update(dt, renderer);*/
 
 
   //Might want moved into a seperate function that handles input
@@ -117,7 +117,7 @@ void ExampleScene::UpdateGame(float dt) {
 	  renderer->bomb = bomb->GetObjectID();
   }*/
 
-  renderer->Render();
+  //renderer->Render();
 
 }
 

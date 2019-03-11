@@ -14,17 +14,18 @@ using namespace CSC8503;
 Scene::Scene() {
   world = new GameWorld();
   GameObject::SetGameWorld(world);
-  renderer = new GameTechRenderer(*world);
 
   physics = new BulletPhysics(*world);
   physics->SetGravity(Vector3(-4.0f, -2000.81f, 0.0f));
   world->SetPhysics(physics);
+
   InputManager::InitializeButtonRelations();
   GameObject::SetGameWorld(world);
+
   audio = new CAudioEngine();
   world->SetAudio(audio);
 
-  Debug::SetRenderer(renderer);
+  // Debug::SetRenderer(renderer);
   InitialiseAssets();
 }
 
@@ -32,7 +33,7 @@ void Scene::InitialiseAssets() {
   cubeMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("Cube.msh");
   
   sphereMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("sphere2.msh");
-  renderer->SetLightMesh(sphereMesh);
+  // renderer->SetLightMesh(sphereMesh);
 
   cylinderMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cylinder.obj");
   coneMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("cone.obj");
@@ -78,14 +79,13 @@ void Scene::InitialiseAssets() {
   };
 
   cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
-  renderer->skybox = cubeMap;
+  // renderer->skybox = cubeMap;
 
   InitWorld();
 }
 
 Scene::~Scene() {
   delete physics;
-  delete renderer;
   delete world;
 
   Assets::AssetManager::FlushAssets();

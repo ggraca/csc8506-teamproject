@@ -1,5 +1,4 @@
 #pragma once
-#include "GameTechRenderer.h"
 #include "HUD.h"
 #include "Debug.h"
 #include "../Common/Camera.h"
@@ -16,14 +15,14 @@ namespace NCL {
 			~Scene();
 
 			virtual void UpdateGame(float dt) = 0;
-			BulletPhysics*		physics; //TODO Make protected again?
+			GameWorld* GetGameWorld() const { return world; }
+			BulletPhysics* physics; //TODO Make protected again?
 
 		protected:
 			void InitialiseAssets();
 
 			virtual void InitWorld();
 
-			GameTechRenderer*	renderer;
 			CAudioEngine* audio;
 
 			GameWorld*		world;
@@ -53,7 +52,6 @@ namespace NCL {
 			ShaderBase*	pbrShader = nullptr;
 			Material*   basicMaterial = nullptr;
 			Material* floorMat = nullptr;
-
 		};
 	}
 }
