@@ -82,14 +82,19 @@ namespace NCL {
 
 			template<class T>
 			void AddComponent(Component * obj);
-
+			
 			template<class T>
 			void RemoveComponent()
 			{
 				int index = TypeId::GetTypeId(typeid(T));
 
-				if (dynamic_cast<ScriptObject*>(T)) { RemoveScript<T>(); }
-				delete components[index];
+				if (index == -1) { return; }
+				auto it = components.find(index);
+
+				if (it == components.end()) { return; }
+
+				if (dynamic_cast<ScriptObject*>(it->second)) { RemoveScript<T>(); }
+				delete it->second;
 				components.erase(index);
 			}
 
@@ -97,10 +102,13 @@ namespace NCL {
 			T GetComponent()
 			{
 				int index = TypeId::GetTypeId(typeid(T));
-				if (components.find(index) != components.end()) {
-					return dynamic_cast<T>(components[index]);
-				}
-				return nullptr;
+
+				if (index == -1) { return nullptr; }
+				auto it = components.find(index);
+
+				if (it == components.end()) { return nullptr; }
+
+				return dynamic_cast<T>(it->second);
 			}
 
 			void SetUpInitialScripts();
@@ -147,11 +155,10 @@ namespace NCL {
 			void RemoveScript()
 			{
 
-				for (int i = 0; i < scripts.size(); i++)
+				for (int i = 0; i < (int)scripts.size(); i++)
 				{
 					if (dynamic_cast<T>(scripts[i]))
 					{
-						delete scripts[i];
 						scripts.erase(scripts.begin() + i);
 
 						return;
@@ -165,15 +172,18 @@ namespace NCL {
 		{
 			if (!obj) { return; }
 
-			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
-
 			int index = TypeId::GetTypeId(typeid(T));
 
-			if (components[index])
+			if (index == -1) { return; }
+			auto it = components.find(index);
+
+			if (it != components.end())
 			{
-				delete components[index];
+				if (dynamic_cast<ScriptObject*>(obj)) { RemoveScript<T>(); }
+				delete it->second;
 			}
 
+			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
 			obj->SetGameObject(this);
 			components[index] = obj;
 		}

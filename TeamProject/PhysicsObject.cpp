@@ -86,7 +86,7 @@ void PhysicsObject::SetBulletPhysicsParameters()
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btMass, myMotionState, shape, localInertia);
 
 	body = new btRigidBody(rbInfo);
-
+	
 	//body->setLinearVelocity(btVector3(10, 100, 0));
 	//body->setAngularVelocity(btVector3(0, 10, 0));
 

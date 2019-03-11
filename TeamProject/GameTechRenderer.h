@@ -54,19 +54,22 @@ namespace NCL {
 			void RenderCamera();
 			void RenderLights();
 			void CombineBuffers();
+			void RenderPostProcess();
+			void PresentScene();
 
 			void SetupDebugMatrix(OGLShader*s) override;
 
 			vector<const RenderObject*> activeObjects;
 			vector<const Light*> activeLights;
+			vector<ShaderBase*> postProcessShaders;
 
 			//shadow mapping things
-			OGLShader*	shadowShader;
-			TextureBase*		shadowTex;
+			ShaderBase*	shadowShader;
+			TextureBase* shadowTex;
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
-			OGLShader* skyBoxShader;
+			ShaderBase* skyBoxShader;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			TextureBase* gBufferDepthTex; // Depth goes here
@@ -78,9 +81,15 @@ namespace NCL {
 			TextureBase* lightEmissiveTex; // emissive lighting
 			TextureBase* lightSpecularTex; // specular lighting
 
-			OGLShader* combineShader;
-			OGLShader* lightShader;
-			OGLShader* hudShader;
+			GLuint postFBO; // FBO for our post process pass
+			TextureBase* postTexture[2]; // post process texture [0] and [1]
+			int lastRendererdPostTex = 0;
+
+			ShaderBase* combineShader;
+			ShaderBase* presentShader;
+			ShaderBase* pointLightShader;
+			ShaderBase* directionalLightShader;
+			ShaderBase* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
 

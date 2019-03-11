@@ -8,13 +8,22 @@
 #include "../Plugins/OpenGLRendering/OGLTexture.h"
 #include "../Common/TextureLoader.h"
 #include "../Common/Assets.h"
+
+
+#include <fstream>
+#include <string>
+#include "PlayerPrefab.h"
+#include "ResourcePrefab.h"
+
+
+
 #include "../Common/OBJGeometry.h"
 
 using namespace NCL;
 using namespace CSC8503;
 
 ExampleScene::ExampleScene() : Scene() {
-  physics->SetGravity(Vector3(0, -4, 0));
+  physics->SetGravity(Vector3(0, -100, 0));
 
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
@@ -25,22 +34,31 @@ ExampleScene::ExampleScene() : Scene() {
   RegisterConsoleCommands();
 }
 
+
+
+
 void ExampleScene::ResetWorld() {
-  // Floor
-  AddCubeToWorld(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(3100, 10, 3100), 0,0.2f);
 
-  //Player
-  auto player = AddCubeToWorld(Vector3(0, 20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100);
-  player->AddComponent<Player*>((ScriptObject*)new Player(player));
-  player->SetTag(LayerAndTag::Tags::Player);
-  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0),
+		Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
+	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
+	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
+	 //Player
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
 
-  auto resource1 = AddCubeToWorld(Vector3(50, 20, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
-  auto resource2 = AddCubeToWorld(Vector3(100, 20, 100), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f);
-  resource1->SetName("Resource 1");
-  resource2->SetName("Resource 2");
-  resource1->AddComponent<Resource*>((ScriptObject*)new Resource(resource1));
-  resource2->AddComponent<Resource*>((ScriptObject*)new Resource(resource2));
+	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+	resource1->SetName("Resource 1");
+
+	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+	resource2->SetName("Resource 2");
+
+	world->AddGameObject(player);
+	world->AddGameObject(resource1);
+	world->AddGameObject(resource2);
+	world->AddGameObject(floor);
+
+	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+  
 
   // OBJ file example
   //OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("full_shop.obj");

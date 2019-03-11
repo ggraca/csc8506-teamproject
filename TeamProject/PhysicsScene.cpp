@@ -8,6 +8,8 @@
 
 #include "../Common/Assets.h"
 #include <fstream>
+#include "PlayerPrefab.h"
+#include "ResourcePrefab.h"
 
 
 
@@ -21,33 +23,27 @@ PhysicsScene::PhysicsScene() : Scene() {
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
-
-  GameObject::SetGameWorld(world);
-
 }
 
 void PhysicsScene::ResetWorld() {
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
-  
+ 
+  auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
    //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-  player->AddComponent<Player*>((Component*)new Player(player));
-  player->SetTag(LayerAndTag::Tags::Player);
-  player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-  player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
-  player->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 0.0f, 0.0f, 1.0f), 100.0f, 6.0f));
-  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-
-  audio->SetPlayer(player);
-  audio->SetCamera(world->GetMainCamera());
-
-  auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+  
+  auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);
   resource1->SetName("Resource 1");
-  resource1->AddComponent<Resource*>((Component*)new Resource(resource1));
 
-  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
   resource2->SetName("Resource 2");
-  resource2->AddComponent<Resource*>((Component*)new Resource(resource2));
+  
+  world->AddGameObject(player);
+  world->AddGameObject(resource1);
+  world->AddGameObject(resource2);
+  world->AddGameObject(floor);
+
+
+  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
 
 PhysicsScene::~PhysicsScene() {

@@ -63,5 +63,10 @@ void DamageControl::ResetDamageControl()
 	typeOfDamage = DamageType::SingleShot;
 }
 
+void DamageControl::SetDamage(int d)
+{
+	damage = d;
+}
+
 
 

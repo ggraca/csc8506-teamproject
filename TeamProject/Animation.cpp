@@ -1,6 +1,6 @@
 #include "Animation.h"
-
-
+#include "PhysicsObject.h"
+#include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 Animation::Animation(int fps = 60)
 {
@@ -75,12 +75,11 @@ void Animation::UpdateAnimation(GameObject * obj, float dt)
 
 void Animation::UpdateObjectTransform(GameObject * obj)
 {
-	obj->GetTransform().SetLocalScale(obj->GetTransform().GetLocalScale()+interpolation->localScale);
-	obj->GetTransform().SetLocalPosition(obj->GetTransform().GetLocalPosition()+interpolation->localPosition);
+	obj->GetTransform().ForceUpdateScaleWithTransform(obj->GetTransform().GetLocalScale()+interpolation->localScale);
+	obj->GetTransform().ForceUpdateLocalPositionWithTransform(obj->GetTransform().GetLocalPosition()+interpolation->localPosition);
 	auto currentRotation = obj->GetTransform().GetLocalOrientation().ToEuler();
 	currentRotation += interpolation->localRotation;
-	obj->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(currentRotation.x, currentRotation.y, currentRotation.z));
-	obj->GetTransform().UpdateMatrices();
+	obj->GetTransform().ForceUpdateLocalRotationWithTransform(Quaternion::EulerAnglesToQuaternion(currentRotation.x, currentRotation.y, currentRotation.z));
 }
 
 void Animation::CalculateInterpolation()
@@ -124,6 +123,17 @@ void Animation::SetupFirstFrameIterations(GameObject * obj)
 	currentFrame->localScale = obj->GetTransform().GetLocalScale();
 
 	nextFrame = keyFrames[currentIndex + 1];
+}
+
+void Animation::ResetAnimation()
+{
+	currentFrame = nullptr;
+	nextFrame = nullptr;
+	interpolation = nullptr;
+	currentTime = -1;
+	currentIndex = -1;
+	hasAnimationStarted = false;
+	hasAnimationFinished = false;
 }
 
 void Animation::ClearKeyFrames()
