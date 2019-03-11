@@ -17,7 +17,7 @@ public:
 		Resources,
 		ResourceParent,
 		CaptureParent,
-		Destructable,
+		Destructible,
 		Occupied,
 		Enemy,
 		EnemyProjectile

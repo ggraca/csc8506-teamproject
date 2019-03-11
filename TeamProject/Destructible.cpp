@@ -1,31 +1,31 @@
-#include "Destructable.h"
+#include "Destructible.h"
 #include "InputManager.h"
 
-Destructable::Destructable(GameObject * gameObject):ScriptObject(gameObject)
+Destructible::Destructible(GameObject * gameObject):ScriptObject(gameObject)
 {
 	resourceDimensions = Vector3(5, 5, 5);
 }
 
-Destructable::~Destructable()
+Destructible::~Destructible()
 {
 }
 
 
-void Destructable::Awake()
+void Destructible::Awake()
 {
 }
 
-void Destructable::Start()
+void Destructible::Start()
 {
 
 }
 
-void Destructable::Update(float dt)
+void Destructible::Update(float dt)
 {
 	CheckIfDestroyed();
 }
 
-void Destructable::CheckIfDestroyed()
+void Destructible::CheckIfDestroyed()
 {
 	HealthManager * health = gameObject->GetComponent<HealthManager*>();
 	if (health->IsDead())
@@ -38,20 +38,20 @@ void Destructable::CheckIfDestroyed()
 	}
 }
 
-void Destructable::LateUpdate(float dt)
+void Destructible::LateUpdate(float dt)
 {
 }
 
-void Destructable::OnCollisionBegin(GameObject * otherObject)
+void Destructible::OnCollisionBegin(GameObject * otherObject)
 {
 }
 
 
-void Destructable::OnCollisionEnd(GameObject * otherObject)
+void Destructible::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
-void Destructable::GenerateResource()
+void Destructible::GenerateResource()
 {
 
 	Vector3 destPosition = gameObject->GetTransform().GetWorldPosition();

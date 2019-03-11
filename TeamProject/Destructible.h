@@ -10,11 +10,11 @@ using namespace NCL;
 using namespace CSC8503;
 
 
-class Destructable: virtual public ScriptObject
+class Destructible: virtual public ScriptObject
 {
 public:
-	Destructable(GameObject * gameObject);
-	~Destructable();
+	Destructible(GameObject * gameObject);
+	~Destructible();
 
 	void Awake() override;
 	void Start() override;

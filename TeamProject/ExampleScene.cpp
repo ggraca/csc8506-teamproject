@@ -14,7 +14,7 @@
 #include <string>
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
-#include "Destructable.h"
+#include "Destructible.h"
 
 
 #include "../Common/OBJGeometry.h"
@@ -50,7 +50,7 @@ void ExampleScene::ResetWorld() {
 	resource2->SetName("Resource 2");
 
 	auto des = new CubePrefab(Vector3(500, -10, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
-	des->AddComponent<Destructable*>(new Destructable(des));
+	des->AddComponent<Destructible*>(new Destructible(des));
 	des->AddComponent<HealthManager*>(new HealthManager(des));
 	des->GetComponent<HealthManager*>()->SetHealth(0);
 	world->Instantiate(des);
