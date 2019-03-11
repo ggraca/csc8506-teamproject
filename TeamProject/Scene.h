@@ -3,22 +3,26 @@
 #include "AudioEngine.h"
 #include "BulletPhysics.h"
 
-namespace NCL {
-	namespace CSC8503 {
-		class Scene		{
-		public:
-			Scene();
-			~Scene();
+class Scene {
+public:
+	Scene();
+	virtual ~Scene();
 
-			virtual void UpdateGame(float dt) = 0;
-			GameWorld* GetGameWorld() const { return world; }
-			BulletPhysics* physics; //TODO Make protected again?
+	virtual void Update(float dt);
 
-		protected:
-			virtual void InitWorld();
+	GameWorld* GetGameWorld() const { return world; }
+	// TODO: We need this for the HUD. But we should remove this once it is component based
+	// void SetRenderer(GameTechRenderer* gtr) { renderer = gtr; }
 
-			GameWorld* world;
-			CAudioEngine* audio;
-		};
-	}
-}
+	BulletPhysics* physics; // TODO: Make this protected again?
+
+protected:
+	virtual void EarlyUpdate(float dt) {};
+	virtual void LateUpdate(float dt) {};
+
+	virtual void InitWorld();
+	
+	// GameTechRenderer* renderer;
+	GameWorld* world;
+	CAudioEngine* audio;
+};

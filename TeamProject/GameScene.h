@@ -1,6 +1,7 @@
 #pragma once
+
 #include "GameTechRenderer.h"
-#include "GameScene.h"
+#include "Scene.h"
 #include "Console.h"
 #include "DebugMenu.h"
 #include "HUD.h"
@@ -11,11 +12,16 @@
 #include "CameraControl.h"
 
 
-class ExampleScene : public GameScene {
+class GameScene : public Scene {
 public:
-	ExampleScene();
-	~ExampleScene() {};
+	GameScene();
+	virtual ~GameScene() {};
 
 protected:
-	void ResetWorld();
+	void LateUpdate(float dt) override;
+	void RegisterConsoleCommands();
+
+	DebugMenu debugMenu;
+	Console console;
+	HUD hud;
 };

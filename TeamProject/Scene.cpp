@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Light.h"
 
+
 Scene::Scene() {
   world = new GameWorld();
   GameObject::SetGameWorld(world);
@@ -19,6 +20,16 @@ Scene::~Scene() {
 	delete audio;
 	delete physics;
 	delete world;
+}
+
+void Scene::Update(float dt) {
+	EarlyUpdate(dt);
+
+	world->UpdateWorld(dt);
+	physics->Update(dt);
+	// audio->Update();
+
+	LateUpdate(dt);
 }
 
 void Scene::InitWorld() {

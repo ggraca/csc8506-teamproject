@@ -9,6 +9,7 @@ Game::Game() {
 	InitialiseAssets();
 
 	currentScene = new ExampleScene();
+	// currentScene->SetRenderer(renderer);
 	
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
@@ -27,7 +28,7 @@ Game::~Game() {
 }
 
 void Game::Update(float dt) {
-	currentScene->UpdateGame(dt);
+	currentScene->Update(dt);
 	renderer->Render();
 }
 

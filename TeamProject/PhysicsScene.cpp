@@ -103,10 +103,8 @@ void PhysicsScene::UpdateGame(float dt) {
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
 		world->SwitchToTPS();
 	}
-  world->UpdateWorld(dt);
 
   UpdateKeys();
-  physics->Update(dt);
   //renderer->Update(dt);
   //world->HandleObjectsToDestroy();
   
@@ -122,8 +120,6 @@ void PhysicsScene::UpdateGame(float dt) {
   hud.Update(dt, renderer);
 
   renderer->Render();*/
-
-  audio->Update();
 }
 
 void PhysicsScene::DebugScene(float dt) {
