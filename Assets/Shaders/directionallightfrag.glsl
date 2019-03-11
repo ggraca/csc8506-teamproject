@@ -56,7 +56,7 @@ void main (void) {
 	float ao = material.b;
 
 	vec4 finalCol = (vec4(lightColour.xyz * lambert, 1.0) * lightBrightness);
-	vec4 specularCol = vec4(lightColour.xyz * sFactor, 1.0) * specular;
+	vec4 specularCol = vec4(lightColour.xyz * sFactor, 1.0) * specular * lightBrightness;
 	
 	if (drawShadows){
 		finalCol = finalCol * shadow;

@@ -304,6 +304,7 @@ void GameTechRenderer::RenderLights() {
 
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
 			BindMatrix4ToShader(projMatrix, "projMatrix");
 			BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
 			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition(), "lightPos");
@@ -346,6 +347,7 @@ void GameTechRenderer::RenderLights() {
 
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
 			BindMatrix4ToShader(projMatrix, "projMatrix");
 			BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
 			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition(), "lightPos");

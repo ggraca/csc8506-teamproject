@@ -65,6 +65,7 @@ void Scene::InitialiseAssets() {
   floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
   floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
   floorMat->AddTextureParameter("metalnessTex", pbrWoodMet);
+  floorMat->AddTextureParameter("aoTex", pbrWoodAO);
   Matrix4 texMatrix;
   texMatrix.ToIdentity();
   floorMat->SetTextureMatrix(texMatrix * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
