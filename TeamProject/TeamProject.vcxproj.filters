@@ -47,6 +47,9 @@
     <ClCompile Include="StateMachine.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="StateMachine.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

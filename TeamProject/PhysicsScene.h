@@ -12,6 +12,7 @@
 #include "Resource.h"
 #include "InputManager.h"
 #include "CameraControl.h"
+#include "Menu.h"
 
 namespace NCL {
   namespace CSC8503 {
@@ -36,6 +37,7 @@ namespace NCL {
       DebugMenu debugMenu;
       Console console;
 	  HUD hud;
+	  Menu menu;
 	  
 	  StateMachine* objectStateMachine;
     };
