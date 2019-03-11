@@ -40,7 +40,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		shape = new btSphereShape(btScalar(dimensions.x));
 	}
 	if (type == cylinder) {
-		shape = new btCylinderShape(btVector3(btScalar(2*dimensions.x), btScalar(dimensions.y), btScalar(2*dimensions.z)));
+		shape = new btCylinderShape(btVector3(btScalar(0.5 * dimensions.x), btScalar(0.5 * dimensions.y), btScalar(0.5 * dimensions.z)));
 	}
 	if (type == cone) {
 		shape = new btConeShape(btScalar(dimensions.x), btScalar(2.0 * dimensions.y)); //TODO Radius and height
