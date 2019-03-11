@@ -50,8 +50,8 @@ void CameraControl::UpdateCamera()
 
 	if (isTPS)
 	{
-		pitch = min(pitch, 90.0f);
-		pitch = max(pitch, -10.0f);
+		pitch = min(pitch, 50.0f);
+		pitch = max(pitch, -25.0f);
 	}
 	else
 	{
@@ -71,9 +71,6 @@ void CameraControl::UpdateCamera()
 
 	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(pitch, yaw, roll));
 	gameObject->GetTransform().UpdateMatrices();
-
-	//GameObject::Find("Cube")->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, yaw, 0));
-	//GameObject::Find("Cube")->GetTransform().UpdateMatrices();
 }
 
 void CameraControl::LateUpdate(float dt)
