@@ -79,7 +79,8 @@ void PhysicsScene::UpdateKeys() {
 	//}
 }
 
-void PhysicsScene::EarlyUpdate(float dt) {
+void PhysicsScene::LateUpdate(float dt) {
+	GameScene::LateUpdate(dt);
 	UpdateKeys();
   
 	//bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));

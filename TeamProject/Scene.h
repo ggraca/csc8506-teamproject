@@ -21,8 +21,6 @@ public:
 protected:
 	virtual void EarlyUpdate(float dt) {};
 	virtual void LateUpdate(float dt) {};
-
-	virtual void InitWorld();
 	
 	GameTechRenderer* renderer;
 	GameWorld* world;

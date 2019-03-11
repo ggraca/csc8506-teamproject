@@ -1,10 +1,16 @@
 #include "GameScene.h"
+#include "Light.h"
 
 
 GameScene::GameScene() : Scene() {
 	debugMenu = DebugMenu();
 	console = Console();
 	RegisterConsoleCommands();
+
+	GameObject* light = new GameObject("Directional Light");
+	light->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(90.0f, 0.0f, 0.0f));
+	light->AddComponent<Light*>(new Light(LightType::Directional, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 1.0f));
+	world->Instantiate(light);
 }
 
 void GameScene::LateUpdate(float dt) {

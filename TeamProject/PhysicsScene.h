@@ -14,7 +14,7 @@ public:
     PhysicsScene();
     ~PhysicsScene();
 
-    void EarlyUpdate(float dt) override;
+    void LateUpdate(float dt) override;
 	
 protected:
     void ResetWorld();
