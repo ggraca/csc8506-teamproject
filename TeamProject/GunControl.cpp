@@ -60,12 +60,12 @@ void GunControl::Fire()
 
 	if (children.size() > 0)
 	{
-		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() - Vector3(0,10,0));
+		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetChildrenList()[currentGun=!currentGun]->GetWorldPosition() + CalculateDirection() *20.0f );
 		children[0]->GetComponent<Resource*>()->Reset();
 		children[0]->GetComponent<DamageControl*>()->SetDamage(4);
 
 		Vector3 projMov = CalculateDirection() * projectileSpeed;
-		projMov.y = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() - Vector3(0, 10, 0) ).y;
+		projMov.y = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition()).y + 60;
 		children[0]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
 		gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
 		

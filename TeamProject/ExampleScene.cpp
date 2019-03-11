@@ -45,14 +45,15 @@ void ExampleScene::ResetWorld() {
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10),10, 0.2f, 0.4f);
 	player->AddComponent<GunControl*>(new GunControl(player));
 
-	GameObject * playerLeft = new GameObject();
+	auto * playerLeft = new CubePrefab();
 	
-	GameObject * playerRight = new GameObject();
+	auto * playerRight = new CubePrefab();
 	
 	playerLeft->SetParent(player);
 	playerRight->SetParent(player);
-	playerRight->GetTransform().SetLocalPosition(Vector3(20,0, 0));
-	playerLeft->GetTransform().SetLocalPosition(Vector3(-20,0,0));
+	playerRight->GetTransform().SetLocalPosition(Vector3(2,0, 1));
+	playerLeft->GetTransform().SetLocalPosition(Vector3(-2,0,1));
+
 	auto resource1 = new ResourcePrefab(Vector3(100, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f, 0.4f);
 	resource1->SetName("Resource 1");
 
@@ -63,7 +64,8 @@ void ExampleScene::ResetWorld() {
 	world->AddGameObject(resource1);
 	world->AddGameObject(resource2);
 	world->AddGameObject(floor);
-
+	world->AddGameObject(playerLeft);
+	world->AddGameObject(playerRight);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
   
 

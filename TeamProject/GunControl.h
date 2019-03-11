@@ -22,10 +22,12 @@ public:
 
 protected:
 
-	float projectileSpeed = 1000.0f;
+	float projectileSpeed = 2000.0f;
 	int idealProjectileDamage = 4;
 	GameObject * camera = nullptr;
+	
 
 	Vector3 CalculateDirection();
+	bool currentGun = false;
 };
 
