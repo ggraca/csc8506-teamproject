@@ -23,7 +23,7 @@ using namespace NCL;
 using namespace CSC8503;
 
 ExampleScene::ExampleScene() : Scene() {
-  physics->SetGravity(Vector3(0, -4, 0));
+  physics->SetGravity(Vector3(0, -100, 0));
 
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
