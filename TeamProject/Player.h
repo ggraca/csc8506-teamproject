@@ -30,5 +30,6 @@ protected:
 	float movementSpeed;
 	float jumpSpeed;
 	float dodgeAmount;
+	float dumpAmount;
 };
 
