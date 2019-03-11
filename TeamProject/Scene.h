@@ -2,6 +2,8 @@
 
 #include "AudioEngine.h"
 #include "BulletPhysics.h"
+#include "GameTechRenderer.h"
+
 
 class Scene {
 public:
@@ -12,7 +14,7 @@ public:
 
 	GameWorld* GetGameWorld() const { return world; }
 	// TODO: We need this for the HUD. But we should remove this once it is component based
-	// void SetRenderer(GameTechRenderer* gtr) { renderer = gtr; }
+	void SetRenderer(GameTechRenderer* gtr) { renderer = gtr; }
 
 	BulletPhysics* physics; // TODO: Make this protected again?
 
@@ -22,7 +24,7 @@ protected:
 
 	virtual void InitWorld();
 	
-	// GameTechRenderer* renderer;
+	GameTechRenderer* renderer;
 	GameWorld* world;
 	CAudioEngine* audio;
 };

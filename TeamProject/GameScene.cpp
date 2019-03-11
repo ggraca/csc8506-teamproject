@@ -1,17 +1,4 @@
-#include <fstream>
-#include <string>
-
-#include "ExampleScene.h"
-#include "GameWorld.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "../Common/TextureLoader.h"
-#include "../Common/Assets.h"
-#include "PlayerPrefab.h"
-#include "ResourcePrefab.h"
-#include "Destructible.h"
-#include "../Common/OBJGeometry.h"
+#include "GameScene.h"
 
 
 GameScene::GameScene() : Scene() {
@@ -34,10 +21,10 @@ void GameScene::LateUpdate(float dt) {
 		world->SwitchToTPS();
 	}
 
-	//Debug::FlushRenderables();
-	//debugMenu.Update(dt, renderer);
-	//console.Update();
-	//hud.Update(dt, renderer);
+	Debug::FlushRenderables();
+	debugMenu.Update(dt, renderer);
+	console.Update();
+	hud.Update(dt, renderer);
 }
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "GameTechRenderer.h"
 #include "Scene.h"
+#include "GameTechRenderer.h"
+
 
 class Game {
 public:

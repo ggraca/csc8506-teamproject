@@ -1,17 +1,7 @@
-#include <fstream>
-#include <string>
-
 #include "ExampleScene.h"
-#include "GameWorld.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "../Common/TextureLoader.h"
-#include "../Common/Assets.h"
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
 #include "Destructible.h"
-#include "../Common/OBJGeometry.h"
 
 
 ExampleScene::ExampleScene() : GameScene() {

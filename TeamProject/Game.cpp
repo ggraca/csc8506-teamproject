@@ -3,13 +3,14 @@
 #include "InputManager.h"
 #include "../Common/Material.h"
 
+
 Game::Game() {
 	renderer = new GameTechRenderer();
 	// Should this be done in renderer? Or at least part of it?
 	InitialiseAssets();
 
 	currentScene = new ExampleScene();
-	// currentScene->SetRenderer(renderer);
+	currentScene->SetRenderer(renderer);
 	
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);

@@ -4,7 +4,6 @@
 #include "Game.h"
 
 using namespace NCL;
-using namespace CSC8503;
 
 int main(int argc, char** argv) {
 	srand(unsigned(time(NULL)));
