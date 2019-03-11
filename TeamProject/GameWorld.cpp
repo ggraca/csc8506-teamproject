@@ -40,7 +40,7 @@ void GameWorld::SwitchToFPS()
 
 void GameWorld::SwitchToTPS()
 {
-	cameraOffset = Vector3(0, 30, -150);
+	cameraOffset = Vector3(0, 70, -150);
 	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
 
 	if (child)

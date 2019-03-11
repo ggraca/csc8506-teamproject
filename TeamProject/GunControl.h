@@ -18,9 +18,11 @@ public:
 
 	void Awake()  override;
 
+	void Update(float dt) override;
+
 protected:
 
-	float projectileSpeed = 200.0f;
+	float projectileSpeed = 500.0f;
 	int idealProjectileDamage = 4;
 	GameObject * camera = nullptr;
 
