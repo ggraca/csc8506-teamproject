@@ -71,9 +71,6 @@ void CameraControl::UpdateCamera()
 
 	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(pitch, yaw, roll));
 	gameObject->GetTransform().UpdateMatrices();
-
-	//GameObject::Find("Cube")->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, yaw, 0));
-	//GameObject::Find("Cube")->GetTransform().UpdateMatrices();
 }
 
 void CameraControl::LateUpdate(float dt)
