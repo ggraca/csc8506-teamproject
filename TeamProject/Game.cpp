@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "ExampleScene.h"
+#include "PhysicsScene.h"
 #include "InputManager.h"
 #include "../Common/Material.h"
 
@@ -9,7 +10,8 @@ Game::Game() {
 	// Should this be done in renderer? Or at least part of it?
 	InitialiseAssets();
 
-	currentScene = new ExampleScene();
+	// currentScene = new ExampleScene();
+	currentScene = new PhysicsScene();
 	currentScene->SetRenderer(renderer);
 	
 	renderer->SetGameWorld(currentScene->GetGameWorld());

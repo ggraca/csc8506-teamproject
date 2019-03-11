@@ -1,49 +1,33 @@
 #include "PhysicsScene.h"
-#include "GameWorld.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "Light.h"
-
-
-#include "../Common/Assets.h"
-#include <fstream>
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
 
 
-
-using namespace NCL;
-using namespace CSC8503;
-
-PhysicsScene::PhysicsScene() : Scene() {
-  ResetWorld();
-  debugMenu = DebugMenu();
-  console = Console();
+PhysicsScene::PhysicsScene() : GameScene() {
+	ResetWorld();
 }
 
 void PhysicsScene::ResetWorld() {
- 
-  auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
-   //Player
-  auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
+
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+	audio->SetPlayer(player);
+
+	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);
+	resource1->SetName("Resource 1");
+
+	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+	resource2->SetName("Resource 2");
   
-  auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);
-  resource1->SetName("Resource 1");
-
-  auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
-  resource2->SetName("Resource 2");
-  
-  world->Instantiate(player);
-  world->Instantiate(resource1);
-  world->Instantiate(resource2);
-  world->Instantiate(floor);
-
-
-  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+	world->Instantiate(player);
+	world->Instantiate(resource1);
+	world->Instantiate(resource2);
+	world->Instantiate(floor);
+	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
 
-PhysicsScene::~PhysicsScene() {}
+PhysicsScene::~PhysicsScene() {
+}
 
 void PhysicsScene::UpdateKeys() {
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
@@ -95,32 +79,12 @@ void PhysicsScene::UpdateKeys() {
 	//}
 }
 
-void PhysicsScene::UpdateGame(float dt) {
-//  world->GetMainCamera()->UpdateCamera(dt);
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
-		world->SwitchToFPS();
-	}
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
-		world->SwitchToTPS();
-	}
-
-  UpdateKeys();
-  //renderer->Update(dt);
-  //world->HandleObjectsToDestroy();
+void PhysicsScene::EarlyUpdate(float dt) {
+	UpdateKeys();
   
-  //bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
-  //bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));
-  //bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
-  //bestcube->GetPhysicsObject()->ApplyForce(Vector3(100000, 0, 10), Vector3(0, -10, 0));
-  //bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
-
-  /*Debug::FlushRenderables();
-  debugMenu.Update(dt, renderer);
-  console.Update();
-  hud.Update(dt, renderer);
-
-  renderer->Render();*/
-}
-
-void PhysicsScene::DebugScene(float dt) {
+	//bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
+	//bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));
+	//bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
+	//bestcube->GetPhysicsObject()->ApplyForce(Vector3(100000, 0, 10), Vector3(0, -10, 0));
+	//bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
 }

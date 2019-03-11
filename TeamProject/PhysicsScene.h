@@ -1,9 +1,7 @@
 #pragma once
 
 #include "GameTechRenderer.h"
-#include "Scene.h"
-#include "Console.h"
-#include "DebugMenu.h"
+#include "GameScene.h"
 #include "Player.h"
 #include "Resource.h"
 #include "InputManager.h"
@@ -11,20 +9,16 @@
 #include "Destructible.h"
 
 
-class PhysicsScene : public Scene {
+class PhysicsScene : public GameScene {
 public:
     PhysicsScene();
     ~PhysicsScene();
-    void UpdateGame(float dt);
+
+    void EarlyUpdate(float dt) override;
 	
 protected:
     void ResetWorld();
-    void DebugScene(float dt);
 	void UpdateKeys();
 
 	GameObject* bestcube;
-
-    DebugMenu debugMenu;
-    Console console;
-	HUD hud;
 };

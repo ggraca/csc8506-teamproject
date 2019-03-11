@@ -11,6 +11,7 @@ Scene::Scene() {
 	world->SetPhysics(physics);
 
 	audio = new CAudioEngine();
+	audio->SetCamera(world->GetMainCamera());
 	world->SetAudio(audio);
 
 	InitWorld();
@@ -27,7 +28,7 @@ void Scene::Update(float dt) {
 
 	world->UpdateWorld(dt);
 	physics->Update(dt);
-	// audio->Update();
+	audio->Update();
 
 	LateUpdate(dt);
 }
