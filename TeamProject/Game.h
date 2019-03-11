@@ -8,6 +8,7 @@ public:
 	Game();
 	~Game();
 	void Update(float dt);
+	void InitialiseAssets();
 
 private:
 	GameTechRenderer* renderer;

@@ -17,9 +17,6 @@ using namespace NCL;
 using namespace CSC8503;
 
 PhysicsScene::PhysicsScene() : Scene() {
-  Window::GetWindow()->ShowOSPointer(false);
-  Window::GetWindow()->LockMouseToWindow(true);
-
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
@@ -46,9 +43,7 @@ void PhysicsScene::ResetWorld() {
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
 
-PhysicsScene::~PhysicsScene() {
-	delete tempTex;
-}
+PhysicsScene::~PhysicsScene() {}
 
 void PhysicsScene::UpdateKeys() {
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {

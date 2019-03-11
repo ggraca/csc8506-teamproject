@@ -43,6 +43,9 @@
     <ClCompile Include="Game.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -168,6 +171,9 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
