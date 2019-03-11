@@ -326,10 +326,12 @@ void GameTechRenderer::RenderLights() {
 
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
 			BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 			BindMatrix4ToShader(projMatrix, "cameraProjMatrix");
 			Vector3 rot = activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1);
 			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1), "lightDir");
+			BindVector4ToShader(ambientColour, "ambientColour");
 			BindIntToShader(drawShadows, "drawShadows");
 			BindTextureToShader(shadowTex, "shadowTex", 20);
 			BindMesh(screenQuad);
@@ -404,14 +406,10 @@ void GameTechRenderer::CombineBuffers() {
 	BindMatrix4ToShader(viewMatrix, "viewMatrix");
 	BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 	BindMatrix4ToShader(identity, "textureMatrix");
-	BindVector4ToShader(ambientColour, "ambientColour");
 
 	BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
-	BindTextureToShader(gBufferDepthTex, "depthTex", 3);
-	BindTextureToShader(gBufferNormalTex, "normTex", 4);
-	BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
-	BindTextureToShader(lightEmissiveTex, "emissiveTex", 6);
-	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 7);
+	BindTextureToShader(lightEmissiveTex, "emissiveTex", 3);
+	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 4);
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
