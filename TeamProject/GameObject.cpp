@@ -40,7 +40,7 @@ void GameObject::SetParent(GameObject * parent)
 	if (parent)
 	{
 		GetTransform().SetParent(&parent->GetTransform());
-		GetTransform().AddChild(&parent->GetTransform());
+		parent->GetTransform().AddChild(&GetTransform());
 	}
 	else
 	{

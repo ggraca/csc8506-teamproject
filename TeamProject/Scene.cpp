@@ -23,7 +23,6 @@ Scene::Scene() {
   GameObject::SetGameWorld(world);
   audio = new CAudioEngine();
   world->SetAudio(audio);
-  world->GetAudio()->SetCamera(world->GetMainCamera());
 
   Debug::SetRenderer(renderer);
   InitialiseAssets();

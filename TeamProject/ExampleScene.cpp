@@ -42,13 +42,21 @@ void ExampleScene::ResetWorld() {
 
 	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
 	 //Player
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10),10, 0.2f, 0.4f);
 	player->AddComponent<GunControl*>(new GunControl(player));
 
-	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+	GameObject * playerLeft = new GameObject();
+	
+	GameObject * playerRight = new GameObject();
+	
+	playerLeft->SetParent(player);
+	playerRight->SetParent(player);
+	playerRight->GetTransform().SetLocalPosition(Vector3(20,0, 0));
+	playerLeft->GetTransform().SetLocalPosition(Vector3(-20,0,0));
+	auto resource1 = new ResourcePrefab(Vector3(100, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f, 0.4f);
 	resource1->SetName("Resource 1");
 
-	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+	auto resource2 = new ResourcePrefab(Vector3(140, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
 
 	world->AddGameObject(player);
