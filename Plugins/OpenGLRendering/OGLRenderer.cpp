@@ -232,6 +232,21 @@ void OGLRenderer::BindFloatToShader(const float val, const std::string& uniform)
 	glUniform1f(slot, val);
 }
 
+void OGLRenderer::BindVector2ToShader(const Vector2& val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform2fv(slot, 1, (float*)&val);
+}
+
 void OGLRenderer::BindVector3ToShader(const Vector3& val, const std::string& uniform) const {
 	if (!boundShader) {
 		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
