@@ -14,7 +14,7 @@ GameWorld::GameWorld()	{
 
 void GameWorld::InitCamera()
 {
-	cameraOffset = Vector3(0, 30, -150);
+	cameraOffset = Vector3(0, 70, -150);
 
 	mainCamera = new GameObject();
 	mainCamera->AddComponent<CameraControl*>((Component*)new CameraControl(mainCamera));
