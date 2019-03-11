@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "InputManager.h"
-
+#include "GunControl.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -18,6 +18,10 @@ void Player::Start()
 void Player::Update(float dt)
 {
 	PlayerMovement(dt);
+	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::FIRE))
+	{
+		if(resourceCount > 0 )gameObject->GetComponent<GunControl*>()->Fire();
+	}
 }
 
 void Player::PlayerMovement(float dt)

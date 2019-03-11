@@ -52,13 +52,16 @@ void GunControl::DeactivateGun()
 void GunControl::Fire()
 {
 	//This part will change later on
-	auto children = GameObject::GetChildrenOfObject(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Player));
+	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
 
 	if (children.size() > 0)
 	{
+		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetWorldPosition() + Vector3(100, 0, 100));
 		children[0]->GetComponent<Resource*>()->Reset();
 		children[0]->GetComponent<DamageControl*>()->SetDamage(1);
-		children[0]->GetComponent<PhysicsObject*>()->GetRigidbody()->addConstraintRef()
+		children[0]->GetComponent<Resource*>()->Reset();
+		Vector3 projMov = CalculateDirection() * projectileSpeed;
+		children[0]->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(projMov.x,projMov.y,projMov.z));
 		gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
 		
 	}

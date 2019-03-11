@@ -18,6 +18,7 @@
 
 
 #include "../Common/OBJGeometry.h"
+#include"GunControl.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -42,6 +43,7 @@ void ExampleScene::ResetWorld() {
 	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
 	 //Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+	player->AddComponent<GunControl*>(new GunControl(player));
 
 	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource1->SetName("Resource 1");
