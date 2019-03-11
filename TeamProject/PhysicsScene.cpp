@@ -6,6 +6,7 @@
 #include "Light.h"
 
 
+
 #include "../Common/Assets.h"
 #include <fstream>
 #include "PlayerPrefab.h"
@@ -23,6 +24,7 @@ PhysicsScene::PhysicsScene() : Scene() {
   ResetWorld();
   debugMenu = DebugMenu();
   console = Console();
+  InitStateMachine();
 }
 
 void PhysicsScene::ResetWorld() {
@@ -36,6 +38,9 @@ void PhysicsScene::ResetWorld() {
 
   auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
   resource2->SetName("Resource 2");
+
+  audio->SetPlayer(player);
+  audio->SetCamera(world->GetMainCamera());
   
   world->AddGameObject(player);
   world->AddGameObject(resource1);
@@ -48,6 +53,8 @@ void PhysicsScene::ResetWorld() {
 
 PhysicsScene::~PhysicsScene() {
 	delete tempTex;
+	delete worldState;
+	delete objectStateMachine;
 }
 
 void PhysicsScene::UpdateKeys() {
@@ -70,6 +77,11 @@ void PhysicsScene::UpdateKeys() {
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_M)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -10));
+	}
+
+	//Menu
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) {
+		showMenu = !showMenu;		
 	}
 
 	//HUD TESTING BEGINS
@@ -111,6 +123,7 @@ void PhysicsScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   UpdateKeys();
+  objectStateMachine->Update();
   physics->Update(dt);
   renderer->Update(dt);
   world->ClearObjectsToDestroy();
@@ -129,6 +142,44 @@ void PhysicsScene::UpdateGame(float dt) {
   renderer->Render();
 
   audio->Update();
+}
+
+void PhysicsScene::ShowMenu()
+{
+	renderer->DrawString("MAIN MENU", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + 200), Vector4(0, 0, 1, 1));
+	renderer->DrawString("PRESS 1 TO PLAY LEVEL ONE", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + 150), Vector4(0, 0, 1, 1));
+	renderer->DrawString("PRESS 2 TO PLAY LEVEL TWO", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + 100), Vector4(0, 0, 1, 1));
+	renderer->DrawString("PRESS 3 TO PLAY LEVEL THREE", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + 50), Vector4(0, 0, 1, 1));
+	renderer->DrawString("PRESS 4 TO PLAY LEVEL FOUR", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2), Vector4(0, 0, 1, 1));
+	renderer->DrawString("PRESS R TO RESET LEVEL", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 - 50), Vector4(0, 0, 1, 1));
+	renderer->DrawString("PRESS Q TO TOGGLE FREE ROAM CAMERA", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 - 100), Vector4(0, 0, 1, 1));
+}
+
+void PhysicsScene::UsedForMenu(void* data)
+{
+	//This doesn't do anything but helps with the menu toggle.
+}
+
+void PhysicsScene::InitStateMachine()
+{
+	objectStateMachine = new StateMachine();
+
+	//World
+	std::function<void(PhysicsScene*, void*)> WorldFunc = &PhysicsScene::UsedForMenu;
+	worldState = new LevelState(WorldFunc, (void *)& worldState, this);
+	objectStateMachine->AddState(worldState);
+
+	//Menu
+	std::function<void(PhysicsScene*)> menuFunc1 = &PhysicsScene::ShowMenu;
+	MenuState* mainMenu = new MenuState(menuFunc1, this);
+	objectStateMachine->AddState(mainMenu);
+
+	//Menu transition
+	ShowMenuTransition<bool&, bool>* worldToMainMenu = new ShowMenuTransition <bool&, bool >(ShowMenuTransition <bool&, bool>::EqualsTransition, showMenu, true, worldState, mainMenu, this);
+	ShowMenuTransition<bool&, bool>* mainMenuToWorld = new ShowMenuTransition <bool&, bool>(ShowMenuTransition <bool&, bool>::EqualsTransition, showMenu, false, mainMenu, worldState, this);
+	objectStateMachine->AddTransition(worldToMainMenu);
+	objectStateMachine->AddTransition(mainMenuToWorld);
+	
 }
 
 void PhysicsScene::DebugScene(float dt) {

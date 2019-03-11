@@ -38,6 +38,15 @@
     <ClCompile Include="SpherePrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="StateTransition.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -161,6 +170,15 @@
     </ClInclude>
     <ClInclude Include="SpherePrefab.h">
       <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="StateTransition.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,9 @@
 
 #include "GameTechRenderer.h"
 #include "Scene.h"
+#include "StateMachine.h"
+#include "StateTransition.h"
+#include "State.h"
 
 #include "Console.h"
 #include "DebugMenu.h"
@@ -22,12 +25,19 @@ namespace NCL {
       void ResetWorld();
       void DebugScene(float dt);
 	  void UpdateKeys();
+	  void InitStateMachine();
+	  void ShowMenu();
+
+	  bool showMenu = false;
+	  LevelState* worldState;
+	  void UsedForMenu(void* data);
 
 	  GameObject* bestcube;
-
       DebugMenu debugMenu;
       Console console;
 	  HUD hud;
+	  
+	  StateMachine* objectStateMachine;
     };
   }
 }
