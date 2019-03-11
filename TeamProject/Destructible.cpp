@@ -13,6 +13,7 @@ Destructible::~Destructible()
 
 void Destructible::Awake()
 {
+	health = gameObject->GetComponent<HealthManager*>();
 }
 
 void Destructible::Start()
@@ -27,7 +28,8 @@ void Destructible::Update(float dt)
 
 void Destructible::CheckIfDestroyed()
 {
-	HealthManager * health = gameObject->GetComponent<HealthManager*>();
+	if (!health) { return; }
+
 	if (health->IsDead())
 	{
 		for (int i = 0; i < (health->GetHealth()/25);i++)

@@ -29,5 +29,6 @@ private:
 
 	void GenerateResource();
 	Vector3 resourceDimensions;
+	HealthManager * health;
 };
 

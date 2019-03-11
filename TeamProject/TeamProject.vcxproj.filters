@@ -37,7 +37,9 @@
     <ClCompile Include="SpherePrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
-    <ClCompile Include="Destructible.cpp" />
+    <ClCompile Include="Destructible.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -78,9 +80,6 @@
       <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="DamageControl.cpp">
-      <Filter>Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="Destructable.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
@@ -161,7 +160,9 @@
     <ClInclude Include="SpherePrefab.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
-    <ClInclude Include="Destructible.h" />
+    <ClInclude Include="Destructible.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -177,9 +178,6 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="DamageControl.h">
-      <Filter>Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Destructable.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
