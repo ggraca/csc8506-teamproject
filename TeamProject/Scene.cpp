@@ -34,8 +34,8 @@ void Scene::InitialiseAssets() {
   sphereMesh = (OGLMesh*) Assets::AssetManager::LoadMesh("sphere2.msh");
   renderer->SetLightMesh(sphereMesh);
 
-  cylinderMesh = Assets::AssetManager::LoadOBJ("cylinder4.obj");
-  coneMesh = Assets::AssetManager::LoadOBJ("cone6.obj");
+  cylinderMesh = Assets::AssetManager::LoadOBJ("cylinder.obj");
+  coneMesh = Assets::AssetManager::LoadOBJ("cone.obj");
 
   basicTex = (OGLTexture*)Assets::AssetManager::LoadTexture("checkerboard.png");
   brickTex = (OGLTexture*)Assets::AssetManager::LoadTexture("brick.png");

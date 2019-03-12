@@ -70,7 +70,7 @@ void PhysicsScene::ResetWorld() {
   //cone->GetTransform().SetLocalScale(Vector3(1, 1, 1));
   //cone->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cone->GetTransform(), ShapeType::cube, 1, 1, 1));
 
-  InitMixedGridWorld(Vector3(0, 100, 0), 10, 10, 20, 20);
+ // InitMixedGridWorld(Vector3(0, 100, 0), 10, 10, 20, 20);
 
   AddConeToWorld(Vector3(80, 50, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.3f, 0.5f);
 }
