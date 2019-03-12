@@ -13,13 +13,13 @@
 #include "InputManager.h"
 #include "CameraControl.h"
 #include "Destructible.h"
-#include "Menu.h"
+#include "PauseMenu.h"
 
 namespace NCL {
   namespace CSC8503 {
     class PhysicsScene : public Scene {
     public:
-      PhysicsScene();
+      PhysicsScene(bool& quitGame);
       ~PhysicsScene();
       void UpdateGame(float dt);
 	
@@ -30,16 +30,17 @@ namespace NCL {
 	  void InitStateMachine();
 	  void ShowMenu();
 
-	  bool showMenu = false;
+	  bool showPauseMenu = false;
 	  LevelState* worldState;
 	  void UsedForMenu(void* data);
 	  int currentMenuPath = 0;
+	  bool& quitGame;
 
 	  GameObject* bestcube;
       DebugMenu debugMenu;
       Console console;
 	  HUD hud;
-	  Menu menu;
+	  PauseMenu pauseMenu;
 	  
 	  StateMachine* objectStateMachine;
     };

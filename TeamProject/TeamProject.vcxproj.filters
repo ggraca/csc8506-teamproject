@@ -49,7 +49,7 @@
     <ClCompile Include="StateMachine.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
+    <ClCompile Include="PauseMenu.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -184,7 +184,7 @@
     <ClInclude Include="StateMachine.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
+    <ClInclude Include="PauseMenu.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>

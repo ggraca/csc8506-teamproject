@@ -14,14 +14,14 @@ struct MenuEntry
 };
 
 
-class Menu
+class PauseMenu
 {
 public:
-	Menu();
-	~Menu();
-	MenuEntry Menu::AddMenuEntry(int index, string title, bool selected);
+	PauseMenu();
+	~PauseMenu();
+	MenuEntry PauseMenu::AddMenuEntry(int index, string title, bool selected);
 	vector<MenuEntry> MenuEntries(int index) { return menuEntries[index]; }
-	void Update(CAudioEngine* audio, int& currentMenuPath, float dt, GameTechRenderer* renderer);
+	void Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio, int& currentMenuPath, float dt, GameTechRenderer* renderer);
 	void ShowMenu(GameTechRenderer* renderer);
 	
 protected:

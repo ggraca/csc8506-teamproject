@@ -17,7 +17,7 @@
 using namespace NCL;
 using namespace CSC8503;
 
-PhysicsScene::PhysicsScene() : Scene() {
+PhysicsScene::PhysicsScene(bool& qG) : Scene(), quitGame(qG) {
   Window::GetWindow()->ShowOSPointer(false);
   Window::GetWindow()->LockMouseToWindow(true);
 
@@ -80,8 +80,8 @@ void PhysicsScene::UpdateKeys() {
 	}
 
 	//Menu
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) {
-		showMenu = !showMenu;		
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_ESCAPE)) {
+		showPauseMenu = !showPauseMenu;		
 	}
 
 	//HUD TESTING BEGINS
@@ -123,7 +123,7 @@ void PhysicsScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   UpdateKeys();
-  menu.Update(audio, currentMenuPath, dt, renderer);
+  pauseMenu.Update(quitGame, showPauseMenu, audio, currentMenuPath, dt, renderer);
   objectStateMachine->Update();
   physics->Update(dt);
   renderer->Update(dt);
@@ -147,7 +147,7 @@ void PhysicsScene::UpdateGame(float dt) {
 
 void PhysicsScene::ShowMenu()
 {
-	menu.ShowMenu(renderer);
+	pauseMenu.ShowMenu(renderer);
 }
 
 void PhysicsScene::UsedForMenu(void* data)
@@ -170,8 +170,8 @@ void PhysicsScene::InitStateMachine()
 	objectStateMachine->AddState(mainMenu);
 
 	//Menu transition
-	ShowMenuTransition<bool&, bool>* worldToMainMenu = new ShowMenuTransition <bool&, bool >(ShowMenuTransition <bool&, bool>::EqualsTransition, showMenu, true, worldState, mainMenu, this);
-	ShowMenuTransition<bool&, bool>* mainMenuToWorld = new ShowMenuTransition <bool&, bool>(ShowMenuTransition <bool&, bool>::EqualsTransition, showMenu, false, mainMenu, worldState, this);
+	ShowMenuTransition<bool&, bool>* worldToMainMenu = new ShowMenuTransition <bool&, bool >(ShowMenuTransition <bool&, bool>::EqualsTransition, showPauseMenu, true, worldState, mainMenu, this);
+	ShowMenuTransition<bool&, bool>* mainMenuToWorld = new ShowMenuTransition <bool&, bool>(ShowMenuTransition <bool&, bool>::EqualsTransition, showPauseMenu, false, mainMenu, worldState, this);
 	objectStateMachine->AddTransition(worldToMainMenu);
 	objectStateMachine->AddTransition(mainMenuToWorld);
 	

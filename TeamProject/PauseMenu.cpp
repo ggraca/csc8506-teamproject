@@ -1,12 +1,12 @@
-#include "Menu.h"
+#include "PauseMenu.h"
 
 
-MenuEntry Menu::AddMenuEntry(int index, string title, bool selected)
+MenuEntry PauseMenu::AddMenuEntry(int index, string title, bool selected)
 {
 	return MenuEntry(index, title, selected);
 }
 
-Menu::Menu()
+PauseMenu::PauseMenu()
 {
 	//Main Menu
 	menuEntries[0].push_back(AddMenuEntry(0, "Resume Game", true));
@@ -27,11 +27,11 @@ Menu::Menu()
 }
 
 
-Menu::~Menu()
+PauseMenu::~PauseMenu()
 {
 }
 
-void Menu::Update(CAudioEngine* audio, int& currentMenuPath, float dt, GameTechRenderer* renderer)
+void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio, int& currentMenuPath, float dt, GameTechRenderer* renderer)
 {
 	menuPathIndex = currentMenuPath;
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_UP)) {
@@ -68,7 +68,8 @@ void Menu::Update(CAudioEngine* audio, int& currentMenuPath, float dt, GameTechR
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_RETURN)) {
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
-			//Resume game
+			//Resume Game
+			showPauseMenu = !showPauseMenu;
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
@@ -77,7 +78,8 @@ void Menu::Update(CAudioEngine* audio, int& currentMenuPath, float dt, GameTechR
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
 		{
-			//Quit game;
+			//Quit Game
+			quitGame = true;
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][0].selected)
 		{
@@ -85,6 +87,7 @@ void Menu::Update(CAudioEngine* audio, int& currentMenuPath, float dt, GameTechR
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][1].selected)
 		{
+			//Go to Audio Settings
 			currentMenuPath = 2;
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][2].selected)
@@ -106,11 +109,12 @@ void Menu::Update(CAudioEngine* audio, int& currentMenuPath, float dt, GameTechR
 		}
 		else if (menuPathIndex == 2 && menuEntries[2][2].selected)
 		{
+			//Go back to Settings
 			currentMenuPath = 1;
 		}
 	}
 }
-void Menu::ShowMenu(GameTechRenderer* renderer)
+void PauseMenu::ShowMenu(GameTechRenderer* renderer)
 {
 	float offset = 50.0f;
 	for (MenuEntry me : MenuEntries(menuPathIndex))

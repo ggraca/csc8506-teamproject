@@ -19,9 +19,11 @@ int main(int argc, char** argv) {
 	w->ShowConsole(true);
 
 	//Scene* scene = new ExampleScene();
-	Scene* scene = new PhysicsScene();
+	bool quitGame = false;
 
-	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
+	Scene* scene = new PhysicsScene(quitGame);
+	
+	while (w->UpdateWindow() && !quitGame) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;
 
 		if (dt > 3.0f) {
