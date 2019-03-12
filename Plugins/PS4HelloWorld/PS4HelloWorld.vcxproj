@@ -204,11 +204,13 @@
       <Profile Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">sce_ps_orbis</Profile>
       <Profile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">sce_ps_orbis</Profile>
       <Profile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">sce_ps_orbis</Profile>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </OrbisWavePsslc>
     <OrbisWavePsslc Include="VertexShader.pssl">
       <Profile Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">sce_vs_vs_orbis</Profile>
       <Profile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">sce_vs_vs_orbis</Profile>
       <Profile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">sce_vs_vs_orbis</Profile>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </OrbisWavePsslc>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,4 @@
 #pragma once
-#include "../Common/Matrix4.h"
 #include "../Common/Material.h"
 #include "../Common/MeshGeometry.h"
 #include "Component.h"

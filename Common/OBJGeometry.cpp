@@ -1,4 +1,7 @@
 #include "OBJGeometry.h"
+#include "../Plugins/OpenGLRendering/OGLTexture.h"
+#include "../Plugins/OpenGLRendering/OGLMesh.h"
+#include "../Plugins/OpenGLRendering/OGLShader.h"
 
 bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	std::ifstream f(filename.c_str(), std::ios::in);

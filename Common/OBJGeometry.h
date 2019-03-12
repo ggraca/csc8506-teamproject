@@ -11,11 +11,8 @@
 #include "Vector4.h"
 #include "MeshGeometry.h"
 #include "Assets.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "TextureLoader.h"
 #include "Material.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
 
 
 #define OBJCOMMENT		"#"			//The current line of the obj file is a comment

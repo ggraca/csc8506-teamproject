@@ -9,6 +9,7 @@
 
 #ifdef __ORBIS__
 #include "../Plugins/PlayStation4/PS4RendererBase.h"
+#include "../Plugins/PlayStation4/PS4Shader.h"
 #endif
 
 #include "../Common/TextureLoader.h"
@@ -46,6 +47,7 @@ namespace NCL {
 			float health = 1; //(100%);
 			//void UpdateHealthQuad();
 
+			Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
 		protected:
 			void RenderFrame()	override;
@@ -125,6 +127,7 @@ namespace NCL {
 			float health = 1; //(100%);
 			//void UpdateHealthQuad();
 
+			Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
 		protected:
 			void RenderFrame()	override;
@@ -148,14 +151,14 @@ namespace NCL {
 			vector<const RenderObject*> activeObjects;
 
 			//shadow mapping things
-			OGLShader*	shadowShader;
+			PS4Shader*	shadowShader;
 			GLuint		shadowTex;
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
-			OGLShader* skyBoxShader;
+			PS4Shader* skyBoxShader;
 
-			GLuint gBufferFBO; // FBO for our G- Buffer pass
+			NCL::PS4::PS4ScreenBuffer gBufferFBO; // FBO for our G- Buffer pass
 			TextureBase* gBufferDepthTex; // Depth goes here
 			TextureBase* gBufferColourTex; // Albedo goes here
 			TextureBase* gBufferNormalTex; // Normals go here
@@ -165,11 +168,11 @@ namespace NCL {
 			TextureBase* lightEmissiveTex; // emissive lighting
 			TextureBase* lightSpecularTex; // specular lighting
 
-			OGLShader* combineShader;
-			OGLShader* lightShader;
-			OGLShader* hudShader;
+			PS4Shader* combineShader;
+			PS4Shader* lightShader;
+			PS4Shader* hudShader;
 			OGLMesh* lightSphere;
-			OGLMesh* screenQuad;
+			MeshGeometry* screenQuad;
 
 			Light* directionalLight;
 

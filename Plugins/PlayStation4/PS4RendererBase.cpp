@@ -70,7 +70,7 @@ PS4RendererBase::~PS4RendererBase()	{
 	DestroyMemoryAllocators();
 }
 
-void	PS4RendererBase::InitialiseVideoSystem() {
+void	PS4RendererBase::InitialiseVideoSystem(/*void* screenBuffers*/){
 	screenBuffers = new PS4ScreenBuffer*[_bufferCount];
 
 	for (int i = 0; i < _bufferCount; ++i) {

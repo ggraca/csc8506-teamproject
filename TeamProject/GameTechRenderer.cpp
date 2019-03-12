@@ -7,12 +7,11 @@
 #include "Light.h"
 
 using namespace NCL;
+using namespace PS4;
 using namespace Rendering;
 using namespace CSC8503;
 
 #define SHADOWSIZE 4096
-
-Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
 #ifdef _WIN32
 GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetWindow()), gameWorld(world)	{
@@ -38,13 +37,13 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 #ifdef __ORBIS__
 GameTechRenderer::GameTechRenderer(GameWorld& world) : PS4::PS4RendererBase((PS4::PS4Window*)Window::GetWindow()), gameWorld(world) {
-	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
-	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
-	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
-	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
+	shadowShader = PS4Shader::GenerateShader("/app0/gameTechShadowVert.sb", "/app0/gameTechShadowPixel.sb");
+	skyBoxShader = PS4Shader::GenerateShader("/app0/skyboxVertex.sb", "/app0/skyboxPixel.sb");
+	lightShader = PS4Shader::GenerateShader("/app0/pointlightvert.sb", "/app0/pointlightPixel.sb");
+	combineShader = PS4Shader::GenerateShader("/app0/combinevert.sb", "/app0/combinePixel.sb");
 
 
-	hudShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
+	hudShader = PS4Shader::GenerateShader("/app0/BasicVert.sb", "/app0/BasicPixel.sb");
 
 	GenBuffers();
 
