@@ -1,0 +1,44 @@
+ConstantBuffer ShaderConstants
+{
+	column_major matrix modelMatrix;
+	column_major matrix viewMatrix;
+	column_major matrix projMatrix;
+	column_major matrix shadowMatrix;
+	
+	float4 objectColour = float4(1,1,1,1);
+};
+
+struct VS_INPUT 
+{
+	float3 position : POSITION0;
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float3 normal : NORMAL0;
+};
+
+struct VS_OUTPUT
+{
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float4 shadowProj : TEXCOORD3;
+	float3 normal : NORMAL0;
+	float3 worldPos : POSITION1;
+	float3 position : S_POSITION;
+};
+
+VS_OUTPUT main(VS_INPUT Input)
+{
+	VS_OUTPUT Output;
+	
+	column_major matrix mvp = mul(mul(projMatrix, viewMatrix), modelMatrix);
+	column_major matrix normalMatrix = transpose(inverse(modelMatrix));
+	
+	Output.shadowProj = shadowMatrix * float4(position, 1);
+	Output.worldPos = (modelMatrix * float4(position,1).xyz;
+	Output.normal = normalize(normalMatrix * normalize(normal));
+	Output.texCoord = Input.texCoord;
+	Output.colour = Input.colour;
+	Ouput.position = mvp * float4(Input.position, 1.0);
+	
+	return Output;
+}

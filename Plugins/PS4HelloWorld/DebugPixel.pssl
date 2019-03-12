@@ -1,0 +1,24 @@
+SamplerState samp0 : register(s0);
+Texture2D mainTex : register(t1);
+
+struct VS_INPUT
+{
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+};
+
+float4 main(VS_INPUT In) : S_TARGET_OUTPUT
+{
+	float4 fragColour;
+	if(textureSize(mainTex, 0).x < 10)
+	{
+		fragColour = Input.colour;
+	}
+	else
+	{
+		float alpha = mainTex.Sample(samp0, Input.texCoord).r;
+		fragColour = Input.colour * float4(1,1,1,alpha);
+	}
+	
+	return fragColour;
+}
