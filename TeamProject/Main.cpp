@@ -19,9 +19,9 @@ int main(int argc, char** argv) {
 	w->LockMouseToWindow(true);
 	w->ShowConsole(true);
 
-	Scene* scene = new ExampleScene();
+	//Scene* scene = new ExampleScene();
 	//Scene* scene = new PhysicsScene();
-	//Scene* scene = new LevelScene();
+	Scene* scene = new LevelScene();
 
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {

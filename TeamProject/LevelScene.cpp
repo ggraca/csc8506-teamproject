@@ -14,6 +14,11 @@
 #include <string>
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
+#include "WallPrefab.h"
+#include "StallPrefab.h"
+#include "TentPrefab.h"
+#include "MarketPrefab.h"
+#include "WellPrefab.h"
 #include "Destructible.h"
 
 
@@ -35,7 +40,7 @@ LevelScene::LevelScene() : Scene() {
 
 void LevelScene::ResetWorld() {
 
-	auto floor = new CubePrefab(Vector3(3000, -10, 3000), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0),
+	auto floor = new CubePrefab(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0),
 		Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
@@ -146,30 +151,28 @@ void LevelScene::LoadWorld() {
 			char a;
 			infile >> a;
 
-			if (a == 't') {
-				OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("KofarGari.obj");
-				GameObject* go = GameObject::FromOBJ(objGeometry);
-				go->GetTransform().SetLocalScale(Vector3(1, 5, 1.31));
-				go->GetTransform().SetWorldPosition(Vector3(size*i, 0, size*j));
-				go->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 90));
+			if (a == 'w') {
+				auto TopWall = new WallPrefab(Vector3(37, 40, 37), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 			}
 			if (a == 's') {
-				OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("KofarGari.obj");
-				GameObject* go = GameObject::FromOBJ(objGeometry);
-				go->GetTransform().SetLocalScale(Vector3(1, 5, 1.31));
-				go->GetTransform().SetWorldPosition(Vector3(size*i, 0, size*j));
-				go->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+				auto SideWall = new WallPrefab(Vector3(37, 40, 37), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 90));
 			}
 
 			if (a == 'c') {
-				OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("vws.obj");
-				GameObject* go = GameObject::FromOBJ(objGeometry);
-				go->GetTransform().SetLocalScale(Vector3(0.7, 0.7, 0.7));
-				go->GetTransform().SetWorldPosition(Vector3(size*i, 42, size*j));
-				go->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+				auto Stall = new StallPrefab(Vector3(0.7, 0.7, 0.7), Vector3(size*i, 42, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 			}
 
+			if (a == 't') {
+				auto Tent = new TentPrefab(Vector3(10, 10, 10), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
 
+			if (a == 'm') {
+				auto Market = new MarketPrefab(Vector3(10, 10, 10), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
+
+			if (a == 'W') {
+				auto Well = new WellPrefab(Vector3(50, 50, 50), Vector3(size*i, 25, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
 
 		}
 	}

@@ -189,6 +189,8 @@
     <ClCompile Include="LayerAndTag.cpp" />
     <ClCompile Include="LevelScene.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MarketPrefab.cpp" />
+    <ClCompile Include="TentPrefab.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -199,8 +201,11 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpherePrefab.cpp" />
     <ClCompile Include="ScriptObject.cpp" />
+    <ClCompile Include="StallPrefab.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TypeId.cpp" />
+    <ClCompile Include="WallPrefab.cpp" />
+    <ClCompile Include="WellPrefab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -226,6 +231,8 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LayerAndTag.h" />
     <ClInclude Include="LevelScene.h" />
+    <ClInclude Include="MarketPrefab.h" />
+    <ClInclude Include="TentPrefab.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="PhysicsScene.h" />
@@ -237,8 +244,11 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpherePrefab.h" />
     <ClInclude Include="ScriptObject.h" />
+    <ClInclude Include="StallPrefab.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TypeId.h" />
+    <ClInclude Include="WallPrefab.h" />
+    <ClInclude Include="WellPrefab.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
