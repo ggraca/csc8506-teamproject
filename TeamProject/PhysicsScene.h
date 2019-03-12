@@ -3,7 +3,6 @@
 #include "GameTechRenderer.h"
 #include "Scene.h"
 
-#include "Console.h"
 #include "DebugMenu.h"
 #include "Player.h"
 #include "Resource.h"
@@ -27,7 +26,6 @@ namespace NCL {
 	  GameObject* bestcube;
 
       DebugMenu debugMenu;
-      Console console;
 	  HUD hud;
     };
   }

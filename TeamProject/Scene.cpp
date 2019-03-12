@@ -23,6 +23,7 @@ Scene::Scene() {
   GameObject::SetGameWorld(world);
   audio = new CAudioEngine();
   world->SetAudio(audio);
+  console = Console();
 
   Debug::SetRenderer(renderer);
   InitialiseAssets();
@@ -101,3 +102,15 @@ void Scene::InitWorld() {
   world->Instantiate(light);
 }
 
+void CommandSetCameraPosition(vector<string> commandParams, void* data) {
+	float x = stof(commandParams[1]);
+	float y = stof(commandParams[2]);
+	float z = stof(commandParams[3]);
+
+	GameWorld* world = (GameWorld*)data;
+	world->GetMainCamera()->GetTransform().SetWorldPosition(Vector3(x, y, z));
+}
+
+void Scene::RegisterConsoleCommands() {
+	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
+}

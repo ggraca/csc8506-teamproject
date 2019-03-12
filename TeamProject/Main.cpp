@@ -3,6 +3,7 @@
 #include "../Common/Window.h"
 #include "PhysicsScene.h"
 #include "ExampleScene.h"
+#include "LevelScene.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -20,6 +21,8 @@ int main(int argc, char** argv) {
 
 	Scene* scene = new ExampleScene();
 	//Scene* scene = new PhysicsScene();
+	//Scene* scene = new LevelScene();
+
 
 	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;

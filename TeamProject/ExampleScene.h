@@ -1,7 +1,6 @@
 #pragma once
 #include "GameTechRenderer.h"
 #include "Scene.h"
-#include "Console.h"
 #include "DebugMenu.h"
 #include "HUD.h"
 #include "HUDObject.h"
@@ -23,7 +22,6 @@ namespace NCL {
 
     protected:
       void ResetWorld();
-	    void RegisterConsoleCommands();
 
       DebugMenu debugMenu;
       vector<HUDObject> hudElements;

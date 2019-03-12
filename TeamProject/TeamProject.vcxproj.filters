@@ -40,6 +40,9 @@
     <ClCompile Include="Destructible.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="LevelScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -162,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="Destructible.h">
       <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

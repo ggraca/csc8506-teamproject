@@ -5,6 +5,7 @@
 #include "../Common/Camera.h"
 #include "AudioEngine.h"
 #include "BulletPhysics.h"
+#include "Console.h"
 
 class Material;
 
@@ -20,11 +21,13 @@ namespace NCL {
 
 		protected:
 			void InitialiseAssets();
+			void RegisterConsoleCommands();
 
 			virtual void InitWorld();
 
 			GameTechRenderer*	renderer;
 			CAudioEngine* audio;
+			Console console;
 
 			GameWorld*		world;
 

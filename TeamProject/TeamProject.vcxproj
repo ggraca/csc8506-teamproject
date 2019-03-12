@@ -187,6 +187,7 @@
     <ClCompile Include="HUDObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LayerAndTag.cpp" />
+    <ClCompile Include="LevelScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="HUDObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LayerAndTag.h" />
+    <ClInclude Include="LevelScene.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="PhysicsScene.h" />
