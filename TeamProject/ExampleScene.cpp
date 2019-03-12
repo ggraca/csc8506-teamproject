@@ -14,7 +14,7 @@
 #include <string>
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
-
+#include "Destructible.h"
 
 
 #include "../Common/OBJGeometry.h"
@@ -52,10 +52,15 @@ void ExampleScene::ResetWorld() {
 	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
 
-	world->AddGameObject(player);
-	world->AddGameObject(resource1);
-	world->AddGameObject(resource2);
-	world->AddGameObject(floor);
+	auto des = new CubePrefab(Vector3(500, -10, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
+	des->AddComponent<Destructible*>(new Destructible(des));
+	des->AddComponent<HealthManager*>(new HealthManager(des));
+	des->GetComponent<HealthManager*>()->SetHealth(0);
+	world->Instantiate(des);
+	world->Instantiate(player);
+	world->Instantiate(resource1);
+	world->Instantiate(resource2);
+	world->Instantiate(floor);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
   
@@ -94,10 +99,9 @@ void ExampleScene::UpdateGame(float dt) {
 		world->SwitchToTPS();
 	}
 
-  world->UpdateWorld(dt);
   physics->Update(dt);
+  world->UpdateWorld(dt);
   renderer->Update(dt);
-  world->ClearObjectsToDestroy();
 
   Debug::FlushRenderables();
   debugMenu.Update(dt, renderer);

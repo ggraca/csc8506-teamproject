@@ -9,6 +9,7 @@
 #include "Resource.h"
 #include "InputManager.h"
 #include "CameraControl.h"
+#include "Destructible.h"
 
 namespace NCL {
   namespace CSC8503 {
