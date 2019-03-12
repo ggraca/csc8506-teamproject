@@ -428,7 +428,7 @@ void GameTechRenderer::RenderPostProcess() {
 
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 
-	for (int i = 0; i < postProcessShaders.size(); i++)
+	for (unsigned int i = 0; i < postProcessShaders.size(); i++)
 	{
 		int currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
 		//Create bind texture to framebuffer color attachment
