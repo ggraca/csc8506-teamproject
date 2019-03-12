@@ -51,7 +51,7 @@ void CameraControl::UpdateCamera()
 	if (isTPS)
 	{
 		pitch = min(pitch, 90.0f);
-		pitch = max(pitch, -10.0f);
+		pitch = max(pitch, -90.0f);
 	}
 	else
 	{

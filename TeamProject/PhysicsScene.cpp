@@ -62,6 +62,21 @@ void PhysicsScene::ResetWorld() {
   AddConeToWorld(Vector3(80, 50, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.3f, 0.5f);
   AddConeToWorld(Vector3(30, 750, 50), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 45), Vector3(50, 30, 50), 100, 0.3f, 0.5f);
   AddConeToWorld(Vector3(80, 50, 90), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(80, 130, 80), 100, 0.3f, 0.5f);
+
+  AddMeshToWorld("front_wall.obj", Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
+
+//  // OBJ file example
+//  OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("front_wall.obj");
+////  OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("tower.obj");
+//
+//  // We need to pass world because father/son relationship is only possible among gameObjects in the world
+//  // We might want to change this to allow any gameobject to have a vector of children
+//  GameObject* go = GameObject::FromOBJ(objGeometry);
+//  go->GetTransform().SetWorldPosition(Vector3(0, 0, 0));
+//  go->GetTransform().SetLocalScale(Vector3(1, 1, 1));
+
+
+
 }
 
 PhysicsScene::~PhysicsScene() {

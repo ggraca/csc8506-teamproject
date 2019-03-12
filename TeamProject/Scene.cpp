@@ -172,28 +172,23 @@ GameObject* Scene::AddMeshToWorld(string objFile, const Vector3& position, const
 	OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(objFile);
 	GameObject* compMesh = GameObject::FromOBJ(mesh);
 
+	/*cout << "Mesh: " << compMesh->GetChildrenOfObject(compMesh)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[0] << endl;
+	cout << "Mesh: " << compMesh->GetChildrenOfObject(compMesh)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[1] << endl;
+	cout << "Mesh: " << compMesh->GetChildrenOfObject(compMesh)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[2] << endl;*/
+
+	/*cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData().size() << endl;
+	cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[0] << endl;
+	cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[1] << endl;
+	cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[22487] << endl;*/
+
 	compMesh->GetTransform().SetWorldScale(dimensions);
 	compMesh->GetTransform().SetWorldPosition(position);
 	compMesh->GetTransform().SetLocalOrientation(orient);
-	compMesh->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&compMesh->GetTransform(), ShapeType::complexMesh, mass, restitution, friction));
+	compMesh->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&compMesh->GetTransform(), ShapeType::complexMesh, mass, restitution, friction, mesh));
 
 	world->AddGameObject(compMesh);
 	return compMesh;
-
-	//btVector3 vertex1 = btVector3(0, 0, 0);
-	//btVector3 vertex2 = btVector3(1, 0, 0);
-	//btVector3 vertex3 = btVector3(1, 1, 0);
-	//btTriangleMesh* triangleMesh = new btTriangleMesh();
-	//triangleMesh->addTriangle(vertex1, vertex2, vertex3);
-	//btCollisionShape* collisionShape = new btBvhTriangleMeshShape(triangleMesh, true);
-	//btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -15, 0)));
-	//btRigidBody::btRigidBodyConstructionInfo rigidBodyConstructionInfo(0.0f, motionState, collisionShape, btVector3(0, 0, 0));
-	//btRigidBody* rigidBody = new btRigidBody(rigidBodyConstructionInfo);
-	//rigidBody->setFriction(btScalar(0.5));
-	//physics->dynamicsWorld->addRigidBody(rigidBody);
 }
-
-
 
 void Scene::InitMixedGridWorld(const Vector3& positiony, int numRows, int numCols, float rowSpacing, float colSpacing) {
 	for (int i = 0; i < numCols; ++i) {

@@ -24,7 +24,7 @@ PhysicsObject::PhysicsObject(ShapeType type, Vector3 position, Quaternion orient
 	this->friction = friction;
 }
 
-PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction)	{
+PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh)	{
 	transform = parentTransform;
 	this->type = type;
 	this->mass = mass;
@@ -46,8 +46,53 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		shape = new btConeShape(btScalar(0.5 * dimensions.x), btScalar(dimensions.y));
 	}
 	if (type == complexMesh) {
-		//shape = new btTriangleMeshShape(btTriangleMeshShape obj);
-		//data = new btTriangleMeshShapeData();
+		btTriangleMesh* triangleMesh = new btTriangleMesh();
+		
+
+	//	cout << "Mesh: " << gameObject->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[1] << endl;
+
+	//	cout << "Mesh: " << gameObject->GetChildrenOfObject(gameObject)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[0] << endl;
+
+		//cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData().size() << endl;
+		//cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[0] << endl;
+		//cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[1] << endl;
+		//cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[22487] << endl;
+
+		Vector3 vert1, vert2, vert3;
+		btVector3 vertex1, vertex2, vertex3;
+		
+		
+		for (int i = 1200; i < 3756; ) {
+			vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
+			vert2 = mesh->GetChildren()[0]->GetPositionData()[i+1];
+			vert3 = mesh->GetChildren()[0]->GetPositionData()[i+2];
+
+			cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl;
+
+
+			vertex1 = btVector3(vert1.x, vert1.y, vert1.z);
+			vertex2 = btVector3(vert2.x, vert2.y, vert2.z);
+			vertex3 = btVector3(vert3.x, vert3.y, vert3.z);
+			triangleMesh->addTriangle(vertex1, vertex2, vertex3);
+			i += 6;
+		}
+		cout << "Triangles: " << triangleMesh->getNumTriangles() << endl;
+
+		/*btVector3 vertex1 = btVector3(0, 0, 0);
+		btVector3 vertex2 = btVector3(1000, 0, 0);
+		btVector3 vertex3 = btVector3(1000, 1000, 0);
+		triangleMesh->addTriangle(vertex1, vertex2, vertex3);
+
+		vertex1 = btVector3(0, 0, 0);
+		vertex2 = btVector3(0, 1000, 0);
+		vertex3 = btVector3(1000, 1000, 0);
+		triangleMesh->addTriangle(vertex1, vertex2, vertex3);*/
+
+		shape = new btBvhTriangleMeshShape(triangleMesh, true);
+
+	
+		/*shape = new btTriangleMeshShape(btTriangleMeshShape obj);
+		data = new btTriangleMeshShapeData();*/
 	}
 	
 	SetBulletPhysicsParameters();

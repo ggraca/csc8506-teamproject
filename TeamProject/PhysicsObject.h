@@ -19,7 +19,7 @@ namespace NCL {
 		public:
 			PhysicsObject();
 			PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction);
-			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction);
+			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh = nullptr);
 			~PhysicsObject();
 
 			ShapeType GetType() const {
