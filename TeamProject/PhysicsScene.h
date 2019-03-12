@@ -32,6 +32,7 @@ namespace NCL {
 	  bool showMenu = false;
 	  LevelState* worldState;
 	  void UsedForMenu(void* data);
+	  int currentMenuPath = 0;
 
 	  GameObject* bestcube;
       DebugMenu debugMenu;

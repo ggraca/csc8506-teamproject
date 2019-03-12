@@ -123,7 +123,7 @@ void PhysicsScene::UpdateGame(float dt) {
   world->UpdateWorld(dt);
 
   UpdateKeys();
-  menu.Update(dt, renderer);
+  menu.Update(audio, currentMenuPath, dt, renderer);
   objectStateMachine->Update();
   physics->Update(dt);
   renderer->Update(dt);
@@ -147,22 +147,7 @@ void PhysicsScene::UpdateGame(float dt) {
 
 void PhysicsScene::ShowMenu()
 {
-	float offset = 200.0f;
-	for (MenuEntry me : menu.MenuEntries())
-	{
-		Vector4 colour;
-		if (me.selected) colour = Vector4(1, 0, 0, 1);
-		else colour = Vector4(0, 0, 1, 1);
-		renderer->DrawString(me.menuTitle, Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + offset), colour);
-		offset -= 50.0f;
-	}
-	//renderer->DrawString("MAIN MENU", 
-	//renderer->DrawString("PRESS 1 TO PLAY LEVEL ONE", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + 150), Vector4(0, 0, 1, 1));
-	//renderer->DrawString("PRESS 2 TO PLAY LEVEL TWO", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + 100), Vector4(0, 0, 1, 1));
-	//renderer->DrawString("PRESS 3 TO PLAY LEVEL THREE", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + 50), Vector4(0, 0, 1, 1));
-	//renderer->DrawString("PRESS 4 TO PLAY LEVEL FOUR", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2), Vector4(0, 0, 1, 1));
-	//renderer->DrawString("PRESS R TO RESET LEVEL", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 - 50), Vector4(0, 0, 1, 1));
-	//renderer->DrawString("PRESS Q TO TOGGLE FREE ROAM CAMERA", Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 - 100), Vector4(0, 0, 1, 1));
+	menu.ShowMenu(renderer);
 }
 
 void PhysicsScene::UsedForMenu(void* data)

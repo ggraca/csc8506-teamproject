@@ -20,10 +20,12 @@ public:
 	Menu();
 	~Menu();
 	MenuEntry Menu::AddMenuEntry(int index, string title, bool selected);
-	vector<MenuEntry> MenuEntries() { return menuEntries; }
-	void Update(float dt, GameTechRenderer* renderer);
+	vector<MenuEntry> MenuEntries(int index) { return menuEntries[index]; }
+	void Update(CAudioEngine* audio, int& currentMenuPath, float dt, GameTechRenderer* renderer);
+	void ShowMenu(GameTechRenderer* renderer);
 	
 protected:
-	std::vector<MenuEntry> menuEntries;
+	map<int, std::vector<MenuEntry>> menuEntries;
+	int menuPathIndex;
 };
 
