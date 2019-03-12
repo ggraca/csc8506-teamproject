@@ -151,8 +151,6 @@ GameObject* Scene::AddCylinderToWorld(const Vector3& position, const Quaternion&
 	cylinder->GetTransform().SetWorldPosition(position);
 	cylinder->GetTransform().SetLocalOrientation(orient);
 	cylinder->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cylinder->GetTransform(), ShapeType::cylinder, mass, restitution, friction));
-//	cylinder->AddComponent<RenderObject*>((Component*)new RenderObject(&cylinder->GetTransform(), cylinderMesh, basicMaterial));
-//	cylinder->GetComponent<RenderObject*>()->SetMaterialInstanced();
 
 	world->AddGameObject(cylinder);
 	return cylinder;
@@ -165,8 +163,6 @@ GameObject* Scene::AddConeToWorld(const Vector3& position, const Quaternion& ori
 	cone->GetTransform().SetWorldPosition(position);
 	cone->GetTransform().SetLocalOrientation(orient);
 	cone->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cone->GetTransform(), ShapeType::cone, mass, restitution, friction));
-//	cone->AddComponent<RenderObject*>((Component*)new RenderObject(&cone->GetTransform(), cubeMesh, basicMaterial));
-//	cone->GetComponent<RenderObject*>()->SetMaterialInstanced();
 
 	world->AddGameObject(cone);
 	return cone;
