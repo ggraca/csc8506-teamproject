@@ -27,7 +27,7 @@ void main (void) {
 	}
 
 	for (int i = 0; i < 5; i ++ ) {
-		vec4 tmp = texture2D (diffuseTex, IN.texCoord.xy + values [i]);
+		vec4 tmp = texture (diffuseTex, IN.texCoord.xy + values [i]);
 		fragColour += tmp * weights[i];
 	}
 }
