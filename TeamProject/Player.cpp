@@ -34,8 +34,10 @@ void Player::PlayerMovement(float dt)
 	{
 		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
 		{
-			playerPos += forward * movementSpeed * dt;
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+			//playerPos += forward * movementSpeed * dt;
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount*dt);
+			
+			//gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(0,0,0));
 		}
 		playerPos += forward * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
@@ -109,7 +111,7 @@ void Player::ResetPlayer()
 	movementSpeed = 200;
 	jumpSpeed = 400;
 	dodgeAmount = 3;
-	dumpAmount = 0.8;
+	dumpAmount = 0.5;
 }
 
 void Player::UpdateResourceCount(int amount)
