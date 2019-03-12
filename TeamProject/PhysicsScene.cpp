@@ -53,26 +53,15 @@ void PhysicsScene::ResetWorld() {
  // AddCubeToWorld(Vector3(100, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
 
   AddCylinderToWorld(Vector3(0, 10, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(15, 30, 15), 100, 0.5f, 0.5f);
-  //AddCylinderToWorld(Vector3(0, 10, 80), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1, 0.5f, 0.5f);
-  //AddCylinderToWorld(Vector3(0, 10, 110), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1, 0.5f, 0.5f);
+  AddCylinderToWorld(Vector3(0, 10, 80), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 45), Vector3(25, 50, 25), 100, 0.5f, 0.5f);
+  AddCylinderToWorld(Vector3(0, 10, 110), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.5f, 0.5f);
   AddSphereToWorld(Vector3(70, 50, 110), 10, 100, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
-
-
-  //OBJGeometry* coneMesh = Assets::AssetManager::LoadOBJ("cone.obj");
-  //GameObject* cylinder = GameObject::FromOBJ(coneMesh);
-  //cylinder->GetTransform().SetWorldPosition(Vector3(0, 5, 0));
-  //cylinder->GetTransform().SetLocalScale(Vector3(1, 1, 1));
-  //cylinder->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cylinder->GetTransform(), ShapeType::cube, 1, 1, 1));
-
-  //OBJGeometry* cylinderMesh = Assets::AssetManager::LoadOBJ("cylinder.obj");
-  //GameObject* cone = GameObject::FromOBJ(cylinderMesh);
-  //cone->GetTransform().SetWorldPosition(Vector3(40, 10, 0));
-  //cone->GetTransform().SetLocalScale(Vector3(1, 1, 1));
-  //cone->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&cone->GetTransform(), ShapeType::cube, 1, 1, 1));
 
  // InitMixedGridWorld(Vector3(0, 100, 0), 10, 10, 20, 20);
 
   AddConeToWorld(Vector3(80, 50, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.3f, 0.5f);
+  AddConeToWorld(Vector3(30, 750, 50), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 45), Vector3(50, 30, 50), 100, 0.3f, 0.5f);
+  AddConeToWorld(Vector3(80, 50, 90), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(80, 130, 80), 100, 0.3f, 0.5f);
 }
 
 PhysicsScene::~PhysicsScene() {
