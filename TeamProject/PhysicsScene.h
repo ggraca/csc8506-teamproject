@@ -12,6 +12,7 @@
 #include "Resource.h"
 #include "InputManager.h"
 #include "CameraControl.h"
+#include "Destructible.h"
 #include "Menu.h"
 
 namespace NCL {

@@ -61,6 +61,7 @@ namespace NCL {
 			void BindBoolToShader(const bool val, const std::string& uniform) const;
 			void BindIntToShader(const int val, const std::string& uniform) const;
 			void BindFloatToShader(const float val, const std::string& uniform) const;
+			void BindVector2ToShader(const Vector2& val, const std::string& uniform) const;
 			void BindVector3ToShader(const Vector3& val, const std::string& uniform) const;
 			void BindVector4ToShader(const Vector4& val, const std::string& uniform) const;
 			void BindMatrix4ToShader(const Matrix4& val, const std::string& uniform) const;

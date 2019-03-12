@@ -42,10 +42,10 @@ void PhysicsScene::ResetWorld() {
   audio->SetPlayer(player);
   audio->SetCamera(world->GetMainCamera());
   
-  world->AddGameObject(player);
-  world->AddGameObject(resource1);
-  world->AddGameObject(resource2);
-  world->AddGameObject(floor);
+  world->Instantiate(player);
+  world->Instantiate(resource1);
+  world->Instantiate(resource2);
+  world->Instantiate(floor);
 
 
   world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
@@ -127,7 +127,7 @@ void PhysicsScene::UpdateGame(float dt) {
   objectStateMachine->Update();
   physics->Update(dt);
   renderer->Update(dt);
-  world->ClearObjectsToDestroy();
+  world->HandleObjectsToDestroy();
   
   //bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
   //bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));

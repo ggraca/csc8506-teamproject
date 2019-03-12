@@ -4,7 +4,7 @@
 #include "PhysicsObject.h"
 #include "RenderObject.h"
 #include "Player.h"
-#include "Destructable.h"
+#include "Destructible.h"
 #include "Enemy.h"
 #include "DamageControl.h"
 #include "CameraControl.h"
@@ -21,7 +21,7 @@ int TypeId::GetTypeId(const type_info &info)
 	if (info.hash_code() == typeid(ScriptObject*).hash_code())  { return 3; }
 	if (info.hash_code() == typeid(Player*).hash_code())		{ return 4; }
 	if (info.hash_code() == typeid(Resource*).hash_code())		{ return 5; }
-	if (info.hash_code() == typeid(Destructable*).hash_code())  { return 6; }
+	if (info.hash_code() == typeid(Destructible*).hash_code())  { return 6; }
 	if (info.hash_code() == typeid(Enemy*).hash_code())			{ return 7; }
 	if (info.hash_code() == typeid(DamageControl*).hash_code()) { return 8; }
 	if (info.hash_code() == typeid(HealthManager*).hash_code()) { return 9; }

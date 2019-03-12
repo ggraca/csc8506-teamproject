@@ -176,14 +176,14 @@ void GameObject::AddObjectToWorld(GameObject * obj)
 {
 	if (!gameWorld) { return; }
 	
-	gameWorld->AddGameObject(obj);
+	gameWorld->Instantiate(obj);
 }
 
 void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
 {
 	if (!gameWorld) { return; }
 
-	gameWorld->AddGameObject(obj, parent);
+	gameWorld->Instantiate(obj, parent);
 }
 
 GameObject * GameObject::GetMainCamera()
@@ -197,7 +197,7 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 	if (!gameWorld) { return nullptr; }
 
 	GameObject* root = new GameObject();
-	gameWorld->AddGameObject(root);
+	gameWorld->Instantiate(root);
 
 	for (auto& mesh : obj->GetChildren()) {
 		GameObject* go = new GameObject();
@@ -208,7 +208,7 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 			((OBJMesh*)mesh)->material
 		));
 
-		gameWorld->AddGameObject(go);
+		gameWorld->Instantiate(go);
 		root->AddChild(go);
 	}
 	return root;
