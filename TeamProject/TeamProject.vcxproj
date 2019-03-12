@@ -132,7 +132,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Bullet\src;$(SolutionDir)Plugins\FMOD\lowlevel\inc;$(SolutionDir)Plugins\FMOD\studio\inc;</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>LNK4099;</DisableSpecificWarnings>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

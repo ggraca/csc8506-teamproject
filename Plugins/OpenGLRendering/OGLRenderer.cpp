@@ -309,7 +309,7 @@ void OGLRenderer::GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& b
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i,
 				GL_TEXTURE_2D, ((OGLTexture*)bufferTexs[i])->GetObjectID(), 0);
 		}
-		glDrawBuffers(bufferTexs.size(), drawBuffer);
+		glDrawBuffers((GLsizei) bufferTexs.size(), drawBuffer);
 		delete[] drawBuffer;
 	}
 	else {

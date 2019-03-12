@@ -240,7 +240,7 @@ vector<GameObject*> GameWorld::GetGameObjectList()
 }
 
 int GameWorld::GetObjectCount(){
-	return gameObjects.size();
+	return (int) gameObjects.size();
 }
 
 void GameWorld::UpdateWorld(float dt) 
