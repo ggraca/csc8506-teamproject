@@ -60,6 +60,7 @@ namespace NCL {
 			void	DrawMesh(PS4Mesh& mesh);
 			void	BindFBO(void*buffer);
 			void	ClearBuffer(bool colour, bool depth, bool stencil);
+			void	DestroyVideoSystem();
 
 		private:
 			void	InitialiseMemoryAllocators();
@@ -67,7 +68,6 @@ namespace NCL {
 			void	InitialiseGCMRendering();
 
 			void	DestroyMemoryAllocators();
-			void	DestroyVideoSystem();
 			void	DestroyGCMRendering();
 
 

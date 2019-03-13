@@ -20,7 +20,15 @@ namespace NCL {
 		public:
 			static PS4Mesh* GenerateTriangle();
 			static PS4Mesh* GenerateQuad();
+			static PS4Mesh* GenerateQuad(float minX, float maxX, float minY, float maxY, int currentWidth, int currentHeight);
 			static PS4Mesh* GenerateSinglePoint();
+			void UploadToGPU() override;
+
+			PS4Mesh();
+			PS4Mesh(const std::string&filename);
+			~PS4Mesh();
+
+
 
 		protected:
 			void	SubmitPreDraw(Gnmx::GnmxGfxContext& cmdList, Gnm::ShaderStage stage);
@@ -29,12 +37,8 @@ namespace NCL {
 			void	InitAttributeBuffer(sce::Gnm::Buffer &buffer, Gnm::DataFormat format, void*offset);
 
 		protected:
-			PS4Mesh();
-			PS4Mesh(const std::string&filename);
-			~PS4Mesh();
 
 		protected:
-			void UploadToGPU() override;
 
 			//Gpu simply has a 4 byte alignment!
 			struct MeshVertex

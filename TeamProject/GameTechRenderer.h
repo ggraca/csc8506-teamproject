@@ -10,6 +10,7 @@
 #ifdef __ORBIS__
 #include "../Plugins/PlayStation4/PS4RendererBase.h"
 #include "../Plugins/PlayStation4/PS4Shader.h"
+#include "../Plugins/PlayStation4/PS4Mesh.h"
 #endif
 
 #include "../Common/TextureLoader.h"
@@ -117,9 +118,9 @@ namespace NCL {
 			int GetVertsDrawn() const { return vertsDrawn; }
 			int GetShadowCasters() const { return shadowCasters; }
 
-			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
+			void SetLightMesh(PS4Mesh* mesh) { lightSphere = mesh; }
 
-			TextureBase* skybox;
+			PS4Texture* skybox;
 
 			//HUD
 			void AddHUDObjects();
@@ -134,7 +135,7 @@ namespace NCL {
 			void GenBuffers();
 			void RenderHUD();
 
-			OGLShader*		defaultShader;
+			PS4Shader*		defaultShader;
 
 			GameWorld&	gameWorld;
 
@@ -152,27 +153,27 @@ namespace NCL {
 
 			//shadow mapping things
 			PS4Shader*	shadowShader;
-			GLuint		shadowTex;
+			PS4Texture*		shadowTex;
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
 			PS4Shader* skyBoxShader;
 
 			NCL::PS4::PS4ScreenBuffer gBufferFBO; // FBO for our G- Buffer pass
-			TextureBase* gBufferDepthTex; // Depth goes here
-			TextureBase* gBufferColourTex; // Albedo goes here
-			TextureBase* gBufferNormalTex; // Normals go here
-			TextureBase* gBufferSpecularTex; // Specular goes here
+			PS4Texture* gBufferDepthTex; // Depth goes here
+			PS4Texture* gBufferColourTex; // Albedo goes here
+			PS4Texture* gBufferNormalTex; // Normals go here
+			PS4Texture* gBufferSpecularTex; // Specular goes here
 
 			GLuint lightFBO; // FBO for our lighting pass
-			TextureBase* lightEmissiveTex; // emissive lighting
-			TextureBase* lightSpecularTex; // specular lighting
+			PS4Texture* lightEmissiveTex; // emissive lighting
+			PS4Texture* lightSpecularTex; // specular lighting
 
 			PS4Shader* combineShader;
 			PS4Shader* lightShader;
 			PS4Shader* hudShader;
-			OGLMesh* lightSphere;
-			MeshGeometry* screenQuad;
+			PS4Mesh* lightSphere;
+			PS4Mesh* screenQuad;
 
 			Light* directionalLight;
 

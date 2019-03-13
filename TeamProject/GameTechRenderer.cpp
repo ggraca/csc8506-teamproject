@@ -7,9 +7,12 @@
 #include "Light.h"
 
 using namespace NCL;
-using namespace PS4;
 using namespace Rendering;
 using namespace CSC8503;
+
+#ifdef __ORBIS__
+using namespace PS4;
+#endif
 
 #define SHADOWSIZE 4096
 
@@ -19,8 +22,6 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
 	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
 	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
-
-
 	hudShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
 
 	GenBuffers();
@@ -33,35 +34,8 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetW
 
 	pixOps.Init();
 }
-#endif
 
-#ifdef __ORBIS__
-GameTechRenderer::GameTechRenderer(GameWorld& world) : PS4::PS4RendererBase((PS4::PS4Window*)Window::GetWindow()), gameWorld(world) {
-	shadowShader = PS4Shader::GenerateShader("/app0/gameTechShadowVert.sb", "/app0/gameTechShadowPixel.sb");
-	skyBoxShader = PS4Shader::GenerateShader("/app0/skyboxVertex.sb", "/app0/skyboxPixel.sb");
-	lightShader = PS4Shader::GenerateShader("/app0/pointlightvert.sb", "/app0/pointlightPixel.sb");
-	combineShader = PS4Shader::GenerateShader("/app0/combinevert.sb", "/app0/combinePixel.sb");
-
-
-	hudShader = PS4Shader::GenerateShader("/app0/BasicVert.sb", "/app0/BasicPixel.sb");
-
-	GenBuffers();
-
-	screenQuad = OGLMesh::GenerateQuad();
-	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
-	screenQuad->UploadToGPU();
-
-	AddHUDObjects();
-
-	ClearColor(Vector4(1, 1, 1, 1));
-	//Set up the light properties
-	directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
-		Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
-}
-#endif
-
-
-GameTechRenderer::~GameTechRenderer()	{
+GameTechRenderer::~GameTechRenderer() {
 	DeleteFrameBuffer(&gBufferFBO);
 	DeleteFrameBuffer(&lightFBO);
 	DeleteFrameBuffer(&shadowFBO);
@@ -126,6 +100,94 @@ void GameTechRenderer::GenBuffers() {
 	GenerateFrameBuffer(&gBufferFBO, gBufferTexes, gBufferDepthTex);
 	GenerateFrameBuffer(&lightFBO, lightBufferTexes, nullptr);
 }
+
+#endif
+
+#ifdef __ORBIS__
+GameTechRenderer::GameTechRenderer(GameWorld& world) : PS4::PS4RendererBase((PS4::PS4Window*)Window::GetWindow()), gameWorld(world) {
+	shadowShader = PS4Shader::GenerateShader("/app0/gameTechShadowVert.sb", "/app0/gameTechShadowPixel.sb");
+	skyBoxShader = PS4Shader::GenerateShader("/app0/skyboxVertex.sb", "/app0/skyboxPixel.sb");
+	lightShader = PS4Shader::GenerateShader("/app0/pointlightvert.sb", "/app0/pointlightPixel.sb");
+	combineShader = PS4Shader::GenerateShader("/app0/combinevert.sb", "/app0/combinePixel.sb");
+	hudShader = PS4Shader::GenerateShader("/app0/BasicVert.sb", "/app0/BasicPixel.sb");
+
+	screenQuad = PS4Mesh::GenerateQuad();
+	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
+	screenQuad->PS4Mesh::UploadToGPU();
+
+	AddHUDObjects();
+
+	//pixOps.Init();
+	ClearBuffer(1, 1, 1);
+	//ClearColor(Vector4(1, 1, 1, 1));
+	////Set up the light properties
+	//directionalLight = new Light(LightType::Point, Vector3(1000.0f, 1000.0f, 0.0f),
+	//	Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 3.0f, Quaternion(0, 0, 0, 0));
+}
+
+GameTechRenderer::~GameTechRenderer() {
+	DestroyVideoSystem();
+}
+
+void GameTechRenderer::AddHUDObjects()
+{
+	//Green HealthBar
+	vector<PS4Texture*> textures1;
+	textures1.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/healthBarGreen.gnf"));
+	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad(180.0f, 10.0f, (float)(currentHeight - 60.0f), (float)(currentHeight - 30.0f), currentWidth, currentHeight), textures1, Transform(), false));
+	//Red HealthBar
+	vector<PS4Texture*> textures2;
+	textures2.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/healthBarRed.gnf"));
+	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad(180.0f, 10.0f, (float)(currentHeight - 60.0f), (float)(currentHeight - 30.0f), currentWidth, currentHeight), textures2, Transform(), false));
+	//Hammer
+	vector<PS4Texture*> textures3;
+	textures3.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/hammer_gray.gnf"));
+	textures3.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/hammer.gnf"));
+	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) - 106.0f, (currentWidth / 2) - 42.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures3, Transform(), false));
+	//Gun
+	vector<PS4Texture*> textures4;
+	textures4.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/gun_gray.gnf"));
+	textures4.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/gun.gnf"));
+	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) - 32.0f, (currentWidth / 2) + 32.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures4, Transform(), false));
+	//Bomb
+	vector<PS4Texture*> textures5;
+	textures5.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/bomb_gray.gnf"));
+	textures5.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/bomb.gnf"));
+	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) + 42.0f, (currentWidth / 2) + 106.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures5, Transform(), false));
+	//Crosshair
+	vector<PS4Texture*> textures6;
+	textures6.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/crosshair.gnf"));
+	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2.0f) - 36.0f, (currentWidth / 2.0f) + 36.0f,
+		(currentHeight / 2) - 36.0f, (currentHeight / 2) + 36.0f, currentWidth, currentHeight), textures6, Transform(), false));
+}
+
+void GameTechRenderer::GenBuffers() {
+	shadowTex = PS4Texture::ShadowTexture(SHADOWSIZE, SHADOWSIZE);
+	vector<TextureBase*> emptytextures;
+	GenerateFrameBuffer(&shadowFBO, emptytextures, shadowTex);
+
+	//Generate G-Buffer textures
+	gBufferDepthTex = PS4Texture::EmptyTexture(currentWidth, currentHeight, true);
+	gBufferColourTex = PS4Texture::EmptyTexture(currentWidth, currentHeight);
+	gBufferNormalTex = PS4Texture::EmptyTexture(currentWidth, currentHeight);
+	gBufferSpecularTex = PS4Texture::EmptyTexture(currentWidth, currentHeight);
+	//Generate light buffer textures
+	lightEmissiveTex = PS4Texture::EmptyTexture(currentWidth, currentHeight);
+	lightSpecularTex = PS4Texture::EmptyTexture(currentWidth, currentHeight);
+
+	vector<TextureBase*> gBufferTexes;
+	gBufferTexes.push_back(gBufferColourTex);
+	gBufferTexes.push_back(gBufferNormalTex);
+	gBufferTexes.push_back(gBufferSpecularTex);
+
+	vector<TextureBase*> lightBufferTexes;
+	lightBufferTexes.push_back(lightEmissiveTex);
+	lightBufferTexes.push_back(lightSpecularTex);
+
+	GenerateFrameBuffer(&gBufferFBO, gBufferTexes, gBufferDepthTex);
+	GenerateFrameBuffer(&lightFBO, lightBufferTexes, nullptr);
+}
+#endif
 
 void GameTechRenderer::RenderFrame() {
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);

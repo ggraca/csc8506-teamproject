@@ -16,10 +16,11 @@ namespace NCL {
 			const sce::Gnm::Texture&  GetAPITexture() {
 				return apiTexture;
 			}
-
-		protected:
 			PS4Texture();
 			~PS4Texture();
+
+
+		protected:
 
 			sce::Gnm::Texture apiTexture;
 		};

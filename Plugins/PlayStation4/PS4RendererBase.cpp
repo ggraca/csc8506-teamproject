@@ -299,7 +299,7 @@ void	PS4RendererBase::BindFBO(void* buffer) {
 void	PS4RendererBase::ClearBuffer(bool colour, bool depth, bool stencil) {
 	if (colour) {
 		//Vector4 defaultClearColour(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1.0f);
-		SonyMath::Vector4 defaultClearColour(0.1f, 0.1f, 0.1f, 1.0f);
+		SonyMath::Vector4 defaultClearColour(0.2f, 0.2f, 0.2f, 1.0f);
 
 
 		SurfaceUtil::clearRenderTarget(*currentGFXContext, &currentPS4Buffer->colourTarget, defaultClearColour);

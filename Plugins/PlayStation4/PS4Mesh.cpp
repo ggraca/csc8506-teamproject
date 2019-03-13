@@ -45,6 +45,38 @@ PS4Mesh* PS4Mesh::GenerateQuad() {
 	return mesh;
 }
 
+PS4Mesh* PS4Mesh::GenerateQuad(float minX, float maxX, float minY, float maxY, int currentWidth, int currentHeight) {
+	PS4Mesh* mesh = new PS4Mesh();
+
+	mesh->indexType = sce::Gnm::IndexSize::kIndexSize32;
+	mesh->primitiveType = sce::Gnm::PrimitiveType::kPrimitiveTypeTriStrip;
+	float width = (float)currentWidth;
+	float height = (float)currentHeight;
+	mesh->SetVertexPositions({ 
+		Vector3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f), 
+		Vector3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f),
+		Vector3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f), 
+		Vector3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f)});
+
+	std::vector<Vector3> normals;
+	std::vector<Vector3> tangents;
+	std::vector<unsigned int> indices;
+
+	for (int i = 0; i < 4; ++i) {
+		normals.emplace_back(Vector3(0, 0, 1));
+		tangents.emplace_back(Vector3(1, 0, 0));
+
+		indices.emplace_back(i);
+	}
+
+	mesh->SetVertexNormals(normals);
+	mesh->SetVertexTangents(tangents);
+	mesh->SetVertexIndices(indices);
+
+	mesh->UploadToGPU();
+	return mesh;
+}
+
 PS4Mesh* PS4Mesh::GenerateSinglePoint() {
 	PS4Mesh* mesh = new PS4Mesh();
 
