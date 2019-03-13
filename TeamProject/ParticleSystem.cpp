@@ -46,5 +46,21 @@ void ParticleSystem::Update(float dt) {
 }
 
 void ParticleSystem::SpawnParticle() {
+	Vector3 randomVelocityDeviation;
+	if (particleSpeedDeviation.x != 0.0f) {
+		randomVelocityDeviation.x = -particleSpeedDeviation.x + static_cast <float> (rand())
+			/ (static_cast <float> (RAND_MAX / (particleSpeedDeviation.x - -particleSpeedDeviation.x)));
+	}
+	if (particleSpeedDeviation.y != 0.0f) {
+		randomVelocityDeviation.y = -particleSpeedDeviation.y + static_cast <float> (rand())
+			/ (static_cast <float> (RAND_MAX / (particleSpeedDeviation.y - -particleSpeedDeviation.y)));
+	}
+	if (particleSpeedDeviation.z != 0.0f) {
+		randomVelocityDeviation.z = -particleSpeedDeviation.z + static_cast <float> (rand())
+			/ (static_cast <float> (RAND_MAX / (particleSpeedDeviation.z - -particleSpeedDeviation.z)));
+	}
 
+	Vector3 velocity = (particleSpeedDirection + randomVelocityDeviation) * particleStartSpeed;
+
+	particles.emplace_back(Particle(particleLifetime, gameObject->GetTransform().GetWorldPosition(), velocity, particleStartSize));
 }

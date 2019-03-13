@@ -5,6 +5,10 @@ namespace NCL {
 	namespace CSC8503 {
 		class Particle {
 		public:
+			Particle(float Lifetime, Vector3 position, Vector3 velocity, float size) {};
+			Particle() {};
+			~Particle() {};
+
 			float lifetime;
 			Vector3 position;
 			Vector3 velocity;
