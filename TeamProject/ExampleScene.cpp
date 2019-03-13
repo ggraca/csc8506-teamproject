@@ -22,19 +22,19 @@ void ExampleScene::InitPlayer()
 	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
 
 
-	world->AddGameObject(player);
-	world->AddGameObject(playerLeft);
-	world->AddGameObject(playerRight);
+	world->Instantiate(player);
+	world->Instantiate(playerLeft);
+	world->Instantiate(playerRight);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+	audio->SetPlayer(player);
 }
 void ExampleScene::ResetWorld() {
-	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0),
-		Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
+	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
-	 //Player
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-	audio->SetPlayer(player);
+	
+	//Player
+	InitPlayer();
 
 	auto resource1 = new ResourcePrefab(Vector3(100, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f, 0.4f);
 	resource1->SetName("Resource 1");
@@ -45,15 +45,11 @@ void ExampleScene::ResetWorld() {
 	auto des = new CubePrefab(Vector3(500, -10, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
 	des->AddComponent<Destructible*>(new Destructible(des));
 	des->AddComponent<HealthManager*>(new HealthManager(des));
-	des->GetComponent<HealthManager*>()->SetHealth(0);
+	des->GetComponent<HealthManager*>()->SetHealth(8);
 	world->Instantiate(des);
-	world->Instantiate(player);
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
-	world->Instantiate(floor);
-
-	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-  
+	world->Instantiate(floor);  
 
 	// OBJ file example
 	//OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("Lamborghini_Aventador.obj");

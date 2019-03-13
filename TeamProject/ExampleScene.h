@@ -6,7 +6,7 @@
 class ExampleScene : public GameScene {
 public:
 	ExampleScene();
-  void InitPlayer();
+	void InitPlayer();
 
 protected:
 	void ResetWorld();

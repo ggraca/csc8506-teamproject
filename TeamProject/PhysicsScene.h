@@ -19,6 +19,6 @@ public:
 protected:
     void ResetWorld();
 	void UpdateKeys();
-
+	void InitPlayer();
 	GameObject* bestcube;
 };
