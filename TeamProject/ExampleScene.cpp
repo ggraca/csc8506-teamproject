@@ -70,10 +70,13 @@ void ExampleScene::ResetWorld() {
 	auto resource2 = new ResourcePrefab(Vector3(140, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
 
+	auto wall = new CubePrefab(Vector3(500, 0, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
+
 	
 	world->AddGameObject(resource1);
 	world->AddGameObject(resource2);
 	world->AddGameObject(floor);
+	world->AddGameObject(wall);
 	
 
     // OBJ file example

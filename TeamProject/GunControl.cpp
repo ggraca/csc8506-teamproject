@@ -57,14 +57,12 @@ Vector3 GunControl::CalculateDirection()
 
 void GunControl::ActivateGun()
 {
-	//Animation
 	leftGun->SetActiveStatus(true);
 	rightGun->SetActiveStatus(true);
 }
 
 void GunControl::DeactivateGun()
 {
-	//Animation
 	leftGun->SetActiveStatus(false);
 	rightGun->SetActiveStatus(false);
 }
