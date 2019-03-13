@@ -17,15 +17,18 @@ public:
 	void Fire();
 
 	void Awake()  override;
-
 	void Update(float dt) override;
+
+	void SetLeftGun(GameObject * obj);
+	void SetRightGun(GameObject * obj);
 
 protected:
 
 	float projectileSpeed = 2000.0f;
 	int idealProjectileDamage = 4;
 	GameObject * camera = nullptr;
-	
+	GameObject * leftGun = nullptr;
+	GameObject * rightGun = nullptr;
 
 	Vector3 CalculateDirection();
 	bool currentGun = false;

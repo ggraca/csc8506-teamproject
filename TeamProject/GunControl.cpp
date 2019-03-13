@@ -1,5 +1,6 @@
 #include "GunControl.h"
 #include "PhysicsObject.h"
+#include "RenderObject.h"
 
 #include "Debug.h"
 GunControl::GunControl()
@@ -23,10 +24,21 @@ GunControl::~GunControl()
 void GunControl::Awake()
 {
 	camera = GameObject::GetMainCamera();
+	DeactivateGun();
 }
 
 void GunControl::Update(float dt)
 {
+}
+
+void GunControl::SetLeftGun(GameObject * obj)
+{
+	leftGun = obj;
+}
+
+void GunControl::SetRightGun(GameObject * obj)
+{
+	rightGun = obj;
 }
 
 Vector3 GunControl::CalculateDirection()
@@ -46,11 +58,15 @@ Vector3 GunControl::CalculateDirection()
 void GunControl::ActivateGun()
 {
 	//Animation
+	leftGun->SetActiveStatus(true);
+	rightGun->SetActiveStatus(true);
 }
 
 void GunControl::DeactivateGun()
 {
 	//Animation
+	leftGun->SetActiveStatus(false);
+	rightGun->SetActiveStatus(false);
 }
 
 void GunControl::Fire()
@@ -60,7 +76,7 @@ void GunControl::Fire()
 
 	if (children.size() > 0)
 	{
-		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetChildrenList()[currentGun=!currentGun]->GetWorldPosition() + CalculateDirection() *20.0f );
+		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetChildrenList()[currentGun=!currentGun]->GetWorldPosition() + CalculateDirection() *30.0f );
 		children[0]->GetComponent<Resource*>()->Reset();
 		children[0]->GetComponent<DamageControl*>()->SetDamage(4);
 

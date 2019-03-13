@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "CubePrefab.h"
+#include "GunControl.h"
 
 using namespace NCL;
 using namespace CSC8503;

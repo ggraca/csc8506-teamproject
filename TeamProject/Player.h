@@ -16,6 +16,7 @@ public:
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;
+	void CheckGunControls();
 	void PlayerMovement(float dt);
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
@@ -29,5 +30,6 @@ protected:
 	int resourceCount;
 	float movementSpeed;
 	float jumpSpeed;
+	bool isGunActive = false;
 };
 

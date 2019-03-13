@@ -20,7 +20,9 @@ PlayerPrefab::~PlayerPrefab()
 void PlayerPrefab::ResetPlayer()
 {
 	AddComponent<Player*>((Component*)new Player(this));
+	AddComponent<GunControl*>(new GunControl(this));
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
+	
 }

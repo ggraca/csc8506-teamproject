@@ -64,7 +64,8 @@ bool InputManager::IsDoubleClicked(ActionButton actionButton)
 	return false;
 }
 
-void InputManager::Dispose() {
+void InputManager::Dispose() 
+{
 	delete[] GetInstance().registeredActionButtons;
 }
 
@@ -78,6 +79,8 @@ void InputManager::InitializeButtonRelations()
 
 	GetInstance().registeredActionButtons[ActionButton::BACKWARD].relatedKeyboardKeys.push_back(NCL::KEYBOARD_S);
 	GetInstance().registeredActionButtons[ActionButton::BACKWARD].relatedKeyboardKeys.push_back(NCL::KEYBOARD_DOWN);
+
+	GetInstance().registeredActionButtons[ActionButton::TOGGLE_GUN].relatedKeyboardKeys.push_back(NCL::KEYBOARD_1);
 
 	GetInstance().registeredActionButtons[ActionButton::LEFT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_A);
 	GetInstance().registeredActionButtons[ActionButton::LEFT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_LEFT);

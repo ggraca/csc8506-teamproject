@@ -18,9 +18,22 @@ void Player::Start()
 void Player::Update(float dt)
 {
 	PlayerMovement(dt);
-	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::FIRE))
+	CheckGunControls();
+}
+
+void Player::CheckGunControls()
+{
+	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
 	{
-		if(resourceCount > 0 )gameObject->GetComponent<GunControl*>()->Fire();
+		isGunActive = !isGunActive;
+
+		if (isGunActive) { gameObject->GetComponent<GunControl*>()->ActivateGun(); }
+		else { gameObject->GetComponent<GunControl*>()->DeactivateGun(); }
+	}
+
+	if (isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::FIRE))
+	{
+		if (resourceCount > 0) { gameObject->GetComponent<GunControl*>()->Fire(); }
 	}
 }
 

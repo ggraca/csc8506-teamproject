@@ -17,6 +17,7 @@ namespace NCL {
     class ExampleScene : public Scene {
     public:
       ExampleScene();
+	  void InitPlayer();
       ~ExampleScene();
       void UpdateGame(float dt);
 

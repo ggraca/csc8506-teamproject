@@ -3,10 +3,10 @@
 
 CubePrefab::CubePrefab()
 {
-	GetTransform().SetWorldScale(Vector3(0.4, 0.4, 2.5));
+	GetTransform().SetWorldScale(Vector3(1, 1, 1));
 	GetTransform().SetWorldPosition(Vector3(0, 0, 0));
 	GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, 0, 0));
-	//AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, 10));
+	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, 10));
 	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader","pbrvert.glsl", "pbrfrag.glsl"))));
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
 }
@@ -19,6 +19,20 @@ CubePrefab::CubePrefab(const Vector3& position, const Quaternion& orient, Vector
 	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, mass, restitution, friction));
 	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
+}
+
+CubePrefab::CubePrefab(CubePrefab::PrefabType type)
+{
+	switch (type)
+	{
+	case CubePrefab::GUN:
+		GetTransform().SetWorldScale(Vector3(0.4, 0.4, 2.5));
+		GetTransform().SetWorldPosition(Vector3(0, 0, 0));
+		GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, 0, 0));
+		AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));
+		GetComponent<RenderObject*>()->SetMaterialInstanced();
+		return;
+	}
 }
 
 CubePrefab::~CubePrefab()
