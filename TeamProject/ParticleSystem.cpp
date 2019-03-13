@@ -17,9 +17,7 @@ ParticleSystem::ParticleSystem(float Duration, int MaxParticles, int ParticleSpa
 	particleSpeedDeviation = ParticleSpeedDeviation;
 	particleStartSize = ParticleStartSize;
 
-	particlePositions.reserve(maxParticles);
-	particleVelocities.reserve(maxParticles);
-	particleDurations.reserve(maxParticles);
+	particles.reserve(maxParticles);
 }
 
 ParticleSystem::ParticleSystem()
@@ -32,5 +30,21 @@ ParticleSystem::~ParticleSystem()
 }
 
 void ParticleSystem::Update(float dt) {
+	currentDuration += dt;
+	currentSpawnTime += dt;
+
+	if (currentSpawnTime > 1.0f / particleSpawnRate) {
+		SpawnParticle();
+		currentSpawnTime -= (1.0f / particleSpawnRate);
+	}
+
+	for (size_t i = 0; i < particles.size(); i++)
+	{
+		particles[i].position += particles[i].velocity;
+		particles[i].lifetime += dt;
+	}
+}
+
+void ParticleSystem::SpawnParticle() {
 
 }

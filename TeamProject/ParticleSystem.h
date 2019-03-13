@@ -3,6 +3,14 @@
 
 namespace NCL {
 	namespace CSC8503 {
+		class Particle {
+		public:
+			float lifetime;
+			Vector3 position;
+			Vector3 velocity;
+			float size;
+		};
+
 		class ParticleSystem : public Component
 		{
 		public:
@@ -16,8 +24,10 @@ namespace NCL {
 
 		protected:
 			float duration;
+			float currentDuration;
 			int maxParticles;
 			int particleSpawnRate;
+			float currentSpawnTime;
 
 			float particleLifetime;
 			float particleStartSpeed;
@@ -25,9 +35,10 @@ namespace NCL {
 			Vector3 particleSpeedDeviation;
 			float particleStartSize;
 
-			vector<Vector4> particlePositions;
-			vector<Vector3> particleVelocities;
-			vector<float> particleDurations;
+			vector<Particle> particles;
+			vector<Vector4> particlePositionsSizes;
+
+			void SpawnParticle();
 		};
 	}
 }
