@@ -444,25 +444,22 @@ void GameTechRenderer::RenderParticleSystems() {
 	identity.ToIdentity();
 
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
+	pixOps.SetDepthMask(false);
+	pixOps.SetSourceFactor(BLEND::SRC_ALPHA);
+	pixOps.SetDestinationFactor(BLEND::ONE_MINUS_SRC_ALPHA);
 
 	BindShader(particleShader);
 	BindMesh(screenQuad);
 
 	for (size_t i = 0; i < activeParticleSystems.size(); i++)
 	{
-		//Order by distance to camera SLOW AS HELL
+
 		vector<Particle> particles = activeParticleSystems[i]->GetParticles();
-		Vector3 cameraPos = gameWorld->GetMainCamera()->GetTransform().GetWorldPosition();
-		/*std::sort(particles.begin(), particles.end(),
-			[cameraPos](const Particle& a, const Particle& b) -> bool {
-			float aToCamDist = (Vector3(a.position.x, a.position.y, a.position.z) - cameraPos).Length();
-			float bToCamDist = (Vector3(b.position.x, b.position.y, b.position.z) - cameraPos).Length();
-			return (aToCamDist > bToCamDist) ? true : false;
-		});*/
 
 		BindTextureToShader(activeParticleSystems[i]->GetParticleTexture(), "diffuseTex", 0);
-
 		BindMatrix4ToShader(identity, "identity");
+
+		//Adding string is also SLOW AS HELL
 		for (size_t x = 0; x < particles.size(); x++)
 		{
 			Particle p = particles[x];
@@ -478,6 +475,7 @@ void GameTechRenderer::RenderParticleSystems() {
 		DrawBoundMesh();
 	}
 
+	pixOps.SetDepthMask(true);
 	pixOps.SetFaceCulling(CULLFACE::BACK);
 
 	BindShader(nullptr);
