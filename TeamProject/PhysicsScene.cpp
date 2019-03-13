@@ -82,6 +82,19 @@ void PhysicsScene::UpdateKeys() {
 void PhysicsScene::LateUpdate(float dt) {
 	GameScene::LateUpdate(dt);
 	UpdateKeys();
+
+	Vector3 newend;
+	Vector3 pos = world->FindGameObjectWithTag(LayerAndTag::Tags::Player)->GetTransform().GetWorldPosition();
+	Vector3 pos2 = world->FindGameObjectWithTag(LayerAndTag::Tags::Resources)->GetTransform().GetWorldPosition();
+
+	/*const btCollisionObject* test1 = physics->Raycast(pos, pos2, newend);
+	Debug::DrawLine(pos, test1 == nullptr ? pos2 : newend, Vector4(1, 0, 0, 1));
+
+	Vector3 dir = Vector3(1, 0, 0);
+	float mag = 200.0f;
+	Vector3 fulldir = Vector3(mag * dir.x, mag * dir.y, mag * dir.z);
+	const btCollisionObject* test2 = physics->RaycastPosDir(pos, dir, mag, newend);
+	Debug::DrawLine(pos, test2 == nullptr ? pos + fulldir : newend, Vector4(1, 1, 0, 1))*/;
   
 	//bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
 	//bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));

@@ -115,6 +115,24 @@ void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBod
 	}
 }
 
+const btCollisionObject* BulletPhysics::Raycast(const Vector3& Start, const Vector3& End, Vector3& NewEnd) {
+	btVector3 btStart = btVector3(Start.x, Start.y, Start.z);
+	btVector3 btEnd = btVector3(End.x, End.y, End.z);
+	btCollisionWorld::ClosestRayResultCallback RayCallback(btStart, btEnd);
+	dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
+	if (RayCallback.hasHit()) {
+		btVector3 btNewEnd = RayCallback.m_hitPointWorld;
+		NewEnd = Vector3(btNewEnd.getX(), btNewEnd.getY(), btNewEnd.getZ());
+		return RayCallback.m_collisionObject;
+	}
+	return nullptr;
+}
+
+const btCollisionObject* BulletPhysics::RaycastPosDir(const Vector3& Pos, const Vector3& Dir, float t, Vector3& NewEnd) {
+	Vector3 End = Pos + Vector3(t * Dir.x, t * Dir.y, t * Dir.z);
+	return Raycast(Pos, End, NewEnd);
+}
+
 void BulletPhysics::UpdateBullet(float dt, int iterations) {
 	dynamicsWorld->stepSimulation(dt, iterations);
 
