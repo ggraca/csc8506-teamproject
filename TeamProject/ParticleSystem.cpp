@@ -11,3 +11,7 @@ ParticleSystem::ParticleSystem()
 ParticleSystem::~ParticleSystem()
 {
 }
+
+void ParticleSystem::Update(float dt) {
+
+}
