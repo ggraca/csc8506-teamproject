@@ -75,7 +75,8 @@ void Player::PlayerMovement(float dt)
 		//		gameObject->GetPhysicsObject()->GetRigidbody()->applyImpulse(10*movementSpeed * btVector3(forward.x, forward.y, forward.z), btVector3(0,0,0));
 
 		btVector3 currentVelocity = btVector3(0, gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->getLinearVelocity().getY(), 0) + movementSpeed * btVector3(forward.x, forward.y, forward.z);
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(currentVelocity);
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(dt * currentVelocity);
+
 		keyDown = true;
 		reset = false;
 	}
@@ -93,7 +94,7 @@ void Player::PlayerMovement(float dt)
 		//gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
 
 		btVector3 currentVelocity = btVector3(0, gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->getLinearVelocity().getY(), 0) - movementSpeed * btVector3(forward.x, forward.y, forward.z);
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(currentVelocity);
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(dt * currentVelocity);
 		keyDown = true;
 		reset = false;
 	}
@@ -109,7 +110,7 @@ void Player::PlayerMovement(float dt)
 		//gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
 
 		btVector3 currentVelocity = btVector3(0, gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->getLinearVelocity().getY(), 0) + movementSpeed * btVector3(left.x, left.y, left.z);
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(currentVelocity);
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(dt * currentVelocity);
 		keyDown = true;
 		reset = false;
 	}
@@ -125,13 +126,13 @@ void Player::PlayerMovement(float dt)
 		//gameObject->GetPhysicsObject()->GetRigidbody()->getWorldTransform().setOrigin(btVector3(playerPos.x, playerPos.y, playerPos.z));*/
 
 		btVector3 currentVelocity = btVector3(0, gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->getLinearVelocity().getY(), 0) - movementSpeed * btVector3(left.x, left.y, left.z);
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(currentVelocity);
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(dt * currentVelocity);
 		keyDown = true;
 		reset = false;
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::JUMP))
 	{
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->applyImpulse(btVector3(0, 20, 0), btVector3(0, 0, 0));
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
 		//gameObject->GetPhysicsObject()->ApplyForce(Vector3(0, 1000, 0), Vector3(0, 0, 0));
 	}
 	if (!keyDown && !reset) {
@@ -170,7 +171,7 @@ int Player::GetResourceCount() const
 void Player::ResetPlayer()
 {
 	resourceCount = 0;
-	movementSpeed = 200;
+	movementSpeed = 20000;
 	jumpSpeed = 400;
 }
 

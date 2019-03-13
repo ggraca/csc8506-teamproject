@@ -176,11 +176,13 @@ GameObject* Scene::AddMeshToWorld(string objFile, const Vector3& position, const
 	cout << "Mesh: " << compMesh->GetChildrenOfObject(compMesh)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[1] << endl;
 	cout << "Mesh: " << compMesh->GetChildrenOfObject(compMesh)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[2] << endl;*/
 
-	/*cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData().size() << endl;
-	cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[0] << endl;
-	cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[1] << endl;
-	cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData()[22487] << endl;*/
+	//cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData().size() << endl;
+	//for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); i++) {
+	//	cout << "Mesh: " << i << ' ' << mesh->GetChildren()[0]->GetPositionData()[i] << endl;
+	//}
 
+//	cout << "Mesh: " << mesh->GetChildren()[0]-> << endl;//  GetPositionData().size() << endl;
+	
 	compMesh->GetTransform().SetWorldScale(dimensions);
 	compMesh->GetTransform().SetWorldPosition(position);
 	compMesh->GetTransform().SetLocalOrientation(orient);

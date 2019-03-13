@@ -45,9 +45,9 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 	if (type == cone) {
 		shape = new btConeShape(btScalar(0.5 * dimensions.x), btScalar(dimensions.y));
 	}
-	if (type == complexMesh) {
+	if (type == complexMesh) {		
 		btTriangleMesh* triangleMesh = new btTriangleMesh();
-		
+	
 
 	//	cout << "Mesh: " << gameObject->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[1] << endl;
 
@@ -60,19 +60,28 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 
 		Vector3 vert1, vert2, vert3;
 		btVector3 vertex1, vertex2, vertex3;
+
+		vertex1 = btVector3(-1000, 0, 0);
+		vertex2 = btVector3(1000, 0, 0);
+		vertex3 = btVector3(0, 100, 0);
+		triangleMesh->addTriangle(vertex1, vertex2, vertex3);
 		
 		
-		for (int i = 1200; i < 3756; ) {
+		for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
 			vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
 			vert2 = mesh->GetChildren()[0]->GetPositionData()[i+1];
 			vert3 = mesh->GetChildren()[0]->GetPositionData()[i+2];
 
-			cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl;
+//			cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl;
+			
 
+			vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
+			vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
+			vertex3 = btVector3(vert3.x * dimensions.x, vert3.y * dimensions.y, vert3.z * dimensions.z);
 
-			vertex1 = btVector3(vert1.x, vert1.y, vert1.z);
+			/*vertex1 = btVector3(vert1.x, vert1.y, vert1.z);
 			vertex2 = btVector3(vert2.x, vert2.y, vert2.z);
-			vertex3 = btVector3(vert3.x, vert3.y, vert3.z);
+			vertex3 = btVector3(vert3.x, vert3.y, vert3.z);*/
 			triangleMesh->addTriangle(vertex1, vertex2, vertex3);
 			i += 6;
 		}
@@ -89,7 +98,6 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		triangleMesh->addTriangle(vertex1, vertex2, vertex3);*/
 
 		shape = new btBvhTriangleMeshShape(triangleMesh, true);
-
 	
 		/*shape = new btTriangleMeshShape(btTriangleMeshShape obj);
 		data = new btTriangleMeshShapeData();*/
