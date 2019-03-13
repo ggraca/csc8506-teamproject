@@ -34,10 +34,10 @@ void Player::PlayerMovement(float dt)
 	{
 		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
 		{
-			//playerPos += forward * movementSpeed * dt;
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount*dt);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
 			
-			//gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(0,0,0));
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(200.0, 0);
+			
 		}
 		playerPos += forward * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
@@ -47,7 +47,6 @@ void Player::PlayerMovement(float dt)
 	{
 		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
 		{
-			playerPos -= forward * movementSpeed * dt;
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
 		}
 		playerPos -= forward * movementSpeed * dt;
@@ -57,7 +56,6 @@ void Player::PlayerMovement(float dt)
 	{
 		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
 		{
-			playerPos += left * movementSpeed * dt;
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
 		}
 		playerPos += left * movementSpeed * dt;
@@ -67,7 +65,6 @@ void Player::PlayerMovement(float dt)
 	{
 		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
 		{
-			playerPos -= left * movementSpeed * dt;
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
 		}
 		playerPos -= left * movementSpeed * dt;
@@ -77,6 +74,8 @@ void Player::PlayerMovement(float dt)
 	{
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
 	}
+
+	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0, 0);
 }
 
 void Player::LateUpdate(float dt)
