@@ -5,25 +5,6 @@
 using namespace NCL;
 using namespace CSC8503;
 
-PhysicsObject::PhysicsObject() {
-	dimensions = Vector3(1, 1, 1); //TODO Make transform from these parameters, or delete constructor
-	orientation = Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0);
-	position = Vector3(0, 0, 0);
-	mass = 1.0f;
-	restitution = 0.3f;
-	friction = 0.3f;
-}
-
-PhysicsObject::PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction) {
-	this->type = type;
-	this->dimensions = dimensions; //TODO Make transform from these parameters, or delete constructor
-	this->orientation = orientation;
-	this->position = position;
-	this->mass = mass;
-	this->restitution = restitution;
-	this->friction = friction;
-}
-
 PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh)	{
 	transform = parentTransform;
 	this->type = type;
@@ -45,7 +26,11 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 	if (type == cone) {
 		shape = new btConeShape(btScalar(0.5 * dimensions.x), btScalar(dimensions.y));
 	}
-	if (type == complexMesh) {		
+	if (type == complexMesh) {
+
+		
+
+
 		btTriangleMesh* triangleMesh = new btTriangleMesh();
 	
 
@@ -101,6 +86,22 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 	
 		/*shape = new btTriangleMeshShape(btTriangleMeshShape obj);
 		data = new btTriangleMeshShapeData();*/
+
+		////Compound shape method:
+		//btCylinderShape * cylinder1 = new btCylinderShape(btVector3(1, 1.7, 1));
+		//btCylinderShape * cylinder2 = new btCylinderShape(btVector3(0.5, 1, 0.5));
+		//btCompoundShape * bolw = new btCompoundShape();
+		//bolw->addChildShape(t, cylinder1);
+		//t.setIdentity();
+		//t.setOrigin(btVector3(x, y + 2.7, z));
+		//bolw->addChildShape(t, cylinder2);
+		//btVector3 inertia(0, 0, 0);
+		//btScalar masses[2] = { mass,mass / 2 };
+		//bolw->calculatePrincipalAxisTransform(masses, t, inertia);
+		//t.setIdentity();
+
+		shape = new btBoxShape(btVector3(btScalar(100), btScalar(200), btScalar(100)));
+
 	}
 	
 	SetBulletPhysicsParameters();
