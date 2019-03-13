@@ -64,10 +64,13 @@ void ParticleSystem::UpdateParticles(float dt) {
 }
 
 void ParticleSystem::RemoveOldParticles() {
-	for (vector<Particle>::const_iterator p = particles.begin(); p < particles.end(); p++)
+	for (auto p = particles.begin(); p != particles.end();)
 	{
 		if (p->lifetime > particleLifetime) {
-			particles.erase(p);
+			p = particles.erase(p);
+		}
+		else {
+			++p;
 		}
 	}
 }
@@ -88,6 +91,6 @@ void ParticleSystem::SpawnParticle() {
 	}
 
 	Vector3 velocity = (particleSpeedDirection + randomVelocityDeviation) * particleStartSpeed;
-
-	particles.emplace_back(Particle(particleLifetime, gameObject->GetTransform().GetWorldPosition(), velocity, particleStartSize));
+	Particle newParticle = Particle(gameObject->GetTransform().GetWorldPosition(), velocity, particleStartSize);
+	particles.push_back(newParticle);
 }

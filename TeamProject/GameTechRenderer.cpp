@@ -5,6 +5,7 @@
 #include "../Common/Vector3.h"
 #include "../Common/OBJGeometry.h"
 #include "Light.h"
+#include "ParticleSystem.h"
 
 using namespace NCL;
 using namespace Rendering;
@@ -21,6 +22,7 @@ GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
 	directionalLightShader = Assets::AssetManager::LoadShader("DirectionalLightShader", "directionallightvert.glsl", "directionallightfrag.glsl");
 	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
 	presentShader = Assets::AssetManager::LoadShader("PresentShader", "TexturedVertex.glsl", "TexturedFragment.glsl");
+	particleShader = Assets::AssetManager::LoadShader("ParticleShader", "ParticleVert.glsl", "ParticleFrag.glsl");
 
 	// Temporary until post process material or something is set up
 	// postProcessShaders.push_back(Assets::AssetManager::LoadShader("PostShader", "TexturedVertex.glsl", "blurfrag.glsl"));
@@ -123,6 +125,7 @@ void GameTechRenderer::RenderFrame() {
 	RenderCamera();
 	RenderLights();
 	CombineBuffers();
+	RenderParticleSystems();
 	RenderPostProcess();
 	PresentScene();
 	RenderHUD();
@@ -137,11 +140,13 @@ void GameTechRenderer::BuildObjectList() {
 
 	activeObjects.clear();
 	activeLights.clear();
+	activeParticleSystems.clear();
 
 	for (std::vector<GameObject*>::const_iterator i = first; i != last; ++i) {
 		if ((*i)->IsActive()) {
 			const RenderObject* g = (*i)->GetComponent<RenderObject*>();
 			const Light* l = (*i)->GetComponent<Light*>();
+			ParticleSystem* p = (*i)->GetComponent<ParticleSystem*>();
 
 			if (g) {
 				activeObjects.emplace_back(g);
@@ -149,6 +154,10 @@ void GameTechRenderer::BuildObjectList() {
 
 			if (l) {
 				activeLights.emplace_back(l);
+			}
+
+			if (p) {
+				activeParticleSystems.emplace_back(p);
 			}
 		}
 	}
@@ -418,6 +427,45 @@ void GameTechRenderer::CombineBuffers() {
 	BindMesh(screenQuad);
 	DrawBoundMesh();
 	lastRendererdPostTex = 0;
+
+	BindShader(nullptr);
+	BindFBO(nullptr);
+}
+
+void GameTechRenderer::RenderParticleSystems() {
+	BindFBO((void*)&postFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+		GL_TEXTURE_2D, ((OGLTexture*)postTexture[0])->GetObjectID(), 0);
+
+	float screenAspect = (float)currentWidth / (float)currentHeight;
+	Matrix4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 identity;
+	identity.ToIdentity();
+
+	pixOps.SetFaceCulling(CULLFACE::NOCULL);
+
+	BindShader(particleShader);
+
+	for (size_t i = 0; i < activeParticleSystems.size(); i++)
+	{
+		//Order by distance to camera
+		vector<Vector4> positions = activeParticleSystems[i]->GetParticlePositions();
+		BindTextureToShader(activeParticleSystems[i]->GetParticleTexture(), "diffuseTex", 0);
+
+		for (size_t x = 0; x < positions.size(); x++)
+		{
+			BindMatrix4ToShader(identity, "identity");
+			BindVector4ToShader(positions[x], "worldPosition");
+			BindMatrix4ToShader(viewMatrix, "viewMatrix");
+			BindMatrix4ToShader(projMatrix, "projMatrix");
+
+			BindMesh(screenQuad);
+			DrawBoundMesh();
+		}
+	}
+
+	pixOps.SetFaceCulling(CULLFACE::BACK);
 
 	BindShader(nullptr);
 	BindFBO(nullptr);

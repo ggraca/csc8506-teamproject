@@ -5,7 +5,12 @@ namespace NCL {
 	namespace CSC8503 {
 		class Particle {
 		public:
-			Particle(float Lifetime, Vector3 position, Vector3 velocity, float size) {};
+			Particle(Vector3 Position, Vector3 Velocity, float Size) {
+				position = Position;
+				velocity = Velocity;
+				size = Size;
+				lifetime = 0.0f;
+			};
 			Particle() {};
 			~Particle() {};
 
@@ -25,6 +30,7 @@ namespace NCL {
 			~ParticleSystem();
 
 			vector<Vector4>& GetParticlePositions();
+			TextureBase* GetParticleTexture() const { return particleTexture; }
 
 			void Update(float dt) override;
 
