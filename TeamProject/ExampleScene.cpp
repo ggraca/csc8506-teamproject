@@ -49,12 +49,11 @@ void ExampleScene::InitPlayer()
 	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
 	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
 
-	world->AddGameObject(player);
 
+	world->AddGameObject(player);
 	world->AddGameObject(playerLeft);
 	world->AddGameObject(playerRight);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-
 }
 
 

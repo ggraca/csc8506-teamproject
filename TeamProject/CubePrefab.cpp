@@ -25,7 +25,7 @@ CubePrefab::CubePrefab(CubePrefab::PrefabType type)
 {
 	switch (type)
 	{
-	case CubePrefab::GUN:
+	case CubePrefab::GUN: // I didn't want to create a prefab class just for these lines.
 		GetTransform().SetWorldScale(Vector3(0.4, 0.4, 2.5));
 		GetTransform().SetWorldPosition(Vector3(0, 0, 0));
 		GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, 0, 0));
