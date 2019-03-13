@@ -20,6 +20,7 @@ void Player::Update(float dt)
 {
 	PlayerMovement(dt);
 	CheckGunControls();
+	
 
 	if (!isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
 	{

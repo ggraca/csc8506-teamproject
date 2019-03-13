@@ -13,13 +13,13 @@ void PhysicsScene::ResetWorld() {
 
 	InitPlayer();
 
-	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);
+	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 0, 0.2f,0.4f);
 	resource1->SetName("Resource 1");
 
-	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 0, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
   
-	auto des = new CubePrefab(Vector3(500, -10, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
+	auto des = new CubePrefab(Vector3(500, 400, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
 	des->AddComponent<Destructible*>(new Destructible(des));
 	des->AddComponent<HealthManager*>(new HealthManager(des));
 	des->GetComponent<HealthManager*>()->SetHealth(8);
@@ -93,10 +93,7 @@ void PhysicsScene::InitPlayer()
 	playerLeft->SetParent(player);
 	playerRight->SetParent(player);
 	handle->SetParent(player);
-	Transform * hammerHead = new Transform();
-	hammerHead->SetParent(&handle->GetTransform());
-	hammerHead->SetLocalPosition(Vector3(0, 1, 0));
-
+	
 	playerRight->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
 	playerLeft->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
 	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
