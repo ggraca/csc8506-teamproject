@@ -57,18 +57,24 @@ Vector3 GunControl::CalculateDirection()
 
 void GunControl::ActivateGun()
 {
+	if (!leftGun || !rightGun) { return; }
+
 	leftGun->SetActiveStatus(true);
 	rightGun->SetActiveStatus(true);
 }
 
 void GunControl::DeactivateGun()
 {
+	if (!leftGun || !rightGun) { return; }
+
 	leftGun->SetActiveStatus(false);
 	rightGun->SetActiveStatus(false);
 }
 
 void GunControl::Fire()
 {
+	if (!leftGun || !rightGun) { std::cout << "Guns are not attached" << std::endl; return; }
+
 	//This part will change later on
 	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
 
