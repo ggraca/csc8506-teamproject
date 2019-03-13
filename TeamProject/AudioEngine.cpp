@@ -225,8 +225,8 @@ FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world
 }
 
 void CAudioEngine::SetCamera(GameObject* cam) { // sets world sapce to fmod co ord
-	
 	camera = cam;
+	player = cam;
 }
 
 void CAudioEngine::SetCameraPos() {
