@@ -17,6 +17,8 @@ Game::Game() {
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
 
+	network = new NetworkManager();
+
 	Window::GetWindow()->ShowOSPointer(false);
 	Window::GetWindow()->LockMouseToWindow(true);
 	InputManager::InitializeButtonRelations();

@@ -11,24 +11,25 @@
 #include "../Common/GameServer.h"
 #include "../Common/GameClient.h"
 
+using namespace NCL::Networking;
+
 class PhysicsScene : public GameScene {
 public:
-    PhysicsScene();
-    ~PhysicsScene();
+	PhysicsScene();
+	~PhysicsScene();
     
-    bool CreateServer();
-	  void CreateClient();
-	  void CreatePlayer();
+	bool CreateServer();
+	void CreateClient();
 
-    void LateUpdate(float dt) override;
-	
+	void LateUpdate(float dt) override;
+
 protected:
-    void ResetWorld();
-	  void UpdateKeys();
+	void ResetWorld();
+	void UpdateKeys();
     
-    bool isServer = false;
+	bool isServer = false;
 
-	  GameServer* server;
-	  vector<GameClient*> clients;
-    GameObject* bestcube;
+	GameServer* server;
+	vector<GameClient*> clients;
+	GameObject* bestcube;
 };

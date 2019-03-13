@@ -46,6 +46,18 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeId.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -145,12 +157,9 @@
     <ClCompile Include="DebugMenu.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp" />
     <ClCompile Include="ScriptObject.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="TypeId.cpp" />
-    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
@@ -166,9 +175,6 @@
     <ClInclude Include="SpherePrefab.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
-    <ClCompile Include="NetworkScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClInclude Include="Destructible.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
@@ -177,6 +183,18 @@
     </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeId.h">
+      <Filter>Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -255,17 +273,11 @@
     <ClInclude Include="DebugMenu.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h" />
     <ClInclude Include="ScriptObject.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="TypeId.h" />
-    <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioEngine.h">
       <Filter>Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkScene.h">
-      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,19 +5,7 @@
 
 PhysicsScene::PhysicsScene() : GameScene() {
 	ResetWorld();
-  if (CreateServer());
-  else CreateClient();
 }
-
-/*void PhysicsScene::CreatePlayer()
-{
-	//Player
-	auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-	player->AddScript((ScriptObject*)new Player(player));
-	player->SetTag(LayerAndTag::Tags::Player);
-	player->GetPhysicsObject()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-	world->GetMainCamera()->GetScript<CameraControl*>()->SetPlayer(player);
-}*/
 
 void PhysicsScene::ResetWorld() {
 	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
@@ -100,42 +88,4 @@ void PhysicsScene::LateUpdate(float dt) {
 	//bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
 	//bestcube->GetPhysicsObject()->ApplyForce(Vector3(100000, 0, 10), Vector3(0, -10, 0));
 	//bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
-}
-
-bool PhysicsScene::CreateServer()
-{
-	NetworkBase::Initialise();
-
-	TestPacketReceiver* serverReceiver = new TestPacketReceiver("Server");
-
-	int port = NetworkBase::GetDefaultPort();
-
-	server = new GameServer(port, 4);
-
-	if (server->Initialise())
-	{
-		std::cout << "Creating server..." << std::endl;
-		isServer = true;
-		server->RegisterPacketHandler(StringMessage, serverReceiver);
-		server->RegisterPacketHandler(PlayerPos, serverReceiver);
-		std::cout << "Server created..." << std::endl;
-		return isServer;
-	}
-	else
-	{
-		std::cout << "Server already exists. Connecting to server..." << std::endl;
-		return false;
-	}
-}
-
-void PhysicsScene::CreateClient()
-{
-	TestPacketReceiver* clientReceiver = new TestPacketReceiver("Client");
-	int port = NetworkBase::GetDefaultPort();
-	GameClient* client = new GameClient();
-	client->RegisterPacketHandler(StringMessage, clientReceiver);
-	client->RegisterPacketHandler(PlayerPos, clientReceiver);
-	bool canConnect = client->Connect(127, 0, 0, 1, port);
-	if (canConnect) std::cout << "New client connected!" << std::endl;
-	clients.emplace_back(client);
 }
