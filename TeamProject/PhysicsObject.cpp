@@ -2,6 +2,8 @@
 #include "../TeamProject/Transform.h"
 #include "../TeamProject/Scene.h"
 
+#include <../../BulletWorldImporter/btBulletWorldImporter.h>
+
 using namespace NCL;
 using namespace CSC8503;
 
@@ -82,7 +84,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		vertex3 = btVector3(1000, 1000, 0);
 		triangleMesh->addTriangle(vertex1, vertex2, vertex3);*/
 
-		shape = new btBvhTriangleMeshShape(triangleMesh, true);
+	//	shape = new btBvhTriangleMeshShape(triangleMesh, true);
 	
 		/*shape = new btTriangleMeshShape(btTriangleMeshShape obj);
 		data = new btTriangleMeshShapeData();*/
@@ -100,7 +102,13 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		//bolw->calculatePrincipalAxisTransform(masses, t, inertia);
 		//t.setIdentity();
 
-		shape = new btBoxShape(btVector3(btScalar(100), btScalar(200), btScalar(100)));
+	//	shape = new btBoxShape(btVector3(btScalar(100), btScalar(200), btScalar(100)));
+
+		shape = new btCompoundShape();
+	//	btBulletWorldImporter loader(0);
+	//	loader.setVerboseMode(0); // Try different integers
+	//	if (!loader.loadFile("C:\\Users\\b7053261\\GitHub\\csc8506-teamproject\\Assets\\Meshes\\back_wall.bcs")) cout << "shoot!";
+	//	if (loader.getNumCollisionShapes() > 0) shape = loader.getCollisionShapeByIndex(0);
 
 	}
 	
