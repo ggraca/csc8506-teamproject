@@ -446,23 +446,36 @@ void GameTechRenderer::RenderParticleSystems() {
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 
 	BindShader(particleShader);
+	BindMesh(screenQuad);
 
 	for (size_t i = 0; i < activeParticleSystems.size(); i++)
 	{
-		//Order by distance to camera
-		vector<Vector4> positions = activeParticleSystems[i]->GetParticlePositions();
+		//Order by distance to camera SLOW AS HELL
+		vector<Particle> particles = activeParticleSystems[i]->GetParticles();
+		Vector3 cameraPos = gameWorld->GetMainCamera()->GetTransform().GetWorldPosition();
+		/*std::sort(particles.begin(), particles.end(),
+			[cameraPos](const Particle& a, const Particle& b) -> bool {
+			float aToCamDist = (Vector3(a.position.x, a.position.y, a.position.z) - cameraPos).Length();
+			float bToCamDist = (Vector3(b.position.x, b.position.y, b.position.z) - cameraPos).Length();
+			return (aToCamDist > bToCamDist) ? true : false;
+		});*/
+
 		BindTextureToShader(activeParticleSystems[i]->GetParticleTexture(), "diffuseTex", 0);
 
-		for (size_t x = 0; x < positions.size(); x++)
+		BindMatrix4ToShader(identity, "identity");
+		for (size_t x = 0; x < particles.size(); x++)
 		{
-			BindMatrix4ToShader(identity, "identity");
-			BindVector4ToShader(positions[x], "worldPosition");
-			BindMatrix4ToShader(viewMatrix, "viewMatrix");
-			BindMatrix4ToShader(projMatrix, "projMatrix");
-
-			BindMesh(screenQuad);
-			DrawBoundMesh();
+			Particle p = particles[x];
+			BindVector4ToShader(Vector4(p.position.x, p.position.y, p.position.z, p.size),
+				"worldPosition[" + std::to_string(x) + "]");
+			BindFloatToShader(p.lifetime, "particleLifeTime[" + std::to_string(x) + "]");
 		}
+		BindMatrix4ToShader(viewMatrix, "viewMatrix");
+		BindMatrix4ToShader(projMatrix, "projMatrix");
+		BindFloatToShader(activeParticleSystems[i]->GetParticleMaxLifeTime(), "particleMaxLifeTime");
+
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particles.size());
+		DrawBoundMesh();
 	}
 
 	pixOps.SetFaceCulling(CULLFACE::BACK);

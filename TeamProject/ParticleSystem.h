@@ -29,8 +29,9 @@ namespace NCL {
 			ParticleSystem();
 			~ParticleSystem();
 
-			vector<Vector4>& GetParticlePositions();
+			vector<Particle>& GetParticles() { return particles; }
 			TextureBase* GetParticleTexture() const { return particleTexture; }
+			float GetParticleMaxLifeTime() const { return particleLifetime; }
 
 			void Update(float dt) override;
 
@@ -49,7 +50,6 @@ namespace NCL {
 			TextureBase* particleTexture;
 
 			vector<Particle> particles;
-			vector<Vector4> particlePositionsSizes;
 
 			void SpawnParticle();
 			void UpdateParticles(float dt);

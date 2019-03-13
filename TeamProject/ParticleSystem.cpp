@@ -30,18 +30,6 @@ ParticleSystem::~ParticleSystem()
 {
 }
 
-vector<Vector4>& ParticleSystem::GetParticlePositions() {
-	//There is a better way to handle this - don't clear and just update particle positions on the fly
-	//Refactor at a later point if its too slow
-	particlePositionsSizes.clear();
-	for (size_t i = 0; i < particles.size(); i++)
-	{
-		Vector3 pos = particles[i].position;
-		particlePositionsSizes.push_back(Vector4(pos.x, pos.y, pos.z, particles[i].size));
-	}
-	return particlePositionsSizes;
-}
-
 void ParticleSystem::Update(float dt) {
 	currentDuration += dt;
 	currentSpawnTime += dt;
