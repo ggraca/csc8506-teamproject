@@ -78,7 +78,7 @@ void GunControl::Fire()
 	//This part will change later on
 	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
 
-	if (children.size() > 0)
+	if ((int)children.size() > 0)
 	{
 		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetChildrenList()[currentGun=!currentGun]->GetWorldPosition() + CalculateDirection() *30.0f );
 		children[0]->GetComponent<Resource*>()->Reset();

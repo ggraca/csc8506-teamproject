@@ -186,6 +186,7 @@
     <ClCompile Include="GameTechRenderer.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="GunControl.cpp" />
+    <ClCompile Include="HammerControl.cpp" />
     <ClCompile Include="HealthManager.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="HUDObject.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="GameTechRenderer.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="GunControl.h" />
+    <ClInclude Include="HammerControl.h" />
     <ClInclude Include="HealthManager.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="HUDObject.h" />

@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "InputManager.h"
 #include "GunControl.h"
+#include "HammerControl.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -19,11 +20,24 @@ void Player::Update(float dt)
 {
 	PlayerMovement(dt);
 	CheckGunControls();
+
+	if (!isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
+	{
+		isHammerActive = !isHammerActive;
+
+		if (isHammerActive) { gameObject->GetComponent<HammerControl*>()->ActivateHammer(); }
+		else { gameObject->GetComponent<HammerControl*>()->DeactivateHammer(); }
+	}
+
+	if (isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	{
+		if (resourceCount > 0) { gameObject->GetComponent<HammerControl*>()->HammerHit(); }
+	}
 }
 
 void Player::CheckGunControls()
 {
-	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
+	if (!isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
 	{
 		isGunActive = !isGunActive;
 
@@ -31,7 +45,7 @@ void Player::CheckGunControls()
 		else { gameObject->GetComponent<GunControl*>()->DeactivateGun(); }
 	}
 
-	if (isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::FIRE))
+	if (isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
 	{
 		if (resourceCount > 0) { gameObject->GetComponent<GunControl*>()->Fire(); }
 	}

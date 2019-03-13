@@ -1,6 +1,7 @@
 #include "PhysicsScene.h"
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
+#include "HammerControl.h"
 
 
 PhysicsScene::PhysicsScene() : GameScene() {
@@ -87,19 +88,26 @@ void PhysicsScene::InitPlayer()
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
 	auto * playerLeft = new CubePrefab(CubePrefab::PrefabType::GUN);
 	auto * playerRight = new CubePrefab(CubePrefab::PrefabType::GUN);
+	auto * handle = new CubePrefab(CubePrefab::PrefabType::HANDLE);
 
 	playerLeft->SetParent(player);
 	playerRight->SetParent(player);
+	handle->SetParent(player);
+	Transform * hammerHead = new Transform();
+	hammerHead->SetParent(&handle->GetTransform());
+	hammerHead->SetLocalPosition(Vector3(0, 1, 0));
 
 	playerRight->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
 	playerLeft->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
+	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
 	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
 	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
-
+	player->GetComponent<HammerControl*>()->SetHandle(handle);
 
 	world->Instantiate(player);
 	world->Instantiate(playerLeft);
 	world->Instantiate(playerRight);
+	world->Instantiate(handle);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);
 }

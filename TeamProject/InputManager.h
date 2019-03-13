@@ -19,8 +19,9 @@ namespace NCL
 				LEFT,
 				RIGHT,
 				JUMP,
-				FIRE,
+				HIT,
 				TOGGLE_GUN,
+				TOGGLE_HAMMER,
 				MAX
 			};
 

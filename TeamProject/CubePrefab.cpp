@@ -22,7 +22,12 @@ CubePrefab::CubePrefab(CubePrefab::PrefabType type)
 	switch (type)
 	{
 	case CubePrefab::GUN: // I didn't want to create a prefab class just for these lines.
-		SetTransformDetails(Vector3(0.4, 0.4, 2.5), Vector3(0, 0, 0), Quaternion::EulerAnglesToQuaternion(0, 0, 0));
+		SetTransformDetails(Vector3(0.4f, 0.4f, 2.5f), Vector3(0, 0, 0), Quaternion::EulerAnglesToQuaternion(0, 0, 0));
+		AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));
+		GetComponent<RenderObject*>()->SetMaterialInstanced();
+		return;
+	case CubePrefab::HANDLE:
+		SetTransformDetails(Vector3(0.2f, 2.5f, 0.2f), Vector3(0, 0, 0), Quaternion::EulerAnglesToQuaternion(0, 0, 45.0f));
 		AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));
 		GetComponent<RenderObject*>()->SetMaterialInstanced();
 		return;

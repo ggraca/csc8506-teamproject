@@ -21,8 +21,9 @@ void PlayerPrefab::ResetPlayer()
 {
 	AddComponent<Player*>((Component*)new Player(this));
 	AddComponent<GunControl*>(new GunControl(this));
+	AddComponent<HammerControl*>(new HammerControl(this));
+	GetComponent<HammerControl*>()->SetHammerSize(-1, 1, -1, 1, -1, 1);
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
-	
 }

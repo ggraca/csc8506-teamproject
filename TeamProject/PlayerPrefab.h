@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "CubePrefab.h"
 #include "GunControl.h"
+#include "HammerControl.h"
 
 using namespace NCL;
 using namespace CSC8503;
