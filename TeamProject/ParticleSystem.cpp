@@ -33,15 +33,29 @@ void ParticleSystem::Update(float dt) {
 	currentDuration += dt;
 	currentSpawnTime += dt;
 
-	if (currentSpawnTime > 1.0f / particleSpawnRate) {
+	while (currentSpawnTime > 1.0f / particleSpawnRate) {
 		SpawnParticle();
 		currentSpawnTime -= (1.0f / particleSpawnRate);
 	}
 
+	UpdateParticles(dt);
+	RemoveOldParticles();
+}
+
+void ParticleSystem::UpdateParticles(float dt) {
 	for (size_t i = 0; i < particles.size(); i++)
 	{
 		particles[i].position += particles[i].velocity;
 		particles[i].lifetime += dt;
+	}
+}
+
+void ParticleSystem::RemoveOldParticles() {
+	for (vector<Particle>::const_iterator p = particles.begin(); p < particles.end(); p++)
+	{
+		if (p->lifetime > particleLifetime) {
+			particles.erase(p);
+		}
 	}
 }
 

@@ -43,6 +43,8 @@ namespace NCL {
 			vector<Vector4> particlePositionsSizes;
 
 			void SpawnParticle();
+			void UpdateParticles(float dt);
+			void RemoveOldParticles();
 		};
 	}
 }
