@@ -132,6 +132,10 @@ void Transform::ForceUpdateScale(Vector3 scale)
 
 	if (!body) { return; }
 
+	if (body->getCollisionShape()) {
+		delete body->getCollisionShape();
+	}
+
 	if (body->getCollisionShape()->getShapeType() == cube) {
 		body->setCollisionShape(new btBoxShape(btVector3(scale.x, scale.y, scale.z)));
 	}

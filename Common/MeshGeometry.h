@@ -35,11 +35,11 @@ namespace NCL {
 		}
 
 		unsigned int GetVertexCount() const {
-			return positions.size();
+			return (unsigned int) positions.size();
 		}
 
 		unsigned int GetIndexCount()  const {
-			return indices.size();
+			return (unsigned int) indices.size();
 		}
 
 		const vector<Vector3>&		GetPositionData()		const { return positions; }

@@ -218,7 +218,6 @@ public:
 
 	virtual void setCollisionShape(btCollisionShape * collisionShape)
 	{
-		if (m_collisionShape) { delete m_collisionShape; }
 		m_updateRevision++;
 		m_collisionShape = collisionShape;
 		m_rootCollisionShape = collisionShape;

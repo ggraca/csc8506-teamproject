@@ -164,7 +164,7 @@ void OBJGeometry::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, s
 	}
 
 	//// Following Faces
-	for (int i = 2; i < verts.size(); i++) {
+	for (unsigned int i = 2; i < verts.size(); i++) {
 		currentMesh->vertIndices.push_back(verts[i - 1].vertIndex);
 		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[i - 1].vertTex);
 		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[i - 1].vertNormal);
@@ -229,11 +229,11 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 
 string OBJGeometry::NormalisePath(string path) {
 	if (path.find_last_of('/') != string::npos) {
-		int at = path.find_last_of('/');
+		int at = (int) path.find_last_of('/');
 		path = path.substr(at + 1);
 	}
 	else if (path.find_last_of('\\') != string::npos) {
-		int at = path.find_last_of('\\');
+		int at = (int) path.find_last_of('\\');
 		path = path.substr(at + 1);
 	}
 	return path;

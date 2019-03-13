@@ -8,7 +8,6 @@
     <ClCompile Include="DamageControl.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
-    <ClCompile Include="Destructable.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -38,6 +37,15 @@
     <ClCompile Include="SpherePrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
+    <ClCompile Include="Destructible.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -47,7 +55,6 @@
     <ClInclude Include="DamageControl.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugMenu.h" />
-    <ClInclude Include="Destructable.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="ExampleScene.h" />
     <ClInclude Include="GameObject.h" />
@@ -79,9 +86,6 @@
       <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="DamageControl.cpp">
-      <Filter>Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="Destructable.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
@@ -165,6 +169,15 @@
     <ClCompile Include="NetworkScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClInclude Include="Destructible.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -180,9 +193,6 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="DamageControl.h">
-      <Filter>Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Destructable.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
@@ -282,6 +292,9 @@
     </Filter>
     <Filter Include="Prefabs">
       <UniqueIdentifier>{3a1915d8-f7c4-42ae-adbe-08b929077eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{55e56cd0-acdf-4143-99ae-ffd4927a11a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
