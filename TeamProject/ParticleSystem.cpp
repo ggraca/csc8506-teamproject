@@ -5,7 +5,7 @@ using namespace CSC8503;
 
 ParticleSystem::ParticleSystem(float Duration, int MaxParticles, int ParticleSpawnRate, float ParticleLifetime,
 	float ParticleStartSpeed, Vector3 ParticleSpeedDirection, Vector3 ParticleSpeedDeviation,
-	float ParticleStartSize) {
+	float ParticleStartSize, TextureBase* ParticleTexture) {
 
 	duration = Duration;
 	maxParticles = MaxParticles;
@@ -16,6 +16,7 @@ ParticleSystem::ParticleSystem(float Duration, int MaxParticles, int ParticleSpa
 	particleSpeedDirection = ParticleSpeedDirection;
 	particleSpeedDeviation = ParticleSpeedDeviation;
 	particleStartSize = ParticleStartSize;
+	particleTexture = ParticleTexture;
 
 	particles.reserve(maxParticles);
 }
@@ -27,6 +28,18 @@ ParticleSystem::ParticleSystem()
 
 ParticleSystem::~ParticleSystem()
 {
+}
+
+vector<Vector4>& ParticleSystem::GetParticlePositions() {
+	//There is a better way to handle this - don't clear and just update particle positions on the fly
+	//Refactor at a later point if its too slow
+	particlePositionsSizes.clear();
+	for (size_t i = 0; i < particles.size(); i++)
+	{
+		Vector3 pos = particles[i].position;
+		particlePositionsSizes.push_back(Vector4(pos.x, pos.y, pos.z, particles[i].size));
+	}
+	return particlePositionsSizes;
 }
 
 void ParticleSystem::Update(float dt) {

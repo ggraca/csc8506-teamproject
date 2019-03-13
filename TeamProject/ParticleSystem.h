@@ -20,9 +20,11 @@ namespace NCL {
 		public:
 			ParticleSystem(float Duration, int MaxParticles, int ParticleSpawnRate, float ParticleLifetime,
 				float ParticleStartSpeed, Vector3 ParticleSpeedDirection, Vector3 ParticleSpeedDeviation,
-				float ParticleStartSize);
+				float ParticleStartSize, TextureBase* ParticleTexture);
 			ParticleSystem();
 			~ParticleSystem();
+
+			vector<Vector4>& GetParticlePositions();
 
 			void Update(float dt) override;
 
@@ -38,6 +40,7 @@ namespace NCL {
 			Vector3 particleSpeedDirection;
 			Vector3 particleSpeedDeviation;
 			float particleStartSize;
+			TextureBase* particleTexture;
 
 			vector<Particle> particles;
 			vector<Vector4> particlePositionsSizes;
