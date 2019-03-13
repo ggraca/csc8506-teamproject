@@ -25,6 +25,9 @@ namespace NCL {
 			Vector3 particleSpeedDeviation;
 			float particleStartSize;
 
+			vector<Vector4> particlePositions;
+			vector<Vector3> particleVelocities;
+			vector<float> particleDurations;
 		};
 	}
 }

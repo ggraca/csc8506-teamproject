@@ -16,6 +16,10 @@ ParticleSystem::ParticleSystem(float Duration, int MaxParticles, int ParticleSpa
 	particleSpeedDirection = ParticleSpeedDirection;
 	particleSpeedDeviation = ParticleSpeedDeviation;
 	particleStartSize = ParticleStartSize;
+
+	particlePositions.reserve(maxParticles);
+	particleVelocities.reserve(maxParticles);
+	particleDurations.reserve(maxParticles);
 }
 
 ParticleSystem::ParticleSystem()
