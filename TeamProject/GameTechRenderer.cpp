@@ -446,7 +446,7 @@ void GameTechRenderer::RenderParticleSystems() {
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 	pixOps.SetDepthMask(false);
 	pixOps.SetSourceFactor(BLEND::SRC_ALPHA);
-	pixOps.SetDestinationFactor(BLEND::ONE_MINUS_SRC_ALPHA);
+	pixOps.SetDestinationFactor(BLEND::ONE);
 
 	BindShader(particleShader);
 	BindMesh(screenQuad);
@@ -472,9 +472,10 @@ void GameTechRenderer::RenderParticleSystems() {
 		BindFloatToShader(activeParticleSystems[i]->GetParticleMaxLifeTime(), "particleMaxLifeTime");
 
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particles.size());
-		DrawBoundMesh();
 	}
 
+	pixOps.SetDestinationFactor(BLEND::ONE_MINUS_SRC_ALPHA);
+	pixOps.SetSourceFactor(BLEND::SRC_ALPHA);
 	pixOps.SetDepthMask(true);
 	pixOps.SetFaceCulling(CULLFACE::BACK);
 
@@ -504,7 +505,7 @@ void GameTechRenderer::RenderPostProcess() {
 		//Should really be handled by a post process shader class (maybe material?)
 		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
 		BindMatrix4ToShader(tempProjMatrix, "projMatrix");
-		for (int x = 0; x < 2; ++x) {
+		for (int x = 0; x < 0; ++x) {
 			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
@@ -538,6 +539,8 @@ void GameTechRenderer::RenderPostProcess() {
 
 void GameTechRenderer::PresentScene() {
 	BindFBO(nullptr);
+	pixOps.SetClearColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+	ClearBuffer(true, true, false);
 	BindShader(presentShader);
 
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
