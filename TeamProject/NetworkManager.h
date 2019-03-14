@@ -14,6 +14,10 @@ public:
 
 	void Update();
 
+	NetworkEntity* GetEntity() const {
+		return networkEntity;
+	}
+
 private:
 	bool CreateServer();
 	void CreateClient();

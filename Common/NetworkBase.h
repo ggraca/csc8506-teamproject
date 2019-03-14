@@ -19,7 +19,8 @@ enum BasicNetworkMessages {
 	Player_Connected,
 	Player_Disconnected,
 	Shutdown,
-	PlayerPos
+	PlayerPos,
+	InstantiateMessage
 };
 
 struct GamePacket {
@@ -107,10 +108,10 @@ public:
 	virtual void ReceivePacket(int type, GamePacket* payload, int source = -1) = 0;
 	virtual void OnClientConnect(int source = -1) {
 		std::cout << "Server: New client connected" << std::endl;
-	};
+	}
 	virtual void OnClientDisconnect(int source = -1) {
 		std::cout << "Server: New client disconnected" << std::endl;
-	};
+	}
 };
 
 class NetworkBase	{

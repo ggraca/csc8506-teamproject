@@ -27,7 +27,6 @@ bool NetworkManager::CreateServer()
 		networkEntity = new NetworkServer(server);
 		server->RegisterConnectionHandler(networkEntity);
 		server->RegisterPacketHandler(StringMessage, networkEntity);
-		server->RegisterPacketHandler(PlayerPos, networkEntity);
 		std::cout << "Server created..." << std::endl;
 	}
 	else
@@ -43,7 +42,7 @@ void NetworkManager::CreateClient()
 	GameClient* client = new GameClient();
 	networkEntity = new NetworkClient(client);
 	client->RegisterPacketHandler(StringMessage, networkEntity);
-	client->RegisterPacketHandler(PlayerPos, networkEntity);
+	client->RegisterPacketHandler(InstantiateMessage, networkEntity);
 
 	bool canConnect = client->Connect(127, 0, 0, 1, port);
 	if (canConnect) std::cout << "Conneced to Server" << std::endl;

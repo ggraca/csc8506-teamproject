@@ -12,11 +12,14 @@ public:
 	~NetworkServer() { delete server; }
 
 	void Update() { server->UpdateServer(); }
+	void Instantiate(GameObject* go) override;
+	void Destroy() override {};
 
 private:
 	void OnClientConnect(int source) override;
 	void OnClientDisconnect(int source) override;
-	void ReceivePacket(int type, GamePacket* payload, int source);
+	void ReceivePacket(int type, GamePacket* payload, int source) override;
 
 	GameServer* server;
+	int lastestId = 0;
 };

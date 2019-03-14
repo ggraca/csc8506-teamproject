@@ -130,21 +130,16 @@ void GameTechRenderer::RenderFrame() {
 }
 
 void GameTechRenderer::BuildObjectList() {
-	std::vector<GameObject*>::const_iterator first;
-	std::vector<GameObject*>::const_iterator last;
-
-	gameWorld->GetObjectIterators(first, last);
-
 	activeObjects.clear();
 	activeLights.clear();
 
-	for (std::vector<GameObject*>::const_iterator i = first; i != last; ++i) {
-		if ((*i)->IsActive()) {
-			const RenderObject* g = (*i)->GetComponent<RenderObject*>();
-			const Light* l = (*i)->GetComponent<Light*>();
+	for (auto go : gameWorld->GetGameObjectList()) {
+		if (go->IsActive()) {
+			const RenderObject* ro = go->GetComponent<RenderObject*>();
+			const Light* l = go->GetComponent<Light*>();
 
-			if (g) {
-				activeObjects.emplace_back(g);
+			if (ro) {
+				activeObjects.emplace_back(ro);
 			}
 
 			if (l) {
