@@ -1,6 +1,8 @@
 #include "Game.h"
+#include "MenuScene.h"
 #include "ExampleScene.h"
 #include "PhysicsScene.h"
+
 #include "InputManager.h"
 #include "../Common/Material.h"
 
@@ -11,7 +13,8 @@ Game::Game() {
 	InitialiseAssets();
 
 	// currentScene = new ExampleScene();
-	currentScene = new PhysicsScene();
+	//currentScene = new PhysicsScene();
+	currentScene = new MenuScene(this);
 	currentScene->SetRenderer(renderer);
 	
 	renderer->SetGameWorld(currentScene->GetGameWorld());
@@ -33,6 +36,16 @@ Game::~Game() {
 void Game::Update(float dt) {
 	currentScene->Update(dt);
 	renderer->Render();
+}
+
+void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r)
+{ 
+	currentScene = nullptr;
+	delete currentScene;
+	currentScene = newScene; 
+	currentScene->SetRenderer(renderer);
+	renderer->SetGameWorld(currentScene->GetGameWorld());
+	Debug::SetRenderer(renderer);
 }
 
 void Game::InitialiseAssets() {

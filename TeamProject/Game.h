@@ -11,6 +11,7 @@ public:
 	void Update(float dt);
 	void InitialiseAssets();
 	bool QuitGame() { return quitGame; }
+	void ChangeCurrentScene(Scene* newScene, GameTechRenderer* r);
 
 private:
 	GameTechRenderer* renderer;

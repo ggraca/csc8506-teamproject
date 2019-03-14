@@ -18,7 +18,7 @@ void PhysicsScene::ResetWorld() {
 
 	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
-  
+	
 	world->Instantiate(player);
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
@@ -52,31 +52,31 @@ void PhysicsScene::UpdateKeys() {
 	}
 
 	////HUD TESTING BEGINS
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
-	//	renderer->WeaponState(2, true); //Hammer
-	//	renderer->WeaponState(3, true); //Gun
-	//	renderer->WeaponState(4, true); //Bomb
-	//}
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_I)) {
-	//	renderer->WeaponState(2, false); //Hammer
-	//	renderer->WeaponState(3, false); //Gun
-	//	renderer->WeaponState(4, false); //Bomb
-	//}
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Y))
-	//{
-	//	hud.hp -= 5;
-	//	renderer->health -= 0.05f;
-	//}
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_T))
-	//{
-	//	hud.hp = 100;
-	//	renderer->health = 1.0f;
-	//}
-	////HUD TESTING ENDS
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-	//	console.Toggle();
-	//	debugMenu.Toggle();
-	//}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
+		renderer->WeaponState(2, true); //Hammer
+		renderer->WeaponState(3, true); //Gun
+		renderer->WeaponState(4, true); //Bomb
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_I)) {
+		renderer->WeaponState(2, false); //Hammer
+		renderer->WeaponState(3, false); //Gun
+		renderer->WeaponState(4, false); //Bomb
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Y))
+	{
+		hud.hp -= 5;
+		renderer->health -= 0.05f;
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_T))
+	{
+		hud.hp = 100;
+		renderer->health = 1.0f;
+	}
+	//HUD TESTING ENDS
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
+		console.Toggle();
+		debugMenu.Toggle();
+	}
 }
 
 void PhysicsScene::LateUpdate(float dt) {

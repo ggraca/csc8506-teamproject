@@ -5,6 +5,7 @@
 #include "GameTechRenderer.h"
 
 
+
 class Scene {
 public:
 	Scene();
@@ -15,7 +16,7 @@ public:
 	GameWorld* GetGameWorld() const { return world; }
 	// TODO: We need this for the HUD. But we should remove this once it is component based
 	void SetRenderer(GameTechRenderer* gtr) { renderer = gtr; }
-	
+	GameTechRenderer* GetRenderer() { return renderer; }
 
 	BulletPhysics* physics; // TODO: Make this protected again?
 

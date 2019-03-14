@@ -1,36 +1,40 @@
-#include "PauseMenu.h"
+#include "MenuScene.h"
+#include "PhysicsScene.h"
 
-
-
-
-PauseMenu::PauseMenu()
+MenuScene::MenuScene(Game* g) : game(g)
 {
 	//Main Menu
-	menuEntries[0].push_back(MenuEntry(0, "Resume Game", true));
-	menuEntries[0].push_back(MenuEntry(1, "Settings", false));
-	menuEntries[0].push_back(MenuEntry(2, "Quit Game", false));
+	menuEntries[0].push_back(MenuEntry(0, "Create Game", true));
+	menuEntries[0].push_back(MenuEntry(1, "Join Game", false));
+	menuEntries[0].push_back(MenuEntry(2, "Settings", false));
+	menuEntries[0].push_back(MenuEntry(3, "Quit Game", false));
 
 	//Settings
 	menuEntries[1].push_back(MenuEntry(0, "Controls", true));
 	menuEntries[1].push_back(MenuEntry(1, "Audio Settings", false));
 	menuEntries[1].push_back(MenuEntry(2, "Graphics Settings", false));
 	menuEntries[1].push_back(MenuEntry(3, "Back", false));
-	
+
 	//Audio Settings
 	menuEntries[2].push_back(MenuEntry(0, "Volume Up", true));
 	menuEntries[2].push_back(MenuEntry(1, "Volume Down", false));
 	menuEntries[2].push_back(MenuEntry(2, "Back", false));
-	
 }
 
 
-PauseMenu::~PauseMenu()
+MenuScene::~MenuScene()
 {
 }
 
-void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio, int& currentMenuPath, float dt, GameTechRenderer* renderer)
+void MenuScene::Update(float dt)
 {
-	menuPathIndex = currentMenuPath;
+	ShowMenu();
+	MenuUpdate(dt);
+}
+
+void MenuScene::MenuUpdate(float dt)
+{
+	//menuPathIndex = currentMenuPath;
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_UP)) {
 		int nextMenuEntry;
 		for (unsigned int i = 0; i < menuEntries[menuPathIndex].size(); i++)
@@ -39,13 +43,13 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 			{
 				if (i == 0) nextMenuEntry = 0;
 				else nextMenuEntry = i - 1;
-				menuEntries[menuPathIndex][nextMenuEntry+1].selected = false;
+				menuEntries[menuPathIndex][nextMenuEntry + 1].selected = false;
 				menuEntries[menuPathIndex][nextMenuEntry].selected = true;
 				return;
 			}
 		}
 
-		
+
 	}
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_DOWN)) {
 		int nextMenuEntry;
@@ -53,7 +57,7 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 		{
 			if (menuEntries[menuPathIndex][i].selected)
 			{
-				if (i == menuEntries[menuPathIndex].size()-1) nextMenuEntry = menuEntries[menuPathIndex].size()-1;
+				if (i == menuEntries[menuPathIndex].size() - 1) nextMenuEntry = menuEntries[menuPathIndex].size() - 1;
 				else nextMenuEntry = i + 1;
 				menuEntries[menuPathIndex][nextMenuEntry - 1].selected = false;
 				menuEntries[menuPathIndex][nextMenuEntry].selected = true;
@@ -61,22 +65,25 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 			}
 		}
 	}
-
+	
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_RETURN)) {
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
-			//Resume Game
-			showPauseMenu = !showPauseMenu;
+			//Create Game
+			PhysicsScene* newScene = new PhysicsScene();
+			game->ChangeCurrentScene(newScene, newScene->GetRenderer());			
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
-			//Go to settings
-			currentMenuPath = 1;
+			//Join Game
+		}
+		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
+		{
+			menuPathIndex = 1;
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
 		{
 			//Quit Game
-			quitGame = true;
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][0].selected)
 		{
@@ -85,7 +92,7 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 		else if (menuPathIndex == 1 && menuEntries[1][1].selected)
 		{
 			//Go to Audio Settings
-			currentMenuPath = 2;
+			menuPathIndex = 2;
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][2].selected)
 		{
@@ -94,7 +101,7 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 		else if (menuPathIndex == 1 && menuEntries[1][3].selected)
 		{
 			//Go to back to main menu;
-			currentMenuPath = 0;
+			menuPathIndex = 0;
 		}
 		else if (menuPathIndex == 2 && menuEntries[2][0].selected)
 		{
@@ -107,11 +114,12 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 		else if (menuPathIndex == 2 && menuEntries[2][2].selected)
 		{
 			//Go back to Settings
-			currentMenuPath = 1;
+			menuPathIndex = 1;
 		}
 	}
 }
-void PauseMenu::ShowMenu(GameTechRenderer* renderer)
+
+void MenuScene::ShowMenu()
 {
 	float offset = 50.0f;
 	for (MenuEntry me : MenuEntries(menuPathIndex))
@@ -123,4 +131,3 @@ void PauseMenu::ShowMenu(GameTechRenderer* renderer)
 		offset -= 50.0f;
 	}
 }
-

@@ -19,7 +19,6 @@ class PauseMenu
 public:
 	PauseMenu();
 	~PauseMenu();
-	MenuEntry PauseMenu::AddMenuEntry(int index, string title, bool selected);
 	vector<MenuEntry> MenuEntries(int index) { return menuEntries[index]; }
 	void Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio, int& currentMenuPath, float dt, GameTechRenderer* renderer);
 	void ShowMenu(GameTechRenderer* renderer);
