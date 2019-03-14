@@ -19,9 +19,10 @@ namespace NCL {
 		class PixOpsFlags;
 		class GameTechRenderer : public OGLRenderer	{
 		public:
-			GameTechRenderer(GameWorld& world);
+			GameTechRenderer();
 			~GameTechRenderer();
 
+			void SetGameWorld(GameWorld* gw) { gameWorld = gw; }
 			int GetRendererWidth() const { return currentWidth; }
 			int GetRendererHeight() const { return currentHeight; }
 			int GetVertsDrawn() const { return vertsDrawn; }
@@ -45,7 +46,7 @@ namespace NCL {
 
 			OGLShader*		defaultShader;
 
-			GameWorld&	gameWorld;
+			GameWorld*	gameWorld;
 
 			void BuildObjectList();
 			void SortObjectList();

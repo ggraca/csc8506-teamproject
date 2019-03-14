@@ -40,6 +40,12 @@
     <ClCompile Include="Destructible.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -175,6 +181,12 @@
     <ClInclude Include="Destructible.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -298,6 +310,9 @@
     </Filter>
     <Filter Include="Prefabs">
       <UniqueIdentifier>{3a1915d8-f7c4-42ae-adbe-08b929077eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{55e56cd0-acdf-4143-99ae-ffd4927a11a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,11 +1,9 @@
 #include <time.h>
 
 #include "../Common/Window.h"
-#include "PhysicsScene.h"
-#include "ExampleScene.h"
+#include "Game.h"
 
 using namespace NCL;
-using namespace CSC8503;
 
 int main(int argc, char** argv) {
 	srand(unsigned(time(NULL)));
@@ -18,8 +16,7 @@ int main(int argc, char** argv) {
 	w->LockMouseToWindow(true);
 	w->ShowConsole(true);
 
-	//Scene* scene = new ExampleScene();
-	bool quitGame = false;
+	Game* game = new Game();
 
 	Scene* scene = new PhysicsScene(quitGame);
 	
@@ -30,9 +27,9 @@ int main(int argc, char** argv) {
 			continue; //must have hit a breakpoint or something to have a 3 second frame time!
 		}
 
-		scene->UpdateGame(dt);
+		game->Update(dt);
 	}
 
-	delete scene;
+	delete game;
 	Window::DestroyGameWindow();
 }

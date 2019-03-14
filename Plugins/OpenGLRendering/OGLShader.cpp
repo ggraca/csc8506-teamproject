@@ -48,7 +48,7 @@ ShaderBase* OGLShader::LoadShader(const string& vertex, const string& fragment, 
 				std::cout << "Reading " << ShaderNames[i] << " shader " << newShader->shaderFiles[i] << std::endl;
 
 				const char* stringData	 = fileContents.c_str();
-				int			stringLength = fileContents.length();
+				int			stringLength = (int) fileContents.length();
 				glShaderSource(newShader->shaderIDs[i], 1, &stringData, &stringLength);
 				glCompileShader(newShader->shaderIDs[i]);
 
