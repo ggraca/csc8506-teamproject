@@ -107,32 +107,6 @@ public:
 	virtual void ReceivePacket(int type, GamePacket* payload, int source = -1) = 0;
 };
 
-class TestPacketReceiver : public PacketReceiver {
-public:
-	TestPacketReceiver(string name)
-	{
-		this->name = name;
-	}
-
-	void ReceivePacket(int type, GamePacket* payload, int source) override {
-		if (type == StringMessage)
-		{
-			StringPacket* realPacket = (StringPacket*)payload;
-			string msg = realPacket->GetStringFromData();
-			cout << "received message: " << msg << endl;
-		}
-		else if (type == PlayerPos)
-		{
-			PlayerPosPacket* realPacket = (PlayerPosPacket*)payload;
-			float* pos = realPacket->GetPosFromData();
-
-			std::cout << "X: " << pos[0] << " Y: " << pos[1] << " Z: " << pos[2] << std::endl;
-		}
-	}
-protected:
-	string name;
-};
-
 class NetworkBase	{
 public:
 	static void Initialise();
@@ -142,8 +116,7 @@ public:
 		return 1234;
 	}
 
-	void RegisterPacketHandler(int msgID, TestPacketReceiver* receiver) {
-		//receiver = new TestPacketReceiver("Server");
+	void RegisterPacketHandler(int msgID, PacketReceiver* receiver) {
 		packetHandlers.insert(std::make_pair(msgID, receiver));
 	}
 
@@ -153,7 +126,7 @@ protected:
 
 	bool ProcessPacket(GamePacket* p, int peerID = -1);
 
-	typedef std::multimap<int, TestPacketReceiver*>::const_iterator PacketHandlerIterator;
+	typedef std::multimap<int, PacketReceiver*>::const_iterator PacketHandlerIterator;
 
 	bool GetPackethandlers(int msgID, PacketHandlerIterator& first, PacketHandlerIterator& last) const {
 		auto range = packetHandlers.equal_range(msgID);
@@ -168,5 +141,5 @@ protected:
 
 	ENetHost* netHandle;
 
-	std::multimap<int, TestPacketReceiver*> packetHandlers;
+	std::multimap<int, PacketReceiver*> packetHandlers;
 };

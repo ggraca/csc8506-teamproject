@@ -2,46 +2,54 @@
 
 
 NetworkManager::NetworkManager() {
+	NetworkBase::Initialise();
+	port = NetworkBase::GetDefaultPort();
+
 	if (CreateServer());
 	else CreateClient();
 }
 
+NetworkManager::~NetworkManager() {
+	NetworkBase::Destroy();
+}
+
+void NetworkManager::Update() {
+	if (isServer) server->UpdateServer();
+	else {
+		client->UpdateClient();
+		client->SendPacket(StringPacket("Hello!"));
+	}
+}
+
 bool NetworkManager::CreateServer()
 {
-	NetworkBase::Initialise();
-
-	TestPacketReceiver* serverReceiver = new TestPacketReceiver("Server");
-
-	int port = NetworkBase::GetDefaultPort();
-
 	server = new GameServer(port, 4);
-
-	if (server->Initialise())
+	isServer = server->Initialise();
+	
+	if (isServer)
 	{
-		std::cout << "Creating server..." << std::endl;
-		isServer = true;
-		server->RegisterPacketHandler(StringMessage, serverReceiver);
-		server->RegisterPacketHandler(PlayerPos, serverReceiver);
+		server->RegisterPacketHandler(StringMessage, this);
+		server->RegisterPacketHandler(PlayerPos, this);
 		std::cout << "Server created..." << std::endl;
-		return isServer;
 	}
 	else
 	{
 		std::cout << "Server already exists. Connecting to server..." << std::endl;
-		return false;
 	}
+
+	return isServer;
 }
 
 void NetworkManager::CreateClient()
 {
-	TestPacketReceiver* clientReceiver = new TestPacketReceiver("Client");
-	int port = NetworkBase::GetDefaultPort();
-	GameClient* client = new GameClient();
-	client->RegisterPacketHandler(StringMessage, clientReceiver);
-	client->RegisterPacketHandler(PlayerPos, clientReceiver);
+	client = new GameClient();
 	bool canConnect = client->Connect(127, 0, 0, 1, port);
-	if (canConnect) std::cout << "New client connected!" << std::endl;
-	clients.emplace_back(client);
+	if (canConnect) std::cout << "Conneced to Server" << std::endl;
+
+	client->RegisterPacketHandler(StringMessage, this);
+	client->RegisterPacketHandler(PlayerPos, this);
+
+	//client->SendPacket(StringPacket("Hello!"));
 }
 
 void NetworkManager::ReceivePacket(int type, GamePacket* payload, int source) {

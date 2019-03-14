@@ -33,6 +33,7 @@ Game::~Game() {
 }
 
 void Game::Update(float dt) {
+	network->Update();
 	currentScene->Update(dt);
 	renderer->Render();
 }

@@ -12,6 +12,9 @@ using namespace NCL::Networking;
 class NetworkManager : public PacketReceiver {
 public:
 	NetworkManager();
+	~NetworkManager();
+
+	void Update();
 
 private:
 	bool CreateServer();
@@ -21,5 +24,8 @@ private:
 
 	bool isServer;
 	GameServer* server;
+	GameClient* client;
 	vector<GameClient*> clients;
+
+	int port;
 };

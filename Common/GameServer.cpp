@@ -46,7 +46,7 @@ bool GameServer::Initialise() {
 
 bool GameServer::SendGlobalPacket(int msgID) {
 	GamePacket packet;
-  packet.type = msgID;
+	packet.type = msgID;
 	return SendGlobalPacket(packet);
 }
 
