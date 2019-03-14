@@ -267,7 +267,7 @@ void GameTechRenderer::RenderCamera() {
 				(*(currentMaterial->GetTextureParameters()))[j].first, j);
 		}
 
-		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
+		BindVector3ToShader(gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
 		BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");

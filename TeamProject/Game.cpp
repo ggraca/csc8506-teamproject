@@ -51,8 +51,9 @@ void Game::InitialiseAssets() {
 
 	TextureBase* pbrWoodDiff = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
 	TextureBase* pbrWoodBump = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
-	TextureBase* pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
+	TextureBase* pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
 	TextureBase* pbrWoodMet = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
+	TextureBase* pbrWoodAO = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_OCC.jpg");
 
 	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
 
@@ -62,12 +63,14 @@ void Game::InitialiseAssets() {
 	basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
 	basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
 	basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
+	basicMaterial->AddTextureParameter("aoTex", pbrWoodAO);
 
 	Material* floorMat = Assets::AssetManager::LoadMaterial("Floor Material", pbrShader);
 	floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
 	floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
 	floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
 	floorMat->AddTextureParameter("metalnessTex", pbrWoodMet);
+	floorMat->AddTextureParameter("aoTex", pbrWoodAO);
 	Matrix4 texMatrix;
 	texMatrix.ToIdentity();
 	floorMat->SetTextureMatrix(texMatrix * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
