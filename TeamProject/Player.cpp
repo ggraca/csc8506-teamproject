@@ -63,7 +63,7 @@ void Player::LateUpdate(float dt)
 void Player::OnCollisionBegin(GameObject * otherObject)
 {
 	if (!otherObject) { return; }
-	cout << "Colliding with: " << otherObject->GetName() << endl;
+
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
@@ -71,9 +71,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 	}
 }
 
-void Player::OnCollisionEnd(GameObject * otherObject)
-{
-	cout << "Stopped colliding with: " << otherObject->GetName() << endl;
+void Player::OnCollisionEnd(GameObject * otherObject) {
 }
 
 int Player::GetResourceCount() const

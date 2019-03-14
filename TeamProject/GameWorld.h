@@ -30,12 +30,12 @@ namespace NCL {
 
 			void Clear();
 			void ClearAndErase();
-
+			
 			void UpdateGameObjects(float dt);
 			void LateUpdateGameObjects(float dt);
-			void AddGameObject(GameObject* o);
+			void Instantiate(GameObject* o);
 			void CallInitialObjectFunctions(NCL::CSC8503::GameObject * o);
-			void AddGameObject(GameObject* o,GameObject* parent);
+			void Instantiate(GameObject* o,GameObject* parent);
 			void RemoveGameObject(GameObject* o);
 
 			GameObject* GetMainCamera() const {
@@ -84,7 +84,9 @@ namespace NCL {
 			vector<GameObject*> GetGameObjectList();
 
 			void LateDestroy(GameObject * obj);
-			void ClearObjectsToDestroy();
+			void HandleObjectsToDestroy();
+			void LateInstantiate(GameObject* obj);
+			void HandleObjectsToInstantiate();
 
 		protected:
 			void UpdateTransforms();
@@ -92,8 +94,10 @@ namespace NCL {
 			void Destroy(GameObject * obj);
 			void RemoveCollisionsFromGameObject(GameObject * obj);
 
+
 			std::vector<GameObject*> gameObjects;
 			std::vector<GameObject*> objectsToDestroy;
+			std::vector<GameObject*> objectsToInstantiate;
 
 			GameObject* mainCamera;
 			LayerAndTag layering;

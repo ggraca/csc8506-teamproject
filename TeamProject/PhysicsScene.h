@@ -1,33 +1,24 @@
 #pragma once
 
 #include "GameTechRenderer.h"
-#include "Scene.h"
-
-#include "Console.h"
-#include "DebugMenu.h"
+#include "GameScene.h"
 #include "Player.h"
 #include "Resource.h"
 #include "InputManager.h"
 #include "CameraControl.h"
+#include "Destructible.h"
 
-namespace NCL {
-  namespace CSC8503 {
-    class PhysicsScene : public Scene {
-    public:
-      PhysicsScene();
-      ~PhysicsScene();
-      void UpdateGame(float dt);
+
+class PhysicsScene : public GameScene {
+public:
+    PhysicsScene();
+    ~PhysicsScene();
+
+    void LateUpdate(float dt) override;
 	
-    protected:
-      void ResetWorld();
-      void DebugScene(float dt);
-	  void UpdateKeys();
+protected:
+    void ResetWorld();
+	void UpdateKeys();
 
-	  GameObject* bestcube;
-
-      DebugMenu debugMenu;
-      Console console;
-	  HUD hud;
-    };
-  }
-}
+	GameObject* bestcube;
+};

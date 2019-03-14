@@ -23,8 +23,8 @@ namespace NCL {
 				SetClearColor(Vector4(0.2f, 0.2f, 0.2f, 1.0f));
 				SetColourMask(std::make_tuple(true, true, true, true));
 
-				SetSourceFactor(BLEND::ONE);
-				SetDestinationFactor(BLEND::ONE);
+				SetSourceFactor(BLEND::SRC_ALPHA);
+				SetDestinationFactor(BLEND::ONE_MINUS_SRC_ALPHA);
 			}
 
 			void SetFaceCulling(CULLFACE cull) override {
