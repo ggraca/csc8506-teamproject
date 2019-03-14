@@ -443,8 +443,8 @@ void GameTechRenderer::RenderParticleSystems() {
 
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 	pixOps.SetDepthMask(false);
-	pixOps.SetSourceFactor(BLEND::SRC_ALPHA);
-	pixOps.SetDestinationFactor(BLEND::ONE);
+	pixOps.SetSourceFactor(BLEND::ONE);
+	pixOps.SetDestinationFactor(BLEND::ONE_MINUS_SRC_ALPHA);
 
 	BindShader(particleShader);
 	BindMesh(screenQuad);
@@ -468,6 +468,9 @@ void GameTechRenderer::RenderParticleSystems() {
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindFloatToShader(activeParticleSystems[i]->GetParticleMaxLifeTime(), "particleMaxLifeTime");
+
+		//Temporary to test colour
+		BindVector3ToShader(Vector3(0.2f, 0.2f, 0.2f), "objectColour");
 
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particles.size());
 	}
