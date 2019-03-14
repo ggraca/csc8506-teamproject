@@ -68,10 +68,9 @@ void GameServer::UpdateServer() {
 		int peer = p->incomingPeerID;
 
 		if (type == ENetEventType::ENET_EVENT_TYPE_CONNECT) {
-			std::cout << "Server: New client connected" << std::endl;
-			newClient = true;
+			if (connectionHandler) connectionHandler->OnClientConnect(peer);
 		} else if (type == ENetEventType::ENET_EVENT_TYPE_DISCONNECT) {
-			std::cout << "Server: A client has disconnected" << std::endl;
+			if (connectionHandler) connectionHandler->OnClientDisconnect(peer);
 		} else if (type == ENetEventType::ENET_EVENT_TYPE_RECEIVE) {
 			GamePacket* packet = (GamePacket*)event.packet->data;
 			ProcessPacket(packet, peer);
@@ -86,12 +85,6 @@ void GameServer::ThreadedUpdate() {
 		std::this_thread::yield();
 	}
 }
-
-//Second networking tutorial stuff
-
-//void GameServer::SetGameWorld(GameWorld &g) {
-//	gameWorld = &g;
-//}
 
 void GameServer::BroadcastSnapshot(bool deltaFrame) {
 

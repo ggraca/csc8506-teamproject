@@ -2,14 +2,12 @@
 
 #include <vector>
 
-#include "../Common/NetworkBase.h"
-#include "../Common/GameServer.h"
-#include "../Common/GameClient.h"
+#include "NetworkEntity.h"
+#include "NetworkClient.h"
+#include "NetworkServer.h"
 
 
-using namespace NCL::Networking;
-
-class NetworkManager : public PacketReceiver {
+class NetworkManager {
 public:
 	NetworkManager();
 	~NetworkManager();
@@ -20,12 +18,8 @@ private:
 	bool CreateServer();
 	void CreateClient();
 
-	void ReceivePacket(int type, GamePacket* payload, int source);
-
 	bool isServer;
-	GameServer* server;
-	GameClient* client;
-	vector<GameClient*> clients;
+	NetworkEntity* networkEntity;
 
 	int port;
 };

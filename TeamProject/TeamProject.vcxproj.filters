@@ -46,9 +46,6 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkManager.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Animator.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
@@ -57,6 +54,18 @@
     </ClCompile>
     <ClCompile Include="TypeId.cpp">
       <Filter>Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEntity.h">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkClient.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkServer.cpp">
+      <Filter>Networking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,9 +193,6 @@
     <ClInclude Include="GameScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkManager.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Animator.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
@@ -195,6 +201,15 @@
     </ClInclude>
     <ClInclude Include="TypeId.h">
       <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkClient.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkServer.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>Networking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +322,9 @@
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{55e56cd0-acdf-4143-99ae-ffd4927a11a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{11e2310b-94fb-48e3-aa13-890cfe87676c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -18,6 +18,7 @@ Game::Game() {
 	Debug::SetRenderer(renderer);
 
 	network = new NetworkManager();
+	// network->SetGameWorld(currentScene->GetGameWorld());
 
 	Window::GetWindow()->ShowOSPointer(false);
 	Window::GetWindow()->LockMouseToWindow(true);

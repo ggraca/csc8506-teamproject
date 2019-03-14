@@ -105,6 +105,12 @@ struct PlayerDisconnectPacket : public GamePacket {
 class PacketReceiver {
 public:
 	virtual void ReceivePacket(int type, GamePacket* payload, int source = -1) = 0;
+	virtual void OnClientConnect(int source = -1) {
+		std::cout << "Server: New client connected" << std::endl;
+	};
+	virtual void OnClientDisconnect(int source = -1) {
+		std::cout << "Server: New client disconnected" << std::endl;
+	};
 };
 
 class NetworkBase	{
@@ -118,6 +124,10 @@ public:
 
 	void RegisterPacketHandler(int msgID, PacketReceiver* receiver) {
 		packetHandlers.insert(std::make_pair(msgID, receiver));
+	}
+
+	void RegisterConnectionHandler(PacketReceiver* receiver) {
+		connectionHandler = receiver;
 	}
 
 protected:
@@ -142,4 +152,5 @@ protected:
 	ENetHost* netHandle;
 
 	std::multimap<int, PacketReceiver*> packetHandlers;
+	PacketReceiver* connectionHandler = nullptr;
 };

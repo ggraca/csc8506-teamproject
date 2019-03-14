@@ -26,15 +26,13 @@ namespace NCL {
 			void UpdateMinimumState();
 
 			virtual void UpdateServer();
-			bool newClient = false;
+
 		protected:
 			int			port;
 			int			clientMax;
 			int			clientCount;
-			// GameWorld*	gameWorld;
 
 			std::atomic<bool> threadAlive;
-
 
 			std::thread updateThread;
 
@@ -42,7 +40,6 @@ namespace NCL {
 			int outgoingDataRate;
 
 			std::map<int, int> stateIDs;
-
 		};
 	}
 }
