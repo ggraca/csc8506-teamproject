@@ -15,6 +15,7 @@ public:
 	GameWorld* GetGameWorld() const { return world; }
 	// TODO: We need this for the HUD. But we should remove this once it is component based
 	void SetRenderer(GameTechRenderer* gtr) { renderer = gtr; }
+	
 
 	BulletPhysics* physics; // TODO: Make this protected again?
 
@@ -25,4 +26,5 @@ protected:
 	GameTechRenderer* renderer;
 	GameWorld* world;
 	CAudioEngine* audio;
+	
 };

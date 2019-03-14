@@ -10,8 +10,10 @@ public:
 	~Game();
 	void Update(float dt);
 	void InitialiseAssets();
+	bool QuitGame() { return quitGame; }
 
 private:
 	GameTechRenderer* renderer;
 	Scene* currentScene;
+	bool quitGame = false;
 };

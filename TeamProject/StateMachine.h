@@ -2,33 +2,28 @@
 #include <vector>
 #include <map>
 
-namespace NCL {
-	namespace CSC8503 {
+class State;
+class StateTransition;
 
-		class State;
-		class StateTransition;
+typedef std::multimap<State*, StateTransition*> TransitionContainer;
+typedef TransitionContainer::iterator TransitionIterator;
 
-		typedef std::multimap<State*, StateTransition*> TransitionContainer;
-		typedef TransitionContainer::iterator TransitionIterator;
+class StateMachine {
+public:
+	StateMachine();
+	~StateMachine();
 
-		class StateMachine {
-		public:
-			StateMachine();
-			~StateMachine();
+	void AddState(State* s);
+	void AddTransition(StateTransition* t);
 
-			void AddState(State* s);
-			void AddTransition(StateTransition* t);
+	void SetActiveState(State* state) { activeState = state; }
 
-			void SetActiveState(State* state) { activeState = state; }
+	void Update();
 
-			void Update();
+protected:
+	State* activeState;
 
-		protected:
-			State* activeState;
+	std::vector<State*> allStates;
 
-			std::vector<State*> allStates;
-
-			TransitionContainer allTransitions;
-		};
-	}
-}
+	TransitionContainer allTransitions;
+};
