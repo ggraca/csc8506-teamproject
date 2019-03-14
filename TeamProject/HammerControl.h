@@ -8,6 +8,8 @@ public:
 	~HammerControl();
 	void SetHandle(GameObject * h);
 	void ActivateHammer();
+	void FormHammer();
+	void DeformHammer();
 	void DeactivateHammer();
 	void HammerHit();
 	int GetHitCounter() const;

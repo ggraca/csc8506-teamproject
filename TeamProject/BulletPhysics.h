@@ -38,4 +38,5 @@ private:
 	void EmitOnCollisionEndEvents(map<btRigidBody *, vector<btRigidBody *>> &collisionPairs, btRigidBody * body, GameObject *& go);
 	void EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair);
 	void UpdateObjectTransform(GameObject* go, btRigidBody* body);
+	void UpdateObjectPhysics(GameObject * go);
 };

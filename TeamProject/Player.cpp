@@ -20,8 +20,12 @@ void Player::Update(float dt)
 {
 	PlayerMovement(dt);
 	CheckGunControls();
-	
+	CheckHammerControls();
+	//gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, gameObject->GetTransform().GetLocalOrientation().ToEuler().y, 0));
+}
 
+void Player::CheckHammerControls()
+{
 	if (!isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
 	{
 		isHammerActive = !isHammerActive;

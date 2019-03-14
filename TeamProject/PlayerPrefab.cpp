@@ -22,7 +22,7 @@ void PlayerPrefab::ResetPlayer()
 	AddComponent<Player*>((Component*)new Player(this));
 	AddComponent<GunControl*>(new GunControl(this));
 	AddComponent<HammerControl*>(new HammerControl(this));
-	GetComponent<HammerControl*>()->SetHammerSize(-1000, 1000, -1000, 1000, -1000, 1000);
+	GetComponent<HammerControl*>()->SetHammerSize(3000, 0, 500, 3000, 0, 3000);
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));

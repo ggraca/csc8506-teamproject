@@ -73,17 +73,39 @@ map<btRigidBody*, vector<btRigidBody*>> BulletPhysics::GenerateCollisionPairs() 
 }
 
 void BulletPhysics::UpdateObjectTransform(GameObject* go, btRigidBody* body) {
+
 	Transform& transform = go->GetTransform();
+
 
 	btTransform trans;
 	if (body && body->getMotionState()) body->getMotionState()->getWorldTransform(trans);
 	else trans = body->getWorldTransform();
 
 	btQuaternion orientation = trans.getRotation();
-	Vector3 position = Vector3(float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
-	transform.SetLocalPosition(position);
+	Vector3 position = Vector3((float)(trans.getOrigin().getX()), (float)(trans.getOrigin().getY()), (float)(trans.getOrigin().getZ()));
+	transform.SetWorldPosition(position);
 	Quaternion orient = Quaternion((float)orientation.x(), (float)orientation.y(), (float)orientation.z(), (float)orientation.w());
 	transform.SetLocalOrientation(orient);
+}
+
+void BulletPhysics::UpdateObjectPhysics(GameObject* go) {
+
+	Transform& transform = go->GetTransform();
+	transform.UpdateMatrices();
+
+	if (!go->GetComponent<PhysicsObject*>()) { return; }
+	auto body = go->GetComponent<PhysicsObject*>()->GetRigidbody();
+	if (!body) { return; }
+
+	btTransform trans;
+	if (body && body->getMotionState()) body->getMotionState()->getWorldTransform(trans);
+	else trans = body->getWorldTransform();
+
+	trans.setRotation(btQuaternion(transform.GetLocalOrientation().x, transform.GetLocalOrientation().y, transform.GetLocalOrientation().z, transform.GetLocalOrientation().w));
+	trans.setOrigin(btVector3(transform.GetWorldPosition().x, transform.GetWorldPosition().y, transform.GetWorldPosition().z));
+	
+	
+	body->setWorldTransform(trans);
 }
 
 void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair) {
@@ -116,12 +138,19 @@ void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBod
 }
 
 void BulletPhysics::UpdateBullet(float dt, int iterations) {
+
+	for (auto&i : gameWorld.GetGameObjectList())
+	{
+		UpdateObjectPhysics(i);
+	}
+
 	dynamicsWorld->stepSimulation(dt, iterations);
 
 	map<btRigidBody*, vector<btRigidBody*>> collisionPairs = GenerateCollisionPairs();
 	map<btRigidBody*, GameObject*> collisionObjectGameObjectPair;
 
 	for (auto& go : gameWorld.GetGameObjectList()) {
+
 		PhysicsObject* object = go->GetComponent<PhysicsObject*>();
 		if (object == nullptr) continue;
 

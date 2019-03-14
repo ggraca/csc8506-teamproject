@@ -87,12 +87,11 @@ namespace NCL {
 			void HandleObjectsToDestroy();
 			void LateInstantiate(GameObject* obj);
 			void HandleObjectsToInstantiate();
-
+			void RemoveCollisionsFromGameObject(GameObject * obj);
 		protected:
 			void UpdateTransforms();
 
 			void Destroy(GameObject * obj);
-			void RemoveCollisionsFromGameObject(GameObject * obj);
 
 
 			std::vector<GameObject*> gameObjects;
