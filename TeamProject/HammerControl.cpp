@@ -33,8 +33,8 @@ void HammerControl::ActivateHammer()
 	handle->SetActiveStatus(true);
 
 	FormHammer();
+
 	handleCollision->GetComponent<DamageControl*>()->SetDamage((int)handle->GetTransform().GetChildrenList().size() - 1);
-	
 	handleCollision->AddComponent<PhysicsObject*>(new PhysicsObject(&handleCollision->GetTransform(), ShapeType::cube,0,0));
 	handleCollision->GetComponent<PhysicsObject*>()->GetRigidbody()->setCollisionFlags(handleCollision->GetComponent<PhysicsObject*>()->GetRigidbody()->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 	handleCollision->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
@@ -48,6 +48,7 @@ void HammerControl::FormHammer()
 
 	for (auto&i : children)
 	{
+		i->GetComponent<PhysicsObject*>()->GetRigidbody()->clearForces();
 		i->GetComponent<Resource*>()->SetTarget(nullptr);
 		i->RemoveComponent<PhysicsObject*>();
 		GameObject::gameWorld->RemoveCollisionsFromGameObject(i);
