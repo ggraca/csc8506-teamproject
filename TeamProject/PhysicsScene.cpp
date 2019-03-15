@@ -59,15 +59,18 @@ void PhysicsScene::ResetWorld() {
 
   AddCubeToWorld(Vector3(450, 50, 380), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45), Vector3(150, 50, 150), 0, 0.2f);
 
- // InitMixedGridWorld(Vector3(0, 100, 0), 10, 10, 20, 20);
+  InitMixedGridWorld(Vector3(0, 100, 0), 50, 40, 20, 20);
 
-  //AddConeToWorld(Vector3(80, 50, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.3f, 0.5f);
-  //AddConeToWorld(Vector3(30, 750, 50), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 45), Vector3(50, 30, 50), 100, 0.3f, 0.5f);
-  //AddConeToWorld(Vector3(80, 50, 90), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(80, 130, 80), 100, 0.3f, 0.5f);
+  AddConeToWorld(Vector3(80, 50, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.3f, 0.5f);
+  AddConeToWorld(Vector3(30, 750, 50), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 45), Vector3(50, 30, 50), 100, 0.3f, 0.5f);
+  AddConeToWorld(Vector3(80, 50, 90), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(80, 130, 80), 100, 0.3f, 0.5f);
 
   AddMeshToWorld("front_wall.obj", Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
 
-//  AddMeshToWorld("cylinder.obj", Vector3(50, 0, 10), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 90), Vector3(100, 100, 100), 0, 0, 0);
+  AddMeshToWorld("Lamborghini_Aventador.obj", Vector3(300, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(0.5, 0.5, 0.5), 0, 0, 0);
+
+ // AddMeshToWorld("cylinder.obj", Vector3(50, 100, 10), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 90), Vector3(100, 100, 100), 0, 0, 0);
+  AddCylinderToWorld(Vector3(50, 500, 10), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(100, 100, 100), 100, 0.5f, 0.5f);
 
 //  // OBJ file example
 //  OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("front_wall.obj");

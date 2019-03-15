@@ -186,7 +186,7 @@ GameObject* Scene::AddMeshToWorld(string objFile, const Vector3& position, const
 	compMesh->GetTransform().SetWorldScale(dimensions);
 	compMesh->GetTransform().SetWorldPosition(position);
 	compMesh->GetTransform().SetLocalOrientation(orient);
-	mesh = Assets::AssetManager::LoadOBJ("acd_" + objFile);
+//	mesh = Assets::AssetManager::LoadOBJ("acd_" + objFile);
 	compMesh->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&compMesh->GetTransform(), ShapeType::complexMesh, mass, restitution, friction, mesh));
 
 	world->AddGameObject(compMesh);
