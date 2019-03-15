@@ -86,10 +86,6 @@ void PhysicsScene::UpdateKeys() {
 void PhysicsScene::LateUpdate(float dt) {
 	GameScene::LateUpdate(dt);
 	UpdateKeys();
-  
-	//bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
-	//bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));
-	//bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
-	//bestcube->GetPhysicsObject()->ApplyForce(Vector3(100000, 0, 10), Vector3(0, -10, 0));
-	//bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
+
+	
 }
