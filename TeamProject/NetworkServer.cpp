@@ -31,7 +31,7 @@ void NetworkServer::OnClientConnect(int source) {
 		Vector3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetLocalOrientation();
 
-		InstantiatePacket p = InstantiatePacket(0, o->GetId(), pos, rot);
+		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot);
 		server->SendGlobalPacket(p);
 	}
 }
