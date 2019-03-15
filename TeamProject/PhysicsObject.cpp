@@ -87,13 +87,15 @@ void PhysicsObject::SetBulletPhysicsParameters()
 
 	body = new btRigidBody(rbInfo);
 	
-	//body->setLinearVelocity(btVector3(10, 100, 0));
-	//body->setAngularVelocity(btVector3(0, 10, 0));
-
-	body->applyImpulse(btVector3(-1000, 1000, 0), btVector3(0, -5, 0));
-
 	body->setFriction(friction);
 	body->setRestitution(restitution);
 	body->setRollingFriction(0.9);
 	body->setSpinningFriction(0.3);
+
+	if (!isDynamic)
+	{
+		body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+		body->setActivationState(DISABLE_DEACTIVATION);
+	}
+	
 }

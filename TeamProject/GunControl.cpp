@@ -85,7 +85,7 @@ void GunControl::Fire()
 		children[0]->GetComponent<DamageControl*>()->SetDamage(4);
 
 		Vector3 projMov = CalculateDirection() * projectileSpeed;
-		projMov.y = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition()).y + 60;
+		projMov.y = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition()).y + 200;
 		children[0]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
 		gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
 		

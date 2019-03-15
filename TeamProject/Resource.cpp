@@ -33,7 +33,7 @@ void Resource::FollowTarget(float &dt)
 		auto amount = direction * moveSpeed * dt;
 		auto pos = (gameObject->GetTransform().GetWorldPosition());
 		pos += amount;
-		gameObject->GetTransform().ForceUpdateLocalPositionWithTransform(pos);
+		gameObject->GetTransform().SetLocalPosition(pos);
 	}
 }
 
