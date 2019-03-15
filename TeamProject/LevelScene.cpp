@@ -19,6 +19,11 @@
 #include "TentPrefab.h"
 #include "MarketPrefab.h"
 #include "WellPrefab.h"
+#include "CastlePrefab.h"
+#include "TowerPrefab.h"
+#include "CannonPrefab.h"
+#include "DWallPrefab.h"
+#include "CartPrefab.h"
 #include "Destructible.h"
 
 
@@ -45,7 +50,7 @@ void LevelScene::ResetWorld() {
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 	//Player
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+	auto player = new PlayerPrefab(Vector3(3200, 260, 2500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
 
 	audio->SetPlayer(player);
 	audio->SetCamera(world->GetMainCamera());
@@ -68,27 +73,8 @@ void LevelScene::ResetWorld() {
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
-
-	// OBJ file example
-	//OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("full_shop.obj");
-
 	LoadWorld();
-	// We need to pass world because father/son relationship is only possible among gameObjects in the world
-	// We might want to change this to allow any gameobject to have a vector of children
-	//GameObject* go = GameObject::FromOBJ(objGeometry);
-	//go->GetTransform().SetWorldPosition(Vector3(0, 30, 0));
-	//go->GetTransform().SetLocalScale(Vector3(5, 5, 5));
-	// world->AddGameObject(go); // TODO: We can uncomment this once we fix the bug mentioned above
-
-	//OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("vws.obj");
-	//GameObject* go = GameObject::FromOBJ(objGeometry);
-	//go->GetTransform().SetWorldPosition(Vector3(0, 30, 0));
-	//go->GetTransform().SetLocalScale(Vector3(0.5, 0.5, 0.5));
-
-
-
-
-
+	
 }
 
 LevelScene::~LevelScene() {
@@ -106,6 +92,7 @@ void LevelScene::UpdateGame(float dt) {
 	physics->Update(dt);
 	world->UpdateWorld(dt);
 	renderer->Update(dt);
+	audio->Update();
 
 	Debug::FlushRenderables();
 	debugMenu.Update(dt, renderer);
@@ -118,20 +105,6 @@ void LevelScene::UpdateGame(float dt) {
 		console.Toggle();
 		debugMenu.Toggle();
 	}
-
-
-	/*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
-		delete hammer;
-		hammer = (OGLTexture*)Assets::AssetManager::LoadTexture("hammer.png");
-		renderer->hammer = hammer->GetObjectID();
-		delete gun;
-		gun = (OGLTexture*)Assets::AssetManager::LoadTexture("gun.png");
-		renderer->gun = gun->GetObjectID();
-		delete bomb;
-		bomb = (OGLTexture*)Assets::AssetManager::LoadTexture("bomb.png");
-		renderer->bomb = bomb->GetObjectID();
-	}*/
-
 	renderer->Render();
 
 }
@@ -161,19 +134,87 @@ void LevelScene::LoadWorld() {
 			if (a == 'c') {
 				auto Stall = new StallPrefab(Vector3(0.7, 0.7, 0.7), Vector3(size*i, 42, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 			}
+					
+			if (a == 'C') {
+				auto Stall = new StallPrefab(Vector3(0.7, 0.7, 0.7), Vector3(size*i, 42, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -90));
+			}
+
+			if (a == 'v') {
+				auto Stall = new StallPrefab(Vector3(0.7, 0.7, 0.7), Vector3(size*i, 42, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 0));
+			}
+
+			if (a == 'V') {
+				auto Stall = new StallPrefab(Vector3(0.7, 0.7, 0.7), Vector3(size*i, 42, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 180));
+			}
 
 			if (a == 't') {
 				auto Tent = new TentPrefab(Vector3(10, 10, 10), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 			}
 
 			if (a == 'm') {
-				auto Market = new MarketPrefab(Vector3(10, 10, 10), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+				auto Market = new MarketPrefab(Vector3(40, 40, 40), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
+
+			if (a == 'M') {
+				auto Market = new MarketPrefab(Vector3(40, 40, 40), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -90));
+			}
+
+			if (a == 'n') {
+				auto Market = new MarketPrefab(Vector3(40, 40, 40), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 0));
+			}
+
+			if (a == 'N') {
+				auto Market = new MarketPrefab(Vector3(40, 40, 40), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 180));
 			}
 
 			if (a == 'W') {
-				auto Well = new WellPrefab(Vector3(50, 50, 50), Vector3(size*i, 25, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+				auto Well = new WellPrefab(Vector3(50, 50, 50), Vector3(size*i, 20, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 			}
 
+			if (a == 'k') {
+				auto Cart = new CartPrefab(Vector3(3, 3, 3), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
+
+			if (a == 'b') {
+				auto Castle = new CastlePrefab(Vector3(0.03, 0.03, 0.03), Vector3(size*i, -30, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
+
+			if (a == '1') {
+				auto Tower = new TowerPrefab(Vector3(50, 100, 50), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+				auto Cannon = new CannonPrefab(Vector3(1.0, 1.0, 1.0), Vector3(size*i, 300, size*j), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), -90));
+			}
+
+			if (a == '2') {
+				auto DWall = new DWallPrefab(Vector3(1.4, 1, 1.4), Vector3(size*i, 0, size*j+37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -90));
+			}
+
+			if (a == '3') {
+				auto DWall = new DWallPrefab(Vector3(1.4, 1, 1.4), Vector3(size*i, 0, size*j + 93.75), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+			}
+
+			if (a == '4') {
+				auto DWall = new DWallPrefab(Vector3(1.4, 1, 1.4), Vector3(size*i + 37.5, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 0));
+			}
+
+			if (a == '5') {
+				auto DWall = new DWallPrefab(Vector3(1.4, 1, 1.4), Vector3(size*i + 93.75, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 180));
+			}
+
+			if (a == '6') {
+				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i - 37.5, 0, size*j - 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -45));
+			}
+
+			if (a == '7') {
+				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i + 37.5, 0, size*j + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -225));
+			}
+
+			if (a == '8') {
+				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i + 37.5, 0, size*j - 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 225));
+			}
+
+			if (a == '9') {
+				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i - 37.5, 0, size*j + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45));
+			}
 		}
 	}
 

@@ -11,7 +11,6 @@ using namespace NCL::CSC8503;
 class MarketPrefab : public GameObject
 {
 public:
-	MarketPrefab();
 	MarketPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient);
 	virtual ~MarketPrefab();
 };

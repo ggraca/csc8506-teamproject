@@ -170,6 +170,9 @@
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
+    <ClCompile Include="CannonPrefab.cpp" />
+    <ClCompile Include="CartPrefab.cpp" />
+    <ClCompile Include="CastlePrefab.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="CubePrefab.cpp" />
@@ -177,6 +180,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
     <ClCompile Include="Destructible.cpp" />
+    <ClCompile Include="DWallPrefab.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -202,6 +206,7 @@
     <ClCompile Include="SpherePrefab.cpp" />
     <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="StallPrefab.cpp" />
+    <ClCompile Include="TowerPrefab.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TypeId.cpp" />
     <ClCompile Include="WallPrefab.cpp" />
@@ -213,6 +218,9 @@
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
+    <ClInclude Include="CannonPrefab.h" />
+    <ClInclude Include="CartPrefab.h" />
+    <ClInclude Include="CastlePrefab.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="CubePrefab.h" />
@@ -220,6 +228,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="Destructible.h" />
+    <ClInclude Include="DWallPrefab.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="ExampleScene.h" />
     <ClInclude Include="GameObject.h" />
@@ -245,6 +254,7 @@
     <ClInclude Include="SpherePrefab.h" />
     <ClInclude Include="ScriptObject.h" />
     <ClInclude Include="StallPrefab.h" />
+    <ClInclude Include="TowerPrefab.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TypeId.h" />
     <ClInclude Include="WallPrefab.h" />
