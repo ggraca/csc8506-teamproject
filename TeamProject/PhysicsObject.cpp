@@ -5,25 +5,6 @@
 using namespace NCL;
 using namespace CSC8503;
 
-PhysicsObject::PhysicsObject() {
-	dimensions = Vector3(1, 1, 1); //TODO Make transform from these parameters, or delete constructor
-	orientation = Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0);
-	position = Vector3(0, 0, 0);
-	mass = 1.0f;
-	restitution = 0.3f;
-	friction = 0.3f;
-}
-
-PhysicsObject::PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction) {
-	this->type = type;
-	this->dimensions = dimensions; //TODO Make transform from these parameters, or delete constructor
-	this->orientation = orientation;
-	this->position = position;
-	this->mass = mass;
-	this->restitution = restitution;
-	this->friction = friction;
-}
-
 PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction)	{
 	transform = parentTransform;
 	this->type = type;

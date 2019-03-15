@@ -7,9 +7,9 @@
 using namespace NCL::Maths;
 
 enum LightType {
+	Directional,
 	Point,
-	Spot,
-	Directional
+	Spot
 };
 
 class Light : public Component {

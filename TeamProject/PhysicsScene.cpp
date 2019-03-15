@@ -2,6 +2,7 @@
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
 #include "HammerControl.h"
+#include "ParticleSystem.h"
 
 
 PhysicsScene::PhysicsScene() : GameScene() {
