@@ -109,21 +109,8 @@ void PhysicsScene::InitializeHammer(GameObject * player)
 	handle->SetParent(player);
 	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
 
-	auto hammerHead = new GameObject();
-	hammerHead->SetTag(LayerAndTag::Tags::HammerHead);
-	hammerHead->GetTransform().SetLocalPosition(Vector3(0, 2, 0));
-	hammerHead->SetParent(handle);
-
-	auto hammerCollision = new CubePrefab(CubePrefab::PrefabType::HAMMER_HEAD);
-	hammerCollision->SetName("Hammer col");
-	hammerCollision->GetComponent<DamageControl*>()->SetTarget(&hammerHead->GetTransform());
-
-
 	player->GetComponent<HammerControl*>()->SetHandle(handle);
-	player->GetComponent<HammerControl*>()->SetHandleCollision(hammerCollision);
 
-	world->Instantiate(hammerHead);
-	world->Instantiate(hammerCollision);
 	world->Instantiate(handle);
 }
 

@@ -22,11 +22,6 @@ void HammerControl::SetHandle(GameObject * h)
 	handle = h;
 }
 
-void HammerControl::SetHandleCollision(GameObject * hc)
-{
-	handleCollision = hc;
-}
-
 Vector3 HammerControl::CalculateDirection()
 {
 	auto camera = GameObject::gameWorld->GetMainCamera();
@@ -44,7 +39,7 @@ Vector3 HammerControl::CalculateDirection()
 
 void HammerControl::ActivateHammer()
 {
-	if (!handle || !handleCollision) { return; }
+	if (!handle) { return; }
 
 	handle->SetActiveStatus(true);
 

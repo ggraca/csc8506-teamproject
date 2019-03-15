@@ -18,28 +18,15 @@ public:
 		Continuous
 	};
 
-	enum WeaponType
-	{
-		Regular,
-		Dummy
-	};
-
 	void SetTypeOfDamage(DamageType d);
 	DamageType GetTypeOfDamage(DamageType typeOfDamage);
-	void SetWeaponType(WeaponType w);
 	void OnCollisionBegin(GameObject * otherObject);
 	void ResolveDamage(GameObject * obj);
 	void ResetDamageControl();
 	void SetDamage(int d);
-	void SetTarget(Transform * t);
-	Transform* GetTransform();
-	void Update(float dt) override;
-	void FollowTarget();
 
 protected:
 	int damage = 0;
 	DamageType typeOfDamage = DamageType::SingleShot;
-	WeaponType typeOfWeapon = WeaponType::Regular;
-	Transform * target = nullptr;
 };
 

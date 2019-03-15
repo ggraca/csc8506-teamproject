@@ -31,15 +31,6 @@ CubePrefab::CubePrefab(CubePrefab::PrefabType type)
 		AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));
 		GetComponent<RenderObject*>()->SetMaterialInstanced();
 		return;
-	case CubePrefab::PrefabType::HAMMER_HEAD:
-		SetTransformDetails(Vector3(25, 25, 25), Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 45), 0));
-		SetTag(LayerAndTag::Tags::HammerHead);
-		AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl"))));
-		GetComponent<RenderObject*>()->SetMaterialInstanced();
-		AddComponent<DamageControl*>(new DamageControl(this));
-		GetComponent<DamageControl*>()->SetWeaponType(DamageControl::WeaponType::Dummy);
-		GetComponent<DamageControl*>()->SetTypeOfDamage(DamageControl::DamageType::Continuous);
-		return;
 	}
 }
 
