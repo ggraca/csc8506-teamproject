@@ -18,15 +18,14 @@ void NetworkExampleScene::ResetWorld() {
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
 	audio->SetPlayer(player);
 
-	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
-	resource1->SetName("Resource 1");
-
-	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
-	resource2->SetName("Resource 2");
+	int size = 3;
+	for (int i = -size; i <= size; i++) {
+		for (int j = -size; j <= size; j++) {
+			world->LateInstantiate(new ResourcePrefab(Vector3(i * 30, 190, j * 30), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f));
+		}
+	}
 
 	world->LateInstantiate(player);
-	world->LateInstantiate(resource1);
-	world->LateInstantiate(resource2);
 	world->LateInstantiate(floor);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);

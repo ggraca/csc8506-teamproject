@@ -16,6 +16,7 @@ protected:
 		for (auto o : objects) {
 			if (o->GetId() == id) return o;
 		}
+		return nullptr;
 	}
 
 	GameWorld* world = nullptr;

@@ -1,3 +1,6 @@
+#include <string>
+
+#include "../Common/Utils.h"
 #include "NetworkServer.h"
 #include "NetworkPackets.h"
 
@@ -10,11 +13,19 @@ void NetworkServer::Update() {
 		Vector3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetLocalOrientation();
 
+		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot));
+		if (hashed == o->GetHash()) continue;
+
+		o->SetHash(hashed);
 		ObjectUpdatePacket p = ObjectUpdatePacket(o->GetId(), pos, rot);
 		server->SendGlobalPacket(p);
 	}
 }
+
 void NetworkServer::OnClientConnect(int source) {
+	cout << ToString(Vector3(1, 0, 6)) << endl;
+	cout << ToString(Vector3(1, 4, 0)) << endl;
+	cout << ToString(Vector3(0, 4, 6)) << endl;
 	for (auto o : objects) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
