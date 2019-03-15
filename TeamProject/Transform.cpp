@@ -31,7 +31,7 @@ void Transform::UpdateMatrices() {
 	}
 }
 
-vector<Transform*> NCL::CSC8503::Transform::GetChildrenList()
+vector<Transform*> Transform::GetChildrenList()
 {
 	return children;
 }
@@ -136,6 +136,11 @@ void Transform::ForceUpdateLocalRotationWithTransform(Quaternion qt)
 void Transform::SetGameObject(GameObject * obj)
 {
 	gameObject = obj;
+}
+
+GameObject * Transform::GetGameObject()
+{
+	return gameObject;
 }
 
 void Transform::ForceUpdateScale(Vector3 scale)

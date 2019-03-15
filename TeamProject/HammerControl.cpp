@@ -53,23 +53,18 @@ void HammerControl::FormHammer()
 void HammerControl::DeformHammer()
 {
 	//Will be changed later on
-	auto children = GameObject::GetChildrenOfObject(handle);
+	auto children = handle->GetTransform().GetChildrenList();
 	
 	for (auto&i : children)
 	{
-		i->GetComponent<Resource*>()->SetTarget(gameObject);
-		i->SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
-		i->GetTransform().SetLocalScale(Vector3(5,5,5));
-		i->AddComponent<PhysicsObject*>(new PhysicsObject(&i->GetTransform(), ShapeType::cube, 10));
-		i->GetComponent<PhysicsObject*>()->GetRigidbody()->activate(true);
-		i->GetComponent<DamageControl*>()->ResetDamageControl();
+		i->GetGameObject()->GetComponent<Resource*>()->SetTarget(gameObject);
+		i->GetGameObject()->SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
+		i->GetGameObject()->GetTransform().SetLocalScale(Vector3(5,5,5));
+		i->GetGameObject()->AddComponent<PhysicsObject*>(new PhysicsObject(i, ShapeType::cube, 10));
+		i->GetGameObject()->GetComponent<PhysicsObject*>()->GetRigidbody()->activate(true);
+		i->GetGameObject()->GetComponent<DamageControl*>()->ResetDamageControl();
 
-		//Maybe refactored later
-		btCollisionShape* po = i->GetComponent<PhysicsObject*>()->GetShape();
-		GameObject::gameWorld->GetPhysics()->collisionShapes.push_back(po);
-
-		btRigidBody* pb = i->GetComponent<PhysicsObject*>()->GetRigidbody();
-		GameObject::gameWorld->GetPhysics()->dynamicsWorld->addRigidBody(pb);
+		GameObject::gameWorld->AddObjectPhysicsToWorld(i->GetGameObject()->GetComponent<PhysicsObject*>());
 	}
 }
 

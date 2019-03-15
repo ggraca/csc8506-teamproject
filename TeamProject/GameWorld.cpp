@@ -159,17 +159,19 @@ void GameWorld::Instantiate(GameObject* o)
 	
 	CallInitialObjectFunctions(o);
 	gameObjects.push_back(o);
-
-	PhysicsObject* pc = o->GetComponent<PhysicsObject*>();
   
-	if (pc)
-  {
-		btCollisionShape* po = pc->GetShape();
-		physics->collisionShapes.push_back(po);
+	AddObjectPhysicsToWorld(o->GetComponent<PhysicsObject*>());
+}
 
-		btRigidBody* pb = pc->GetRigidbody();
-		physics->dynamicsWorld->addRigidBody(pb);
-	}
+void GameWorld::AddObjectPhysicsToWorld(NCL::CSC8503::PhysicsObject * pc)
+{
+	if (!pc) { return; }
+
+	btCollisionShape* po = pc->GetShape();
+	physics->collisionShapes.push_back(po);
+
+	btRigidBody* pb = pc->GetRigidbody();
+	physics->dynamicsWorld->addRigidBody(pb);
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
