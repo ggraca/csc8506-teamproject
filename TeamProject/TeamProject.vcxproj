@@ -175,6 +175,9 @@
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
+    <ClCompile Include="CannonPrefab.cpp" />
+    <ClCompile Include="CartPrefab.cpp" />
+    <ClCompile Include="CastlePrefab.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="CubePrefab.cpp" />
@@ -182,6 +185,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
     <ClCompile Include="Destructible.cpp" />
+    <ClCompile Include="DWallPrefab.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -194,12 +198,15 @@
     <ClCompile Include="HUDObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LayerAndTag.cpp" />
+    <ClCompile Include="LevelScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NetworkClient.cpp" />
     <ClCompile Include="NetworkEntity.h" />
     <ClCompile Include="NetworkExampleScene.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="NetworkServer.cpp" />
+    <ClCompile Include="MarketPrefab.cpp" />
+    <ClCompile Include="TentPrefab.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -210,8 +217,12 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpherePrefab.cpp" />
     <ClCompile Include="ScriptObject.cpp" />
+    <ClCompile Include="StallPrefab.cpp" />
+    <ClCompile Include="TowerPrefab.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TypeId.cpp" />
+    <ClCompile Include="WallPrefab.cpp" />
+    <ClCompile Include="WellPrefab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -219,6 +230,9 @@
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
+    <ClInclude Include="CannonPrefab.h" />
+    <ClInclude Include="CartPrefab.h" />
+    <ClInclude Include="CastlePrefab.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="CubePrefab.h" />
@@ -226,6 +240,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="Destructible.h" />
+    <ClInclude Include="DWallPrefab.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="ExampleScene.h" />
     <ClInclude Include="Game.h" />
@@ -244,6 +259,9 @@
     <ClInclude Include="NetworkObject.h" />
     <ClInclude Include="NetworkPackets.h" />
     <ClInclude Include="NetworkServer.h" />
+    <ClInclude Include="LevelScene.h" />
+    <ClInclude Include="MarketPrefab.h" />
+    <ClInclude Include="TentPrefab.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="PhysicsScene.h" />
@@ -255,8 +273,12 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpherePrefab.h" />
     <ClInclude Include="ScriptObject.h" />
+    <ClInclude Include="StallPrefab.h" />
+    <ClInclude Include="TowerPrefab.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TypeId.h" />
+    <ClInclude Include="WallPrefab.h" />
+    <ClInclude Include="WellPrefab.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

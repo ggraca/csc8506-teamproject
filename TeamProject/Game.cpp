@@ -2,6 +2,7 @@
 #include "NetworkExampleScene.h"
 #include "ExampleScene.h"
 #include "PhysicsScene.h"
+#include "LevelScene.h"
 #include "InputManager.h"
 #include "../Common/Material.h"
 
@@ -11,12 +12,11 @@ Game::Game() {
 	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
 	network = new NetworkManager();
-	
-	currentScene = new NetworkExampleScene();
-	currentScene->SetRenderer(renderer);
+
+	currentScene = new LevelScene();	currentScene->SetRenderer(renderer);
 	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
 	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
-	
+
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
 
