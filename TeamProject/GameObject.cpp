@@ -37,6 +37,10 @@ void GameObject::ClearComponents()
 
 void GameObject::SetParent(GameObject * parent)
 {
+	if (GetTransform().GetParent() != nullptr)
+	{
+		GetTransform().GetParent()->RemoveChild(&GetTransform());
+	}
 	if (parent)
 	{
 		GetTransform().SetParent(&parent->GetTransform());
@@ -44,11 +48,6 @@ void GameObject::SetParent(GameObject * parent)
 	}
 	else
 	{
-		if (GetTransform().GetParent() != nullptr)
-		{
-			GetTransform().GetParent()->RemoveChild(&parent->GetTransform());
-		}
-
 		GetTransform().SetParent(nullptr);
 	}
 }

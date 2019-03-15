@@ -79,7 +79,15 @@ namespace NCL {
 
 			void RemoveChild(Transform * transform)
 			{
-				std::remove(children.begin(), children.end(), transform);
+				int count = 0;
+				for (auto&i : children)
+				{
+					if (i->gameObject == transform->GetGameObject())
+					{
+						children.erase(children.begin() + count);
+					}
+					count++;
+				}
 			}
 
 			void GetChildTransformIterators(std::vector<Transform*>::const_iterator&b, std::vector<Transform*>::const_iterator&e) const
@@ -115,7 +123,7 @@ namespace NCL {
 			Quaternion	localOrientation;
 			Quaternion  worldOrientation;
 
-			Transform*	parent;
+			Transform*	parent = nullptr;
 			GameObject * gameObject;
 
 			vector<Transform*> children;

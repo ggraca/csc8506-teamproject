@@ -23,6 +23,7 @@ void PhysicsScene::ResetWorld() {
 	des->AddComponent<Destructible*>(new Destructible(des));
 	des->AddComponent<HealthManager*>(new HealthManager(des));
 	des->GetComponent<HealthManager*>()->SetHealth(8);
+	des->SetName("destructible");
 
 	world->Instantiate(des);
 	world->Instantiate(resource1);
@@ -113,6 +114,7 @@ void PhysicsScene::InitializeHammer(GameObject * player)
 	hammerHead->SetParent(handle);
 
 	auto hammerCollision = new CubePrefab(CubePrefab::PrefabType::HAMMER_HEAD);
+	hammerCollision->SetName("Hammer col");
 	hammerCollision->GetComponent<DamageControl*>()->SetTarget(&hammerHead->GetTransform());
 
 

@@ -83,7 +83,6 @@ void HammerControl::DeactivateHammer()
 
 	handleCollision->RemoveComponent<PhysicsObject*>();
 	GameObject::gameWorld->RemoveCollisionsFromGameObject(handleCollision);
-	//handleCollision->GetComponent<DamageControl*>()->SetDamage(0);
 }
 
 void HammerControl::HammerHit()

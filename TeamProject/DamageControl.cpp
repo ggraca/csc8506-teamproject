@@ -42,7 +42,7 @@ void DamageControl::SetWeaponType(WeaponType w)
 
 void DamageControl::ResolveDamage(GameObject * obj)
 {
-	std::cout << "Colliding with " << obj->GetName() << " amount: " << damage << std::endl;
+	std::cout << "Colliding with " << obj->GetName() <<" as "<<gameObject->GetName() <<" amount: " << damage << std::endl;
 
 	if (damage == 0) { return; }
 
@@ -97,7 +97,7 @@ void DamageControl::FollowTarget()
 {
 	if (target && typeOfWeapon == WeaponType::Dummy)
 	{
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(target->GetWorldPosition());
+		gameObject->GetTransform().ForceUpdateWorldPosition(target->GetWorldPosition());
 	}
 }
 
