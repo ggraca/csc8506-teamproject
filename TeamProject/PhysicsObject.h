@@ -120,6 +120,7 @@ namespace NCL {
 			}
 
 		protected:
+			btCollisionShape* Load(const char* filename, bool verbose);
 			const CollisionVolume* volume;
 			Transform*		transform;
 

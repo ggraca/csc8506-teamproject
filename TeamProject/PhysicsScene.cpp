@@ -57,13 +57,15 @@ void PhysicsScene::ResetWorld() {
   AddCylinderToWorld(Vector3(0, 10, 110), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.5f, 0.5f);
   AddSphereToWorld(Vector3(70, 50, 110), 10, 100, (rand() % 100) / (float)100, (rand() % 100) / (float)100);
 
+  AddCubeToWorld(Vector3(450, 50, 380), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45), Vector3(150, 50, 150), 0, 0.2f);
+
  // InitMixedGridWorld(Vector3(0, 100, 0), 10, 10, 20, 20);
 
   //AddConeToWorld(Vector3(80, 50, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.3f, 0.5f);
   //AddConeToWorld(Vector3(30, 750, 50), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 45), Vector3(50, 30, 50), 100, 0.3f, 0.5f);
   //AddConeToWorld(Vector3(80, 50, 90), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(80, 130, 80), 100, 0.3f, 0.5f);
 
-  AddMeshToWorld("back_wall.obj", Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(0.1, 0.5, 0.1), 0, 0, 0);
+  AddMeshToWorld("front_wall.obj", Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
 
 //  AddMeshToWorld("cylinder.obj", Vector3(50, 0, 10), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 90), Vector3(100, 100, 100), 0, 0, 0);
 
@@ -88,24 +90,45 @@ PhysicsScene::~PhysicsScene() {
 void PhysicsScene::UpdateKeys() {
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 10, 0));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 100, 0));
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_J)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(-10, 0, 0));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(-100, 0, 0));
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_K)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(10, 0, 0));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(100, 0, 0));
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_N)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, 10));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, 100));
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_M)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
-		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -10));
+		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -100));
 	}
+
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->applyCentralForce(btVector3(0, 1000000, 0));
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_J)) {
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->applyCentralForce(btVector3(-1000000, 0, 0));
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_K)) {
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->applyCentralForce(btVector3(1000000, 0, 0));
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_N)) {
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->applyCentralForce(btVector3(0, 0, 1000000));
+	//}
+	//if (Window::GetKeyboard()->KeyDown(KEYBOARD_M)) {
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
+	//	btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->applyCentralForce(btVector3(0, 0, -1000000));
+	//}
 
 	//HUD TESTING BEGINS
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
