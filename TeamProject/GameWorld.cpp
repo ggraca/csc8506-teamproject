@@ -182,6 +182,16 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	o->SetUpInitialScripts();	
 }
 
+const btCollisionObject* GameWorld::Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd)
+{
+	return physics->Raycast(start, end, newEnd);
+}
+
+const btCollisionObject* GameWorld::Raycast(const Vector3 & start, const Vector3& dir, float magnitude, Vector3& newEnd)
+{
+	return physics->RaycastPosDir(start, dir, magnitude,newEnd);
+}
+
 void GameWorld::Instantiate(GameObject* o, GameObject* parent )
 {
 	if (!o) { return; }
@@ -206,6 +216,19 @@ void GameWorld::RemoveGameObject(GameObject* o)
 			return;
 		}
 	}
+}
+
+GameObject * GameWorld::CollisionObjectToGameObject(const btCollisionObject * co)
+{
+	if (!co) { return nullptr; }
+
+	for (auto&i : gameObjects)
+	{
+		if (!i->GetComponent<PhysicsObject*>()) { continue; }
+
+		if (i->GetComponent<PhysicsObject*>()->GetRigidbody() == co) { return i; }
+	}
+	return nullptr;
 }
 
 void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {

@@ -3,6 +3,7 @@
 #include "PhysicsObject.h"
 #include "GameWorld.h"
 #include "BulletPhysics.h"
+#include "Debug.h"
 HammerControl::HammerControl(GameObject * gameObject):ScriptObject(gameObject)
 {
 }
@@ -26,6 +27,21 @@ void HammerControl::SetHandleCollision(GameObject * hc)
 	handleCollision = hc;
 }
 
+Vector3 HammerControl::CalculateDirection()
+{
+	auto camera = GameObject::gameWorld->GetMainCamera();
+	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0, 0, 0); }
+
+	Vector3 forward;
+	Transform *ctransform = camera->GetTransform().GetChildrenList()[0];
+
+	forward.x = sin(camera->GetTransform().GetLocalOrientation().ToEuler().y* (PI / 180)) * cos(camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180));
+	forward.y = sin(-camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180));
+	forward.z = cos(camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180)) * cos(camera->GetTransform().GetLocalOrientation().ToEuler().y * (PI / 180));
+
+	return forward.Normalised();
+}
+
 void HammerControl::ActivateHammer()
 {
 	if (!handle || !handleCollision) { return; }
@@ -33,12 +49,6 @@ void HammerControl::ActivateHammer()
 	handle->SetActiveStatus(true);
 
 	FormHammer();
-
-	handleCollision->GetComponent<DamageControl*>()->SetDamage((int)handle->GetTransform().GetChildrenList().size() - 1);
-	handleCollision->AddComponent<PhysicsObject*>(new PhysicsObject(&handleCollision->GetTransform(), ShapeType::cube,0,0));
-	handleCollision->GetComponent<PhysicsObject*>()->GetRigidbody()->setCollisionFlags(handleCollision->GetComponent<PhysicsObject*>()->GetRigidbody()->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
-	handleCollision->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-	GameObject::gameWorld->AddObjectPhysicsToWorld(handleCollision->GetComponent<PhysicsObject*>());
 }
 
 void HammerControl::FormHammer()
@@ -83,14 +93,24 @@ void HammerControl::DeactivateHammer()
 	handle->SetActiveStatus(false);
 
 	DeformHammer();
-
-	handleCollision->RemoveComponent<PhysicsObject*>();
-	GameObject::gameWorld->RemoveCollisionsFromGameObject(handleCollision);
 }
 
 void HammerControl::HammerHit()
 {
 	if (!handle) { return; }
+
+	auto camera = GameObject::gameWorld->GetMainCamera();
+	Vector3 end;
+	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(camera->GetTransform().GetWorldPosition(), camera->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), end));
+	if (colliding)
+	{
+		Debug::DrawLine(camera->GetTransform().GetWorldPosition(), camera->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), Vector4(1, 0, 0, 1));
+		
+		if (colliding->GetComponent<HealthManager*>())
+		{
+			colliding->GetComponent<HealthManager*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());
+		}
+	}
 
 	hitCounter = (hitCounter + 1) % 3;
 }

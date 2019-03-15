@@ -1,5 +1,6 @@
 #pragma once
 #include "ScriptObject.h"
+#define PI 3.14159265358979323846f
 
 class HammerControl: public ScriptObject
 {
@@ -8,6 +9,7 @@ public:
 	~HammerControl();
 	void SetHandle(GameObject * h);
 	void SetHandleCollision(GameObject * hc);
+	Vector3 CalculateDirection();
 	void ActivateHammer();
 	void FormHammer();
 	void DeformHammer();

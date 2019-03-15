@@ -36,8 +36,11 @@ namespace NCL {
 			void Instantiate(GameObject* o);
 			void AddObjectPhysicsToWorld(NCL::CSC8503::PhysicsObject * pc);
 			void CallInitialObjectFunctions(NCL::CSC8503::GameObject * o);
+			const btCollisionObject * Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd);
+			const btCollisionObject * Raycast(const Vector3 & start, const Vector3 & dir, float magnitude, Vector3 & newEnd);
 			void Instantiate(GameObject* o,GameObject* parent);
 			void RemoveGameObject(GameObject* o);
+			GameObject * CollisionObjectToGameObject(const btCollisionObject * co);
 
 			GameObject* GetMainCamera() const {
 				return mainCamera;

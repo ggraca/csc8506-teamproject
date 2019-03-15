@@ -144,7 +144,7 @@ const btCollisionObject* BulletPhysics::Raycast(const Vector3& Start, const Vect
 	dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
 	if (RayCallback.hasHit()) {
 		btVector3 btNewEnd = RayCallback.m_hitPointWorld;
-		NewEnd = Vector3(btNewEnd.getX(), btNewEnd.getY(), btNewEnd.getZ());
+		NewEnd = Vector3((const float)btNewEnd.getX(), (const float)btNewEnd.getY(), (const float)btNewEnd.getZ());
 		return RayCallback.m_collisionObject;
 	}
 	return nullptr;
