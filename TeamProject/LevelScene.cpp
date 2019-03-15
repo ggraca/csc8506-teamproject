@@ -33,14 +33,7 @@ using namespace NCL;
 using namespace CSC8503;
 
 LevelScene::LevelScene() : Scene() {
-	physics->SetGravity(Vector3(0, -100, 0));
-
-	Window::GetWindow()->ShowOSPointer(false);
-	Window::GetWindow()->LockMouseToWindow(true);
-
 	ResetWorld();
-	debugMenu = DebugMenu();
-	RegisterConsoleCommands();
 }
 
 void LevelScene::ResetWorld() {
@@ -80,34 +73,6 @@ void LevelScene::ResetWorld() {
 LevelScene::~LevelScene() {
 }
 
-void LevelScene::UpdateGame(float dt) {
-
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
-		world->SwitchToFPS();
-	}
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
-		world->SwitchToTPS();
-	}
-
-	physics->Update(dt);
-	world->UpdateWorld(dt);
-	renderer->Update(dt);
-	audio->Update();
-
-	Debug::FlushRenderables();
-	debugMenu.Update(dt, renderer);
-	console.Update();
-	hud.Update(dt, renderer);
-
-
-	//Might want moved into a seperate function that handles input
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-		console.Toggle();
-		debugMenu.Toggle();
-	}
-	renderer->Render();
-
-}
 
 void LevelScene::LoadWorld() {
 	std::ifstream infile(Assets::DATADIR + "level1.txt");

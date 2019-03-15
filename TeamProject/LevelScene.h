@@ -18,15 +18,10 @@ namespace NCL {
 		public:
 			LevelScene();
 			~LevelScene();
-			void UpdateGame(float dt);
 			void LoadWorld();
 
 		protected:
 			void ResetWorld();
-
-			DebugMenu debugMenu;
-			vector<HUDObject> hudElements;
-			HUD hud;
 		};
 	}
 }

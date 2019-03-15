@@ -72,6 +72,7 @@
     </ClCompile>
     <ClCompile Include="CartPrefab.cpp">
       <Filter>Prefabs</Filter>
+    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -236,6 +237,7 @@
     </ClInclude>
     <ClInclude Include="CartPrefab.h">
       <Filter>Prefabs</Filter>
+    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Engine</Filter>
     </ClInclude>
