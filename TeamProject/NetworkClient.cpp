@@ -11,10 +11,23 @@ void NetworkClient::ReceivePacket(int type, GamePacket* payload, int source) {
 		std::cout << "received message: " << msg << std::endl;
 	}
 	else if (type == InstantiateMessage) {
-		InstantiatePacket* ip = (InstantiatePacket*) payload;
-		auto resource1 = new ResourcePrefab(Vector3(ip->x, ip->y, ip->z), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+		InstantiatePacket* packet = (InstantiatePacket*) payload;
+		auto resource1 = new ResourcePrefab(packet->position, packet->rotation, Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 		resource1->RemoveComponent<PhysicsObject*>();
-		resource1->GetComponent<NetworkObject*>()->SetId(ip->networkId);
 		world->Instantiate(resource1);
+
+		NetworkObject* no = resource1->GetComponent<NetworkObject*>();
+		no->SetId(packet->networkId);
+		objects.push_back(no);
+	}
+	else if (type == ObjectUpdateMessage) {
+		ObjectUpdatePacket* packet = (ObjectUpdatePacket*)payload;
+		
+		NetworkObject* no = FindObject(packet->networkId);
+		if (!no) return;
+
+
+		no->GetGameObject()->GetTransform().SetWorldPosition(packet->position);
+		no->GetGameObject()->GetTransform().SetLocalOrientation(packet->rotation);
 	}
 }

@@ -4,17 +4,32 @@
 
 
 struct InstantiatePacket : public GamePacket {
-	int networkId, prefabId;
-	float x, y, z;
+	int prefabId, networkId;
+	Vector3 position;
+	Quaternion rotation;
 
-	InstantiatePacket(int nid, int pid, float posx, float posy, float posz) {
+	InstantiatePacket(int pid, int nid, Vector3 pos, Quaternion rot) {
 		type = BasicNetworkMessages::InstantiateMessage;
-		size = sizeof(int) * 2 + sizeof(float) * 3;
+		size = sizeof(int) * 2 + sizeof(Vector3) + sizeof(Quaternion);
 
 		networkId = nid;
 		prefabId = pid;
-		x = posx;
-		y = posy;
-		z = posz;
+		position = pos;
+		rotation = rot;
+	}
+};
+
+struct ObjectUpdatePacket : public GamePacket {
+	int networkId;
+	Vector3 position;
+	Quaternion rotation;
+
+	ObjectUpdatePacket(int nid, Vector3 pos, Quaternion rot) {
+		type = BasicNetworkMessages::ObjectUpdateMessage;
+		size = sizeof(int) * 2 + sizeof(Vector3) * 3;
+
+		networkId = nid;
+		position = pos;
+		rotation = rot;
 	}
 };

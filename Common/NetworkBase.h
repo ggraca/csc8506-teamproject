@@ -20,7 +20,8 @@ enum BasicNetworkMessages {
 	Player_Disconnected,
 	Shutdown,
 	PlayerPos,
-	InstantiateMessage
+	InstantiateMessage,
+	ObjectUpdateMessage
 };
 
 struct GamePacket {

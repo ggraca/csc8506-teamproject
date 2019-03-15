@@ -11,7 +11,7 @@ public:
 	NetworkServer(GameServer* gs) : server(gs) {}
 	~NetworkServer() { delete server; }
 
-	void Update() { server->UpdateServer(); }
+	void Update();
 	void Instantiate(GameObject* go) override;
 	void Destroy() override {};
 

@@ -12,6 +12,12 @@ public:
 	void SetWorld(GameWorld* w) { world = w; }
 
 protected:
+	NetworkObject* FindObject(int id) {
+		for (auto o : objects) {
+			if (o->GetId() == id) return o;
+		}
+	}
+
 	GameWorld* world = nullptr;
 	vector<NetworkObject*> objects;
 };

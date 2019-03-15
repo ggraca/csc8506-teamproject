@@ -1,10 +1,26 @@
 #include "NetworkServer.h"
 #include "NetworkPackets.h"
 
+
+void NetworkServer::Update() {
+	server->UpdateServer();
+
+	for (auto o : objects) {
+		Transform t = o->GetGameObject()->GetTransform();
+		Vector3 pos = t.GetWorldPosition();
+		Quaternion rot = t.GetLocalOrientation();
+
+		ObjectUpdatePacket p = ObjectUpdatePacket(o->GetId(), pos, rot);
+		server->SendGlobalPacket(p);
+	}
+}
 void NetworkServer::OnClientConnect(int source) {
 	for (auto o : objects) {
-		Vector3 pos = o->GetGameObject()->GetTransform().GetWorldPosition();
-		InstantiatePacket p = InstantiatePacket(o->GetId(), 0, pos.x, pos.y, pos.z);
+		Transform t = o->GetGameObject()->GetTransform();
+		Vector3 pos = t.GetWorldPosition();
+		Quaternion rot = t.GetLocalOrientation();
+
+		InstantiatePacket p = InstantiatePacket(0, o->GetId(), pos, rot);
 		server->SendGlobalPacket(p);
 	}
 }
@@ -34,8 +50,8 @@ void NetworkServer::Instantiate(GameObject* go) {
 	NetworkObject* no = go->GetComponent<NetworkObject*>();
 	if (!no) return;
 
-	objects.push_back(no);
 	no->SetId(lastestId++);
+	objects.push_back(no);
 
 	server->SendGlobalPacket(StringPacket("yo"));
 }
