@@ -3,6 +3,7 @@
 #include "Resource.h"
 #include "HealthManager.h"
 #include "ExampleScene.h"
+#include "LevelScene.h"
 #include "ScriptObject.h"
 #include "ResourcePrefab.h"
 

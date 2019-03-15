@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "ExampleScene.h"
 #include "PhysicsScene.h"
+#include "LevelScene.h"
 #include "InputManager.h"
 #include "../Common/Material.h"
 
@@ -11,7 +12,8 @@ Game::Game() {
 	InitialiseAssets();
 
 	// currentScene = new ExampleScene();
-	currentScene = new PhysicsScene();
+	//currentScene = new PhysicsScene();
+	currentScene = new LevelScene();
 	currentScene->SetRenderer(renderer);
 	
 	renderer->SetGameWorld(currentScene->GetGameWorld());
