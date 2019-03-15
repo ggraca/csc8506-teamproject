@@ -21,13 +21,22 @@ void HammerControl::SetHandle(GameObject * h)
 	handle = h;
 }
 
+void HammerControl::SetHandleCollision(GameObject * hc)
+{
+	handleCollision = hc;
+}
+
 void HammerControl::ActivateHammer()
 {
-	if (!handle) { return; }
+	if (!handle || !handleCollision) { return; }
 
 	handle->SetActiveStatus(true);
 
 	FormHammer();
+	handleCollision->GetComponent<DamageControl*>()->SetDamage((int)handle->GetTransform().GetChildrenList().size() - 1);
+	
+	handleCollision->AddComponent<PhysicsObject*>(new PhysicsObject(&handleCollision->GetTransform(), ShapeType::cube, 0));
+	GameObject::gameWorld->AddObjectPhysicsToWorld(handleCollision->GetComponent<PhysicsObject*>());
 }
 
 void HammerControl::FormHammer()
@@ -37,15 +46,11 @@ void HammerControl::FormHammer()
 
 	for (auto&i : children)
 	{
-		i->GetComponent<PhysicsObject*>()->GetRigidbody()->clearForces();
-
 		i->GetComponent<Resource*>()->SetTarget(nullptr);
 		i->RemoveComponent<PhysicsObject*>();
 		GameObject::gameWorld->RemoveCollisionsFromGameObject(i);
 		i->GetTransform().SetLocalScale(Vector3(5,5,5)/Vector3(2.0f,25.0f,2.0f));
 		i->GetTransform().SetLocalPosition(GenerateRandomPositionInHammer());
-		i->GetComponent<DamageControl*>()->SetDamage(1);
-		i->GetComponent<DamageControl*>()->SetTypeOfDamage(DamageControl::DamageType::Continuous);
 		i->SetParent(handle);
 	}
 }
@@ -57,12 +62,12 @@ void HammerControl::DeformHammer()
 	
 	for (auto&i : children)
 	{
+		if (i->GetGameObject()->GetTag() == LayerAndTag::Tags::HammerHead) { continue; }
+
 		i->GetGameObject()->GetComponent<Resource*>()->SetTarget(gameObject);
 		i->GetGameObject()->SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
 		i->GetGameObject()->GetTransform().SetLocalScale(Vector3(5,5,5));
 		i->GetGameObject()->AddComponent<PhysicsObject*>(new PhysicsObject(i, ShapeType::cube, 10));
-		i->GetGameObject()->GetComponent<PhysicsObject*>()->GetRigidbody()->activate(true);
-		i->GetGameObject()->GetComponent<DamageControl*>()->ResetDamageControl();
 
 		GameObject::gameWorld->AddObjectPhysicsToWorld(i->GetGameObject()->GetComponent<PhysicsObject*>());
 	}
@@ -75,6 +80,10 @@ void HammerControl::DeactivateHammer()
 	handle->SetActiveStatus(false);
 
 	DeformHammer();
+
+	handleCollision->RemoveComponent<PhysicsObject*>();
+	GameObject::gameWorld->RemoveCollisionsFromGameObject(handleCollision);
+	//handleCollision->GetComponent<DamageControl*>()->SetDamage(0);
 }
 
 void HammerControl::HammerHit()

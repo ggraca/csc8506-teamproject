@@ -19,6 +19,8 @@ public:
 protected:
     void ResetWorld();
 	void UpdateKeys();
+	void InitializeGuns(GameObject * player);
 	void InitPlayer();
+	void InitializeHammer(GameObject * player);
 	GameObject* bestcube;
 };

@@ -21,7 +21,6 @@ void Player::Update(float dt)
 	PlayerMovement(dt);
 	CheckGunControls();
 	CheckHammerControls();
-	//gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, gameObject->GetTransform().GetLocalOrientation().ToEuler().y, 0));
 }
 
 void Player::CheckHammerControls()
@@ -68,22 +67,22 @@ void Player::PlayerMovement(float dt)
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
 		playerPos += forward * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
 		playerPos -= forward * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
 	{
 		playerPos += left * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
 		playerPos -= left * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{

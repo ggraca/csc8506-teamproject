@@ -7,6 +7,7 @@ public:
 	HammerControl(GameObject * gameObject);
 	~HammerControl();
 	void SetHandle(GameObject * h);
+	void SetHandleCollision(GameObject * hc);
 	void ActivateHammer();
 	void FormHammer();
 	void DeformHammer();
@@ -18,6 +19,7 @@ public:
 
 protected:
 	GameObject * handle = nullptr;
+	GameObject * handleCollision = nullptr;
 	int hitCounter = 0;
 
 	float minX;

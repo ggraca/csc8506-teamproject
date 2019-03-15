@@ -19,7 +19,7 @@ void PhysicsScene::ResetWorld() {
 	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
   
-	auto des = new CubePrefab(Vector3(500, 400, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
+	auto des = new CubePrefab(Vector3(500, 100, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
 	des->AddComponent<Destructible*>(new Destructible(des));
 	des->AddComponent<HealthManager*>(new HealthManager(des));
 	des->GetComponent<HealthManager*>()->SetHealth(8);
@@ -83,32 +83,56 @@ void PhysicsScene::UpdateKeys() {
 	//}
 }
 
-void PhysicsScene::InitPlayer()
+void PhysicsScene::InitializeGuns(GameObject * player)
 {
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
 	auto  playerLeft = new CubePrefab(CubePrefab::PrefabType::GUN);
 	auto  playerRight = new CubePrefab(CubePrefab::PrefabType::GUN);
-	auto  handle = new CubePrefab(CubePrefab::PrefabType::HANDLE);
 
 	playerLeft->SetParent(player);
 	playerRight->SetParent(player);
-	handle->SetParent(player);
-	
-	playerRight->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
-	playerLeft->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
-	handle->GetTransform().SetLocalPosition(Vector3(-1,0, 2));
-	/*auto temp = new CubePrefab(CubePrefab::PrefabType::GUN);
-	temp->SetParent(handle);
-	temp->GetTransform().SetLocalPosition(Vector3(0, 2, 0));*/
+
+	playerRight->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
+	playerLeft->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
+
 	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
 	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
-	player->GetComponent<HammerControl*>()->SetHandle(handle);
 
-	//world->Instantiate(temp);
-	world->Instantiate(player);
 	world->Instantiate(playerLeft);
 	world->Instantiate(playerRight);
+}
+
+void PhysicsScene::InitializeHammer(GameObject * player)
+{
+	auto  handle = new CubePrefab(CubePrefab::PrefabType::HANDLE);
+	handle->SetParent(player);
+	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
+
+	auto hammerHead = new GameObject();
+	hammerHead->SetTag(LayerAndTag::Tags::HammerHead);
+	hammerHead->GetTransform().SetLocalPosition(Vector3(0, 2, 0));
+	hammerHead->SetParent(handle);
+
+	auto hammerCollision = new CubePrefab(CubePrefab::PrefabType::HAMMER_HEAD);
+	hammerCollision->GetComponent<DamageControl*>()->SetTarget(&hammerHead->GetTransform());
+
+
+	player->GetComponent<HammerControl*>()->SetHandle(handle);
+	player->GetComponent<HammerControl*>()->SetHandleCollision(hammerCollision);
+
+	world->Instantiate(hammerHead);
+	world->Instantiate(hammerCollision);
 	world->Instantiate(handle);
+}
+
+void PhysicsScene::InitPlayer()
+{
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
+
+	InitializeGuns(player);
+	InitializeHammer(player);
+
+
+	world->Instantiate(player);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);
 }
@@ -116,10 +140,4 @@ void PhysicsScene::InitPlayer()
 void PhysicsScene::LateUpdate(float dt) {
 	GameScene::LateUpdate(dt);
 	UpdateKeys();
-  
-	//bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
-	//bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));
-	//bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
-	//bestcube->GetPhysicsObject()->ApplyForce(Vector3(100000, 0, 10), Vector3(0, -10, 0));
-	//bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
 }

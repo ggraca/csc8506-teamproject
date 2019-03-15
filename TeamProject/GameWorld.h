@@ -34,6 +34,7 @@ namespace NCL {
 			void UpdateGameObjects(float dt);
 			void LateUpdateGameObjects(float dt);
 			void Instantiate(GameObject* o);
+			void AddObjectPhysicsToWorld(NCL::CSC8503::PhysicsObject * pc);
 			void CallInitialObjectFunctions(NCL::CSC8503::GameObject * o);
 			void Instantiate(GameObject* o,GameObject* parent);
 			void RemoveGameObject(GameObject* o);
