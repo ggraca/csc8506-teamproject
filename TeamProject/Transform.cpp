@@ -126,6 +126,11 @@ void Transform::SetGameObject(GameObject * obj)
 	gameObject = obj;
 }
 
+GameObject * Transform::GetGameObject()
+{
+	return gameObject;
+}
+
 void Transform::ForceUpdateScale(Vector3 scale)
 {
 	btRigidBody * body = gameObject->GetComponent<PhysicsObject*>()->GetRigidbody();

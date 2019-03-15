@@ -36,6 +36,7 @@ namespace NCL {
 			void Instantiate(GameObject* o);
 			void CallInitialObjectFunctions(NCL::CSC8503::GameObject * o);
 			void Instantiate(GameObject* o,GameObject* parent);
+			void InstantiateRecursively(GameObject* o);
 			void RemoveGameObject(GameObject* o);
 
 			GameObject* GetMainCamera() const {
@@ -86,6 +87,7 @@ namespace NCL {
 			void LateDestroy(GameObject * obj);
 			void HandleObjectsToDestroy();
 			void LateInstantiate(GameObject* obj);
+			void LateInstantiateRecursively(GameObject* obj);
 			void HandleObjectsToInstantiate();
 
 		protected:

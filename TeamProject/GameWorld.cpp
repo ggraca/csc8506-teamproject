@@ -127,6 +127,21 @@ void GameWorld::LateInstantiate(GameObject * obj)
 	objectsToInstantiate.push_back(obj);
 }
 
+void GameWorld::LateInstantiateRecursively(GameObject * obj)
+{
+	if (!obj) { return; }
+
+	LateInstantiate(obj);
+
+	if ((int)obj->GetTransform().GetChildrenList().size() > 0)
+	{
+		for (auto&i : obj->GetTransform().GetChildrenList())
+		{
+			LateInstantiateRecursively(i->GetGameObject());
+		}
+	}
+}
+
 void GameWorld::HandleObjectsToInstantiate()
 {
 	for (auto&i : objectsToInstantiate)
@@ -186,6 +201,21 @@ void GameWorld::Instantiate(GameObject* o, GameObject* parent )
 
 	o->SetParent(parent);
 	Instantiate(o);
+}
+
+void GameWorld::InstantiateRecursively(GameObject * o)
+{
+	if (!o) { return; }
+
+	Instantiate(o);
+
+	if ((int)o->GetTransform().GetChildrenList().size() > 0)
+	{
+		for (auto&i : o->GetTransform().GetChildrenList())
+		{
+			InstantiateRecursively(i->GetGameObject());
+		}
+	}
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 
