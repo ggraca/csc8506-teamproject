@@ -1,62 +1,28 @@
 #pragma once
-#include "GameTechRenderer.h"
-#include "HUD.h"
-#include "Debug.h"
-#include "../Common/Camera.h"
+
 #include "AudioEngine.h"
 #include "BulletPhysics.h"
-#include "Console.h"
+#include "GameTechRenderer.h"
 
-class Material;
 
-namespace NCL {
-	namespace CSC8503 {
-		class Scene		{
-		public:
-			Scene();
-			~Scene();
+class Scene {
+public:
+	Scene();
+	virtual ~Scene();
 
-			virtual void UpdateGame(float dt) = 0;
-			BulletPhysics*		physics; //TODO Make protected again?
+	virtual void Update(float dt);
 
-		protected:
-			void InitialiseAssets();
-			void RegisterConsoleCommands();
+	GameWorld* GetGameWorld() const { return world; }
+	// TODO: We need this for the HUD. But we should remove this once it is component based
+	void SetRenderer(GameTechRenderer* gtr) { renderer = gtr; }
 
-			virtual void InitWorld();
+	BulletPhysics* physics; // TODO: Make this protected again?
 
-			GameTechRenderer*	renderer;
-			CAudioEngine* audio;
-			Console console;
-
-			GameWorld*		world;
-
-			bool useGravity;
-
-			float		forceMagnitude;
-
-			OGLMesh*	cubeMesh	= nullptr;
-			OGLMesh*	sphereMesh	= nullptr;
-			OGLMesh*	cylinderMesh = nullptr;
-			OGLMesh*	coneMesh = nullptr;
-			TextureBase* basicTex	= nullptr;
-			TextureBase* woodTex	= nullptr;
-			TextureBase* grassTex	= nullptr;
-			TextureBase* ballTex	= nullptr;
-
-			TextureBase* brickTex = nullptr;
-			TextureBase* dogTex = nullptr;
-			TextureBase* dogsTex = nullptr;
-			TextureBase* tempTex = nullptr;
-			TextureBase* cubeMap = nullptr;
-			TextureBase* pbrWoodDiff = nullptr;
-			TextureBase* pbrWoodBump = nullptr;
-			TextureBase* pbrWoodSpec = nullptr;
-			TextureBase* pbrWoodMet = nullptr;
-			ShaderBase*	pbrShader = nullptr;
-			Material*   basicMaterial = nullptr;
-			Material* floorMat = nullptr;
-
-		};
-	}
-}
+protected:
+	virtual void EarlyUpdate(float dt) {};
+	virtual void LateUpdate(float dt) {};
+	
+	GameTechRenderer* renderer;
+	GameWorld* world;
+	CAudioEngine* audio;
+};

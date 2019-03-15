@@ -132,7 +132,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Bullet\src;$(SolutionDir)Plugins\FMOD\lowlevel\inc;$(SolutionDir)Plugins\FMOD\studio\inc;</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>LNK4099;</DisableSpecificWarnings>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -183,7 +184,9 @@
     <ClCompile Include="DWallPrefab.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="HealthManager.cpp" />
@@ -231,7 +234,9 @@
     <ClInclude Include="DWallPrefab.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="ExampleScene.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameTechRenderer.h" />
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="HealthManager.h" />

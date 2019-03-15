@@ -16,12 +16,14 @@ class HUDObject;
 namespace NCL {
 	namespace CSC8503 {
 		class RenderObject;
+		class ParticleSystem;
 		class PixOpsFlags;
 		class GameTechRenderer : public OGLRenderer	{
 		public:
-			GameTechRenderer(GameWorld& world);
+			GameTechRenderer();
 			~GameTechRenderer();
 
+			void SetGameWorld(GameWorld* gw) { gameWorld = gw; }
 			int GetRendererWidth() const { return currentWidth; }
 			int GetRendererHeight() const { return currentHeight; }
 			int GetVertsDrawn() const { return vertsDrawn; }
@@ -45,7 +47,7 @@ namespace NCL {
 
 			OGLShader*		defaultShader;
 
-			GameWorld&	gameWorld;
+			GameWorld*	gameWorld;
 
 			void BuildObjectList();
 			void SortObjectList();
@@ -54,6 +56,7 @@ namespace NCL {
 			void RenderCamera();
 			void RenderLights();
 			void CombineBuffers();
+			void RenderParticleSystems();
 			void RenderPostProcess();
 			void PresentScene();
 
@@ -61,6 +64,7 @@ namespace NCL {
 
 			vector<const RenderObject*> activeObjects;
 			vector<const Light*> activeLights;
+			vector<ParticleSystem*> activeParticleSystems;
 			vector<ShaderBase*> postProcessShaders;
 
 			//shadow mapping things
@@ -90,6 +94,7 @@ namespace NCL {
 			ShaderBase* presentShader;
 			ShaderBase* pointLightShader;
 			ShaderBase* directionalLightShader;
+			ShaderBase* particleShader;
 			ShaderBase* hudShader;
 			OGLMesh* lightSphere;
 			OGLMesh* screenQuad;
