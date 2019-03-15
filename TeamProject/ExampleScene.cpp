@@ -35,7 +35,6 @@ void ExampleScene::ResetWorld() {
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
   
-
 	// OBJ file example
 	//OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("Lamborghini_Aventador.obj");
 

@@ -35,6 +35,7 @@ struct Implementation {
 	EventMap mEvents;
 	SoundMap mSounds;
 	ChannelMap mChannels;
+	bool disabled = false;
 };
 
 class CAudioEngine {
