@@ -32,6 +32,7 @@ protected:
 	int resourceCount;
 	float movementSpeed;
 	float jumpSpeed;
+	float dodgeAmount;
 	bool isGunActive = false;
 	bool isHammerActive = false;
 	bool isShieldActive = false;

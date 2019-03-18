@@ -94,4 +94,6 @@ void InputManager::InitializeButtonRelations()
 	GetInstance().registeredActionButtons[ActionButton::HIT].relatedMouseKeys.push_back(NCL::MOUSE_LEFT);
 
 	GetInstance().registeredActionButtons[ActionButton::JUMP].relatedKeyboardKeys.push_back(NCL::KEYBOARD_SPACE);
+
+	GetInstance().registeredActionButtons[ActionButton::DODGE].relatedKeyboardKeys.push_back(NCL::KEYBOARD_SHIFT);
 }
