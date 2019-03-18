@@ -1,17 +1,10 @@
 #pragma once
 #include "GameTechRenderer.h"
-#include <string>
+#include "MenuEntry.h"
+
 #include <vector>
 
-using namespace std;
 
-struct MenuEntry
-{
-	int index;
-	string menuTitle;
-	bool selected;
-	MenuEntry(int i, string title, bool sel) : index(i), menuTitle(title), selected(sel) {}
-};
 
 
 class PauseMenu

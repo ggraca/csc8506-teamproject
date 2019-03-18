@@ -19,6 +19,15 @@ MenuScene::MenuScene(Game* g) : game(g)
 	menuEntries[2].push_back(MenuEntry(0, "Volume Up", true));
 	menuEntries[2].push_back(MenuEntry(1, "Volume Down", false));
 	menuEntries[2].push_back(MenuEntry(2, "Back", false));
+
+	//Controls
+	menuEntries[3].push_back(MenuEntry(0, "Back", true));
+	menuEntries[3].push_back(MenuEntry(1, "W        - Forward", false));
+	menuEntries[3].push_back(MenuEntry(2, "A        - Left", false));
+	menuEntries[3].push_back(MenuEntry(3, "S        - Backward", false));
+	menuEntries[3].push_back(MenuEntry(4, "D        - Right", false));
+	menuEntries[3].push_back(MenuEntry(5, "Space    - Jump", false));
+	menuEntries[3].push_back(MenuEntry(6, "Mouse 1  - Fire", false));
 }
 
 
@@ -75,11 +84,13 @@ void MenuScene::MenuUpdate(float dt)
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
+			//Join Game
 			LevelScene* newScene = new LevelScene(game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), false);
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
 		{
+			//Go to Settings
 			menuPathIndex = 1;
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][3].selected)
@@ -88,7 +99,8 @@ void MenuScene::MenuUpdate(float dt)
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][0].selected)
 		{
-			//Go to Controls;
+			//Go to Controls
+			menuPathIndex = 3;
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][1].selected)
 		{
@@ -101,7 +113,7 @@ void MenuScene::MenuUpdate(float dt)
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][3].selected)
 		{
-			//Go to back to main menu;
+			//Go to Back to Main Menu from Settings;
 			menuPathIndex = 0;
 		}
 		else if (menuPathIndex == 2 && menuEntries[2][0].selected)
@@ -114,8 +126,13 @@ void MenuScene::MenuUpdate(float dt)
 		}
 		else if (menuPathIndex == 2 && menuEntries[2][2].selected)
 		{
-			//Go back to Settings
+			//Go Back to Settings from Audio
 			menuPathIndex = 1;
+		}
+		else if (menuPathIndex == 3 && menuEntries[3][0].selected)
+		{
+			//Go Back to Settings from Controls
+			menuPathIndex = 2;
 		}
 	}
 }

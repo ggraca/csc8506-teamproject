@@ -20,6 +20,15 @@ PauseMenu::PauseMenu()
 	menuEntries[2].push_back(MenuEntry(0, "Volume Up", true));
 	menuEntries[2].push_back(MenuEntry(1, "Volume Down", false));
 	menuEntries[2].push_back(MenuEntry(2, "Back", false));
+
+	//Controls
+	menuEntries[3].push_back(MenuEntry(0, "Back", true));
+	menuEntries[3].push_back(MenuEntry(1, "W        - Forward", false));
+	menuEntries[3].push_back(MenuEntry(2, "A        - Left", false));
+	menuEntries[3].push_back(MenuEntry(3, "S        - Backward", false));
+	menuEntries[3].push_back(MenuEntry(4, "D        - Right", false));
+	menuEntries[3].push_back(MenuEntry(5, "Space    - Jump", false));
+	menuEntries[3].push_back(MenuEntry(6, "Mouse 1  - Fire", false));
 	
 }
 
@@ -81,6 +90,7 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 		else if (menuPathIndex == 1 && menuEntries[1][0].selected)
 		{
 			//Go to Controls;
+			currentMenuPath = 3;
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][1].selected)
 		{
@@ -107,6 +117,11 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 		else if (menuPathIndex == 2 && menuEntries[2][2].selected)
 		{
 			//Go back to Settings
+			currentMenuPath = 1;
+		}
+		else if (menuPathIndex == 3 && menuEntries[3][0].selected)
+		{
+			//Go Back to Settings from Controls
 			currentMenuPath = 1;
 		}
 	}

@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-#include "PauseMenu.h"
+#include "MenuEntry.h"
 #include "Game.h"
 
 class MenuScene : public Scene
