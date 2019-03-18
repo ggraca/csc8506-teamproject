@@ -13,7 +13,8 @@ Game::Game() {
 
 	network = new NetworkManager();
 
-	currentScene = new LevelScene();	currentScene->SetRenderer(renderer);
+	currentScene = new PhysicsScene();	
+	currentScene->SetRenderer(renderer);
 	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
 	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
 

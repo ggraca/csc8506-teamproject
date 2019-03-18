@@ -35,9 +35,13 @@ namespace NCL {
 			void UpdateGameObjects(float dt);
 			void LateUpdateGameObjects(float dt);
 			void Instantiate(GameObject* o);
-			void CallInitialObjectFunctions(NCL::CSC8503::GameObject * o);
+			void AddObjectPhysicsToWorld(PhysicsObject * pc);
+			void CallInitialObjectFunctions(GameObject * o);
+			const btCollisionObject * Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd);
+			const btCollisionObject * Raycast(const Vector3 & start, const Vector3 & dir, float magnitude, Vector3 & newEnd);
 			void Instantiate(GameObject* o,GameObject* parent);
 			void RemoveGameObject(GameObject* o);
+			GameObject * CollisionObjectToGameObject(const btCollisionObject * co);
 
 			GameObject* GetMainCamera() const {
 				return mainCamera;
@@ -89,12 +93,11 @@ namespace NCL {
 			void HandleObjectsToDestroy();
 			void LateInstantiate(GameObject* obj);
 			void HandleObjectsToInstantiate();
-
+			void RemoveCollisionsFromGameObject(GameObject * obj);
 		protected:
 			void UpdateTransforms();
 
 			void Destroy(GameObject * obj);
-			void RemoveCollisionsFromGameObject(GameObject * obj);
 
 
 			std::vector<GameObject*> gameObjects;

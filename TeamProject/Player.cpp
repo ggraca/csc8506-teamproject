@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "InputManager.h"
-
+#include "GunControl.h"
+#include "HammerControl.h"
+#include "ShieldControl.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -18,6 +20,58 @@ void Player::Start()
 void Player::Update(float dt)
 {
 	PlayerMovement(dt);
+	CheckGunControls();
+	CheckHammerControls();
+	CheckShieldControls();
+}
+
+void Player::CheckShieldControls()
+{
+	if (!isGunActive && !isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_SHIELD))
+	{
+		isShieldActive = true;
+
+		gameObject->GetComponent<ShieldControl*>()->ActivateShield();
+	}
+
+	if (isShieldActive && !InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::TOGGLE_SHIELD))
+	{
+		isShieldActive = false;
+
+		gameObject->GetComponent<ShieldControl*>()->DeactivateShield();
+	}
+}
+
+void Player::CheckHammerControls()
+{
+	if (!isGunActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
+	{
+		isHammerActive = !isHammerActive;
+
+		if (isHammerActive) { gameObject->GetComponent<HammerControl*>()->ActivateHammer(); }
+		else { gameObject->GetComponent<HammerControl*>()->DeactivateHammer(); }
+	}
+
+	if (isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	{
+		if (resourceCount > 0) { gameObject->GetComponent<HammerControl*>()->HammerHit(); }
+	}
+}
+
+void Player::CheckGunControls()
+{
+	if (!isHammerActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
+	{
+		isGunActive = !isGunActive;
+
+		if (isGunActive) { gameObject->GetComponent<GunControl*>()->ActivateGun(); }
+		else { gameObject->GetComponent<GunControl*>()->DeactivateGun(); }
+	}
+
+	if (isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	{
+		if (resourceCount > 0) { gameObject->GetComponent<GunControl*>()->Fire(); }
+	}
 }
 
 void Player::PlayerMovement(float dt)
@@ -32,22 +86,22 @@ void Player::PlayerMovement(float dt)
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
 		playerPos += forward * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
 		playerPos -= forward * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
 	{
 		playerPos += left * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
 		playerPos -= left * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
