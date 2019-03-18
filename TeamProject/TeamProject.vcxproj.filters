@@ -26,7 +26,6 @@
     <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TypeId.cpp" />
-    <ClCompile Include="HammerControl.cpp" />
     <ClCompile Include="CubePrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
@@ -126,8 +125,11 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Renderer</Filter>
+    <ClCompile Include="GunControl.cpp">
+      <Filter>Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="HammerControl.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +145,6 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameTechRenderer.h" />
     <ClInclude Include="GameWorld.h" />
-    <ClInclude Include="GunControl.h" />
     <ClInclude Include="HealthManager.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="HUDObject.h" />
@@ -338,8 +339,11 @@
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Renderer</Filter>
+    <ClInclude Include="GunControl.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="HammerControl.h">
+      <Filter>Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -422,7 +426,6 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="TypeId.h" />
-    <ClInclude Include="HammerControl.h" />
     <ClInclude Include="AudioEngine.h">
       <Filter>Audio</Filter>
     </ClInclude>
