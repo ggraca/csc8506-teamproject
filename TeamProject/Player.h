@@ -32,7 +32,6 @@ protected:
 	float movementSpeed;
 	float jumpSpeed;
 	float dodgeAmount;
-	float dumpAmount;
 	bool isGunActive = false;
 	bool isHammerActive = false;
 };
