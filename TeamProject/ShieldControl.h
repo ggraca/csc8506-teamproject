@@ -14,14 +14,14 @@ public:
 	void ActivateShield();
 	void DeactivateShield();
 	void SetShield(GameObject * s);
+	void SetShieldDummy(GameObject * s);
 	void FollowTarget();
-
 	void FormShield();
-
 	void DeformShield();
 
 protected:
 	Transform * target = nullptr;
 	GameObject * shield = nullptr;
+	GameObject * shieldDummy = nullptr;
 };
 

@@ -128,6 +128,7 @@ void PhysicsScene::InitPlayer()
 
 	player->GetComponent<ShieldControl*>()->SetShield(shield);
 	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
+	player->GetComponent<ShieldControl*>()->SetShieldDummy(shieldDummy);
 
 	world->Instantiate(shieldDummy);
 	world->Instantiate(shield);
