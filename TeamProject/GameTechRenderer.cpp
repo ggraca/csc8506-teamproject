@@ -5,6 +5,7 @@
 #include "../Common/Vector3.h"
 #include "../Common/OBJGeometry.h"
 #include "Light.h"
+#include "ParticleSystem.h"
 
 using namespace NCL;
 using namespace Rendering;
@@ -21,6 +22,7 @@ GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
 	directionalLightShader = Assets::AssetManager::LoadShader("DirectionalLightShader", "directionallightvert.glsl", "directionallightfrag.glsl");
 	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
 	presentShader = Assets::AssetManager::LoadShader("PresentShader", "TexturedVertex.glsl", "TexturedFragment.glsl");
+	particleShader = Assets::AssetManager::LoadShader("ParticleShader", "ParticleVert.glsl", "ParticleFrag.glsl");
 
 	// Temporary until post process material or something is set up
 	// postProcessShaders.push_back(Assets::AssetManager::LoadShader("PostShader", "TexturedVertex.glsl", "blurfrag.glsl"));
@@ -123,6 +125,7 @@ void GameTechRenderer::RenderFrame() {
 	RenderCamera();
 	RenderLights();
 	CombineBuffers();
+	RenderParticleSystems();
 	RenderPostProcess();
 	PresentScene();
 	RenderHUD();
@@ -130,25 +133,26 @@ void GameTechRenderer::RenderFrame() {
 }
 
 void GameTechRenderer::BuildObjectList() {
-	std::vector<GameObject*>::const_iterator first;
-	std::vector<GameObject*>::const_iterator last;
-
-	gameWorld->GetObjectIterators(first, last);
-
 	activeObjects.clear();
 	activeLights.clear();
+	activeParticleSystems.clear();
 
-	for (std::vector<GameObject*>::const_iterator i = first; i != last; ++i) {
-		if ((*i)->IsActive()) {
-			const RenderObject* g = (*i)->GetComponent<RenderObject*>();
-			const Light* l = (*i)->GetComponent<Light*>();
+	for (auto go : gameWorld->GetGameObjectList()) {
+		if (go->IsActive()) {
+			const RenderObject* ro = go->GetComponent<RenderObject*>();
+			const Light* l = go->GetComponent<Light*>();
+			ParticleSystem* p = go->GetComponent<ParticleSystem*>();
 
-			if (g) {
-				activeObjects.emplace_back(g);
+			if (ro) {
+				activeObjects.emplace_back(ro);
 			}
 
 			if (l) {
 				activeLights.emplace_back(l);
+			}
+
+			if (p) {
+				activeParticleSystems.emplace_back(p);
 			}
 		}
 	}
@@ -423,6 +427,57 @@ void GameTechRenderer::CombineBuffers() {
 	BindFBO(nullptr);
 }
 
+void GameTechRenderer::RenderParticleSystems() {
+	BindFBO((void*)&postFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+		GL_TEXTURE_2D, ((OGLTexture*)postTexture[0])->GetObjectID(), 0);
+
+	float screenAspect = (float)currentWidth / (float)currentHeight;
+	Matrix4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	Matrix4 projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	Matrix4 identity;
+	identity.ToIdentity();
+
+	pixOps.SetFaceCulling(CULLFACE::NOCULL);
+	pixOps.SetDepthMask(false);
+	pixOps.SetSourceFactor(BLEND::SRC_ALPHA);
+	pixOps.SetDestinationFactor(BLEND::ONE);
+
+	BindShader(particleShader);
+	BindMesh(screenQuad);
+
+	for (size_t i = 0; i < activeParticleSystems.size(); i++)
+	{
+
+		vector<Particle> particles = activeParticleSystems[i]->GetParticles();
+
+		BindTextureToShader(activeParticleSystems[i]->GetParticleTexture(), "diffuseTex", 0);
+		BindMatrix4ToShader(identity, "identity");
+
+		//Adding string is also SLOW AS HELL
+		for (size_t x = 0; x < particles.size(); x++)
+		{
+			Particle p = particles[x];
+			BindVector4ToShader(Vector4(p.position.x, p.position.y, p.position.z, p.size),
+				"worldPosition[" + std::to_string(x) + "]");
+			BindFloatToShader(p.lifetime, "particleLifeTime[" + std::to_string(x) + "]");
+		}
+		BindMatrix4ToShader(viewMatrix, "viewMatrix");
+		BindMatrix4ToShader(projMatrix, "projMatrix");
+		BindFloatToShader(activeParticleSystems[i]->GetParticleMaxLifeTime(), "particleMaxLifeTime");
+
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particles.size());
+	}
+
+	pixOps.SetDestinationFactor(BLEND::ONE_MINUS_SRC_ALPHA);
+	pixOps.SetSourceFactor(BLEND::SRC_ALPHA);
+	pixOps.SetDepthMask(true);
+	pixOps.SetFaceCulling(CULLFACE::BACK);
+
+	BindShader(nullptr);
+	BindFBO(nullptr);
+}
+
 void GameTechRenderer::RenderPostProcess() {
 	BindFBO((void*)&postFBO);
 
@@ -445,32 +500,45 @@ void GameTechRenderer::RenderPostProcess() {
 		//Should really be handled by a post process shader class (maybe material?)
 		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
 		BindMatrix4ToShader(tempProjMatrix, "projMatrix");
-		for (int x = 0; x < 2; ++x) {
+		for (int x = 0; x < 0; ++x) {
 			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
 			ClearBuffer(true, true, false);
-			BindIntToShader(0, "isVertical");
 
-			BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
-			BindMesh(screenQuad);
-			DrawBoundMesh();
-			lastRendererdPostTex = currentRendererdPostTex;
+			BindShader(postProcessShaders[i]);
 
-			// Now to swap the colour buffers , and do the second blur pass
-			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
-			ClearBuffer(true, true, false);
-			BindIntToShader(1, "isVertical");
+			//These lines are just setup for a blur shader
+			//Should really be handled by a post process shader class (maybe material?)
+			BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
+			BindMatrix4ToShader(tempProjMatrix, "projMatrix");
+			for (int x = 0; x < 2; ++x) {
+				currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+					GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+				ClearBuffer(true, true, false);
+				BindIntToShader(0, "isVertical");
 
-			BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
-			BindMesh(screenQuad);
-			DrawBoundMesh();
+				BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+				BindMesh(screenQuad);
+				DrawBoundMesh();
+				lastRendererdPostTex = currentRendererdPostTex;
+
+				// Now to swap the colour buffers , and do the second blur pass
+				currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+					GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
+				ClearBuffer(true, true, false);
+				BindIntToShader(1, "isVertical");
+
+				BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+				BindMesh(screenQuad);
+				DrawBoundMesh();
+				lastRendererdPostTex = currentRendererdPostTex;
+			}
+
 			lastRendererdPostTex = currentRendererdPostTex;
 		}
-
-		lastRendererdPostTex = currentRendererdPostTex;
 	}
 
 	BindFBO(nullptr);
@@ -479,6 +547,8 @@ void GameTechRenderer::RenderPostProcess() {
 
 void GameTechRenderer::PresentScene() {
 	BindFBO(nullptr);
+	pixOps.SetClearColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+	ClearBuffer(true, true, false);
 	BindShader(presentShader);
 
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);

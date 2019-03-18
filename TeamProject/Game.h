@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "GameTechRenderer.h"
+#include "NetworkManager.h"
 
 
 class Game {
@@ -14,7 +15,8 @@ public:
 	void ChangeCurrentScene(Scene* newScene, GameTechRenderer* r);
 
 private:
-	GameTechRenderer* renderer;
 	Scene* currentScene;
+	GameTechRenderer* renderer;
 	bool quitGame = false;
+	NetworkManager* network;
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "ExampleScene.h"
+#include "LevelScene.h"
 #include <vector>
 
 using namespace NCL;

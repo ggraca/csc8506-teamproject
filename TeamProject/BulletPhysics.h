@@ -25,6 +25,8 @@ public:
 	
 	void UpdateBullet(float dt, int iterations);
 	void SetGravity(Vector3 gravity);
+	const btCollisionObject* Raycast(const Vector3& Start, const Vector3& End, Vector3& NewEnd);
+	const btCollisionObject* RaycastPosDir(const Vector3& Pos, const Vector3& Dir, float t, Vector3& NewEnd);
 
 private:
 	GameWorld& gameWorld;

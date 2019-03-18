@@ -10,6 +10,7 @@
 #include "CameraControl.h"
 #include "Animator.h"
 #include "Light.h"
+#include "ParticleSystem.h"
 
 using namespace std;
 
@@ -27,6 +28,8 @@ int TypeId::GetTypeId(const type_info &info)
 	if (info.hash_code() == typeid(HealthManager*).hash_code()) { return 9; }
 	if (info.hash_code() == typeid(CameraControl*).hash_code()) { return 10; }
 	if (info.hash_code() == typeid(Light*).hash_code())			{ return 11; }
+	if (info.hash_code() == typeid(NetworkObject*).hash_code()) { return 12; }
+	if (info.hash_code() == typeid(ParticleSystem*).hash_code()){ return 13; }
 	else
 	{
 		cout << "Component type you are using is not registered. Please first register your component type with a unique id." << endl;

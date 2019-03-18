@@ -1,7 +1,9 @@
 #include "Game.h"
+#include "NetworkExampleScene.h"
 #include "MenuScene.h"
 #include "ExampleScene.h"
 #include "PhysicsScene.h"
+#include "LevelScene.h"
 
 #include "InputManager.h"
 #include "../Common/Material.h"
@@ -9,19 +11,20 @@
 
 Game::Game() {
 	renderer = new GameTechRenderer();
-	// Should this be done in renderer? Or at least part of it?
-	InitialiseAssets();
+	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
-	// currentScene = new ExampleScene();
-	//currentScene = new PhysicsScene();
-	currentScene = new MenuScene(this);
-	currentScene->SetRenderer(renderer);
+	network = new NetworkManager();
+
+	currentScene = new LevelScene();	currentScene->SetRenderer(renderer);
+	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
+	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
+
+	//currentScene = new MenuScene(this);
+	//currentScene->SetRenderer(renderer);
 	
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
 
-	Window::GetWindow()->ShowOSPointer(false);
-	Window::GetWindow()->LockMouseToWindow(true);
 	InputManager::InitializeButtonRelations();
 }
 
@@ -34,6 +37,7 @@ Game::~Game() {
 }
 
 void Game::Update(float dt) {
+	network->Update();
 	currentScene->Update(dt);
 	renderer->Render();
 }
