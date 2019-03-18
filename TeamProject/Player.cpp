@@ -30,50 +30,58 @@ void Player::PlayerMovement(float dt)
 	Vector3 left = Vector3::Cross(up, forward).Normalised();
 
 	
+	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::FORWARD)
+		|| InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::BACKWARD)
+		|| InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::LEFT)
+		|| InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::RIGHT)) 
+	{
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(0,0, 0));
+	}
+
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
 	{
-		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+		if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::DODGE))
 		{
-			cout << "DODGE" << endl;
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
-			
-			//gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(400.0, 0);	
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
-		//cout << "here" << endl;
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(0, 0, 0));
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0, 0);
-		
 		playerPos += forward * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
-		
 	}
+
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
 	{
-		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+		if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::DODGE))
 		{
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		playerPos -= forward * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
+
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
 	{
 		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
 		{
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		playerPos += left * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
+
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
 	{
 		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
 		{
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-movementSpeed * btVector3(left.x, left.y, left.z)*dodgeAmount);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		playerPos -= left * movementSpeed * dt;
 		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
 	}
+
 	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->applyImpulse(btVector3(0, 2000, 0), btVector3(0, 0, 0));
@@ -81,6 +89,7 @@ void Player::PlayerMovement(float dt)
 
 	
 }
+
 
 void Player::LateUpdate(float dt)
 {
@@ -113,7 +122,7 @@ void Player::ResetPlayer()
 	resourceCount = 0;
 	movementSpeed = 200;
 	jumpSpeed = 400;
-	dodgeAmount = 3;
+	dodgeAmount = 5;
 	dumpAmount = 0.5;
 }
 
