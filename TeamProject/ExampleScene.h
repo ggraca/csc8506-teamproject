@@ -5,7 +5,7 @@
 
 class ExampleScene : public GameScene {
 public:
-	ExampleScene();
+	ExampleScene(bool& quitGame);
 
 protected:
 	void ResetWorld();

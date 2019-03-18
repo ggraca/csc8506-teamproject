@@ -4,7 +4,7 @@
 #include "ParticleSystem.h"
 
 
-PhysicsScene::PhysicsScene() : GameScene() {
+PhysicsScene::PhysicsScene(bool& qG) : GameScene(qG) {
 	ResetWorld();
 }
 

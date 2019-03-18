@@ -32,7 +32,7 @@
 using namespace NCL;
 using namespace CSC8503;
 
-LevelScene::LevelScene() : Scene() {
+LevelScene::LevelScene(bool& quitGame) : GameScene(quitGame) {
 	ResetWorld();
 }
 

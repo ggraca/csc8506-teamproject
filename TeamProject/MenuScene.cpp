@@ -1,5 +1,5 @@
 #include "MenuScene.h"
-#include "PhysicsScene.h"
+#include "LevelScene.h"
 
 MenuScene::MenuScene(Game* g) : game(g)
 {
@@ -70,20 +70,21 @@ void MenuScene::MenuUpdate(float dt)
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
-			PhysicsScene* newScene = new PhysicsScene();
-			game->ChangeCurrentScene(newScene, newScene->GetRenderer());			
+			LevelScene* newScene = new LevelScene(game->QuittingGame()); 
+			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);			
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
-			//Join Game
+			LevelScene* newScene = new LevelScene(game->QuittingGame());
+			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), false);
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
 		{
 			menuPathIndex = 1;
 		}
-		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
+		else if (menuPathIndex == 0 && menuEntries[0][3].selected)
 		{
-			//Quit Game
+			game->QuitGame();
 		}
 		else if (menuPathIndex == 1 && menuEntries[1][0].selected)
 		{

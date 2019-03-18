@@ -4,7 +4,7 @@
 #include "Destructible.h"
 
 
-ExampleScene::ExampleScene() : GameScene() {
+ExampleScene::ExampleScene(bool& qG) : GameScene(qG) {
 	ResetWorld();
 }
 

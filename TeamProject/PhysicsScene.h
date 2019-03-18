@@ -15,8 +15,8 @@ using namespace NCL::Networking;
 
 class PhysicsScene : public GameScene {
 public:
-	PhysicsScene();
-	~PhysicsScene();
+	PhysicsScene(bool& quitGame);
+	~PhysicsScene() {};
     
 	bool CreateServer();
 	void CreateClient();

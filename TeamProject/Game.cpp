@@ -13,14 +13,13 @@ Game::Game() {
 	renderer = new GameTechRenderer();
 	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
-	network = new NetworkManager();
-
-	currentScene = new LevelScene();	currentScene->SetRenderer(renderer);
-	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
-	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
-
-	//currentScene = new MenuScene(this);
+	//currentScene = new LevelScene();	
 	//currentScene->SetRenderer(renderer);
+	//currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
+	//network->GetEntity()->SetWorld(currentScene->GetGameWorld());
+
+	currentScene = new MenuScene(this);
+	currentScene->SetRenderer(renderer);
 	
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
@@ -37,18 +36,21 @@ Game::~Game() {
 }
 
 void Game::Update(float dt) {
-	network->Update();
+	if (network) network->Update();
 	currentScene->Update(dt);
 	renderer->Render();
 }
 
-void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r)
+void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server)
 { 
 	currentScene = nullptr;
 	delete currentScene;
 	currentScene = newScene; 
 	currentScene->SetRenderer(renderer);
+	network = new NetworkManager(server);
 	renderer->SetGameWorld(currentScene->GetGameWorld());
+	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
+	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
 }
 

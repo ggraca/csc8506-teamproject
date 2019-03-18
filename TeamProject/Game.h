@@ -11,8 +11,9 @@ public:
 	~Game();
 	void Update(float dt);
 	void InitialiseAssets();
-	bool QuitGame() { return quitGame; }
-	void ChangeCurrentScene(Scene* newScene, GameTechRenderer* r);
+	void QuitGame() { quitGame = true; }
+	bool& QuittingGame() { return quitGame; }
+	void ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server);
 
 private:
 	Scene* currentScene;

@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 
 	//Scene* scene = new PhysicsScene(quitGame);
 	
-	while (w->UpdateWindow() && !game->QuitGame()) {
+	while (w->UpdateWindow() && !game->QuittingGame()) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;
 
 		if (dt > 3.0f) {

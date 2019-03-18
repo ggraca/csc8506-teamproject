@@ -4,7 +4,7 @@
 #include "Destructible.h"
 
 
-NetworkExampleScene::NetworkExampleScene() : GameScene() {
+NetworkExampleScene::NetworkExampleScene(bool& qG) : GameScene(qG) {
 	ResetWorld();
 }
 

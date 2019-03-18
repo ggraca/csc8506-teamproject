@@ -9,7 +9,7 @@
 
 class NetworkManager {
 public:
-	NetworkManager();
+	NetworkManager(bool server);
 	~NetworkManager();
 
 	void Update();

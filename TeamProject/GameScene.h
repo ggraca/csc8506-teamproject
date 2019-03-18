@@ -12,7 +12,7 @@
 
 class GameScene : public Scene {
 public:
-	GameScene();
+	GameScene(bool& quitGame);
 	virtual ~GameScene();
 
 protected:
@@ -29,7 +29,7 @@ protected:
 	void UsedForMenu(void* data);
 	bool showPauseMenu = false;
 	WorldState<GameScene>* worldState;
-	bool quitGame;
+	bool& quitGame;
 	int currentMenuPath = 0;
 	StateMachine* objectStateMachine;
 
