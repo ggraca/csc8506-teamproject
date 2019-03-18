@@ -5,7 +5,7 @@
 using namespace NCL;
 using namespace CSC8503;
 
-PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction)	{
+PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh, bool boxCollider)	{
 	transform = parentTransform;
 	this->type = type;
 	this->mass = mass;
@@ -21,14 +21,38 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		shape = new btSphereShape(btScalar(dimensions.x));
 	}
 	if (type == cylinder) {
-		shape = new btCylinderShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+		shape = new btCylinderShape(btVector3(btScalar(0.5 * dimensions.x), btScalar(0.5 * dimensions.y), btScalar(0.5 * dimensions.z)));
 	}
 	if (type == cone) {
-		shape = new btConeShape(btScalar(dimensions.x), btScalar(dimensions.y)); //TODO Radius and height
+		shape = new btConeShape(btScalar(0.5 * dimensions.x), btScalar(dimensions.y));
 	}
 	if (type == complexMesh) {
-		//shape = new btTriangleMeshShape(btTriangleMeshShape obj);
-		//data = new btTriangleMeshShapeData();
+		btTriangleMesh* triangleMesh = new btTriangleMesh();
+		Vector3 vert1, vert2, vert3;
+		btVector3 vertex1, vertex2, vertex3;
+		for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
+			vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
+			vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
+			vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
+		
+			vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
+			vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
+			vertex3 = btVector3(vert3.x * dimensions.x, vert3.y * dimensions.y, vert3.z * dimensions.z);
+
+			triangleMesh->addTriangle(vertex1, vertex2, vertex3);
+			i += 6; //obj file reader repeats every triplet of vertices
+		}
+		cout << "Triangles: " << triangleMesh->getNumTriangles() << endl;
+
+		shape = new btBvhTriangleMeshShape(triangleMesh, true);
+
+		if (boxCollider) {
+			btVector3 min, max;
+			btTransform t;
+			t.setIdentity();
+			shape->getAabb(t, min, max);
+			shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ())));
+		}
 	}
 	
 	SetBulletPhysicsParameters();

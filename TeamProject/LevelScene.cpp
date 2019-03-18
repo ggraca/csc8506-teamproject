@@ -38,8 +38,7 @@ LevelScene::LevelScene() : Scene() {
 
 void LevelScene::ResetWorld() {
 
-	auto floor = new CubePrefab(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0),
-		Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
+	auto floor = new CubePrefab(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 	//Player
@@ -84,7 +83,7 @@ void LevelScene::LoadWorld() {
 	if (!infile) { std::cout << "no file" << std::endl; }
 
 
-	for (unsigned i = 0; i < (x_length);i++) {
+	for (unsigned i = 0; i < (x_length); i++) {
 		for (unsigned j = 0; j < (z_length); j++) {
 			char a;
 			infile >> a;
@@ -96,7 +95,7 @@ void LevelScene::LoadWorld() {
 				auto SideWall = new WallPrefab(Vector3(37, 40, 37), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 90));
 			}
 
-			if (a == 'c') {
+			/*if (a == 'c') {
 				auto Stall = new StallPrefab(Vector3(0.7, 0.7, 0.7), Vector3(size*i, 42, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 			}
 					
@@ -175,7 +174,7 @@ void LevelScene::LoadWorld() {
 
 			if (a == '8') {
 				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i + 37.5, 0, size*j - 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 225));
-			}
+			}*/
 
 			if (a == '9') {
 				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i - 37.5, 0, size*j + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45));
