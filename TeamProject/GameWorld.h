@@ -4,6 +4,7 @@
 #include "LayerAndTag.h"
 #include "CameraControl.h"
 #include "RenderObject.h"
+#include "NetworkEntity.h"
 
 using namespace std;
 
@@ -48,10 +49,6 @@ namespace NCL {
 
 			virtual void UpdateWorld(float dt);
 
-			void GetObjectIterators(
-				std::vector<GameObject*>::const_iterator& first,
-				std::vector<GameObject*>::const_iterator& last) const;
-
 			vector<GameObject*> GetChildrenOfObject(GameObject* obj);
 			vector<GameObject*> GetChildrenOfObject(GameObject* obj, LayerAndTag::Tags tag);
       
@@ -84,6 +81,11 @@ namespace NCL {
 				return audio;
 			}
 
+			void SetNetwork(NetworkEntity* ne)
+			{
+				network = ne;
+			}
+
 			GameObject* GetPlayerGameObject();
 			vector<GameObject*> GetGameObjectList();
 
@@ -108,6 +110,7 @@ namespace NCL {
 
 			BulletPhysics* physics;
 			CAudioEngine* audio;
+			NetworkEntity* network;
 		};
 	}
 }

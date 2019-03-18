@@ -29,4 +29,3 @@ void Scene::Update(float dt) {
 
 	LateUpdate(dt);
 }
-

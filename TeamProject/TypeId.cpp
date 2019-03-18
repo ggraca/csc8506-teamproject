@@ -33,6 +33,7 @@ int TypeId::GetTypeId(const type_info &info)
 	if (info.hash_code() == typeid(GunControl*).hash_code())	{ return 12; }
 	if (info.hash_code() == typeid(HammerControl*).hash_code()) { return 13; }
 	if (info.hash_code() == typeid(ParticleSystem*).hash_code()){ return 14; }
+	if (info.hash_code() == typeid(NetworkObject*).hash_code()) { return 15; }
 	else
 	{
 		cout << "Component type you are using is not registered. Please first register your component type with a unique id." << endl;

@@ -1,7 +1,10 @@
+#include <algorithm>
+
 #include "GameWorld.h"
 #include "GameObject.h"
-#include <algorithm>
 #include "BulletPhysics.h"
+#include "NetworkObject.h"
+#include "NetworkClient.h"
 
 using namespace NCL;
 using namespace NCL::CSC8503;
@@ -129,8 +132,15 @@ void GameWorld::LateInstantiate(GameObject * obj)
 
 void GameWorld::HandleObjectsToInstantiate()
 {
-	for (auto&i : objectsToInstantiate)
+	for (auto& i : objectsToInstantiate)
 	{
+		if (i->GetComponent<NetworkObject*>()) {
+			network->Instantiate(i);
+
+			if (dynamic_cast<NetworkClient*>(network))
+				continue;
+		}
+
 		Instantiate(i);
 	}
 
@@ -243,15 +253,6 @@ void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {
 	}
 
 	obj->collidingObjects.clear();
-}
-
-
-void GameWorld::GetObjectIterators(
-	std::vector<GameObject*>::const_iterator& first,
-	std::vector<GameObject*>::const_iterator& last) const {
-
-	first	= gameObjects.begin();
-	last	= gameObjects.end();
 }
 
 GameObject* GameWorld::GetPlayerGameObject()

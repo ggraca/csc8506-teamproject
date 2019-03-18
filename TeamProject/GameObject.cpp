@@ -171,20 +171,6 @@ void GameObject::Destroy(GameObject * obj)
 	return gameWorld->LateDestroy(obj);
 }
 
-void GameObject::AddObjectToWorld(GameObject * obj)
-{
-	if (!gameWorld) { return; }
-	
-	gameWorld->Instantiate(obj);
-}
-
-void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
-{
-	if (!gameWorld) { return; }
-
-	gameWorld->Instantiate(obj, parent);
-}
-
 GameObject * GameObject::GetMainCamera()
 {
 	if (!gameWorld) { return nullptr; }

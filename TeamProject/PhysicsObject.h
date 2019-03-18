@@ -15,7 +15,7 @@ namespace NCL {
 	namespace CSC8503 {
 		class Transform;
 		
-		class PhysicsObject : virtual public Component{
+		class PhysicsObject : virtual public Component {
 		public:
 			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution = 0.9f, float friction = 0.5f);
 			~PhysicsObject();
