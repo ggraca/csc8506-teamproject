@@ -35,8 +35,8 @@ namespace NCL {
 			void UpdateGameObjects(float dt);
 			void LateUpdateGameObjects(float dt);
 			void Instantiate(GameObject* o);
-			void AddObjectPhysicsToWorld(NCL::CSC8503::PhysicsObject * pc);
-			void CallInitialObjectFunctions(NCL::CSC8503::GameObject * o);
+			void AddObjectPhysicsToWorld(PhysicsObject * pc);
+			void CallInitialObjectFunctions(GameObject * o);
 			const btCollisionObject * Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd);
 			const btCollisionObject * Raycast(const Vector3 & start, const Vector3 & dir, float magnitude, Vector3 & newEnd);
 			void Instantiate(GameObject* o,GameObject* parent);

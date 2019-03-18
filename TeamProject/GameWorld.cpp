@@ -173,7 +173,7 @@ void GameWorld::Instantiate(GameObject* o)
 	AddObjectPhysicsToWorld(o->GetComponent<PhysicsObject*>());
 }
 
-void GameWorld::AddObjectPhysicsToWorld(NCL::CSC8503::PhysicsObject * pc)
+void GameWorld::AddObjectPhysicsToWorld(PhysicsObject * pc)
 {
 	if (!pc) { return; }
 
