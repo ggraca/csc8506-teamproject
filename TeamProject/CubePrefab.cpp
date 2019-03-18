@@ -31,6 +31,9 @@ CubePrefab::CubePrefab(CubePrefab::PrefabType type)
 		AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));
 		GetComponent<RenderObject*>()->SetMaterialInstanced();
 		return;
+	case CubePrefab::PrefabType::SHIELD:
+		SetTransformDetails(Vector3(30.0f, 30.0f, 5.0f), Vector3(0, 0, 0), Quaternion::EulerAnglesToQuaternion(0, 0, 0));
+		return;
 	}
 }
 

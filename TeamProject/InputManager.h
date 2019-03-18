@@ -24,6 +24,7 @@ namespace NCL
 				HIT,
 				TOGGLE_GUN,
 				TOGGLE_HAMMER,
+				TOGGLE_SHIELD,
 				MAX
 			};
 

@@ -12,10 +12,10 @@ public:
 
 	Player(GameObject * obj);
 	virtual ~Player() {}
-
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;
+	void CheckShieldControls();
 	void CheckHammerControls();
 	void CheckGunControls();
 	void PlayerMovement(float dt);
@@ -24,15 +24,17 @@ public:
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void UpdateResourceCount(int amount);
 	int GetResourceCount() const;
+
 protected:
 
 	void ResetPlayer();
-	
+
 	int resourceCount;
 	float movementSpeed;
 	float jumpSpeed;
 	float dodgeAmount;
 	bool isGunActive = false;
 	bool isHammerActive = false;
+	bool isShieldActive = false;
 };
 

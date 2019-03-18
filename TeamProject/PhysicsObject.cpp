@@ -73,10 +73,10 @@ void PhysicsObject::SetBulletPhysicsParameters()
 	body->setRollingFriction(0.9);
 	body->setSpinningFriction(0.3);
 
-	if (!isDynamic)
+	/*if (!isDynamic)
 	{
 		body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 		body->setActivationState(DISABLE_DEACTIVATION);
-	}
+	}*/
 	
 }

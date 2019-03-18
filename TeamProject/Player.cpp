@@ -2,6 +2,7 @@
 #include "InputManager.h"
 #include "GunControl.h"
 #include "HammerControl.h"
+#include "ShieldControl.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -21,11 +22,29 @@ void Player::Update(float dt)
 	PlayerMovement(dt);
 	CheckGunControls();
 	CheckHammerControls();
+	CheckShieldControls();
+}
+
+void Player::CheckShieldControls()
+{
+	if (!isGunActive && !isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_SHIELD))
+	{
+		isShieldActive = true;
+
+		gameObject->GetComponent<ShieldControl*>()->ActivateShield();
+	}
+
+	if (isShieldActive && !InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::TOGGLE_SHIELD))
+	{
+		isShieldActive = false;
+
+		gameObject->GetComponent<ShieldControl*>()->DeactivateShield();
+	}
 }
 
 void Player::CheckHammerControls()
 {
-	if (!isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
+	if (!isGunActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
 	{
 		isHammerActive = !isHammerActive;
 
@@ -41,7 +60,7 @@ void Player::CheckHammerControls()
 
 void Player::CheckGunControls()
 {
-	if (!isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
+	if (!isHammerActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
 	{
 		isGunActive = !isGunActive;
 

@@ -125,11 +125,12 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="ShieldControl.cpp" />
     <ClCompile Include="GunControl.cpp">
-      <Filter>Gameplay</Filter>
+      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="HammerControl.cpp">
-      <Filter>Gameplay</Filter>
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -339,11 +340,12 @@
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
     </ClInclude>
+    <ClInclude Include="ShieldControl.h" />
     <ClInclude Include="GunControl.h">
-      <Filter>Gameplay</Filter>
+      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="HammerControl.h">
-      <Filter>Gameplay</Filter>
+      <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
