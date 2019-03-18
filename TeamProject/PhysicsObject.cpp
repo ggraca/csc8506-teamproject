@@ -5,7 +5,7 @@
 using namespace NCL;
 using namespace CSC8503;
 
-PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh)	{
+PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh, bool boxCollider)	{
 	transform = parentTransform;
 	this->type = type;
 	this->mass = mass;
@@ -52,17 +52,20 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			vertex3 = btVector3(vert3.x * dimensions.x, vert3.y * dimensions.y, vert3.z * dimensions.z);
 
 			triangleMesh->addTriangle(vertex1, vertex2, vertex3);
-			i += 6;
+			i += 6; //obj file reader repeats every triplet of vertices once
 		}
 		cout << "Triangles: " << triangleMesh->getNumTriangles() << endl;
 
-		btCollisionShape* shape1 = new btBvhTriangleMeshShape(triangleMesh, true);	
+		shape = new btBvhTriangleMeshShape(triangleMesh, true);	
 
-		btVector3 min, max;
-		btTransform t;
-		t.setIdentity();
-		shape1->getAabb(t, min, max);
-		shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ())));
+		if (boxCollider) {
+			btVector3 min, max;
+			btTransform t;
+			t.setIdentity();
+			shape->getAabb(t, min, max);
+			shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ())));
+		}
+		
 
 		/*shape = new btTriangleMeshShape(btTriangleMeshShape obj);
 		data = new btTriangleMeshShapeData();*/
@@ -98,16 +101,6 @@ PhysicsObject::~PhysicsObject()	{
 		}
 	}
 }
-
-//btCollisionShape* PhysicsObject::Load(const char* filename, bool verbose) {
-//	btBulletWorldImporter loader(0);//don't store info into the world
-//	loader.setVerboseMode(verbose);
-//	if (!loader.loadFile(filename)) return nullptr;
-//	btCollisionShape* shape = nullptr;
-//	if (loader.getNumCollisionShapes() > 0) shape = loader.getCollisionShapeByIndex(0);
-//	// Hope there are no leaks.
-//	return shape;
-//}
 
 void PhysicsObject::SetBulletPhysicsParameters()
 {

@@ -7,6 +7,7 @@
 #include "AudioEngine.h"
 #include "InputManager.h"
 #include "Light.h"
+#include <io.h> //To test if file exists
 
 using namespace NCL;
 using namespace CSC8503;
@@ -168,7 +169,7 @@ GameObject* Scene::AddConeToWorld(const Vector3& position, const Quaternion& ori
 	return cone;
 }
 
-GameObject* Scene::AddMeshToWorld(string objFile, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction) {
+GameObject* Scene::AddMeshToWorld(string objFile, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction, bool boxCollider) {
 	OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(objFile);
 	GameObject* compMesh = GameObject::FromOBJ(mesh);
 
@@ -186,8 +187,13 @@ GameObject* Scene::AddMeshToWorld(string objFile, const Vector3& position, const
 	compMesh->GetTransform().SetWorldScale(dimensions);
 	compMesh->GetTransform().SetWorldPosition(position);
 	compMesh->GetTransform().SetLocalOrientation(orient);
-//	mesh = Assets::AssetManager::LoadOBJ("acd_" + objFile);
-	compMesh->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&compMesh->GetTransform(), ShapeType::complexMesh, mass, restitution, friction, mesh));
+	string file = Assets::MESHDIR + "x_" + objFile;
+	if (_access_s(file.c_str(), 0) == 0 && !boxCollider) //If simplified mesh file exists, use it, but for box colllider, better to use original mesh file for more accuracy
+	{
+		mesh = Assets::AssetManager::LoadOBJ("x_" + objFile);
+		cout << "x_" + objFile << endl;
+	}
+	compMesh->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&compMesh->GetTransform(), ShapeType::complexMesh, mass, restitution, friction, mesh, boxCollider));
 
 	world->AddGameObject(compMesh);
 	return compMesh;

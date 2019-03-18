@@ -50,8 +50,6 @@ void PhysicsScene::ResetWorld() {
   resource2->SetName("Resource 2");
   resource2->AddComponent<Resource*>((Component*)new Resource(resource2));
 
- // AddCubeToWorld(Vector3(100, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
-
   AddCylinderToWorld(Vector3(0, 10, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(15, 30, 15), 100, 0.5f, 0.5f);
   AddCylinderToWorld(Vector3(0, 10, 80), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 45), Vector3(25, 50, 25), 100, 0.5f, 0.5f);
   AddCylinderToWorld(Vector3(0, 10, 110), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(30, 30, 30), 100, 0.5f, 0.5f);
@@ -69,7 +67,6 @@ void PhysicsScene::ResetWorld() {
 
   AddMeshToWorld("Lamborghini_Aventador.obj", Vector3(300, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(0.5, 0.5, 0.5), 0, 0, 0);
 
- // AddMeshToWorld("cylinder.obj", Vector3(50, 100, 10), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 90), Vector3(100, 100, 100), 0, 0, 0);
   AddCylinderToWorld(Vector3(50, 500, 10), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(100, 100, 100), 100, 0.5f, 0.5f);
 
 //  // OBJ file example

@@ -17,7 +17,7 @@ namespace NCL {
 		
 		class PhysicsObject : virtual public Component{
 		public:
-			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh = nullptr);
+			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh = nullptr, bool boxCollider = true);
 			~PhysicsObject();
 
 			ShapeType GetType() const {
