@@ -114,7 +114,7 @@ void PhysicsScene::InitializeHammer(GameObject * player)
 	world->Instantiate(handle);
 }
 
-void PhysicsScene::InitializeShield(PlayerPrefab * player)
+void PhysicsScene::InitializeShield(GameObject * player)
 {
 	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
 	GameObject * shieldDummy = new GameObject();
@@ -135,7 +135,6 @@ void PhysicsScene::InitPlayer()
 
 	InitializeGuns(player);
 	InitializeHammer(player);
-
 	InitializeShield(player);
 
 	world->Instantiate(player);
