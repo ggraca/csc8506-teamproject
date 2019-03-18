@@ -172,6 +172,7 @@
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
     <ClCompile Include="CannonPrefab.cpp" />
+    <ClCompile Include="CannonScript.cpp" />
     <ClCompile Include="CartPrefab.cpp" />
     <ClCompile Include="CastlePrefab.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
     <ClInclude Include="CannonPrefab.h" />
+    <ClInclude Include="CannonScript.h" />
     <ClInclude Include="CartPrefab.h" />
     <ClInclude Include="CastlePrefab.h" />
     <ClInclude Include="Component.h" />
