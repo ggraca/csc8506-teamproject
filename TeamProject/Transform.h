@@ -112,7 +112,8 @@ namespace NCL {
 			void ForceUpdateScaleWithTransform(Vector3 scale);
 
 			void SetGameObject(GameObject * obj);
-			GameObject * GetGameObject();
+			GameObject* GetGameObject();
+
 
 		protected:
 			Matrix4		localMatrix;

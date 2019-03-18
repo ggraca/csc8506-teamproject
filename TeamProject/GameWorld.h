@@ -40,6 +40,7 @@ namespace NCL {
 			const btCollisionObject * Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd);
 			const btCollisionObject * Raycast(const Vector3 & start, const Vector3 & dir, float magnitude, Vector3 & newEnd);
 			void Instantiate(GameObject* o,GameObject* parent);
+			void InstantiateRecursively(GameObject* o);
 			void RemoveGameObject(GameObject* o);
 			GameObject * CollisionObjectToGameObject(const btCollisionObject * co);
 
@@ -92,6 +93,7 @@ namespace NCL {
 			void LateDestroy(GameObject * obj);
 			void HandleObjectsToDestroy();
 			void LateInstantiate(GameObject* obj);
+			void LateInstantiateRecursively(GameObject* obj);
 			void HandleObjectsToInstantiate();
 			void RemoveCollisionsFromGameObject(GameObject * obj);
 		protected:
