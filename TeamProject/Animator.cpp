@@ -4,13 +4,11 @@
 
 Animator::Animator()
 {
-	std::cout << "There is no object attached to animate! Be careful" << std::endl;
 }
 
 Animator::Animator(GameObject * gameObject) : Component(gameObject)
 {
 }
-
 
 Animator::~Animator()
 {
@@ -60,10 +58,18 @@ void Animator::Update(float dt)
 
 	if (!nextState) 
 	{
-		currentAnimation->animation->UpdateAnimation(gameObject,dt);
+		if (!currentAnimation->GetTargetObject())
+		{
+			currentAnimation->animation->UpdateAnimation(gameObject,dt);
+		}
+		else
+		{
+			currentAnimation->animation->UpdateAnimation(currentAnimation->GetTargetObject(), dt);
+		}
+		
 		return; 
 	}
-	std::cout << "Here next state" << std::endl;
+	
 	currentAnimation->animation->ResetAnimation();
 	currentAnimation = nextState;
 	currentAnimation->animation->Play();

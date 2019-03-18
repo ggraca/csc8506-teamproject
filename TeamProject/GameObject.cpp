@@ -37,18 +37,17 @@ void GameObject::ClearComponents()
 
 void GameObject::SetParent(GameObject * parent)
 {
+	if (GetTransform().GetParent() != nullptr)
+	{
+		GetTransform().GetParent()->RemoveChild(&GetTransform());
+	}
 	if (parent)
 	{
 		GetTransform().SetParent(&parent->GetTransform());
-		GetTransform().AddChild(&parent->GetTransform());
+		parent->GetTransform().AddChild(&GetTransform());
 	}
 	else
 	{
-		if (GetTransform().GetParent() != nullptr)
-		{
-			GetTransform().GetParent()->RemoveChild(&parent->GetTransform());
-		}
-
 		GetTransform().SetParent(nullptr);
 	}
 }
@@ -172,20 +171,6 @@ void GameObject::Destroy(GameObject * obj)
 	return gameWorld->LateDestroy(obj);
 }
 
-void GameObject::AddObjectToWorld(GameObject * obj)
-{
-	if (!gameWorld) { return; }
-	
-	gameWorld->AddGameObject(obj);
-}
-
-void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
-{
-	if (!gameWorld) { return; }
-
-	gameWorld->AddGameObject(obj, parent);
-}
-
 GameObject * GameObject::GetMainCamera()
 {
 	if (!gameWorld) { return nullptr; }
@@ -197,7 +182,7 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 	if (!gameWorld) { return nullptr; }
 
 	GameObject* root = new GameObject();
-	gameWorld->AddGameObject(root);
+	gameWorld->Instantiate(root);
 
 	for (auto& mesh : obj->GetChildren()) {
 		GameObject* go = new GameObject();
@@ -208,7 +193,7 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 			((OBJMesh*)mesh)->material
 		));
 
-		gameWorld->AddGameObject(go);
+		gameWorld->Instantiate(go);
 		root->AddChild(go);
 	}
 	return root;

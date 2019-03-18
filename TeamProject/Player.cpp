@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "InputManager.h"
-
+#include "GunControl.h"
+#include "HammerControl.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -18,6 +19,40 @@ void Player::Start()
 void Player::Update(float dt)
 {
 	PlayerMovement(dt);
+	CheckGunControls();
+	CheckHammerControls();
+}
+
+void Player::CheckHammerControls()
+{
+	if (!isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
+	{
+		isHammerActive = !isHammerActive;
+
+		if (isHammerActive) { gameObject->GetComponent<HammerControl*>()->ActivateHammer(); }
+		else { gameObject->GetComponent<HammerControl*>()->DeactivateHammer(); }
+	}
+
+	if (isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	{
+		if (resourceCount > 0) { gameObject->GetComponent<HammerControl*>()->HammerHit(); }
+	}
+}
+
+void Player::CheckGunControls()
+{
+	if (!isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
+	{
+		isGunActive = !isGunActive;
+
+		if (isGunActive) { gameObject->GetComponent<GunControl*>()->ActivateGun(); }
+		else { gameObject->GetComponent<GunControl*>()->DeactivateGun(); }
+	}
+
+	if (isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	{
+		if (resourceCount > 0) { gameObject->GetComponent<GunControl*>()->Fire(); }
+	}
 }
 
 void Player::PlayerMovement(float dt)
@@ -46,7 +81,7 @@ void Player::PlayerMovement(float dt)
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		playerPos += forward * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
@@ -57,7 +92,7 @@ void Player::PlayerMovement(float dt)
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		playerPos -= forward * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
@@ -68,7 +103,7 @@ void Player::PlayerMovement(float dt)
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		playerPos += left * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 
 	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
@@ -79,7 +114,7 @@ void Player::PlayerMovement(float dt)
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		playerPos -= left * movementSpeed * dt;
-		gameObject->GetTransform().ForceUpdateWorldPositionWithTransform(playerPos);
+		gameObject->GetTransform().SetWorldPosition(playerPos);
 	}
 
 	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
@@ -99,7 +134,7 @@ void Player::LateUpdate(float dt)
 void Player::OnCollisionBegin(GameObject * otherObject)
 {
 	if (!otherObject) { return; }
-	cout << "Colliding with: " << otherObject->GetName() << endl;
+
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
@@ -107,9 +142,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 	}
 }
 
-void Player::OnCollisionEnd(GameObject * otherObject)
-{
-	cout << "Stopped colliding with: " << otherObject->GetName() << endl;
+void Player::OnCollisionEnd(GameObject * otherObject) {
 }
 
 int Player::GetResourceCount() const

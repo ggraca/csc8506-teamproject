@@ -1,5 +1,6 @@
 #pragma once
 #include "ExampleScene.h"
+#include "LevelScene.h"
 #include <vector>
 
 using namespace NCL;
@@ -19,8 +20,10 @@ namespace NCL
 				LEFT,
 				RIGHT,
 				JUMP,
-				FIRE,
 				DODGE,
+				HIT,
+				TOGGLE_GUN,
+				TOGGLE_HAMMER,
 				MAX
 			};
 

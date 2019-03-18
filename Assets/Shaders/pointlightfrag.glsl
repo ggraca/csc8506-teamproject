@@ -29,6 +29,7 @@ void main (void) {
 
 	float dist = length(lightPos - pos);
 	float atten = 1.0 - clamp(dist / lightRadius, 0.0, 1.0);
+	atten = atten * atten;
 
 	if( atten == 0.0) {
 		discard ;

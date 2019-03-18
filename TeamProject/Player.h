@@ -16,6 +16,8 @@ public:
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;
+	void CheckHammerControls();
+	void CheckGunControls();
 	void PlayerMovement(float dt);
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
@@ -31,5 +33,7 @@ protected:
 	float jumpSpeed;
 	float dodgeAmount;
 	float dumpAmount;
+	bool isGunActive = false;
+	bool isHammerActive = false;
 };
 
