@@ -16,6 +16,9 @@
     <Filter Include="Asset Handling">
       <UniqueIdentifier>{1d0b54c1-f5de-4083-b62a-78e5b7ec9b10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{ccc54655-bb6f-4ffd-89f9-9ec2735d4c04}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Others">
       <UniqueIdentifier>{31eb6546-3a56-4d64-9399-35911df8ea62}</UniqueIdentifier>
     </Filter>
@@ -86,6 +89,18 @@
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServer.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkBase.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkObject.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClient.cpp">
+      <Filter>Networking</Filter>
     </ClCompile>
     <ClCompile Include="ShaderLoader.cpp">
       <Filter>Asset Handling</Filter>
@@ -175,6 +190,21 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GameServer.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkBase.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkObject.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkState.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClient.h">
+      <Filter>Networking</Filter>
     </ClInclude>
     <ClInclude Include="ShaderLoader.h">
       <Filter>Asset Handling</Filter>

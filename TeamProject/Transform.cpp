@@ -31,7 +31,7 @@ void Transform::UpdateMatrices() {
 	}
 }
 
-vector<Transform*> NCL::CSC8503::Transform::GetChildrenList()
+vector<Transform*> Transform::GetChildrenList()
 {
 	return children;
 }
@@ -69,7 +69,11 @@ void Transform::SetLocalScale(const Vector3& newScale) {
 
 void Transform::ForceUpdateBulletWorldTransform(btTransform &temp)
 {
-	btRigidBody * body = gameObject->GetComponent<PhysicsObject*>()->GetRigidbody();
+	PhysicsObject * phy = gameObject->GetComponent<PhysicsObject*>();
+
+	if (!phy) { return; }
+
+	btRigidBody * body = phy->GetRigidbody();
 
 	if (!body) { return; }
 
@@ -79,7 +83,11 @@ void Transform::ForceUpdateBulletWorldTransform(btTransform &temp)
 
 void Transform::ForceUpdateWorldPosition(Vector3 pos)
 {
-	btRigidBody * body = gameObject->GetComponent<PhysicsObject*>()->GetRigidbody();
+	PhysicsObject * phy = gameObject->GetComponent<PhysicsObject*>();
+
+	if (!phy) { return; }
+
+	btRigidBody * body = phy->GetRigidbody();
 
 	if (!body) { return; }
 
@@ -104,7 +112,11 @@ void Transform::ForceUpdateLocalPositionWithTransform(Vector3 pos)
 
 void Transform::ForceUpdateLocalRotation(Quaternion qt)
 {
-	btRigidBody * body = gameObject->GetComponent<PhysicsObject*>()->GetRigidbody();
+	PhysicsObject * phy = gameObject->GetComponent<PhysicsObject*>();
+
+	if (!phy) { return; }
+
+	btRigidBody * body = phy->GetRigidbody();
 
 	if (!body) { return; }
 
@@ -133,13 +145,17 @@ GameObject * Transform::GetGameObject()
 
 void Transform::ForceUpdateScale(Vector3 scale)
 {
-	btRigidBody * body = gameObject->GetComponent<PhysicsObject*>()->GetRigidbody();
+	PhysicsObject * phy = gameObject->GetComponent<PhysicsObject*>();
+
+	if (!phy) { return; }
+
+	btRigidBody * body = phy->GetRigidbody();
 
 	if (!body) { return; }
 
-	if (body->getCollisionShape()) {
+	/*if (body->getCollisionShape()) { //This crashes the game
 		delete body->getCollisionShape();
-	}
+	}*/
 
 	if (body->getCollisionShape()->getShapeType() == cube) {
 		body->setCollisionShape(new btBoxShape(btVector3(scale.x, scale.y, scale.z)));

@@ -7,6 +7,7 @@ StallPrefab::StallPrefab(const Vector3& Scale, const Vector3& Position, const Qu
 	go->GetTransform().SetLocalScale(Scale);
 	go->GetTransform().SetWorldPosition(Position);
 	go->GetTransform().SetLocalOrientation(orient);
+	go->AddComponent<NetworkObject*>(new NetworkObject(go, NetworkObject::Stall));
 }
 
 StallPrefab::~StallPrefab()

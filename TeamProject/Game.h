@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "GameTechRenderer.h"
+#include "NetworkManager.h"
 
 
 class Game {
@@ -12,6 +13,7 @@ public:
 	void InitialiseAssets();
 
 private:
-	GameTechRenderer* renderer;
 	Scene* currentScene;
+	GameTechRenderer* renderer;
+	NetworkManager* network;
 };

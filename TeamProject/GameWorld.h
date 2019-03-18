@@ -4,6 +4,7 @@
 #include "LayerAndTag.h"
 #include "CameraControl.h"
 #include "RenderObject.h"
+#include "NetworkEntity.h"
 
 using namespace std;
 
@@ -34,20 +35,20 @@ namespace NCL {
 			void UpdateGameObjects(float dt);
 			void LateUpdateGameObjects(float dt);
 			void Instantiate(GameObject* o);
-			void CallInitialObjectFunctions(NCL::CSC8503::GameObject * o);
+			void AddObjectPhysicsToWorld(PhysicsObject * pc);
+			void CallInitialObjectFunctions(GameObject * o);
+			const btCollisionObject * Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd);
+			const btCollisionObject * Raycast(const Vector3 & start, const Vector3 & dir, float magnitude, Vector3 & newEnd);
 			void Instantiate(GameObject* o,GameObject* parent);
 			void InstantiateRecursively(GameObject* o);
 			void RemoveGameObject(GameObject* o);
+			GameObject * CollisionObjectToGameObject(const btCollisionObject * co);
 
 			GameObject* GetMainCamera() const {
 				return mainCamera;
 			}
 
 			virtual void UpdateWorld(float dt);
-
-			void GetObjectIterators(
-				std::vector<GameObject*>::const_iterator& first,
-				std::vector<GameObject*>::const_iterator& last) const;
 
 			vector<GameObject*> GetChildrenOfObject(GameObject* obj);
 			vector<GameObject*> GetChildrenOfObject(GameObject* obj, LayerAndTag::Tags tag);
@@ -81,6 +82,11 @@ namespace NCL {
 				return audio;
 			}
 
+			void SetNetwork(NetworkEntity* ne)
+			{
+				network = ne;
+			}
+
 			GameObject* GetPlayerGameObject();
 			vector<GameObject*> GetGameObjectList();
 
@@ -89,12 +95,11 @@ namespace NCL {
 			void LateInstantiate(GameObject* obj);
 			void LateInstantiateRecursively(GameObject* obj);
 			void HandleObjectsToInstantiate();
-
+			void RemoveCollisionsFromGameObject(GameObject * obj);
 		protected:
 			void UpdateTransforms();
 
 			void Destroy(GameObject * obj);
-			void RemoveCollisionsFromGameObject(GameObject * obj);
 
 
 			std::vector<GameObject*> gameObjects;
@@ -107,6 +112,7 @@ namespace NCL {
 
 			BulletPhysics* physics;
 			CAudioEngine* audio;
+			NetworkEntity* network;
 		};
 	}
 }

@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "NetworkExampleScene.h"
 #include "ExampleScene.h"
 #include "PhysicsScene.h"
 #include "LevelScene.h"
@@ -8,19 +9,18 @@
 
 Game::Game() {
 	renderer = new GameTechRenderer();
-	// Should this be done in renderer? Or at least part of it?
-	InitialiseAssets();
+	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
-	// currentScene = new ExampleScene();
-	//currentScene = new PhysicsScene();
-	currentScene = new LevelScene();
+	network = new NetworkManager();
+
+	currentScene = new PhysicsScene();	
 	currentScene->SetRenderer(renderer);
-	
+	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
+	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
+
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
 
-	Window::GetWindow()->ShowOSPointer(false);
-	Window::GetWindow()->LockMouseToWindow(true);
 	InputManager::InitializeButtonRelations();
 }
 
@@ -33,6 +33,7 @@ Game::~Game() {
 }
 
 void Game::Update(float dt) {
+	network->Update();
 	currentScene->Update(dt);
 	renderer->Render();
 }
