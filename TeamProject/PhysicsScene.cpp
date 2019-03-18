@@ -114,15 +114,10 @@ void PhysicsScene::InitializeHammer(GameObject * player)
 	world->Instantiate(handle);
 }
 
-void PhysicsScene::InitPlayer()
+void PhysicsScene::InitializeShield(PlayerPrefab * player)
 {
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
-
-	InitializeGuns(player);
-	InitializeHammer(player);
-
 	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
-	GameObject * shieldDummy  = new GameObject();
+	GameObject * shieldDummy = new GameObject();
 	shieldDummy->SetParent(player);
 	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
 
@@ -132,6 +127,17 @@ void PhysicsScene::InitPlayer()
 
 	world->Instantiate(shieldDummy);
 	world->Instantiate(shield);
+}
+
+void PhysicsScene::InitPlayer()
+{
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
+
+	InitializeGuns(player);
+	InitializeHammer(player);
+
+	InitializeShield(player);
+
 	world->Instantiate(player);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);
