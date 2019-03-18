@@ -24,7 +24,7 @@ void PhysicsScene::ResetWorld() {
 	des->AddComponent<Destructible*>(new Destructible(des));
 	des->AddComponent<HealthManager*>(new HealthManager(des));
 	des->GetComponent<HealthManager*>()->SetHealth(8);
-	des->SetName("destructible");
+	des->SetName("Destructible");
 
 	world->Instantiate(des);
 	world->Instantiate(resource1);

@@ -33,5 +33,6 @@ protected:
 	float jumpSpeed;
 	bool isGunActive = false;
 	bool isHammerActive = false;
+	bool isShieldActive = false;
 };
 

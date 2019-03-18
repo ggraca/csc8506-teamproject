@@ -82,6 +82,8 @@ void InputManager::InitializeButtonRelations()
 
 	GetInstance().registeredActionButtons[ActionButton::TOGGLE_GUN].relatedKeyboardKeys.push_back(NCL::KEYBOARD_1);
 	GetInstance().registeredActionButtons[ActionButton::TOGGLE_HAMMER].relatedKeyboardKeys.push_back(NCL::KEYBOARD_2);
+	GetInstance().registeredActionButtons[ActionButton::TOGGLE_SHIELD].relatedMouseKeys.push_back(NCL::MOUSE_RIGHT);
+
 
 	GetInstance().registeredActionButtons[ActionButton::LEFT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_A);
 	GetInstance().registeredActionButtons[ActionButton::LEFT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_LEFT);
