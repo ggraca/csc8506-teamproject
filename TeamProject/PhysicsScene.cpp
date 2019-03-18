@@ -121,7 +121,16 @@ void PhysicsScene::InitPlayer()
 	InitializeGuns(player);
 	InitializeHammer(player);
 
+	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
+	GameObject * shieldDummy  = new GameObject();
+	shieldDummy->SetParent(player);
+	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
 
+	player->GetComponent<ShieldControl*>()->SetShield(shield);
+	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
+
+	world->Instantiate(shieldDummy);
+	world->Instantiate(shield);
 	world->Instantiate(player);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);

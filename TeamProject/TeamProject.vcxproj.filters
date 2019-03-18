@@ -131,6 +131,7 @@
     <ClCompile Include="HammerControl.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="ShieldControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -345,6 +346,7 @@
     <ClInclude Include="HammerControl.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
+    <ClInclude Include="ShieldControl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">

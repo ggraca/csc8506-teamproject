@@ -4,6 +4,7 @@
 #include "CubePrefab.h"
 #include "GunControl.h"
 #include "HammerControl.h"
+#include "ShieldControl.h"
 
 using namespace NCL;
 using namespace CSC8503;

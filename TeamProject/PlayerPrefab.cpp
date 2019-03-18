@@ -22,6 +22,7 @@ void PlayerPrefab::ResetPlayer()
 	AddComponent<Player*>((Component*)new Player(this));
 	AddComponent<GunControl*>(new GunControl(this));
 	AddComponent<HammerControl*>(new HammerControl(this));
+	AddComponent<ShieldControl*>(new ShieldControl(this));
 	GetComponent<HammerControl*>()->SetHammerSize(3000, 0, 500, 3000, 0, 3000);
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
