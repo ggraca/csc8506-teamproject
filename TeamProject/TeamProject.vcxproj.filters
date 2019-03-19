@@ -3,14 +3,18 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="HUDObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LayerAndTag.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -18,7 +22,10 @@
     <ClCompile Include="PhysicsScene.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SpherePrefab.cpp" />
+    <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TypeId.cpp" />
     <ClCompile Include="CubePrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
@@ -121,18 +128,30 @@
     <ClCompile Include="PlayerMovement.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="ShieldControl.cpp" />
+    <ClCompile Include="GunControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="HammerControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BulletPhysics.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugMenu.h" />
     <ClInclude Include="ExampleScene.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameTechRenderer.h" />
     <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="HealthManager.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="HUDObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LayerAndTag.h" />
     <ClInclude Include="PhysicsObject.h" />
@@ -140,6 +159,8 @@
     <ClInclude Include="PhysicsScene.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SpherePrefab.h" />
+    <ClInclude Include="ScriptObject.h" />
     <ClInclude Include="Transform.h" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Debug.cpp">
@@ -325,6 +346,13 @@
     <ClInclude Include="PlayerMovement.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="ShieldControl.h" />
+    <ClInclude Include="GunControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="HammerControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -405,6 +433,7 @@
     <ClInclude Include="ScriptObject.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
+    <ClInclude Include="TypeId.h" />
     <ClInclude Include="AudioEngine.h">
       <Filter>Audio</Filter>
     </ClInclude>

@@ -20,7 +20,8 @@ public:
 		Destructible,
 		Occupied,
 		Enemy,
-		EnemyProjectile
+		EnemyProjectile,
+		HammerHead
 	};
 
 	LayerAndTag()

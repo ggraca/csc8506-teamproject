@@ -26,6 +26,10 @@ public:
 protected:
 	void ResetWorld();
 	void UpdateKeys();
+	void InitializeGuns(GameObject * player);
+	void InitializeShield(GameObject * player);
+	void InitPlayer();
+	void InitializeHammer(GameObject * player);
     
 	bool isServer = false;
 

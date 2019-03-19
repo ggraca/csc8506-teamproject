@@ -10,6 +10,9 @@ namespace NCL
 {
 	namespace CSC8503
 	{
+
+		struct InputContainer;
+
 		class InputManager
 		{
 		public:
@@ -20,7 +23,11 @@ namespace NCL
 				LEFT,
 				RIGHT,
 				JUMP,
-				FIRE,
+				DODGE,
+				HIT,
+				TOGGLE_GUN,
+				TOGGLE_HAMMER,
+				TOGGLE_SHIELD,
 				MAX
 			};
 
@@ -42,6 +49,13 @@ namespace NCL
 			static void InitializeButtonRelations();
 			static void Dispose();
 
+			static short GetInputBitsPressed();
+			static short GetInputBitsDown();
+			static short GetInputBitsHeld();
+			static InputContainer GenerateContainer();
+			static short GenerateShortFromContainer(InputContainer ic);
+
+
 		private:
 			InputManager() {};
 
@@ -58,6 +72,21 @@ namespace NCL
 
 		};
 
+
+		struct InputContainer
+		{
+			bool* inputs;
+
+			InputContainer()
+			{
+				inputs = new bool[InputManager::ActionButton::MAX];
+			}
+
+			~InputContainer()
+			{
+				delete[] inputs;
+			}
+		};
 	}
 }
 

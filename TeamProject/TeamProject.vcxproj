@@ -193,6 +193,8 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameTechRenderer.cpp" />
     <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="GunControl.cpp" />
+    <ClCompile Include="HammerControl.cpp" />
     <ClCompile Include="HealthManager.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="HUDObject.cpp" />
@@ -207,6 +209,7 @@
     <ClCompile Include="NetworkServer.cpp" />
     <ClCompile Include="MarketPrefab.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
+    <ClCompile Include="ShieldControl.cpp" />
     <ClCompile Include="TentPrefab.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsScene.cpp" />
@@ -249,6 +252,8 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameTechRenderer.h" />
     <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="GunControl.h" />
+    <ClInclude Include="HammerControl.h" />
     <ClInclude Include="HealthManager.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="HUDObject.h" />
@@ -263,6 +268,7 @@
     <ClInclude Include="LevelScene.h" />
     <ClInclude Include="MarketPrefab.h" />
     <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="ShieldControl.h" />
     <ClInclude Include="TentPrefab.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="Light.h" />
