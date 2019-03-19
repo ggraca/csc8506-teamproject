@@ -28,8 +28,9 @@ PhysicsScene::PhysicsScene() : Scene() {
 }
 
 void PhysicsScene::ResetWorld() {
-  AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
- 
+  auto floor = AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
+  floor->SetName("Floor");
+
    //Player
   auto player = AddCubeToWorld(Vector3(0,20, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
   player->AddComponent<Player*>((Component*)new Player(player));
@@ -67,8 +68,8 @@ void PhysicsScene::ResetWorld() {
 
 //  AddMeshToWorld("Lamborghini_Aventador.obj", Vector3(300, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(0.5, 0.5, 0.5), 0, 0, 0);
 
-  AddMeshToWorld("full_wall.obj", Vector3(-200, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0, true);
-
+  auto wall = AddMeshToWorld("full_wall.obj", Vector3(-200, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0, true);
+  wall->SetName("Wall");
 //  AddMeshToWorld("full_shop.obj", Vector3(-300, 100, 100), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
 
 //  AddMeshToWorld("Market.obj", Vector3(-300, 2000, -400), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
