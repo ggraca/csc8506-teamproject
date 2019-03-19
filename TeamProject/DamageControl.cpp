@@ -47,7 +47,7 @@ void DamageControl::ResolveDamage(GameObject * obj)
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 	}
 
-	else if (gameObject->CompareTag(LayerAndTag::Tags::Occupied) || gameObject->CompareTag(LayerAndTag::Tags::Resources) || gameObject->CompareTag(LayerAndTag::Tags::HammerHead))
+	else if ((gameObject->CompareTag(LayerAndTag::Tags::Occupied) || gameObject->CompareTag(LayerAndTag::Tags::Resources)) && !obj->CompareTag(LayerAndTag::Tags::Occupied) &&  !obj->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		if (obj->GetComponent<HealthManager*>())
 		{

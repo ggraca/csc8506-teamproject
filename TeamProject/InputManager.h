@@ -28,6 +28,7 @@ namespace NCL
 				TOGGLE_GUN,
 				TOGGLE_HAMMER,
 				TOGGLE_SHIELD,
+				CALL_AIR_STRIKE,
 				MAX
 			};
 
