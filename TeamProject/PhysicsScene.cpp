@@ -12,7 +12,11 @@ PhysicsScene::PhysicsScene() : GameScene() {
 void PhysicsScene::ResetWorld() {
 	auto floor = new CubePrefab(Vector3(200, -40, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
 
-	InitPlayer();
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
+
+
+	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+	audio->SetPlayer(player);
 
 	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f,0.4f);
 	resource1->SetName("Resource 1");
@@ -30,6 +34,8 @@ void PhysicsScene::ResetWorld() {
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
 	world->Instantiate(floor);
+	world->InstantiateRecursively(player);
+
 }
 
 PhysicsScene::~PhysicsScene() {
@@ -83,64 +89,6 @@ void PhysicsScene::UpdateKeys() {
 	//	console.Toggle();
 	//	debugMenu.Toggle();
 	//}
-}
-
-void PhysicsScene::InitializeGuns(GameObject * player)
-{
-	auto  playerLeft = new CubePrefab(CubePrefab::PrefabType::GUN);
-	auto  playerRight = new CubePrefab(CubePrefab::PrefabType::GUN);
-
-	playerLeft->SetParent(player);
-	playerRight->SetParent(player);
-
-	playerRight->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
-	playerLeft->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
-
-	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
-	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
-}
-
-void PhysicsScene::InitializeHammer(GameObject * player)
-{
-	auto  handle = new CubePrefab(CubePrefab::PrefabType::HANDLE);
-	handle->SetParent(player);
-	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
-
-	player->GetComponent<HammerControl*>()->SetHandle(handle);
-}
-
-void PhysicsScene::InitializeShield(GameObject * player)
-{
-	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
-	GameObject * shieldDummy = new GameObject();
-	shieldDummy->SetParent(player);
-	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
-
-	player->GetComponent<ShieldControl*>()->SetShield(shield);
-	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
-	player->GetComponent<ShieldControl*>()->SetShieldDummy(shieldDummy);
-}
-
-void PhysicsScene::InitializeBigGun(GameObject * player)
-{
-	auto bigGun = new CubePrefab(CubePrefab::PrefabType::BIG_GUN);
-	bigGun->SetParent(player);
-	bigGun->GetTransform().SetLocalPosition(Vector3(-4, 2, 0));
-	player->GetComponent<BigGunControl*>()->SetBigGun(bigGun);
-}
-
-void PhysicsScene::InitPlayer()
-{
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
-
-	InitializeGuns(player);
-	InitializeHammer(player);
-	InitializeShield(player);
-	InitializeBigGun(player);
-
-	world->InstantiateRecursively(player);
-	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-	audio->SetPlayer(player);
 }
 
 void PhysicsScene::LateUpdate(float dt) {

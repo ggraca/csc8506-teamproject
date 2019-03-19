@@ -19,12 +19,7 @@ namespace NCL {
 			LevelScene();
 			~LevelScene();
 			void LoadWorld();
-			void InitializeGuns(GameObject * player);
-			void InitializeShield(GameObject * player);
-			void InitializeBigGun(GameObject * player);
-			void InitPlayer();
-			void InitializeHammer(GameObject * player);
-
+			
 		protected:
 			void ResetWorld();
 		};

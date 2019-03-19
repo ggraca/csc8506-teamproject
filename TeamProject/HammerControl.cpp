@@ -98,9 +98,7 @@ void HammerControl::HammerHit()
 	Vector3 end;
 	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(camera->GetTransform().GetWorldPosition(), camera->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), end));
 	if (colliding)
-	{
-		Debug::DrawLine(camera->GetTransform().GetWorldPosition(), camera->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), Vector4(1, 0, 0, 1));
-		
+	{		
 		if (colliding->GetComponent<HealthManager*>())
 		{
 			colliding->GetComponent<HealthManager*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());

@@ -44,7 +44,7 @@ void LevelScene::ResetWorld() {
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 
 	//Player
-	InitPlayer();
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
 
 	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource1->SetName("Resource 1");
@@ -60,71 +60,13 @@ void LevelScene::ResetWorld() {
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
 	world->Instantiate(floor);
-
+	world->InstantiateRecursively(player);
 
 	LoadWorld();
 	
 }
 
 LevelScene::~LevelScene() {
-}
-
-void LevelScene::InitializeGuns(GameObject * player)
-{
-	auto  playerLeft = new CubePrefab(CubePrefab::PrefabType::GUN);
-	auto  playerRight = new CubePrefab(CubePrefab::PrefabType::GUN);
-
-	playerLeft->SetParent(player);
-	playerRight->SetParent(player);
-
-	playerRight->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
-	playerLeft->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
-
-	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
-	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
-}
-
-void LevelScene::InitializeHammer(GameObject * player)
-{
-	auto  handle = new CubePrefab(CubePrefab::PrefabType::HANDLE);
-	handle->SetParent(player);
-	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
-
-	player->GetComponent<HammerControl*>()->SetHandle(handle);
-}
-
-void LevelScene::InitializeShield(GameObject * player)
-{
-	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
-	GameObject * shieldDummy = new GameObject();
-	shieldDummy->SetParent(player);
-	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
-
-	player->GetComponent<ShieldControl*>()->SetShield(shield);
-	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
-	player->GetComponent<ShieldControl*>()->SetShieldDummy(shieldDummy);
-}
-
-void LevelScene::InitializeBigGun(GameObject * player)
-{
-	auto bigGun = new CubePrefab(CubePrefab::PrefabType::BIG_GUN);
-	bigGun->SetParent(player);
-	bigGun->GetTransform().SetLocalPosition(Vector3(-4, 2, 0));
-	player->GetComponent<BigGunControl*>()->SetBigGun(bigGun);
-}
-
-void LevelScene::InitPlayer()
-{
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
-
-	InitializeGuns(player);
-	InitializeHammer(player);
-	InitializeShield(player);
-	InitializeBigGun(player);
-
-	world->InstantiateRecursively(player);
-	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-	audio->SetPlayer(player);
 }
 
 void LevelScene::LoadWorld() {
