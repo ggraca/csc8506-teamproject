@@ -21,6 +21,7 @@ enum BasicNetworkMessages {
 	Shutdown,
 	PlayerPos,
 	InstantiateMessage,
+	DestroyMessage,
 	ObjectUpdateMessage
 };
 

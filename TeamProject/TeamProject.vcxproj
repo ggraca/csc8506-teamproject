@@ -209,6 +209,7 @@
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="NetworkServer.cpp" />
     <ClCompile Include="MarketPrefab.cpp" />
+    <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="ShieldControl.cpp" />
     <ClCompile Include="TentPrefab.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="NetworkServer.h" />
     <ClInclude Include="LevelScene.h" />
     <ClInclude Include="MarketPrefab.h" />
+    <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="ShieldControl.h" />
     <ClInclude Include="TentPrefab.h" />
     <ClInclude Include="PhysicsObject.h" />
