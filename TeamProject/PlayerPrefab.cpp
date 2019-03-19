@@ -3,7 +3,7 @@
 
 PlayerPrefab::PlayerPrefab() :CubePrefab()
 {
-	//TODO Set transform values if needed.
+	// TODO Set transform values if needed.
 	ResetPlayer();
 }
 
@@ -28,4 +28,5 @@ void PlayerPrefab::ResetPlayer()
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
 	GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
+	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::Player));
 }

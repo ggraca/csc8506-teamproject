@@ -3,6 +3,7 @@
 #include "../Common/Utils.h"
 #include "NetworkServer.h"
 #include "NetworkPackets.h"
+#include "PlayerPrefab.h"
 
 
 void NetworkServer::Update() {
@@ -23,9 +24,6 @@ void NetworkServer::Update() {
 }
 
 void NetworkServer::OnClientConnect(int source) {
-	cout << ToString(Vector3(1, 0, 6)) << endl;
-	cout << ToString(Vector3(1, 4, 0)) << endl;
-	cout << ToString(Vector3(0, 4, 6)) << endl;
 	for (auto o : objects) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
@@ -34,10 +32,12 @@ void NetworkServer::OnClientConnect(int source) {
 		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot);
 		server->SendGlobalPacket(p);
 	}
+
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+	world->LateInstantiate(player);
 }
 
 void NetworkServer::OnClientDisconnect(int source) {
-	cout << "LAWL" << endl;
 }
 
 void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {
@@ -64,5 +64,5 @@ void NetworkServer::Instantiate(GameObject* go) {
 	no->SetId(lastestId++);
 	objects.push_back(no);
 
-	server->SendGlobalPacket(StringPacket("yo"));
+	server->SendGlobalPacket(InstantiatePacket(no->GetPrefabId(), no->GetId(), go->GetTransform().GetWorldPosition(), go->GetTransform().GetLocalOrientation()));
 }

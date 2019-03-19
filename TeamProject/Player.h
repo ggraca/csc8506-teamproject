@@ -12,6 +12,7 @@ public:
 
 	Player(GameObject * obj);
 	virtual ~Player() {}
+
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;

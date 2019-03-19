@@ -19,6 +19,17 @@ struct InstantiatePacket : public GamePacket {
 	}
 };
 
+struct DestroyPacket : public GamePacket {
+	int networkId;
+
+	DestroyPacket(int nid) {
+		type = BasicNetworkMessages::DestroyMessage;
+		size = sizeof(int);
+
+		networkId = nid;
+	}
+};
+
 struct ObjectUpdatePacket : public GamePacket {
 	int networkId;
 	Vector3 position;
@@ -26,10 +37,23 @@ struct ObjectUpdatePacket : public GamePacket {
 
 	ObjectUpdatePacket(int nid, Vector3 pos, Quaternion rot) {
 		type = BasicNetworkMessages::ObjectUpdateMessage;
-		size = sizeof(int) * 2 + sizeof(Vector3) * 3;
+		size = sizeof(int) + sizeof(Vector3) + sizeof(Quaternion);
 
 		networkId = nid;
 		position = pos;
 		rotation = rot;
+	}
+};
+
+struct PlayerInputPacket : public GamePacket {
+	int playerId;
+	Vector3 playerInput;
+
+	PlayerInputPacket(int pid, Vector3 pi) {
+		type = BasicNetworkMessages::ObjectUpdateMessage;
+		size = sizeof(int) + sizeof(Vector3);
+
+		playerId = pid;
+		playerInput = pi;
 	}
 };

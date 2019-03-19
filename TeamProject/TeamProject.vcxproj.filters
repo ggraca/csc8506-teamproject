@@ -125,6 +125,9 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerMovement.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
     <ClCompile Include="GunControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
@@ -344,6 +347,9 @@
     </ClInclude>
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMovement.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="GunControl.h">
       <Filter>Scripts</Filter>

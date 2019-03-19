@@ -43,6 +43,7 @@ void NetworkManager::CreateClient()
 	networkEntity = new NetworkClient(client);
 	client->RegisterPacketHandler(StringMessage, networkEntity);
 	client->RegisterPacketHandler(InstantiateMessage, networkEntity);
+	client->RegisterPacketHandler(DestroyMessage, networkEntity);
 	client->RegisterPacketHandler(ObjectUpdateMessage, networkEntity);
 
 	bool canConnect = client->Connect(127, 0, 0, 1, port);
