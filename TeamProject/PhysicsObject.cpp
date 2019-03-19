@@ -5,7 +5,7 @@
 using namespace NCL;
 using namespace CSC8503;
 
-PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, OBJGeometry* mesh, bool boxCollider)	{
+PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, string objFile, OBJGeometry* mesh, bool boxCollider) {
 	transform = parentTransform;
 	this->type = type;
 	this->mass = mass;
@@ -13,9 +13,9 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 	this->friction = friction;
 
 	Vector3 dimensions = transform->GetLocalScale();
-	
+
 	if (type == cube) {
-		shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
+		shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z))); //TODO Where is shape deleted?
 	}
 	if (type == sphere) {
 		shape = new btSphereShape(btScalar(dimensions.x));
@@ -27,34 +27,73 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		shape = new btConeShape(btScalar(0.5 * dimensions.x), btScalar(dimensions.y));
 	}
 	if (type == complexMesh) {
-		btTriangleMesh* triangleMesh = new btTriangleMesh();
-		Vector3 vert1, vert2, vert3;
-		btVector3 vertex1, vertex2, vertex3;
-		for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
-			vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
-			vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
-			vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
-		
-			vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
-			vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
-			vertex3 = btVector3(vert3.x * dimensions.x, vert3.y * dimensions.y, vert3.z * dimensions.z);
+		objFile.erase(objFile.length() - 3);
+		objFile = objFile + "txt";
 
-			triangleMesh->addTriangle(vertex1, vertex2, vertex3);
-			i += 6; //obj file reader repeats every triplet of vertices
-		}
-		cout << "Triangles: " << triangleMesh->getNumTriangles() << endl;
+		ifstream boxData(Assets::MESHDIR + objFile);
+		if (boxData) {
+			compound = new btCompoundShape(); //TODO Where is shape deleted?
+			string a;
+			int numBoxes;
+			float elem;
 
-		shape = new btBvhTriangleMeshShape(triangleMesh, true);
+			boxData >> a;
+			istringstream iss(a);
+			iss >> numBoxes;
+			vector<float> data;
+			for (int i = 0; i < numBoxes * 6; i++) {
+				boxData >> a;
+				a.erase(remove(a.begin(), a.end(), ','), a.end());
+				float elem = strtof(a.c_str(), NULL);
+				data.push_back(elem);
+			}
+			boxData.close();
 
-		if (boxCollider) {
-			btVector3 min, max;
 			btTransform t;
 			t.setIdentity();
-			shape->getAabb(t, min, max);
-			shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ())));
+			for (int i = 0; i < numBoxes * 6;) {
+				boxShape = new btBoxShape(btVector3(0.5 * dimensions.x * data[i], 0.5 * dimensions.y * data[i + 1], 0.5 * dimensions.z * data[i + 2])); //TODO Where is this deleted?
+				t.setOrigin(btVector3(dimensions.x * data[i + 3], dimensions.y * data[i + 4], dimensions.z * data[i + 5]));
+				compound->addChildShape(t, boxShape);
+				i += 6;
+			}
+			shape = compound;
+		}
+		else {
+			btTriangleMesh* triangleMesh = new btTriangleMesh(); //TODO How to delete this properly?
+			if (mesh->GetChildren().size() == 1) {
+				Vector3 vert1, vert2, vert3;
+				btVector3 vertex1, vertex2, vertex3;
+				for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
+					vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
+					vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
+					vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
+
+					//cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl; //TODO Delete this once fully tested!
+
+					vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
+					vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
+					vertex3 = btVector3(vert3.x * dimensions.x, vert3.y * dimensions.y, vert3.z * dimensions.z);
+
+					triangleMesh->addTriangle(vertex1, vertex2, vertex3);
+					i += 6; //obj file reader repeats every triplet of vertices
+				}
+				//	cout << "Triangles: " << triangleMesh->getNumTriangles() << endl; //TODO Delete this once fully tested!
+				if (boxCollider) {
+					meshShape = new btBvhTriangleMeshShape(triangleMesh, true); //TODO How to delete this properly?
+					btVector3 min, max;
+					btTransform t1;
+					t1.setIdentity();
+					meshShape->getAabb(t1, min, max);
+					shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ()))); //y-component of collision volume should really be halved, then translated up by half its height, but for static geometry this makes no difference!
+				}
+				else
+				{
+					shape = new btBvhTriangleMeshShape(triangleMesh, true);
+				}
+			}
 		}
 	}
-	
 	SetBulletPhysicsParameters();
 }
 
