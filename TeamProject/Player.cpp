@@ -31,7 +31,7 @@ void Player::Update(float dt)
 void Player::CheckBigGunControls(float dt)
 {
 	if (timeCounter >= 0.0f) { timeCounter += dt;}
-	if (!isHammerActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	if (!isHammerActive && !isShieldActive && !isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
 	{
 		isBigGunActive = true;
 		timeCounter = dt;
