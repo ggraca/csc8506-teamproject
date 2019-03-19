@@ -5,6 +5,7 @@
 #include "GunControl.h"
 #include "HammerControl.h"
 #include "ShieldControl.h"
+#include "BigGunControl.h"
 
 using namespace NCL;
 using namespace CSC8503;

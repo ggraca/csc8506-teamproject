@@ -137,6 +137,12 @@ void PhysicsScene::InitPlayer()
 	InitializeHammer(player);
 	InitializeShield(player);
 
+	auto bigGun = new CubePrefab(CubePrefab::PrefabType::BIG_GUN);
+	bigGun->SetParent(player);
+	bigGun->GetTransform().SetLocalPosition(Vector3(-4, 2, 0));
+	player->GetComponent<BigGunControl*>()->SetBigGun(bigGun);
+
+	world->Instantiate(bigGun);
 	world->Instantiate(player);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);

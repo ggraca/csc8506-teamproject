@@ -12,8 +12,9 @@ public:
 	GunControl(GameObject * gameObject, float projSpeed, int projDamage);
 	virtual ~GunControl();
 
-	void ActivateGun();
-	void DeactivateGun();
+	virtual void ActivateGun();
+	virtual void DeactivateGun();
+	void FireObjectAndRemoveFromResources(std::vector<GameObject *> &children, int i=0);
 	void Fire();
 
 	void Awake()  override;

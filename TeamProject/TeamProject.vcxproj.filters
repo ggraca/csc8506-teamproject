@@ -136,7 +136,7 @@
     <ClCompile Include="TypeId.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="BinGunControl.cpp" />
+    <ClCompile Include="BigGunControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -354,7 +354,7 @@
     <ClInclude Include="TypeId.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="BinGunControl.h" />
+    <ClInclude Include="BigGunControl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">

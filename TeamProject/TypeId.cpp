@@ -10,10 +10,10 @@
 #include "CameraControl.h"
 #include "Animator.h"
 #include "Light.h"
-#include "GunControl.h"
 #include "HammerControl.h"
 #include "ParticleSystem.h"
 #include "ShieldControl.h"
+#include "BigGunControl.h"
 
 using namespace std;
 
@@ -36,6 +36,7 @@ int TypeId::GetTypeId(const type_info &info)
 	if (info.hash_code() == typeid(ParticleSystem*).hash_code()){ return 14; }
 	if (info.hash_code() == typeid(NetworkObject*).hash_code()) { return 15; }
 	if (info.hash_code() == typeid(ShieldControl*).hash_code()) { return 16; }
+	if (info.hash_code() == typeid(BigGunControl*).hash_code()) { return 18; }
 	else
 	{
 		cout << "Component type you are using is not registered. Please first register your component type with a unique id." << endl;

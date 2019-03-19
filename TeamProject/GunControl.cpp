@@ -29,7 +29,7 @@ void GunControl::Awake()
 
 void GunControl::Update(float dt)
 {
-	Debug::DrawLine(gameObject->GetTransform().GetWorldPosition(), camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * 500));
+	//Debug::DrawLine(gameObject->GetTransform().GetWorldPosition(), camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * 500));
 }
 
 void GunControl::SetLeftGun(GameObject * obj)
@@ -73,9 +73,19 @@ void GunControl::DeactivateGun()
 	rightGun->SetActiveStatus(false);
 }
 
+void GunControl::FireObjectAndRemoveFromResources(std::vector<GameObject *> &children, int i )
+{
+	children[i]->GetComponent<Resource*>()->Reset();
+	children[i]->GetComponent<DamageControl*>()->SetDamage(idealProjectileDamage);
+
+	Vector3 projMov = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * projectileSpeed)) - children[i]->GetTransform().GetWorldPosition();
+	children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
+	gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
+}
+
 void GunControl::Fire()
 {
-	if (!leftGun || !rightGun) { std::cout << "Guns are not attached" << std::endl; return; }
+	if (!leftGun || !rightGun) {return; }
 
 	//This part will change later on
 	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
@@ -83,13 +93,7 @@ void GunControl::Fire()
 	if ((int)children.size() > 0)
 	{
 		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetChildrenList()[currentGun=!currentGun]->GetWorldPosition() + CalculateDirection() *30.0f );
-		children[0]->GetComponent<Resource*>()->Reset();
-		children[0]->GetComponent<DamageControl*>()->SetDamage(4);
-
-		Vector3 projMov = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * projectileSpeed)) - children[0]->GetTransform().GetWorldPosition();
-		children[0]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
-		gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
-		
+		FireObjectAndRemoveFromResources(children);	
 	}
 }
 

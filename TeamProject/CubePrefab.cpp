@@ -34,6 +34,12 @@ CubePrefab::CubePrefab(CubePrefab::PrefabType type)
 	case CubePrefab::PrefabType::SHIELD:
 		SetTransformDetails(Vector3(30.0f, 30.0f, 5.0f), Vector3(0, 0, 0), Quaternion::EulerAnglesToQuaternion(0, 0, 0));
 		return;
+	case CubePrefab::PrefabType::BIG_GUN:
+		SetTransformDetails(Vector3(1.5f, 4.0f, 1.5f), Vector3(0, 0, 0), Quaternion::EulerAnglesToQuaternion(90.0f, 0, 0));
+		AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));
+		GetComponent<RenderObject*>()->SetMaterialInstanced();
+		GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
+		return;
 	}
 }
 
