@@ -23,6 +23,8 @@ void Player::Update(float dt)
 	CheckGunControls();
 	CheckHammerControls();
 	CheckShieldControls();
+	if(InputManager::GetInputBitsPressed())
+	std::cout << InputManager::GetInputBitsPressed() << std::endl;
 }
 
 void Player::CheckShieldControls()

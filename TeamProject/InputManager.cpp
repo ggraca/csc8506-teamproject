@@ -69,6 +69,68 @@ void InputManager::Dispose()
 	delete[] GetInstance().registeredActionButtons;
 }
 
+short InputManager::GetInputBitsPressed()
+{
+	short result = 0;
+
+	for (int i = ActionButton::FORWARD; i < ActionButton::MAX; i++)
+	{
+		short temp = IsButtonPressed(static_cast<ActionButton>(i)) << i;
+		result |= temp;
+	}
+
+	return result;
+}
+
+short InputManager::GetInputBitsDown()
+{
+	short result = 0;
+
+	for (int i = 0; i < ActionButton::MAX; i++)
+	{
+		short temp = IsButtonDown(static_cast<ActionButton>(i)) << i;
+		result |= temp;
+	}
+
+	return result;
+}
+
+short InputManager::GetInputBitsHeld()
+{
+	short result = 0;
+
+	for (int i = 0; i < ActionButton::MAX; i++)
+	{
+		short temp = IsButtonHeld(static_cast<ActionButton>(i)) << i;
+		result |= temp;
+	}
+
+	return result;
+}
+
+InputContainer InputManager::GenerateContainer()
+{
+	InputContainer container;
+	for (int i = 0; i < ActionButton::MAX; i++)
+	{
+		container.inputs[i] = IsButtonHeld(static_cast<ActionButton>(i));
+	}
+	return container;
+}
+
+short InputManager::GenerateShortFromContainer(InputContainer ic)
+{
+	short result = 0;
+
+	for (int i = 0; i < ActionButton::MAX; i++)
+	{
+		short temp = ic.inputs[i] << i;
+		result |= temp;
+	}
+
+	return result;
+}
+
 
 //Change content for action binding//
 void InputManager::InitializeButtonRelations()
