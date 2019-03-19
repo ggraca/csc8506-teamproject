@@ -172,28 +172,17 @@ GameObject* Scene::AddConeToWorld(const Vector3& position, const Quaternion& ori
 GameObject* Scene::AddMeshToWorld(string objFile, const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction, bool boxCollider) {
 	OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(objFile);
 	GameObject* compMesh = GameObject::FromOBJ(mesh);
-
-	/*cout << "Mesh: " << compMesh->GetChildrenOfObject(compMesh)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[0] << endl;
-	cout << "Mesh: " << compMesh->GetChildrenOfObject(compMesh)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[1] << endl;
-	cout << "Mesh: " << compMesh->GetChildrenOfObject(compMesh)[0]->GetComponent<RenderObject*>()->GetMesh()->GetPositionData()[2] << endl;*/
-
-	//cout << "Mesh: " << mesh->GetChildren()[0]->GetPositionData().size() << endl;
-	//for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); i++) {
-	//	cout << "Mesh: " << i << ' ' << mesh->GetChildren()[0]->GetPositionData()[i] << endl;
-	//}
-
-//	cout << "Mesh: " << mesh->GetChildren()[0]-> << endl;//  GetPositionData().size() << endl;
 	
 	compMesh->GetTransform().SetWorldScale(dimensions);
 	compMesh->GetTransform().SetWorldPosition(position);
 	compMesh->GetTransform().SetLocalOrientation(orient);
 	string file = Assets::MESHDIR + "x_" + objFile;
-	if (_access_s(file.c_str(), 0) == 0)// && !boxCollider) //If simplified mesh file exists, use it, but for box colllider, better to use original mesh file for more accuracy
+	if (_access_s(file.c_str(), 0) == 0 && !boxCollider) //If simplified mesh file exists, use it, but for box collider, better to use original mesh file for more accuracy
 	{
 		mesh = Assets::AssetManager::LoadOBJ("x_" + objFile);
 		cout << "x_" + objFile << endl;
 	}
-	compMesh->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&compMesh->GetTransform(), ShapeType::complexMesh, mass, restitution, friction, mesh, boxCollider));
+	compMesh->AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&compMesh->GetTransform(), ShapeType::complexMesh, mass, restitution, friction, objFile, mesh, boxCollider));
 
 	world->AddGameObject(compMesh);
 	return compMesh;
