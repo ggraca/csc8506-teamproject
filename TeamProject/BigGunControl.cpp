@@ -28,9 +28,12 @@ void BigGunControl::Fire(float time)
 {
 	if (!bigGun) { return; }
 
-	int projectileAmount = (/*3 +*/ (int)(time / 0.5f)) % (gameObject->GetComponent<Player*>()->GetResourceCount()+1);
-	std::cout << projectileAmount << std::endl;
+	int projectileAmount = 3 + (int)(time / 0.3f);
 
+	if (projectileAmount >= gameObject->GetComponent<Player*>()->GetResourceCount())
+	{
+		projectileAmount = gameObject->GetComponent<Player*>()->GetResourceCount();
+	}
 
 	//This part will change later on
 	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);

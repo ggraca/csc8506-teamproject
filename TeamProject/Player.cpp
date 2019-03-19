@@ -41,11 +41,10 @@ void Player::CheckBigGunControls(float dt)
 
 	if (isBigGunActive && !InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::HIT))
 	{
-		
-		/*if (resourceCount > 3)
-		{*/
+		if (resourceCount > 3)
+		{
 			gameObject->GetComponent<BigGunControl*>()->Fire(timeCounter);	
-		//}
+		}
 		gameObject->GetComponent<BigGunControl*>()->DeactivateGun();
 		isBigGunActive = false;
 		timeCounter = -1;
