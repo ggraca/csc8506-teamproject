@@ -2,6 +2,7 @@
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
 #include "Destructible.h"
+#include "PlayerMovement.h"
 
 
 NetworkExampleScene::NetworkExampleScene() : GameScene() {
@@ -16,6 +17,7 @@ void NetworkExampleScene::ResetWorld() {
 	
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+	player->AddComponent<PlayerMovement*>(new PlayerMovement());
 	audio->SetPlayer(player);
 
 	int size = 3;

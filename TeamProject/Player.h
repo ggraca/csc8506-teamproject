@@ -13,11 +13,6 @@ public:
 	Player(GameObject * obj);
 	virtual ~Player() {}
 
-	void Awake() override;
-	void Start() override;
-	void Update(float dt) override;
-	void PlayerMovement(float dt);
-	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void UpdateResourceCount(int amount);
@@ -27,7 +22,5 @@ protected:
 	void ResetPlayer();
 	
 	int resourceCount;
-	float movementSpeed;
-	float jumpSpeed;
 };
 
