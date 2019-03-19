@@ -28,6 +28,7 @@ protected:
 	void UpdateKeys();
 	void InitializeGuns(GameObject * player);
 	void InitializeShield(GameObject * player);
+	void InitializeBigGun(GameObject * player);
 	void InitPlayer();
 	void InitializeHammer(GameObject * player);
     

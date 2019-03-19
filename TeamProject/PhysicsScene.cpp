@@ -98,9 +98,6 @@ void PhysicsScene::InitializeGuns(GameObject * player)
 
 	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
 	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
-
-	world->Instantiate(playerLeft);
-	world->Instantiate(playerRight);
 }
 
 void PhysicsScene::InitializeHammer(GameObject * player)
@@ -110,8 +107,6 @@ void PhysicsScene::InitializeHammer(GameObject * player)
 	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
 
 	player->GetComponent<HammerControl*>()->SetHandle(handle);
-
-	world->Instantiate(handle);
 }
 
 void PhysicsScene::InitializeShield(GameObject * player)
@@ -124,9 +119,14 @@ void PhysicsScene::InitializeShield(GameObject * player)
 	player->GetComponent<ShieldControl*>()->SetShield(shield);
 	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
 	player->GetComponent<ShieldControl*>()->SetShieldDummy(shieldDummy);
+}
 
-	world->Instantiate(shieldDummy);
-	world->Instantiate(shield);
+void PhysicsScene::InitializeBigGun(GameObject * player)
+{
+	auto bigGun = new CubePrefab(CubePrefab::PrefabType::BIG_GUN);
+	bigGun->SetParent(player);
+	bigGun->GetTransform().SetLocalPosition(Vector3(-4, 2, 0));
+	player->GetComponent<BigGunControl*>()->SetBigGun(bigGun);
 }
 
 void PhysicsScene::InitPlayer()
@@ -136,14 +136,9 @@ void PhysicsScene::InitPlayer()
 	InitializeGuns(player);
 	InitializeHammer(player);
 	InitializeShield(player);
+	InitializeBigGun(player);
 
-	auto bigGun = new CubePrefab(CubePrefab::PrefabType::BIG_GUN);
-	bigGun->SetParent(player);
-	bigGun->GetTransform().SetLocalPosition(Vector3(-4, 2, 0));
-	player->GetComponent<BigGunControl*>()->SetBigGun(bigGun);
-
-	world->Instantiate(bigGun);
-	world->Instantiate(player);
+	world->InstantiateRecursively(player);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);
 }
