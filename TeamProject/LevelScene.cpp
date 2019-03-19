@@ -67,6 +67,7 @@ void LevelScene::ResetWorld() {
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
 	LoadWorld();
+	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();
 	
 }
 
@@ -133,7 +134,7 @@ void LevelScene::LoadWorld() {
 			}
 
 			if (a == 'W') {
-				auto Well = new WellPrefab(Vector3(50, 50, 50), Vector3(size*i, 20, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+				auto Well = new WellPrefab(Vector3(1, 1, 1), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 			}
 
 			if (a == 'k') {
@@ -146,7 +147,7 @@ void LevelScene::LoadWorld() {
 
 			if (a == '1') {
 				auto Tower = new TowerPrefab(Vector3(50, 100, 50), Vector3(size*i, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
-				auto Cannon = new CannonPrefab(Vector3(1.0, 1.0, 1.0), Vector3(size*i, 300, size*j), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), -90));
+				auto Cannon = new CannonPrefab(Vector3(2.0, 2.0, 2.0), Vector3(size*i, 300, size*j), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 0));
 			}
 
 			if (a == '2') {

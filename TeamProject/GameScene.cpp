@@ -61,10 +61,7 @@ void GameScene::LateUpdate(float dt) {
 		renderer->health = 1.0f;
 	}
 	//HUD TESTING ENDS
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-		console.Toggle();
-		debugMenu.Toggle();
-	}
+
 
 	pauseMenu.Update(quitGame, showPauseMenu, audio, currentMenuPath, dt, renderer);
 	objectStateMachine->Update();
