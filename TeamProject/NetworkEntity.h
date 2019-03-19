@@ -3,6 +3,7 @@
 #include "../Common/NetworkBase.h"
 #include "NetworkObject.h"
 
+
 class NetworkEntity : public PacketReceiver {
 public:
 	virtual void Update() = 0;

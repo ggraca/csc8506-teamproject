@@ -23,7 +23,7 @@ GameObject* GetGameObjectFromPacket(InstantiatePacket* packet) {
 		return new ResourcePrefab(packet->position, packet->rotation, Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	case NetworkObject::Player: {
 		GameObject* player = new PlayerPrefab(packet->position, packet->rotation, Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-		player->AddComponent<PlayerMovement*>(new PlayerMovement());
+		// player->AddComponent<PlayerMovement*>(new PlayerMovement());
 		return player;
 	}
 	case NetworkObject::Wall:

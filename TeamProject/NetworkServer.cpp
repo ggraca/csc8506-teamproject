@@ -35,9 +35,12 @@ void NetworkServer::OnClientConnect(int source) {
 
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
 	world->LateInstantiate(player);
+
+	AddPlayer(player->GetComponent<NetworkObject*>()->GetId(), source);
 }
 
 void NetworkServer::OnClientDisconnect(int source) {
+	//RemovePlayer(source);
 }
 
 void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {
