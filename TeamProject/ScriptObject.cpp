@@ -1,4 +1,6 @@
 #include "ScriptObject.h"
+#include "NetworkServer.h"
+#include "GameWorld.h"
 
 
 ScriptObject::ScriptObject()
@@ -38,4 +40,38 @@ void ScriptObject::OnCollisionBegin(GameObject * otherObject)
 
 void ScriptObject::OnCollisionEnd(GameObject * otherObject)
 {
+}
+
+PlayerState* ScriptObject::GetPlayerInput() {
+	GameWorld* gw = gameObject->gameWorld;
+	if (!gw) return nullptr;
+
+	NetworkServer* ns = dynamic_cast<NetworkServer*>(gw->GetNetwork());
+	if (!ns) return nullptr;
+
+	PlayerState* ps = ns->FindPlayer(gameObject);
+	if (!ps) return nullptr;
+
+	InputContainer* ic = ps->keysDown;
+	return nullptr;
+}
+
+InputContainer ScriptObject::GetKeysDown() {
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return InputContainer();
+
+	InputContainer* ic = ps->keysDown;
+	if (!ic) return InputContainer();
+
+	return *ic;
+}
+
+InputContainer ScriptObject::GetKeysPressed() {
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return InputContainer();
+
+	InputContainer* ic = ps->keysDown;
+	if (!ic) return InputContainer();
+
+	return *ic;
 }

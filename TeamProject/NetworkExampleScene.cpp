@@ -2,7 +2,6 @@
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
 #include "Destructible.h"
-#include "PlayerMovement.h"
 
 
 NetworkExampleScene::NetworkExampleScene() : GameScene() {
@@ -17,7 +16,20 @@ void NetworkExampleScene::ResetWorld() {
 	
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-	player->AddComponent<PlayerMovement*>(new PlayerMovement());
+	//player->AddComponent<PlayerMovement*>(new PlayerMovement());
+
+	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
+	GameObject * shieldDummy = new GameObject();
+	shieldDummy->SetParent(player);
+	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
+
+	player->GetComponent<ShieldControl*>()->SetShield(shield);
+	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
+	player->GetComponent<ShieldControl*>()->SetShieldDummy(shieldDummy);
+
+	world->Instantiate(shieldDummy);
+	world->Instantiate(shield);
+
 	audio->SetPlayer(player);
 
 	int size = 3;

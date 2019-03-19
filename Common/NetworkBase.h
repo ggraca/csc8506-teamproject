@@ -22,7 +22,8 @@ enum BasicNetworkMessages {
 	PlayerPos,
 	InstantiateMessage,
 	DestroyMessage,
-	ObjectUpdateMessage
+	ObjectUpdateMessage,
+	PlayerInputMessage
 };
 
 struct GamePacket {

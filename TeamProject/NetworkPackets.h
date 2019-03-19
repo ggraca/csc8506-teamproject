@@ -46,14 +46,14 @@ struct ObjectUpdatePacket : public GamePacket {
 };
 
 struct PlayerInputPacket : public GamePacket {
-	int playerId;
-	Vector3 playerInput;
+	short keysDown;
+	short keysPressed;
 
-	PlayerInputPacket(int pid, Vector3 pi) {
-		type = BasicNetworkMessages::ObjectUpdateMessage;
-		size = sizeof(int) + sizeof(Vector3);
+	PlayerInputPacket(short kd, short kp) {
+		type = BasicNetworkMessages::PlayerInputMessage;
+		size = sizeof(short) * 2;
 
-		playerId = pid;
-		playerInput = pi;
+		keysDown = kd;
+		keysPressed = kp;
 	}
 };

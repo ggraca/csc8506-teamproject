@@ -2,6 +2,8 @@
 
 #include "NetworkEntity.h"
 #include "../Common/GameClient.h"
+#include "NetworkPackets.h"
+#include "InputManager.h"
 
 using namespace NCL::Networking;
 
@@ -13,7 +15,7 @@ public:
 
 	void Update() {
 		client->UpdateClient();
-		client->SendPacket(StringPacket("hello!"));
+		client->SendPacket(PlayerInputPacket(InputManager::GetInputBitsDown(), InputManager::GetInputBitsPressed()));
 	}
 	
 	void Instantiate(GameObject* go) override {}

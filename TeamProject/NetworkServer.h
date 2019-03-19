@@ -2,14 +2,20 @@
 
 #include "NetworkEntity.h"
 #include "../Common/GameServer.h"
+#include "InputManager.h"
 
 using namespace NCL::Networking;
 
 struct PlayerState {
+	PlayerState(int pi, GameObject* go) : peerId(pi), gameObject(go) {
+		keysPressed = new InputContainer();
+		keysDown = new InputContainer();
+	}
+
 	int peerId;
 	GameObject* gameObject;
-
-	PlayerState(int pi, GameObject* go) : peerId(pi), gameObject(go) {}
+	InputContainer* keysPressed;
+	InputContainer* keysDown;
 };
 
 class NetworkServer : public NetworkEntity {
@@ -21,25 +27,10 @@ public:
 	void Instantiate(GameObject* go) override;
 	void Destroy() override {};
 
-	void AddPlayer(int peerId, GameObject* go) {
-		players.push_back(new PlayerState(peerId, go));
-	}
-
-	void RemovePlayer(int peerId) {
-		PlayerState* ps = FindPlayer(peerId);
-		if (!ps) return;
-
-		world->LateDestroy(ps->gameObject);
-		objects.erase(remove(objects.begin(), objects.end(), ps->gameObject), objects.end());
-		players.erase(remove(players.begin(), players.end(), ps), players.end());
-	}
-
-	PlayerState* FindPlayer(int peerId) {
-		for (auto p : players) {
-			if (p->peerId == peerId) return p;
-		}
-		return nullptr;
-	}
+	void AddPlayer(int peerId, GameObject* go);
+	void RemovePlayer(int peerId);
+	PlayerState* FindPlayer(int peerId);
+	PlayerState* FindPlayer(GameObject* go);
 
 private:
 	void OnClientConnect(int source) override;

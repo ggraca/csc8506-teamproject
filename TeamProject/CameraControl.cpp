@@ -1,5 +1,6 @@
 #include "CameraControl.h"
 #include "InputManager.h"
+#include "../Common/Window.h"
 
 
 CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)

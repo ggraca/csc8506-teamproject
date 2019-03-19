@@ -24,9 +24,11 @@ bool NetworkManager::CreateServer()
 	
 	if (isServer)
 	{
-		networkEntity = new NetworkServer(server);
 		server->RegisterConnectionHandler(networkEntity);
 		server->RegisterPacketHandler(StringMessage, networkEntity);
+
+		NetworkServer* a = new NetworkServer(server);
+		networkEntity = a;
 		std::cout << "Server created..." << std::endl;
 	}
 	else

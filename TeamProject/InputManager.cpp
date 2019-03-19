@@ -108,16 +108,6 @@ short InputManager::GetInputBitsHeld()
 	return result;
 }
 
-InputContainer* InputManager::GenerateContainer(short s)
-{
-	InputContainer *container = new InputContainer();
-	for (int i = 0; i < ActionButton::MAX; i++)
-	{
-		container->inputs[i] = (s >> i) & 1;
-	}
-	return container;
-}
-
 short InputManager::GenerateShortFromContainer(InputContainer ic)
 {
 	short result = 0;

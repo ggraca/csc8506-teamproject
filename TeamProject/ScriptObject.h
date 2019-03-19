@@ -1,5 +1,7 @@
 #pragma once
 #include "Component.h"
+#include "InputManager.h"
+#include "NetworkServer.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -26,6 +28,10 @@ namespace NCL
 			virtual void LateUpdate(float dt);
 			virtual void OnCollisionBegin(GameObject* otherObject);
 			virtual void OnCollisionEnd(GameObject* otherObject);
+
+			PlayerState* GetPlayerInput();
+			InputContainer GetKeysDown();
+			InputContainer GetKeysPressed();
 		};
 	}
 }

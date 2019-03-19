@@ -121,7 +121,7 @@
     <ClCompile Include="TypeId.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerMovement.cpp">
+    <ClCompile Include="AirStrikeControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CameraControl.cpp">
@@ -133,16 +133,13 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="HealthManager.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="Resource.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="AirStrikeControl.cpp">
+    <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
@@ -346,7 +343,7 @@
     <ClInclude Include="HealthManager.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMovement.h">
+    <ClInclude Include="AirStrikeControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="TypeId.h">
@@ -368,9 +365,6 @@
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="AirStrikeControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
   </ItemGroup>

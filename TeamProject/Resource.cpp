@@ -1,6 +1,6 @@
 #include "Resource.h"
 #include "InputManager.h"
-
+#include "RenderObject.h"
 
 
 Resource::Resource(GameObject * obj) : ScriptObject(obj)

@@ -4,6 +4,8 @@
 #include "HammerControl.h"
 #include "ShieldControl.h"
 #include "AirStrikeControl.h"
+#include "CameraControl.h"
+#include "PhysicsObject.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {

@@ -5,8 +5,6 @@
 #include "CameraControl.h"
 #include "RenderObject.h"
 #include "NetworkEntity.h"
-#include "NetworkClient.h"
-#include "Player.h"
 
 using namespace std;
 
@@ -87,14 +85,12 @@ namespace NCL {
 			void SetNetwork(NetworkEntity* ne)
 			{
 				network = ne;
-				if (dynamic_cast<NetworkClient*>(network)) return;
-
-				for (auto go : gameObjects) {
-					if (go->GetComponent<Player*>() && go->GetComponent<NetworkObject*>()) {
-						((NetworkServer* )network)->AddPlayer(go->GetComponent<NetworkObject*>()->GetId(), 0);
-					}
-				}
 			}
+			
+			NetworkEntity* GetNetwork() const {
+				return network;
+			}
+
 
 			GameObject* GetPlayerGameObject();
 			vector<GameObject*> GetGameObjectList();
