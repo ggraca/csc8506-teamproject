@@ -134,7 +134,9 @@
     <ClCompile Include="ShieldControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="AirStrikeControl.cpp" />
+    <ClCompile Include="AirStrikeControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -352,7 +354,9 @@
     <ClInclude Include="ShieldControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="AirStrikeControl.h" />
+    <ClInclude Include="AirStrikeControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">

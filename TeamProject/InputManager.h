@@ -53,7 +53,7 @@ namespace NCL
 			static short GetInputBitsPressed();
 			static short GetInputBitsDown();
 			static short GetInputBitsHeld();
-			static InputContainer GenerateContainer();
+			static InputContainer* GenerateContainer(short s);
 			static short GenerateShortFromContainer(InputContainer ic);
 
 
