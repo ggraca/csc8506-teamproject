@@ -1,6 +1,9 @@
 #include "PhysicsObject.h"
 #include "../TeamProject/Transform.h"
 #include "../TeamProject/Scene.h"
+#include <fstream>
+#include <string>
+#include <algorithm>
 
 using namespace NCL;
 using namespace CSC8503;
@@ -29,9 +32,9 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 	if (type == complexMesh) {
 		objFile.erase(objFile.length() - 3);
 		objFile = objFile + "txt";
-
 		ifstream boxData(Assets::MESHDIR + objFile);
 		if (boxData) {
+			cout << objFile << endl;
 			compound = new btCompoundShape(); //TODO Where is shape deleted?
 			string a;
 			int numBoxes;

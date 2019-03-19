@@ -138,6 +138,9 @@ namespace NCL {
 			Vector3 torque;         //TODO Remove if not needed
 
 			btCollisionShape* shape;
+			btCollisionShape* boxShape;
+			btCollisionShape* meshShape;
+			btCompoundShape* compound;
 			btRigidBody* body;
 		};
 	}
