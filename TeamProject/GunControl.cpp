@@ -29,6 +29,7 @@ void GunControl::Awake()
 
 void GunControl::Update(float dt)
 {
+	Debug::DrawLine(gameObject->GetTransform().GetWorldPosition(), camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * 500));
 }
 
 void GunControl::SetLeftGun(GameObject * obj)
@@ -43,14 +44,15 @@ void GunControl::SetRightGun(GameObject * obj)
 
 Vector3 GunControl::CalculateDirection()
 {
-	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0,0,0); }
+	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0, 0, 0); }
 
 	Vector3 forward;
-	Transform *ctransform = camera->GetTransform().GetChildrenList()[0];
+	Vector3 ctransform = camera->GetTransform().GetChildrenList()[0]->GetWorldOrientation().ToEuler();
+	ctransform.y *= -1;
 
-	forward.x = sin(camera->GetTransform().GetLocalOrientation().ToEuler().y* (PI / 180)) * cos(camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180));
-	forward.y = sin(-camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180));
-	forward.z = cos(camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180)) * cos(camera->GetTransform().GetLocalOrientation().ToEuler().y * (PI / 180));
+	forward.x = sin(ctransform.y* (PI / 180)) * cos(ctransform.x * (PI / 180));
+	forward.y = sin(ctransform.x * (PI / 180));
+	forward.z = -1 * cos(ctransform.x * (PI / 180)) * cos(ctransform.y * (PI / 180));
 
 	return forward.Normalised();
 }
@@ -84,8 +86,7 @@ void GunControl::Fire()
 		children[0]->GetComponent<Resource*>()->Reset();
 		children[0]->GetComponent<DamageControl*>()->SetDamage(4);
 
-		Vector3 projMov = CalculateDirection() * projectileSpeed;
-		projMov.y = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition()).y + 200;
+		Vector3 projMov = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * projectileSpeed)) - children[0]->GetTransform().GetWorldPosition();
 		children[0]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
 		gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
 		
