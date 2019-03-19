@@ -120,7 +120,6 @@ namespace NCL {
 			}
 
 		protected:
-			btCollisionShape* Load(const char* filename, bool verbose);
 			const CollisionVolume* volume;
 			Transform*		transform;
 
@@ -139,6 +138,9 @@ namespace NCL {
 			Vector3 torque;         //TODO Remove if not needed
 
 			btCollisionShape* shape;
+			btCollisionShape* boxShape;
+			btCollisionShape* meshShape;
+			btCompoundShape* compound;
 			btRigidBody* body;
 		};
 	}

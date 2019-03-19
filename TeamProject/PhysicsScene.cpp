@@ -42,11 +42,11 @@ void PhysicsScene::ResetWorld() {
   audio->SetPlayer(player);
   audio->SetCamera(world->GetMainCamera());
 
-  auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto resource1 = AddCubeToWorld(Vector3(500, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource1->SetName("Resource 1");
   resource1->AddComponent<Resource*>((Component*)new Resource(resource1));
 
-  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
+  auto resource2 = AddCubeToWorld(Vector3(500, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
   resource2->SetName("Resource 2");
   resource2->AddComponent<Resource*>((Component*)new Resource(resource2));
 
@@ -63,9 +63,15 @@ void PhysicsScene::ResetWorld() {
   AddConeToWorld(Vector3(30, 750, 50), Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), 45), Vector3(50, 30, 50), 100, 0.3f, 0.5f);
   AddConeToWorld(Vector3(80, 50, 90), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(80, 130, 80), 100, 0.3f, 0.5f);
 
-  AddMeshToWorld("front_wall.obj", Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
+//  AddMeshToWorld("front_wall.obj", Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
 
-  AddMeshToWorld("Lamborghini_Aventador.obj", Vector3(300, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(0.5, 0.5, 0.5), 0, 0, 0);
+//  AddMeshToWorld("Lamborghini_Aventador.obj", Vector3(300, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(0.5, 0.5, 0.5), 0, 0, 0);
+
+  AddMeshToWorld("full_wall.obj", Vector3(-200, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0, true);
+
+//  AddMeshToWorld("full_shop.obj", Vector3(-300, 100, 100), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
+
+//  AddMeshToWorld("Market.obj", Vector3(-300, 2000, -400), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0, 0);
 
   AddCylinderToWorld(Vector3(50, 500, 10), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(100, 100, 100), 100, 0.5f, 0.5f);
 

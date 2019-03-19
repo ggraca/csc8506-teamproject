@@ -188,7 +188,7 @@ GameObject* Scene::AddMeshToWorld(string objFile, const Vector3& position, const
 	compMesh->GetTransform().SetWorldPosition(position);
 	compMesh->GetTransform().SetLocalOrientation(orient);
 	string file = Assets::MESHDIR + "x_" + objFile;
-	if (_access_s(file.c_str(), 0) == 0 && !boxCollider) //If simplified mesh file exists, use it, but for box colllider, better to use original mesh file for more accuracy
+	if (_access_s(file.c_str(), 0) == 0)// && !boxCollider) //If simplified mesh file exists, use it, but for box colllider, better to use original mesh file for more accuracy
 	{
 		mesh = Assets::AssetManager::LoadOBJ("x_" + objFile);
 		cout << "x_" + objFile << endl;
