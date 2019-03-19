@@ -15,6 +15,7 @@
 #include "ParticleSystem.h"
 #include "PlayerMovement.h"
 #include "ShieldControl.h"
+#include "AirStrikeControl.h"
 
 using namespace std;
 
@@ -38,6 +39,7 @@ int TypeId::GetTypeId(const type_info &info)
 	if (info.hash_code() == typeid(GunControl*).hash_code())	{ return 15; }
 	if (info.hash_code() == typeid(HammerControl*).hash_code()) { return 16; }
 	if (info.hash_code() == typeid(ShieldControl*).hash_code()) { return 17; }
+  if (info.hash_code() == typeid(AirStrikeControl*).hash_code()) { return 18; }
 	else
 	{
 		cout << "Component type you are using is not registered. Please first register your component type with a unique id." << endl;

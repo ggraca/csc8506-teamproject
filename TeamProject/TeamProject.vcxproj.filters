@@ -128,13 +128,16 @@
     <ClCompile Include="PlayerMovement.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="ShieldControl.cpp" />
     <ClCompile Include="GunControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="HammerControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="ShieldControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="AirStrikeControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -346,13 +349,16 @@
     <ClInclude Include="PlayerMovement.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="ShieldControl.h" />
     <ClInclude Include="GunControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="HammerControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="ShieldControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="AirStrikeControl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">

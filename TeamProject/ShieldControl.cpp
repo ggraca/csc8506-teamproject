@@ -63,7 +63,7 @@ void ShieldControl::SetShieldDummy(GameObject * s)
 
 void ShieldControl::FollowTarget()
 {
-	if (shield->IsActive() &&(!shield || !target)) { return; }
+	if ((!shield || !target) && shield->IsActive()) { return; }
 
 	shield->GetTransform().ForceUpdateWorldPosition(target->GetWorldPosition());
 	shield->GetTransform().SetLocalOrientation(target->GetGameObject()->GetTransform().GetWorldOrientation());
