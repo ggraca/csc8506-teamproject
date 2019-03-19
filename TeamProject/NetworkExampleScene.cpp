@@ -16,7 +16,7 @@ void NetworkExampleScene::ResetWorld() {
 	
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-	//player->AddComponent<PlayerMovement*>(new PlayerMovement());
+	audio->SetPlayer(player);
 
 	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
 	GameObject * shieldDummy = new GameObject();
@@ -29,8 +29,6 @@ void NetworkExampleScene::ResetWorld() {
 
 	world->Instantiate(shieldDummy);
 	world->Instantiate(shield);
-
-	audio->SetPlayer(player);
 
 	int size = 3;
 	for (int i = -size; i <= size; i++) {

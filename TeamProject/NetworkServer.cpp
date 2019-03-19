@@ -50,11 +50,23 @@ void NetworkServer::OnClientConnect(int source) {
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
 	world->LateInstantiate(player);
 
+	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
+	GameObject * shieldDummy = new GameObject();
+	shieldDummy->SetParent(player);
+	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
+
+	player->GetComponent<ShieldControl*>()->SetShield(shield);
+	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
+	player->GetComponent<ShieldControl*>()->SetShieldDummy(shieldDummy);
+
+	world->Instantiate(shieldDummy);
+	world->Instantiate(shield);
+
 	AddPlayer(source, player);
 }
 
 void NetworkServer::OnClientDisconnect(int source) {
-	//RemovePlayer(source);
+	RemovePlayer(source);
 }
 
 void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {

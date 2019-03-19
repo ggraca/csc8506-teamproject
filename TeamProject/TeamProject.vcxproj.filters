@@ -340,10 +340,10 @@
     <ClInclude Include="AirStrikeControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="HealthManager.h">
+    <ClInclude Include="AirStrikeControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="AirStrikeControl.h">
+    <ClInclude Include="HealthManager.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="TypeId.h">
