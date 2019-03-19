@@ -37,7 +37,7 @@ private:
 	btSequentialImpulseConstraintSolver* solver;
 
 	map<btRigidBody*, vector<btRigidBody*>> GenerateCollisionPairs();
-	void EmitOnCollisionEndEvents(map<btRigidBody *, vector<btRigidBody *>> &collisionPairs, btRigidBody * body, GameObject *& go);
+	void EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, btRigidBody* body, GameObject*& go);
 	void EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair);
 	void UpdateObjectTransform(GameObject* go, btRigidBody* body);
 };

@@ -55,6 +55,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			btTransform t;
 			t.setIdentity();
 			for (int i = 0; i < numBoxes * 6;) {
+			//	cout << data[i] << ' ' << data[i + 1] << ' ' << data[i + 2] << ' ' << data[i + 3] << ' ' << data[i + 4] << ' ' << data[i + 5] << endl;
 				boxShape = new btBoxShape(btVector3(0.5 * dimensions.x * data[i], 0.5 * dimensions.y * data[i + 1], 0.5 * dimensions.z * data[i + 2])); //TODO Where is this deleted?
 				t.setOrigin(btVector3(dimensions.x * data[i + 3], dimensions.y * data[i + 4], dimensions.z * data[i + 5]));
 				compound->addChildShape(t, boxShape);
@@ -133,11 +134,6 @@ void PhysicsObject::SetBulletPhysicsParameters()
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btMass, myMotionState, shape, localInertia);
 
 	body = new btRigidBody(rbInfo);
-	
-	//body->setLinearVelocity(btVector3(10, 100, 0));
-	//body->setAngularVelocity(btVector3(0, 10, 0));
-
-	body->applyImpulse(btVector3(-1000, 1000, 0), btVector3(0, -5, 0));
 
 	body->setFriction(friction);
 	body->setRestitution(restitution);

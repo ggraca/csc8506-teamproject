@@ -24,6 +24,7 @@
 #include "CannonPrefab.h"
 #include "DWallPrefab.h"
 #include "CartPrefab.h"
+#include "SpherePrefab.h"
 #include "Destructible.h"
 
 
@@ -57,11 +58,16 @@ void LevelScene::ResetWorld() {
 	des->AddComponent<Destructible*>(new Destructible(des));
 	des->AddComponent<HealthManager*>(new HealthManager(des));
 	des->GetComponent<HealthManager*>()->SetHealth(0);
+
+	auto ball = new SpherePrefab(Vector3(3250, 260, 2500), 10, 10, 0.2f, 0.4f);
+	ball->SetName("ball");
+
 	world->Instantiate(des);
 	world->Instantiate(player);
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
 	world->Instantiate(floor);
+	world->Instantiate(ball);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
@@ -178,6 +184,7 @@ void LevelScene::LoadWorld() {
 
 			if (a == '9') {
 				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i - 37.5, 0, size*j + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45));
+				world->Instantiate(DWall);
 			}
 		}
 	}
