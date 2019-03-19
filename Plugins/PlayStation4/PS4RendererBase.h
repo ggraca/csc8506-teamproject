@@ -12,7 +12,6 @@
 #include "PS4Frame.h"
 #include "PS4Texture.h"
 
-
 using namespace sce;
 using namespace Gnmx;
 using namespace Gnmx::Toolkit;
@@ -28,7 +27,7 @@ namespace NCL {
 			MEMORYMAX
 		};
 
-		struct PS4ScreenBuffer {
+		struct PS4ScreenBuffer { // these are instead of FBOs - keep state of colour and depth buffers
 			sce::Gnm::RenderTarget		colourTarget;
 			sce::Gnm::DepthRenderTarget depthTarget;
 		};
@@ -60,7 +59,6 @@ namespace NCL {
 			void	DrawMesh(PS4Mesh& mesh);
 			void	BindFBO(void*buffer);
 			void	ClearBuffer(bool colour, bool depth, bool stencil);
-			void	DestroyVideoSystem();
 
 		private:
 			void	InitialiseMemoryAllocators();
@@ -68,6 +66,7 @@ namespace NCL {
 			void	InitialiseGCMRendering();
 
 			void	DestroyMemoryAllocators();
+			void	DestroyVideoSystem();
 			void	DestroyGCMRendering();
 
 

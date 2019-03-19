@@ -24,7 +24,7 @@ sce::Gnmx::Toolkit::IAllocator	gAllocator;
 
 PS4RendererBase::PS4RendererBase(PS4Window* window)
 	: RendererBase(*window),
-	_MaxCMDBufferCount(3),
+	_MaxCMDBufferCount(3), //setting how many gpu and screen buffers need
 	  _bufferCount(3),
 	  _GarlicMemory(1024 * 1024 * 512),
 	  _OnionMemory( 1024 * 1024 * 256)
@@ -43,12 +43,8 @@ PS4RendererBase::PS4RendererBase(PS4Window* window)
 	InitialiseGCMRendering();
 	InitialiseVideoSystem();
 
-	defaultShader = PS4Shader::GenerateShader(
-		"/app0/VertexShader.sb",
-		"/app0/PixelShader.sb"
-	);
-
-	defaultMesh		= PS4Mesh::GenerateTriangle();
+	defaultShader = PS4Shader::GenerateShader("/app0/VertexShader.sb","/app0/PixelShader.sb");
+	defaultMesh		= PS4Mesh::GenerateQuad();
 	defaultTexture	= PS4Texture::LoadTextureFromFile("/app0/doge.gnf");
 
 	viewProjMat		= (Matrix4*)onionAllocator->allocate(sizeof(Matrix4), Gnm::kEmbeddedDataAlignment4);
@@ -57,7 +53,7 @@ PS4RendererBase::PS4RendererBase(PS4Window* window)
 	cameraBuffer.initAsConstantBuffer(viewProjMat, sizeof(Matrix4));
 	cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO); // it's a constant buffer, so read-only is OK
 
-	EndFrame(); //always swap at least once...
+	EndFrame(); //buffers are swapped here
 }
 
 PS4RendererBase::~PS4RendererBase()	{
@@ -70,7 +66,7 @@ PS4RendererBase::~PS4RendererBase()	{
 	DestroyMemoryAllocators();
 }
 
-void	PS4RendererBase::InitialiseVideoSystem(/*void* screenBuffers*/){
+void	PS4RendererBase::InitialiseVideoSystem() {
 	screenBuffers = new PS4ScreenBuffer*[_bufferCount];
 
 	for (int i = 0; i < _bufferCount; ++i) {
@@ -78,13 +74,13 @@ void	PS4RendererBase::InitialiseVideoSystem(/*void* screenBuffers*/){
 	}
 
 	//Now we can open up the video port
-	videoHandle		= sceVideoOutOpen(0, SCE_VIDEO_OUT_BUS_TYPE_MAIN, 0, NULL);
+	videoHandle = sceVideoOutOpen(0, SCE_VIDEO_OUT_BUS_TYPE_MAIN, 0, NULL); //returns an int handle - similar to opengl int name
 
-	SceVideoOutBufferAttribute attribute;
+	SceVideoOutBufferAttribute attribute; //defines how colour buffer should be accessed
 	sceVideoOutSetBufferAttribute(&attribute,
-		SCE_VIDEO_OUT_PIXEL_FORMAT_B8_G8_R8_A8_SRGB,
-		SCE_VIDEO_OUT_TILING_MODE_TILE,
-		SCE_VIDEO_OUT_ASPECT_RATIO_16_9,
+		SCE_VIDEO_OUT_PIXEL_FORMAT_B8_G8_R8_A8_SRGB, //how large each channel is per pixel
+		SCE_VIDEO_OUT_TILING_MODE_TILE, //tiling type
+		SCE_VIDEO_OUT_ASPECT_RATIO_16_9, //screen width and height
 		screenBuffers[0]->colourTarget.getWidth(),
 		screenBuffers[0]->colourTarget.getHeight(),
 		screenBuffers[0]->colourTarget.getPitch()
@@ -96,7 +92,7 @@ void	PS4RendererBase::InitialiseVideoSystem(/*void* screenBuffers*/){
 		bufferAddresses[i] = screenBuffers[i]->colourTarget.getBaseAddress();
 	}
 
-	sceVideoOutRegisterBuffers(videoHandle, 0, bufferAddresses, _bufferCount, &attribute);
+	sceVideoOutRegisterBuffers(videoHandle, 0, bufferAddresses, _bufferCount, &attribute); //registering screen buffers to video system - takes array of addresses to colour targets
 }
 
 void	PS4RendererBase::InitialiseGCMRendering() {
@@ -299,7 +295,7 @@ void	PS4RendererBase::BindFBO(void* buffer) {
 void	PS4RendererBase::ClearBuffer(bool colour, bool depth, bool stencil) {
 	if (colour) {
 		//Vector4 defaultClearColour(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1.0f);
-		SonyMath::Vector4 defaultClearColour(0.2f, 0.2f, 0.2f, 1.0f);
+		SonyMath::Vector4 defaultClearColour(0.1f, 0.1f, 0.1f, 1.0f);
 
 
 		SurfaceUtil::clearRenderTarget(*currentGFXContext, &currentPS4Buffer->colourTarget, defaultClearColour);
