@@ -15,6 +15,7 @@ public:
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;
+	void CheckAirStrikeControls();
 	void CheckShieldControls();
 	void CheckHammerControls();
 	void CheckGunControls();

@@ -3,6 +3,7 @@
 #include "GunControl.h"
 #include "HammerControl.h"
 #include "ShieldControl.h"
+#include "AirStrikeControl.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -23,6 +24,15 @@ void Player::Update(float dt)
 	CheckGunControls();
 	CheckHammerControls();
 	CheckShieldControls();
+	CheckAirStrikeControls();
+}
+
+void Player::CheckAirStrikeControls()
+{
+	if (resourceCount >= 5 && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::CALL_AIR_STRIKE))
+	{
+		gameObject->GetComponent<AirStrikeControl*>()->LaunchAirStrike();
+	}
 }
 
 void Player::CheckShieldControls()
