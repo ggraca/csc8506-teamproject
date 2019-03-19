@@ -25,8 +25,6 @@
 #include "DWallPrefab.h"
 #include "CartPrefab.h"
 #include "Destructible.h"
-
-
 #include "../Common/OBJGeometry.h"
 
 using namespace NCL;
