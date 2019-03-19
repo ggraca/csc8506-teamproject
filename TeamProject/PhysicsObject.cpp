@@ -55,7 +55,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			btTransform t;
 			t.setIdentity();
 			for (int i = 0; i < numBoxes * 6;) {
-			//	cout << data[i] << ' ' << data[i + 1] << ' ' << data[i + 2] << ' ' << data[i + 3] << ' ' << data[i + 4] << ' ' << data[i + 5] << endl;
+//				cout << data[i] << ' ' << data[i + 1] << ' ' << data[i + 2] << ' ' << data[i + 3] << ' ' << data[i + 4] << ' ' << data[i + 5] << endl;
 				boxShape = new btBoxShape(btVector3(0.5 * dimensions.x * data[i], 0.5 * dimensions.y * data[i + 1], 0.5 * dimensions.z * data[i + 2])); //TODO Where is this deleted?
 				t.setOrigin(btVector3(dimensions.x * data[i + 3], dimensions.y * data[i + 4], dimensions.z * data[i + 5]));
 				compound->addChildShape(t, boxShape);

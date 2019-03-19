@@ -1,6 +1,8 @@
 #include "PhysicsScene.h"
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
+#include "SpherePrefab.h"
+#include "DWallPrefab.h"
 #include "ParticleSystem.h"
 
 
@@ -22,10 +24,17 @@ void PhysicsScene::ResetWorld() {
 
 	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
+
+	auto ball = new SpherePrefab(Vector3(50, 130, 50), 5, 10, 0.2f, 0.4f);
+	ball->SetName("Ball");
+
+	auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(100, 0, 100), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45));
+	world->Instantiate(DWall);
   
 	world->Instantiate(player);
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
+	world->Instantiate(ball);
 	world->Instantiate(floor);
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
