@@ -4,7 +4,6 @@
 #include "HammerControl.h"
 #include "ShieldControl.h"
 #include "BigGunControl.h"
-#include <time.h>
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
