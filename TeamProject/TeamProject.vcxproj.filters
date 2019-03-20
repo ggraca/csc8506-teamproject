@@ -103,25 +103,7 @@
     <ClCompile Include="NetworkExampleScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="CameraControl.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="DamageControl.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="Destructible.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthManager.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="GunControl.cpp">
@@ -136,7 +118,27 @@
     <ClCompile Include="TypeId.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="BigGunControl.cpp" />
+    <ClCompile Include="BigGunControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="DamageControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthManager.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -151,7 +153,6 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameTechRenderer.h" />
     <ClInclude Include="GameWorld.h" />
-    <ClInclude Include="HealthManager.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="HUDObject.h" />
     <ClInclude Include="InputManager.h" />
@@ -318,25 +319,10 @@
     <ClInclude Include="NetworkObject.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="CameraControl.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="DamageControl.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="Destructible.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="HealthManager.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="NetworkPackets.h">
@@ -351,10 +337,30 @@
     <ClInclude Include="ShieldControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="BigGunControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="TypeId.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="BigGunControl.h" />
+    <ClInclude Include="CameraControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="DamageControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthManager.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
