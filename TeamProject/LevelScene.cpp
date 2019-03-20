@@ -44,6 +44,10 @@ void LevelScene::ResetWorld() {
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
 
+	//This 1
+	audio->SetPlayer(player);
+	audio->SetCamera(world->GetMainCamera());
+
 	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource1->SetName("Resource 1");
 
@@ -59,6 +63,12 @@ void LevelScene::ResetWorld() {
 	world->Instantiate(resource2);
 	world->Instantiate(floor);
 	world->InstantiateRecursively(player);
+
+	//This 2
+	world->Instantiate(player);
+
+	//This 3
+	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
 	LoadWorld();
 	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();

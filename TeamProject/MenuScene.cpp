@@ -1,6 +1,6 @@
 #include "MenuScene.h"
 #include "LevelScene.h"
-
+#include "NetworkExampleScene.h"
 MenuScene::MenuScene(Game* g) : game(g)
 {
 	//Main Menu
@@ -80,7 +80,7 @@ void MenuScene::MenuUpdate(float dt)
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
-			LevelScene* newScene = new LevelScene(game->QuittingGame()); 
+			LevelScene* newScene = new LevelScene(game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);			
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)

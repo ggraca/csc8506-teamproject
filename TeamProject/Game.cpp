@@ -13,21 +13,15 @@ Game::Game() {
 	renderer = new GameTechRenderer();
 	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
-	//currentScene = new LevelScene();	
-	//currentScene->SetRenderer(renderer);
-	//currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
-	//network->GetEntity()->SetWorld(currentScene->GetGameWorld());
-
 	currentScene = new MenuScene(this);
 	currentScene->SetRenderer(renderer);
+	renderer->SetGameWorld(currentScene->GetGameWorld());
+	Debug::SetRenderer(renderer);
 	
 	//currentScene = new NetworkExampleScene();	
 	//currentScene->SetRenderer(renderer);
 	//currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
 	//network->GetEntity()->SetWorld(currentScene->GetGameWorld());
-
-	renderer->SetGameWorld(currentScene->GetGameWorld());
-	Debug::SetRenderer(renderer);
 
 	InputManager::InitializeButtonRelations();
 }
