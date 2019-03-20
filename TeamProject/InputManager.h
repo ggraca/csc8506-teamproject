@@ -70,19 +70,15 @@ protected:
 
 struct InputContainer
 {
-	bool* inputs;
+	bool inputs[InputManager::ActionButton::MAX];
 
 	InputContainer()
 	{
-		inputs = new bool[InputManager::ActionButton::MAX];
+		memset(inputs, false, sizeof(bool) * InputManager::ActionButton::MAX);
 	}
 
-	~InputContainer()
+	InputContainer(short s)
 	{
-		delete[] inputs;
-	}
-
-	void UpdateInputs(short s) {
 		for (int i = 0; i < InputManager::ActionButton::MAX; i++)
 		{
 			inputs[i] = (s >> i) & 1;

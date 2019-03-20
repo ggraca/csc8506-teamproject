@@ -42,5 +42,8 @@ protected:
 	bool isBigGunActive = false;
 	bool isJumping = false;
 	float timeCounter = -1;
+
+	InputContainer keysDown;
+	InputContainer keysPressed;
 };
 

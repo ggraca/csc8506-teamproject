@@ -8,14 +8,14 @@ using namespace NCL::Networking;
 
 struct PlayerState {
 	PlayerState(int pi, GameObject* go) : peerId(pi), gameObject(go) {
-		keysPressed = new InputContainer();
-		keysDown = new InputContainer();
+		keysPressed = InputContainer();
+		keysDown = InputContainer();
 	}
 
 	int peerId;
 	GameObject* gameObject;
-	InputContainer* keysPressed;
-	InputContainer* keysDown;
+	InputContainer keysPressed;
+	InputContainer keysDown;
 };
 
 class NetworkServer : public NetworkEntity {

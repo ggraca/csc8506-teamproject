@@ -23,6 +23,7 @@ public:
 
 private:
 	void ReceivePacket(int type, GamePacket* payload, int source) override;
+	GameObject* GetGameObjectFromPacket(InstantiatePacket* packet);
 
 	GameClient* client;
 };

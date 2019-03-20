@@ -52,26 +52,19 @@ PlayerState* ScriptObject::GetPlayerInput() {
 	PlayerState* ps = ns->FindPlayer(gameObject);
 	if (!ps) return nullptr;
 
-	InputContainer* ic = ps->keysDown;
-	return nullptr;
+	return ps;
 }
 
 InputContainer ScriptObject::GetKeysDown() {
 	PlayerState* ps = GetPlayerInput();
 	if (!ps) return InputContainer();
 
-	InputContainer* ic = ps->keysDown;
-	if (!ic) return InputContainer();
-
-	return *ic;
+	return ps->keysDown;
 }
 
 InputContainer ScriptObject::GetKeysPressed() {
 	PlayerState* ps = GetPlayerInput();
 	if (!ps) return InputContainer();
 
-	InputContainer* ic = ps->keysDown;
-	if (!ic) return InputContainer();
-
-	return *ic;
+	return ps->keysPressed;
 }

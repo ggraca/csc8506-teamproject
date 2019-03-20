@@ -63,6 +63,7 @@ void PlayerPrefab::InitializeBigGun(GameObject * player)
 void PlayerPrefab::ResetPlayer()
 {
 	AddComponent<Player*>((Component*)new Player(this));
+	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::Player));
 	AddComponent<GunControl*>(new GunControl(this));
 	AddComponent<HammerControl*>(new HammerControl(this));
 	AddComponent<ShieldControl*>(new ShieldControl(this));

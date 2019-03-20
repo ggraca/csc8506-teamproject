@@ -23,6 +23,9 @@ void Player::Start()
 
 void Player::Update(float dt)
 {
+	keysDown = GetKeysDown();
+	keysPressed = GetKeysPressed();
+
 	PlayerMovement(dt);
 	CheckGunControls();
 	CheckHammerControls();
@@ -33,7 +36,7 @@ void Player::Update(float dt)
 
 void Player::CheckAirStrikeControls()
 {
-	if (resourceCount >= 5 && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::CALL_AIR_STRIKE))
+	if (resourceCount >= 5 && keysPressed.inputs[InputManager::ActionButton::CALL_AIR_STRIKE])
 	{
 		gameObject->GetComponent<AirStrikeControl*>()->LaunchAirStrike();
 	}
@@ -42,7 +45,7 @@ void Player::CheckAirStrikeControls()
 void Player::CheckBigGunControls(float dt)
 {
 	if (timeCounter >= 0.0f) { timeCounter += dt;}
-	if (!isHammerActive && !isShieldActive && !isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	if (!isHammerActive && !isShieldActive && !isGunActive && keysPressed.inputs[InputManager::ActionButton::HIT])
 	{
 		isBigGunActive = true;
 		timeCounter = dt;
@@ -50,11 +53,11 @@ void Player::CheckBigGunControls(float dt)
 		gameObject->GetComponent<BigGunControl*>()->ActivateGun();
 	}
 
-	if (isBigGunActive && !InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::HIT))
+	if (isBigGunActive && !keysDown.inputs[InputManager::ActionButton::HIT])
 	{
 		if (resourceCount > 3)
 		{
-			gameObject->GetComponent<BigGunControl*>()->Fire(timeCounter);	
+			gameObject->GetComponent<BigGunControl*>()->Fire(timeCounter);
 		}
 		gameObject->GetComponent<BigGunControl*>()->DeactivateGun();
 		isBigGunActive = false;
@@ -64,14 +67,14 @@ void Player::CheckBigGunControls(float dt)
 
 void Player::CheckShieldControls()
 {
-	if (!isGunActive && !isHammerActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_SHIELD))
+	if (!isGunActive && !isHammerActive && !isBigGunActive && keysPressed.inputs[InputManager::ActionButton::TOGGLE_SHIELD])
 	{
 		isShieldActive = true;
 
 		gameObject->GetComponent<ShieldControl*>()->ActivateShield();
 	}
 
-	if (isShieldActive && !InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::TOGGLE_SHIELD))
+	if (isShieldActive && !keysDown.inputs[InputManager::ActionButton::TOGGLE_SHIELD])
 	{
 		isShieldActive = false;
 
@@ -81,7 +84,7 @@ void Player::CheckShieldControls()
 
 void Player::CheckHammerControls()
 {
-	if (!isGunActive && !isShieldActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
+	if (!isGunActive && !isShieldActive && !isBigGunActive && keysPressed.inputs[InputManager::ActionButton::TOGGLE_HAMMER])
 	{
 		isHammerActive = !isHammerActive;
 
@@ -89,7 +92,7 @@ void Player::CheckHammerControls()
 		else { gameObject->GetComponent<HammerControl*>()->DeactivateHammer(); }
 	}
 
-	if (isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	if (isHammerActive && keysPressed.inputs[InputManager::ActionButton::HIT])
 	{
 		if (resourceCount > 0) { gameObject->GetComponent<HammerControl*>()->HammerHit(); }
 	}
@@ -97,7 +100,7 @@ void Player::CheckHammerControls()
 
 void Player::CheckGunControls()
 {
-	if (!isHammerActive && !isShieldActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
+	if (!isHammerActive && !isShieldActive && !isBigGunActive && keysPressed.inputs[InputManager::ActionButton::TOGGLE_GUN])
 	{
 		isGunActive = !isGunActive;
 
@@ -105,7 +108,7 @@ void Player::CheckGunControls()
 		else { gameObject->GetComponent<GunControl*>()->DeactivateGun(); }
 	}
 
-	if (isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	if (isGunActive && keysPressed.inputs[InputManager::ActionButton::HIT])
 	{
 		if (resourceCount > 0) { gameObject->GetComponent<GunControl*>()->Fire(); }
 	}
@@ -120,24 +123,24 @@ void Player::PlayerMovement(float dt)
 	if (!GameObject::GetMainCamera()->GetComponent<CameraControl*>()->GetCameraType()) { forward *= -1; }
 	Vector3 left = Vector3::Cross(up, forward).Normalised();
 
-	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::FORWARD))
+	if (keysDown.inputs[InputManager::ActionButton::FORWARD])
 	{
-		if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::DODGE))
+		if (keysPressed.inputs[InputManager::ActionButton::DODGE])
 		{
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity( btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
-		else 
+		else
 		{
 			playerPos += forward * movementSpeed * dt;
 			gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
-		
+
 	}
 
-	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::BACKWARD))
+	if (keysDown.inputs[InputManager::ActionButton::BACKWARD])
 	{
-		if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::DODGE))
+		if (keysPressed.inputs[InputManager::ActionButton::DODGE])
 		{
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1 * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
@@ -147,12 +150,12 @@ void Player::PlayerMovement(float dt)
 			playerPos -= forward * movementSpeed * dt;
 			gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
-		
+
 	}
 
-	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::LEFT))
+	if (keysDown.inputs[InputManager::ActionButton::LEFT])
 	{
-		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+		if (keysDown.inputs[InputManager::ActionButton::DODGE])
 		{
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(left.x, left.y, left.z)*dodgeAmount);
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
@@ -162,12 +165,12 @@ void Player::PlayerMovement(float dt)
 			playerPos += left * movementSpeed * dt;
 			gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
-		
+
 	}
 
-	if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::RIGHT))
+	if (keysDown.inputs[InputManager::ActionButton::RIGHT])
 	{
-		if (InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::DODGE))
+		if (keysDown.inputs[InputManager::ActionButton::DODGE])
 		{
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1* btVector3(left.x, left.y, left.z)*dodgeAmount);
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
@@ -179,7 +182,7 @@ void Player::PlayerMovement(float dt)
 		}
 	}
 
-	if (!isJumping && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
+	if (!isJumping && keysPressed.inputs[InputManager::ActionButton::JUMP])
 	{
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 200, 0));
 		isJumping = true;
@@ -189,7 +192,7 @@ void Player::PlayerMovement(float dt)
 
 void Player::LateUpdate(float dt)
 {
-	
+
 }
 
 void Player::OnCollisionBegin(GameObject * otherObject)
@@ -208,7 +211,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 	}
 }
 
-void Player::OnCollisionEnd(GameObject * otherObject) 
+void Player::OnCollisionEnd(GameObject * otherObject)
 {
 }
 

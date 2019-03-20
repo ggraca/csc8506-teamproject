@@ -22,15 +22,15 @@ void NetworkServer::Update() {
 		server->SendGlobalPacket(p);
 	}
 
-	PlayerState* ps = FindPlayer(0);
+	PlayerState* ps = FindPlayer(-1);
 	if (ps) {
-		ps->keysDown->UpdateInputs(InputManager::GetInputBitsDown());
-		ps->keysPressed->UpdateInputs(InputManager::GetInputBitsPressed());
+		ps->keysDown = InputContainer(InputManager::GetInputBitsDown());
+		ps->keysPressed = InputContainer(InputManager::GetInputBitsPressed());
 	}
 	else {
 		for (auto go : world->GetGameObjectList()) {
-			if (go->GetComponent<Player*>() && go->GetComponent<NetworkObject*>()) {
-				AddPlayer(0, go);
+			if (go->CompareTag(LayerAndTag::Tags::Player)) {
+				AddPlayer(-1, go);
 				return;
 			}
 		}
@@ -48,19 +48,7 @@ void NetworkServer::OnClientConnect(int source) {
 	}
 
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-	world->LateInstantiate(player);
-
-	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
-	GameObject * shieldDummy = new GameObject();
-	shieldDummy->SetParent(player);
-	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
-
-	player->GetComponent<ShieldControl*>()->SetShield(shield);
-	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
-	player->GetComponent<ShieldControl*>()->SetShieldDummy(shieldDummy);
-
-	world->Instantiate(shieldDummy);
-	world->Instantiate(shield);
+	world->LateInstantiateRecursively(player);
 
 	AddPlayer(source, player);
 }
@@ -81,8 +69,8 @@ void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {
 		PlayerInputPacket* realPacket = (PlayerInputPacket*)payload;
 
 		PlayerState* ps = FindPlayer(source);
-		ps->keysDown->UpdateInputs(realPacket->keysDown);
-		ps->keysPressed->UpdateInputs(realPacket->keysPressed);
+		ps->keysDown = InputContainer(realPacket->keysDown);
+		ps->keysPressed = InputContainer(realPacket->keysPressed);
 	}
 }
 
