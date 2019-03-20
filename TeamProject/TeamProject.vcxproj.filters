@@ -139,6 +139,9 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="AirStrikeControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -356,6 +359,9 @@
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="AirStrikeControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="TypeId.h">
