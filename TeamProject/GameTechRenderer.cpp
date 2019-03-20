@@ -313,6 +313,7 @@ void GameTechRenderer::RenderLights() {
 				* activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation().ToMatrix4()
 				* Matrix4::Scale(Vector3(radius, radius, radius));
 
+			BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
 			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
@@ -336,6 +337,7 @@ void GameTechRenderer::RenderLights() {
 
 			Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 
+			BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
 			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
@@ -356,6 +358,7 @@ void GameTechRenderer::RenderLights() {
 				* activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation().ToMatrix4()
 				* Matrix4::Scale(Vector3(radius, radius, radius));
 
+			BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
 			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
@@ -421,8 +424,10 @@ void GameTechRenderer::CombineBuffers() {
 	BindMatrix4ToShader(identity, "textureMatrix");
 
 	BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
-	BindTextureToShader(lightEmissiveTex, "emissiveTex", 3);
-	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 4);
+	BindTextureToShader(gBufferMaterialTex, "materialTex", 3);
+	BindTextureToShader(lightEmissiveTex, "emissiveTex", 4);
+	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 5);
+	BindTextureToShader(lightKDTex, "KDTex", 6);
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
