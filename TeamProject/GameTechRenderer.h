@@ -84,6 +84,7 @@ namespace NCL {
 			GLuint lightFBO; // FBO for our lighting pass
 			TextureBase* lightEmissiveTex; // emissive lighting
 			TextureBase* lightSpecularTex; // specular lighting
+			TextureBase* lightKDTex;
 
 			GLuint postFBO; // FBO for our post process pass
 			TextureBase* postTexture[2]; // post process texture [0] and [1]

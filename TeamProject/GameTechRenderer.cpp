@@ -93,6 +93,7 @@ void GameTechRenderer::GenBuffers() {
 	//Generate light buffer textures
 	lightEmissiveTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	lightSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	lightKDTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	//Generate post process buffer textures
 	postTexture[0] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	postTexture[1] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
@@ -105,6 +106,7 @@ void GameTechRenderer::GenBuffers() {
 	vector<TextureBase*> lightBufferTexes;
 	lightBufferTexes.push_back(lightEmissiveTex);
 	lightBufferTexes.push_back(lightSpecularTex);
+	lightBufferTexes.push_back(lightKDTex);
 
 	vector<TextureBase*> postBufferTexes;
 	postBufferTexes.push_back(postTexture[0]);
