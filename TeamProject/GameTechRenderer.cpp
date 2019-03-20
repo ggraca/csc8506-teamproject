@@ -446,7 +446,12 @@ GameTechRenderer::GameTechRenderer(GameWorld& world) : PS4::PS4RendererBase((PS4
 	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	screenQuad->PS4Mesh::UploadToGPU();
 
-	AddHUDObjects();
+	AddHUDObjects(); //adds hud textures
+	skybox = PS4Texture::LoadTextureFromFile("/app0/cubeTex.gnf");
+	Gnm::Sampler skyboxSampler;
+	skyboxSampler.init();
+	skyboxSampler.setXyFilterMode(Gnm::kFilterModeBilinear, Gnm::kFilterModeBilinear);
+	skyboxSampler.setMipFilterMode(Gnm::kMipFilterModeLinear);
 
 	//pixOps.Init();
 	ClearBuffer(1, 1, 1);
@@ -490,6 +495,8 @@ void GameTechRenderer::AddHUDObjects()
 	textures6.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/crosshair.gnf"));
 	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2.0f) - 36.0f, (currentWidth / 2.0f) + 36.0f,
 		(currentHeight / 2) - 36.0f, (currentHeight / 2) + 36.0f, currentWidth, currentHeight), textures6, Transform(), false));
+
+	//may need to add samplers for each of these
 }
 
 //void GameTechRenderer::GenBuffers() {
@@ -652,6 +659,9 @@ void GameTechRenderer::RenderCamera() {
 	trilinearSampler.init();
 	trilinearSampler.setMipFilterMode(Gnm::kMipFilterModeLinear);
 
+	currentGFXContext->setTextures(Gnm::kShaderStagePs, 0, 1, &defaultTexture->GetAPITexture());
+	currentGFXContext->setSamplers(Gnm::kShaderStagePs, 0, 1, &trilinearSampler);
+
 	defaultShader->SubmitShaderSwitch(*currentGFXContext);
 	currentGFXContext->setTextures(Gnm::kShaderStagePs, 0, 1, &defaultTexture->GetAPITexture());
 	currentGFXContext->setSamplers(Gnm::kShaderStagePs, 0, 1, &trilinearSampler);
@@ -659,29 +669,30 @@ void GameTechRenderer::RenderCamera() {
 
 	for (const auto&i : activeObjects) {
 
-		//Material* currentMaterial = (*i).GetMaterial();
-		//PS4Shader* shader = (PS4Shader*)currentMaterial->GetShader();
-		//BindShader(shader);
+		Material* currentMaterial = (*i).GetMaterial();
+		PS4Shader* shader = (PS4Shader*)currentMaterial->GetShader();
+		shader->SubmitShaderSwitch(*currentGFXContext);
 
-		//for (unsigned int j = 0; j < currentMaterial->GetTextureParameters()->size(); j++)
-		//{
-		//	//Gets texture, then gets texture shader param name, and binds it to texture slot = iteration
-		//	BindTextureToShader((*(currentMaterial->GetTextureParameters()))[j].second,
-		//		(*(currentMaterial->GetTextureParameters()))[j].first, j);
-		//}
+		for (unsigned int j = 0; j < currentMaterial->GetTextureParameters()->size(); j++)
+		{
+			//Gets texture, then gets texture shader param name, and binds it to texture slot = iteration
+			//BindTextureToShader((*(currentMaterial->GetTextureParameters()))[j].second, (*(currentMaterial->GetTextureParameters()))[j].first, j);
+		}
 
-		//BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
+		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
+		
 
-		//BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
-		//BindMatrix4ToShader(projMatrix, "projMatrix");
-		//BindMatrix4ToShader(viewMatrix, "viewMatrix");
-		//BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");
-		//BindMatrix4ToShader(currentMaterial->GetTextureMatrix(), "textureMatrix");
-		//BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
 
-		//BindMesh((*i).GetMesh());
-		//vertsDrawn += (*i).GetMesh()->GetVertexCount();
-		//DrawBoundMesh();
+		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
+		BindMatrix4ToShader(projMatrix, "projMatrix");
+		BindMatrix4ToShader(viewMatrix, "viewMatrix");
+		BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");
+		BindMatrix4ToShader(currentMaterial->GetTextureMatrix(), "textureMatrix");
+		BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
+
+		BindMesh((*i).GetMesh());
+		vertsDrawn += (*i).GetMesh()->GetVertexCount();
+		DrawBoundMesh();
 	}
 
 	BindFBO(nullptr);

@@ -121,8 +121,6 @@ void PS4Shader::GeneratePixelShader(const string&name) {
 	//delete binData;
 }
 
-
-
 bool PS4Shader::LoadShaderText(const string &name, string&into) {
 
 	return false;
