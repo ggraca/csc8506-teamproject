@@ -13,7 +13,8 @@ Game::Game() {
 
 	network = new NetworkManager();
 
-	currentScene = new NetworkExampleScene();	
+	currentScene = new LevelScene();	
+//	currentScene = new NetworkExampleScene();
 	currentScene->SetRenderer(renderer);
 	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
 	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
