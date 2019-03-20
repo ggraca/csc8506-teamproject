@@ -29,7 +29,6 @@ void GunControl::Awake()
 
 void GunControl::Update(float dt)
 {
-	//Debug::DrawLine(gameObject->GetTransform().GetWorldPosition(), camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * 500));
 }
 
 void GunControl::SetLeftGun(GameObject * obj)
