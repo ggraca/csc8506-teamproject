@@ -154,7 +154,7 @@ namespace NCL {
 			//shadow mapping things
 			PS4Shader*	shadowShader;
 			PS4Texture*		shadowTex;
-			GLuint		shadowFBO;
+			sce::Gnm::RenderTarget		shadowFBO; //rendertargets are used instead of FBOs
 			Matrix4     shadowMatrix;
 
 			PS4Shader* skyBoxShader;
@@ -165,7 +165,7 @@ namespace NCL {
 			PS4Texture* gBufferNormalTex; // Normals go here
 			PS4Texture* gBufferSpecularTex; // Specular goes here
 
-			GLuint lightFBO; // FBO for our lighting pass
+			sce::Gnm::RenderTarget lightFBO; // FBO for our lighting pass
 			PS4Texture* lightEmissiveTex; // emissive lighting
 			PS4Texture* lightSpecularTex; // specular lighting
 
@@ -177,7 +177,7 @@ namespace NCL {
 
 			Light* directionalLight;
 
-			GLuint hudTex;
+			//GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
