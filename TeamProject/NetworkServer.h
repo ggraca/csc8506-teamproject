@@ -16,6 +16,7 @@ struct PlayerState {
 	GameObject* gameObject;
 	InputContainer keysPressed;
 	InputContainer keysDown;
+	Quaternion cameraRotation;
 };
 
 class NetworkServer : public NetworkEntity {

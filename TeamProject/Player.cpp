@@ -25,6 +25,7 @@ void Player::Update(float dt)
 {
 	keysDown = GetKeysDown();
 	keysPressed = GetKeysPressed();
+	cameraRotation = GetCameraRotation();
 
 	PlayerMovement(dt);
 	CheckGunControls();

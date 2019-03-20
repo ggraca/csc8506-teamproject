@@ -48,12 +48,14 @@ struct ObjectUpdatePacket : public GamePacket {
 struct PlayerInputPacket : public GamePacket {
 	short keysDown;
 	short keysPressed;
+	Quaternion cameraRotation;
 
-	PlayerInputPacket(short kd, short kp) {
+	PlayerInputPacket(short kd, short kp, Quaternion cameraRot) {
 		type = BasicNetworkMessages::PlayerInputMessage;
-		size = sizeof(short) * 2;
+		size = sizeof(short) * 2 + sizeof(Quaternion);
 
 		keysDown = kd;
 		keysPressed = kp;
+		cameraRotation = cameraRot;
 	}
 };

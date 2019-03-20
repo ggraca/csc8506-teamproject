@@ -32,6 +32,7 @@ namespace NCL
 			PlayerState* GetPlayerInput();
 			InputContainer GetKeysDown();
 			InputContainer GetKeysPressed();
+			Quaternion GetCameraRotation();
 		};
 	}
 }

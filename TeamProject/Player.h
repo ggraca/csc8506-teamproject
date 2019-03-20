@@ -45,5 +45,6 @@ protected:
 
 	InputContainer keysDown;
 	InputContainer keysPressed;
+	Quaternion cameraRotation;
 };
 

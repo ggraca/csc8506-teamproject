@@ -4,6 +4,7 @@
 #include "../Common/GameClient.h"
 #include "NetworkPackets.h"
 #include "InputManager.h"
+#include "GameWorld.h"
 
 using namespace NCL::Networking;
 
@@ -15,7 +16,11 @@ public:
 
 	void Update() {
 		client->UpdateClient();
-		client->SendPacket(PlayerInputPacket(InputManager::GetInputBitsDown(), InputManager::GetInputBitsPressed()));
+		client->SendPacket(PlayerInputPacket(
+			InputManager::GetInputBitsDown(),
+			InputManager::GetInputBitsPressed(),
+			world->GetMainCamera()->GetTransform().GetWorldOrientation()
+		));
 	}
 	
 	void Instantiate(GameObject* go) override {}

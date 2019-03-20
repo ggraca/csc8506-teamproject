@@ -68,3 +68,10 @@ InputContainer ScriptObject::GetKeysPressed() {
 
 	return ps->keysPressed;
 }
+
+Quaternion ScriptObject::GetCameraRotation() {
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return Quaternion();
+
+	return ps->cameraRotation;
+}
