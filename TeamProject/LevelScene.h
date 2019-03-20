@@ -1,7 +1,7 @@
 #pragma once
 #pragma once
 #include "GameTechRenderer.h"
-#include "Scene.h"
+#include "GameScene.h"
 #include "DebugMenu.h"
 #include "HUD.h"
 #include "HUDObject.h"
@@ -14,14 +14,15 @@
 namespace NCL {
 	namespace CSC8503 {
 
-		class LevelScene : public Scene {
+		class LevelScene : public GameScene {
 		public:
-			LevelScene();
+			LevelScene(bool& quitGame);
 			~LevelScene();
 			void LoadWorld();
 			
 		protected:
 			void ResetWorld();
+
 		};
 	}
 }

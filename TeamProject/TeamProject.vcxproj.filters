@@ -79,6 +79,21 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="StateTransition.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Animator.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
@@ -360,6 +375,27 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkPackets.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="StateTransition.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

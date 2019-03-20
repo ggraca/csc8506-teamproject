@@ -11,9 +11,13 @@ public:
 	~Game();
 	void Update(float dt);
 	void InitialiseAssets();
+	void QuitGame() { quitGame = true; }
+	bool& QuittingGame() { return quitGame; }
+	void ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server);
 
 private:
 	Scene* currentScene;
 	GameTechRenderer* renderer;
+	bool quitGame = false;
 	NetworkManager* network;
 };

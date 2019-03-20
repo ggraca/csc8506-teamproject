@@ -5,7 +5,7 @@
 #include "ParticleSystem.h"
 
 
-PhysicsScene::PhysicsScene() : GameScene() {
+PhysicsScene::PhysicsScene(bool& qG) : GameScene(qG) {
 	ResetWorld();
 }
 
@@ -39,8 +39,8 @@ void PhysicsScene::ResetWorld() {
 
 }
 
-PhysicsScene::~PhysicsScene() {
-}
+
+
 
 void PhysicsScene::UpdateKeys() {
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
@@ -65,31 +65,28 @@ void PhysicsScene::UpdateKeys() {
 	}
 
 	////HUD TESTING BEGINS
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
-	//	renderer->WeaponState(2, true); //Hammer
-	//	renderer->WeaponState(3, true); //Gun
-	//	renderer->WeaponState(4, true); //Bomb
-	//}
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_I)) {
-	//	renderer->WeaponState(2, false); //Hammer
-	//	renderer->WeaponState(3, false); //Gun
-	//	renderer->WeaponState(4, false); //Bomb
-	//}
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Y))
-	//{
-	//	hud.hp -= 5;
-	//	renderer->health -= 0.05f;
-	//}
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_T))
-	//{
-	//	hud.hp = 100;
-	//	renderer->health = 1.0f;
-	//}
-	////HUD TESTING ENDS
-	//if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-	//	console.Toggle();
-	//	debugMenu.Toggle();
-	//}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
+		renderer->WeaponState(2, true); //Hammer
+		renderer->WeaponState(3, true); //Gun
+		renderer->WeaponState(4, true); //Bomb
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_I)) {
+		renderer->WeaponState(2, false); //Hammer
+		renderer->WeaponState(3, false); //Gun
+		renderer->WeaponState(4, false); //Bomb
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Y))
+	{
+		hud.hp -= 5;
+		renderer->health -= 0.05f;
+	}
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_T))
+	{
+		hud.hp = 100;
+		renderer->health = 1.0f;
+	}
+	//HUD TESTING ENDS
+
 }
 
 void PhysicsScene::LateUpdate(float dt) {

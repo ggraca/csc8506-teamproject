@@ -5,6 +5,7 @@
 
 class ExampleScene : public GameScene {
 public:
+	ExampleScene(bool& quitGame);
 	ExampleScene();
 	void InitPlayer();
 
