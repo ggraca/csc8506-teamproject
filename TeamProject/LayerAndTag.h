@@ -21,7 +21,8 @@ public:
 		Occupied,
 		Enemy,
 		EnemyProjectile,
-		HammerHead
+		HammerHead,
+		Ground
 	};
 
 	LayerAndTag()

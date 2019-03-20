@@ -167,12 +167,11 @@ void Player::PlayerMovement(float dt)
 		}
 	}
 
-	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
+	if (!isJumping && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 200, 0));
+		isJumping = true;
 	}
-
-	
 }
 
 
@@ -190,9 +189,15 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
 		UpdateResourceCount(1);
 	}
+
+	else if (otherObject->CompareTag(LayerAndTag::Tags::Ground) || otherObject->CompareTag(LayerAndTag::Tags::Destructible))
+	{
+		isJumping = false;
+	}
 }
 
-void Player::OnCollisionEnd(GameObject * otherObject) {
+void Player::OnCollisionEnd(GameObject * otherObject) 
+{
 }
 
 int Player::GetResourceCount() const

@@ -38,6 +38,7 @@ protected:
 	bool isHammerActive = false;
 	bool isShieldActive = false;
 	bool isBigGunActive = false;
+	bool isJumping = false;
 	float timeCounter = -1;
 };
 

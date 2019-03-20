@@ -340,9 +340,6 @@
     <ClInclude Include="BigGunControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="TypeId.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="CameraControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
@@ -360,6 +357,9 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeId.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
