@@ -26,7 +26,8 @@ void NetworkServer::Update() {
 	if (ps) {
 		ps->keysDown = InputContainer(InputManager::GetInputBitsDown());
 		ps->keysPressed = InputContainer(InputManager::GetInputBitsPressed());
-		ps->cameraRotation = world->GetMainCamera()->GetTransform().GetWorldOrientation();
+		ps->cameraPosition = world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
+		ps->cameraRotation = world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldOrientation();
 	}
 	else {
 		for (auto go : world->GetGameObjectList()) {
@@ -63,7 +64,7 @@ void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {
 	{
 		StringPacket* realPacket = (StringPacket*)payload;
 		string msg = realPacket->GetStringFromData();
-		std::cout << "received message: " << msg << std::endl;
+		//std::cout << "received message: " << msg << std::endl;
 	}
 	else if (type == PlayerInputMessage)
 	{
@@ -72,6 +73,7 @@ void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {
 		PlayerState* ps = FindPlayer(source);
 		ps->keysDown = realPacket->keysDown;
 		ps->keysPressed = realPacket->keysPressed;
+		ps->cameraPosition = realPacket->cameraPosition;
 		ps->cameraRotation = realPacket->cameraRotation;
 	}
 }

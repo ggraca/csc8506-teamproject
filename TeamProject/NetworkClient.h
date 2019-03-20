@@ -16,10 +16,13 @@ public:
 
 	void Update() {
 		client->UpdateClient();
+
+		world->GetMainCamera()->GetTransform().GetChildrenList()[0]->UpdateMatrices();
 		client->SendPacket(PlayerInputPacket(
 			InputManager::GetInputBitsDown(),
 			InputManager::GetInputBitsPressed(),
-			world->GetMainCamera()->GetTransform().GetWorldOrientation()
+			world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(),
+			world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldOrientation()
 		));
 	}
 	

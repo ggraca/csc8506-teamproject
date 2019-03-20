@@ -21,6 +21,7 @@ public:
 	void CheckShieldControls();
 	void CheckHammerControls();
 	void CheckGunControls();
+	void PlayerRotation();
 	void PlayerMovement(float dt);
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
@@ -46,5 +47,6 @@ protected:
 	InputContainer keysDown;
 	InputContainer keysPressed;
 	Quaternion cameraRotation;
+	Vector3 cameraPosition;
 };
 

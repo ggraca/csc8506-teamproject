@@ -43,7 +43,7 @@ void ScriptObject::OnCollisionEnd(GameObject * otherObject)
 }
 
 PlayerState* ScriptObject::GetPlayerInput() {
-	GameWorld* gw = gameObject->gameWorld;
+	GameWorld* gw = GameObject::gameWorld;
 	if (!gw) return nullptr;
 
 	NetworkServer* ns = dynamic_cast<NetworkServer*>(gw->GetNetwork());
@@ -74,4 +74,11 @@ Quaternion ScriptObject::GetCameraRotation() {
 	if (!ps) return Quaternion();
 
 	return ps->cameraRotation;
+}
+
+Vector3 ScriptObject::GetCameraPosition() {
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return Vector3();
+
+	return ps->cameraPosition;
 }

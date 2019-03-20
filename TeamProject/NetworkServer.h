@@ -17,6 +17,7 @@ struct PlayerState {
 	InputContainer keysPressed;
 	InputContainer keysDown;
 	Quaternion cameraRotation;
+	Vector3 cameraPosition;
 };
 
 class NetworkServer : public NetworkEntity {

@@ -7,6 +7,8 @@
 #include "CameraControl.h"
 #include "PhysicsObject.h"
 #include "BigGunControl.h"
+#include "GameWorld.h"
+
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -23,10 +25,14 @@ void Player::Start()
 
 void Player::Update(float dt)
 {
+	if (!dynamic_cast<NetworkServer*>(GameObject::gameWorld->GetNetwork())) return;
+
 	keysDown = GetKeysDown();
 	keysPressed = GetKeysPressed();
 	cameraRotation = GetCameraRotation();
+	cameraPosition = GetCameraPosition();
 
+	PlayerRotation();
 	PlayerMovement(dt);
 	CheckGunControls();
 	CheckHammerControls();
@@ -115,13 +121,18 @@ void Player::CheckGunControls()
 	}
 }
 
+void Player::PlayerRotation()
+{
+	Vector3 playerRot = gameObject->GetTransform().GetLocalOrientation().ToEuler();
+	playerRot.y = cameraRotation.ToEuler().y;
+	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, playerRot.y, 0));
+}
+
 void Player::PlayerMovement(float dt)
 {
 	Vector3 playerPos = gameObject->GetTransform().GetWorldPosition();
-	Vector3 cameraPos = GameObject::GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
 	Vector3 up = Vector3(0, 1, 0);
-	Vector3 forward = (Vector3(playerPos.x, 0, playerPos.z) - Vector3(cameraPos.x, 0, cameraPos.z)).Normalised();
-	if (!GameObject::GetMainCamera()->GetComponent<CameraControl*>()->GetCameraType()) { forward *= -1; }
+	Vector3 forward = (Vector3(playerPos.x, 0, playerPos.z) - Vector3(cameraPosition.x, 0, cameraPosition.z)).Normalised();
 	Vector3 left = Vector3::Cross(up, forward).Normalised();
 
 	if (keysDown.inputs[InputManager::ActionButton::FORWARD])

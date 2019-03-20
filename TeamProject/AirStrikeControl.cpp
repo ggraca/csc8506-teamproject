@@ -26,7 +26,7 @@ void AirStrikeControl::Update(float dt)
 void AirStrikeControl::LaunchAirStrike()
 {
 	Vector3 forward = CalculateDirection();
-	Vector3 start = GameObject::gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
+	Vector3 start = GetCameraPosition();
 	Vector3 end = start + ( forward * airStrikeDistance);
 	Vector3 hit;
 	auto res = GameObject::gameWorld->Raycast(start, end, hit);
@@ -52,11 +52,11 @@ void AirStrikeControl::LaunchAirStrike()
 
 Vector3 AirStrikeControl::CalculateDirection()
 {
-	auto camera = GameObject::gameWorld->GetMainCamera();
+	/*auto camera = GameObject::gameWorld->GetMainCamera();
 	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0, 0, 0); }
-
+*/
 	Vector3 forward;
-	Vector3 ctransform = camera->GetTransform().GetChildrenList()[0]->GetWorldOrientation().ToEuler();
+	Vector3 ctransform = GetCameraRotation().ToEuler();
 	ctransform.y *= -1;
 
 	forward.x = sin(ctransform.y* (PI / 180)) * cos(ctransform.x * (PI / 180));
