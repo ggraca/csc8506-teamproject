@@ -192,9 +192,9 @@ void GameTechRenderer::RenderShadowMap() {
 	Vector3 newlightPos = (lightRot * Vector3(0, 0, 1)) * 1000.0f;
 	Vector3 newlightPosUp = (lightRot * Vector3(0, 1, 0));
 
-	Debug::DrawLine(Vector3(0, 0, 0), Vector3(20, 0, 0), Vector4(1, 0, 0, 1));
-	Debug::DrawLine(Vector3(0, 0, 0), Vector3(0, 20, 0), Vector4(0, 1, 0, 1));
-	Debug::DrawLine(Vector3(0, 0, 0), Vector3(0, 0, 20), Vector4(0, 0, 1, 1));
+	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(20, 0, 0), Vector4(1, 0, 0, 1));
+	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 20, 0), Vector4(0, 1, 0, 1));
+	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 0, 20), Vector4(0, 0, 1, 1));
 
 	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(cameraPosition + newlightPos, cameraPosition, newlightPosUp);
 	Matrix4 shadowProjMatrix = Matrix4::Orthographic(-10, 10000, -1000, 1000, -1000, 1000);

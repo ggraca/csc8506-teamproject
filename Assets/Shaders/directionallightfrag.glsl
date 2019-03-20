@@ -64,7 +64,7 @@ void main (void) {
 	
 	vec3 diffuse = texture(diffuseTex, pos.xy).xyz;
 
-	vec3 lightDir = normalize(-lightDirection);
+	vec3 lightDir = normalize(lightDirection);
 	vec3 viewDir = normalize(cameraPos - pos);
 	vec3 halfDir = normalize(lightDir + viewDir);
 	
