@@ -96,14 +96,14 @@ void	PS4RendererBase::InitialiseVideoSystem() {
 }
 
 void	PS4RendererBase::InitialiseGCMRendering() {
-	frames = (PS4Frame*)onionAllocator->allocate(sizeof(PS4Frame) * _MaxCMDBufferCount, alignof(PS4Frame));
+	frames = (PS4Frame*)onionAllocator->allocate(sizeof(PS4Frame) * _MaxCMDBufferCount, alignof(PS4Frame)); //using onion as both cpu and gpu use command buffer
 
 	for (int i = 0; i < _MaxCMDBufferCount; ++i) {
 		new (&frames[i])PS4Frame();
 	}
 
 	sce::Gnmx::Toolkit::Allocators allocators = sce::Gnmx::Toolkit::Allocators(oAllocator, gAllocator, ownerHandle);
-	Gnmx::Toolkit::initializeWithAllocators(&allocators);
+	Gnmx::Toolkit::initializeWithAllocators(&allocators); //letting gnmx toolkit know about allocators
 }
 
 void	PS4RendererBase::InitialiseMemoryAllocators() {
@@ -124,7 +124,7 @@ void PS4RendererBase::DestroyMemoryAllocators() {
 }
 
 PS4ScreenBuffer*	PS4RendererBase::GenerateScreenBuffer(uint width, uint height, bool colour, bool depth, bool stencil) {
-	PS4ScreenBuffer* buffer = new PS4ScreenBuffer();
+	PS4ScreenBuffer* buffer = new PS4ScreenBuffer(); //contains gnm randertarget and deptherrendertarget classes
 
 	if (colour) {	
 		Gnm::RenderTargetSpec spec;
@@ -133,7 +133,7 @@ PS4ScreenBuffer*	PS4RendererBase::GenerateScreenBuffer(uint width, uint height, 
 		spec.m_height		= height;
 		spec.m_numSamples	= Gnm::kNumSamples1;
 		spec.m_numFragments = Gnm::kNumFragments1;
-		spec.m_colorFormat	= Gnm::kDataFormatB8G8R8A8UnormSrgb;	
+		spec.m_colorFormat	= Gnm::kDataFormatB8G8R8A8UnormSrgb; //8 bits per pixel for rgba, auto gamma correction	
 
 		GpuAddress::computeSurfaceTileMode(Gnm::GpuMode::kGpuModeBase, &spec.m_colorTileModeHint, GpuAddress::kSurfaceTypeColorTargetDisplayable, spec.m_colorFormat, 1);
 
@@ -143,9 +143,9 @@ PS4ScreenBuffer*	PS4RendererBase::GenerateScreenBuffer(uint width, uint height, 
 			bool a = true;
 		}
 
-		const Gnm::SizeAlign colourAlign = buffer->colourTarget.getColorSizeAlign();
+		const Gnm::SizeAlign colourAlign = buffer->colourTarget.getColorSizeAlign(); //aligning buffers
 
-		void *colourMemory = stackAllocators[GARLIC].allocate(colourAlign);
+		void *colourMemory = stackAllocators[GARLIC].allocate(colourAlign);//garlic as only gpu accessing buffers
 
 		Gnm::registerResource(nullptr, ownerHandle, colourMemory, colourAlign.m_size,
 			"Colour", Gnm::kResourceTypeDepthRenderTargetBaseAddress, 0);
@@ -177,7 +177,6 @@ PS4ScreenBuffer*	PS4RendererBase::GenerateScreenBuffer(uint width, uint height, 
 		Gnm::registerResource(nullptr, ownerHandle, depthMemory, buffer->depthTarget.getZSizeAlign().m_size,
 			"Depth", Gnm::kResourceTypeDepthRenderTargetBaseAddress, 0);
 
-
 		if (stencil) {
 			stencilMemory = stackAllocators[GARLIC].allocate(buffer->depthTarget.getStencilSizeAlign());
 
@@ -204,10 +203,10 @@ void	PS4RendererBase::DestroyVideoSystem() {
 	sceVideoOutClose(videoHandle);
 }
 
-void PS4RendererBase::RenderFrame()			{
-	currentFrame->StartFrame();	
+void PS4RendererBase::RenderFrame()			{//renderscene function
+	currentFrame->StartFrame();	//blocks until correct tag written to frametag
 
-	currentGFXContext->waitUntilSafeForRendering(videoHandle, currentGPUBuffer);
+	currentGFXContext->waitUntilSafeForRendering(videoHandle, currentGPUBuffer); //need gnm to finish processsing before displaying on screen
 
 	BindFBO(currentPS4Buffer);
 	ClearBuffer(true, true, true);
@@ -222,17 +221,22 @@ void PS4RendererBase::RenderFrame()			{
 	//primitiveSetup.setPolygonMode()
 	currentGFXContext->setPrimitiveSetup(primitiveSetup);
 
-	////Screen Access State
-	Gnm::DepthStencilControl dsc;
+	//Screen Access State
+	Gnm::DepthStencilControl dsc;//adds object to command list
 	dsc.init();
-	dsc.setDepthControl(Gnm::kDepthControlZWriteEnable, Gnm::kCompareFuncLessEqual);
+	//turns on depth test (whether or not to write to depth buffer, how to pass depth test)
+	dsc.setDepthControl(Gnm::kDepthControlZWriteEnable, Gnm::kCompareFuncLessEqual); // same as gl_lequal in opengl
 	dsc.setDepthEnable(true);
 	currentGFXContext->setDepthStencilControl(dsc);
 
 	Gnm::Sampler trilinearSampler;
 	trilinearSampler.init();
-	trilinearSampler.setMipFilterMode(Gnm::kMipFilterModeLinear);
+	trilinearSampler.setMipFilterMode(Gnm::kMipFilterModeLinear);//enabling mipmapping (& so also trilinear filtering)
 
+	//use the following to apply method of filtering for minification and magnification
+	//trilinearSampler.setXyFilterMode(Gnm::kFilterModeBilinear, Gnm::kFilterModeBilinear);
+
+	//textures and samplers are dif in gnm (same in opengl) so need to set up separately
 	currentGFXContext->setTextures(Gnm::kShaderStagePs, 0, 1, &defaultTexture->GetAPITexture());
 	currentGFXContext->setSamplers(Gnm::kShaderStagePs, 0, 1, &trilinearSampler);
 
@@ -286,7 +290,7 @@ void	PS4RendererBase::BindFBO(void* buffer) {
 	currentGFXContext->setRenderTarget(0, &currentPS4Buffer->colourTarget);
 	currentGFXContext->setDepthRenderTarget(&currentPS4Buffer->depthTarget);
 
-	currentGFXContext->setupScreenViewport(0, 0, currentPS4Buffer->colourTarget.getWidth(), currentPS4Buffer->colourTarget.getHeight(), 0.5f, 0.5f);
+	currentGFXContext->setupScreenViewport(0, 0, currentPS4Buffer->colourTarget.getWidth(), currentPS4Buffer->colourTarget.getHeight(), 0.5f, 0.5f); //(x coord, y coord, width, height, depth bias, depth scale)
 	currentGFXContext->setScreenScissor(0, 0, currentPS4Buffer->colourTarget.getWidth(), currentPS4Buffer->colourTarget.getHeight());
 	currentGFXContext->setWindowScissor(0, 0, currentPS4Buffer->colourTarget.getWidth(), currentPS4Buffer->colourTarget.getHeight(), sce::Gnm::WindowOffsetMode::kWindowOffsetDisable);
 	currentGFXContext->setGenericScissor(0, 0, currentPS4Buffer->colourTarget.getWidth(), currentPS4Buffer->colourTarget.getHeight(), sce::Gnm::WindowOffsetMode::kWindowOffsetDisable);

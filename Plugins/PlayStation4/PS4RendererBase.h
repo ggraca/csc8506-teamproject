@@ -69,7 +69,7 @@ namespace NCL {
 			void	DestroyVideoSystem();
 			void	DestroyGCMRendering();
 
-
+			//need to generate front, back, and depth buffers as GNM doesn't do automatically like OpenGL
 			PS4ScreenBuffer* GenerateScreenBuffer(uint width, uint height, bool colour = true, bool depth = true, bool stencil = false);
 
 		protected:
