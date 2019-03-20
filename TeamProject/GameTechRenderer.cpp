@@ -6,6 +6,7 @@
 #include "../Common/OBJGeometry.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "Debug.h"
 
 using namespace NCL;
 using namespace Rendering;
@@ -191,6 +192,10 @@ void GameTechRenderer::RenderShadowMap() {
 	Vector3 newlightPos = (lightRot * Vector3(0, 0, 1)) * 1000.0f;
 	Vector3 newlightPosUp = (lightRot * Vector3(0, 1, 0));
 
+	Debug::DrawLine(Vector3(0, 0, 0), Vector3(20, 0, 0), Vector4(1, 0, 0, 1));
+	Debug::DrawLine(Vector3(0, 0, 0), Vector3(0, 20, 0), Vector4(0, 1, 0, 1));
+	Debug::DrawLine(Vector3(0, 0, 0), Vector3(0, 0, 20), Vector4(0, 0, 1, 1));
+
 	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(cameraPosition + newlightPos, cameraPosition, newlightPosUp);
 	Matrix4 shadowProjMatrix = Matrix4::Orthographic(-10, 10000, -1000, 1000, -1000, 1000);
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
@@ -343,9 +348,7 @@ void GameTechRenderer::RenderLights() {
 			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
 			BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 			BindMatrix4ToShader(projMatrix, "cameraProjMatrix");
-			Vector3 rot = activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1);
-			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1), "lightDir");
-			BindVector4ToShader(ambientColour, "ambientColour");
+			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1), "lightDirection");
 			BindIntToShader(drawShadows, "drawShadows");
 			BindTextureToShader(shadowTex, "shadowTex", 20);
 			BindMesh(screenQuad);
@@ -422,6 +425,7 @@ void GameTechRenderer::CombineBuffers() {
 	BindMatrix4ToShader(viewMatrix, "viewMatrix");
 	BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 	BindMatrix4ToShader(identity, "textureMatrix");
+	BindVector4ToShader(ambientColour, "ambientColour");
 
 	BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 	BindTextureToShader(gBufferMaterialTex, "materialTex", 3);

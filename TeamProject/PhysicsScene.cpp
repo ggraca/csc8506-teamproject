@@ -12,9 +12,6 @@ void PhysicsScene::ResetWorld() {
 	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
 
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-	//Remove particle system - it's a dummy to test
-	player->AddComponent<ParticleSystem*>(new ParticleSystem(5.0f, 100, 15, 5.0f, 1.0f, Vector3(0.0f, 1.0f, 0.0f),
-		Vector3(0.2f, 0.0f, 0.2f), 30.0f, Assets::AssetManager::LoadTexture("SimpleParticle.png")));
 	audio->SetPlayer(player);
 
 	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);

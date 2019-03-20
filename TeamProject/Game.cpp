@@ -49,11 +49,11 @@ void Game::InitialiseAssets() {
 	TextureBase* ballTex = Assets::AssetManager::LoadTexture("smileyface.png");
 	TextureBase* dogTex = Assets::AssetManager::LoadTexture("doge.png");
 
-	TextureBase* pbrWoodDiff = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_COLOR.jpg");
-	TextureBase* pbrWoodBump = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_NORM.jpg");
-	TextureBase* pbrWoodSpec = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_DISP.jpg");
-	TextureBase* pbrWoodMet = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_SPEC.jpg");
-	TextureBase* pbrWoodAO = Assets::AssetManager::LoadTexture("WoodPlanks/Wood_planks_OCC.jpg");
+	TextureBase* pbrWoodDiff = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_basecolor.png");
+	TextureBase* pbrWoodBump = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_normal.png");
+	TextureBase* pbrWoodRough = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_roughness.png");
+	TextureBase* pbrWoodMet = Assets::AssetManager::LoadTexture("black.jpg");
+	TextureBase* pbrWoodAO = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_roughness.png"); // Doesn't load ao tex??
 
 	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
 
@@ -61,19 +61,9 @@ void Game::InitialiseAssets() {
 	Material* basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", pbrShader);
 	basicMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
 	basicMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
-	basicMaterial->AddTextureParameter("specularTex", pbrWoodSpec);
+	basicMaterial->AddTextureParameter("roughnessTex", pbrWoodRough);
 	basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 	basicMaterial->AddTextureParameter("aoTex", pbrWoodAO);
-
-	Material* floorMat = Assets::AssetManager::LoadMaterial("Floor Material", pbrShader);
-	floorMat->AddTextureParameter("diffuseTex", pbrWoodDiff);
-	floorMat->AddTextureParameter("bumpTex", pbrWoodBump);
-	floorMat->AddTextureParameter("specularTex", pbrWoodSpec);
-	floorMat->AddTextureParameter("metalnessTex", pbrWoodMet);
-	floorMat->AddTextureParameter("aoTex", pbrWoodAO);
-	Matrix4 texMatrix;
-	texMatrix.ToIdentity();
-	floorMat->SetTextureMatrix(texMatrix * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 
 	vector<std::string> faces {
 		"hw_alps/alps_ft.png",
