@@ -17,6 +17,7 @@ void PhysicsScene::ResetWorld() {
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);
+	audio->SetCamera(world->GetMainCamera());
 
 	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f,0.4f);
 	resource1->SetName("Resource 1");
