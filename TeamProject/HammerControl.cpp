@@ -24,15 +24,13 @@ void HammerControl::SetHandle(GameObject * h)
 
 Vector3 HammerControl::CalculateDirection()
 {
-	auto camera = GameObject::gameWorld->GetMainCamera();
-	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0, 0, 0); }
-
 	Vector3 forward;
-	Transform *ctransform = camera->GetTransform().GetChildrenList()[0];
+	Vector3 ctransform = GetCameraRotation().ToEuler();
+	ctransform.y *= -1;
 
-	forward.x = sin(camera->GetTransform().GetLocalOrientation().ToEuler().y* (PI / 180)) * cos(camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180));
-	forward.y = sin(-camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180));
-	forward.z = cos(camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180)) * cos(camera->GetTransform().GetLocalOrientation().ToEuler().y * (PI / 180));
+	forward.x = sin(ctransform.y* (PI / 180)) * cos(ctransform.x * (PI / 180));
+	forward.y = sin(ctransform.x * (PI / 180));
+	forward.z = -1 * cos(ctransform.x * (PI / 180)) * cos(ctransform.y * (PI / 180));
 
 	return forward.Normalised();
 }
@@ -94,9 +92,9 @@ void HammerControl::HammerHit()
 {
 	if (!handle) { return; }
 
-	auto camera = GameObject::gameWorld->GetMainCamera();
+	//auto camera = GameObject::gameWorld->GetMainCamera();
 	Vector3 end;
-	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(camera->GetTransform().GetWorldPosition(), camera->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), end));
+	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(gameObject->GetTransform().GetWorldPosition(), gameObject->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), end));
 	if (colliding)
 	{		
 		if (colliding->GetComponent<HealthManager*>())

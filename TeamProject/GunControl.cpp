@@ -43,10 +43,8 @@ void GunControl::SetRightGun(GameObject * obj)
 
 Vector3 GunControl::CalculateDirection()
 {
-	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0, 0, 0); }
-
 	Vector3 forward;
-	Vector3 ctransform = camera->GetTransform().GetChildrenList()[0]->GetWorldOrientation().ToEuler();
+	Vector3 ctransform = GetCameraRotation().ToEuler();
 	ctransform.y *= -1;
 
 	forward.x = sin(ctransform.y* (PI / 180)) * cos(ctransform.x * (PI / 180));
@@ -77,7 +75,7 @@ void GunControl::FireObjectAndRemoveFromResources(std::vector<GameObject *> &chi
 	children[i]->GetComponent<Resource*>()->Reset();
 	children[i]->GetComponent<DamageControl*>()->SetDamage(idealProjectileDamage);
 
-	Vector3 projMov = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * projectileSpeed)) - children[i]->GetTransform().GetWorldPosition();
+	Vector3 projMov = (GetCameraPosition() + (CalculateDirection() * projectileSpeed)) - children[i]->GetTransform().GetWorldPosition();
 	children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
 	gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
 }

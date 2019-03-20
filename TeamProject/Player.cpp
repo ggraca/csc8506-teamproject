@@ -125,7 +125,7 @@ void Player::PlayerRotation()
 {
 	Vector3 playerRot = gameObject->GetTransform().GetLocalOrientation().ToEuler();
 	playerRot.y = cameraRotation.ToEuler().y;
-	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, playerRot.y, 0));
+	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, playerRot.y + 180, 0));
 }
 
 void Player::PlayerMovement(float dt)
