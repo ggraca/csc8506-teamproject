@@ -13,6 +13,7 @@ using namespace Rendering;
 Window*		Window::window		= nullptr;
 Keyboard*	Window::keyboard	= nullptr;
 Mouse*		Window::mouse		= nullptr;
+Gamepad*    Window::gamepad		= nullptr;
 GameTimer*	Window::timer		= nullptr;
 
 Window::Window()	{
@@ -23,6 +24,7 @@ Window::Window()	{
 Window::~Window()	{
 	delete keyboard;keyboard= nullptr;
 	delete mouse;	mouse	= nullptr;
+	delete gamepad; gamepad = nullptr;
 	delete timer;	timer	= nullptr;
 	window = nullptr;
 }
@@ -53,6 +55,7 @@ bool	Window::UpdateWindow() {
 
 	mouse->UpdateFrameState(timer->GetTimeDelta());
 	keyboard->UpdateFrameState(timer->GetTimeDelta());
+	gamepad->UpdateFrameState(timer->GetTimeDelta());
 
 	return InternalUpdate();
 }

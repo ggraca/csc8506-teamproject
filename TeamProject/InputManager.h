@@ -53,6 +53,8 @@ namespace NCL
 			{
 				std::vector<NCL::KeyboardKeys> relatedKeyboardKeys;
 				std::vector<NCL::MouseButtons> relatedMouseKeys;
+				std::vector<NCL::GamepadKeys> relatedGamepadKeys;
+
 			};
 
 

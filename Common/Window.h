@@ -14,6 +14,7 @@ _-_-_-_-_-_-_-""  ""
 
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Gamepad.h"
 #include "GameTimer.h"
 
 #include "Vector2.h"
@@ -62,6 +63,7 @@ namespace NCL {
 
 		static const Keyboard*	 GetKeyboard() { return keyboard; }
 		static const Mouse*		 GetMouse() { return mouse; }
+		static const Gamepad*	 GetGamepad() { return gamepad; }
 		static const GameTimer*	 GetTimer() { return timer; }
 
 		static Window*	const GetWindow() { return window; }
@@ -87,6 +89,7 @@ namespace NCL {
 		static Window*		window;
 		static Keyboard*	keyboard;
 		static Mouse*		mouse;
+		static Gamepad*		gamepad;
 		static GameTimer*	timer;
 	};
 }

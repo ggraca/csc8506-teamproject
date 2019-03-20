@@ -30,24 +30,24 @@ void Camera::UpdateCamera(float dt) {
 
 	float frameSpeed = 100 * dt;
 
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_W)) {
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_W) || Window::GetGamepad()->KeyDown(GAMEPAD_DPADUP)) {
 		position += Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Matrix4::Rotation(pitch, Vector3(1, 0, 0)) * Vector3(0, 0, -1) * frameSpeed * speedz;
 	}
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_S)) {
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_S) || Window::GetGamepad()->KeyDown(GAMEPAD_DPADDOWN)) {
 		position -= Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Matrix4::Rotation(pitch, Vector3(1, 0, 0)) * Vector3(0, 0, -1) * frameSpeed * speedz;
 	}
 
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_A)) {
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_A) || Window::GetGamepad()->KeyDown(GAMEPAD_DPADLEFT)) {
 		position += Matrix4::Rotation(yaw, Vector3(0, 1, 0)) *  Vector3(-1, 0, 0) * frameSpeed * speedx;
 	}
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_D)) {
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_D) || Window::GetGamepad()->KeyDown(GAMEPAD_DPADRIGHT)) {
 		position -= Matrix4::Rotation(yaw, Vector3(0, 1, 0)) * Vector3(-1, 0, 0) * frameSpeed * speedx;
 	}
 
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SHIFT)) {
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SHIFT) || Window::GetGamepad()->KeyDown(GAMEPAD_LEFTSHOULDER)) {
 		position.y += frameSpeed * speedy;
 	}
-	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SPACE)) {
+	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SPACE) || Window::GetGamepad()->KeyDown(GAMEPAD_A)) {
 		position.y -= frameSpeed * speedy;
 	}
 }

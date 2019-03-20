@@ -23,7 +23,7 @@ namespace NCL
 		GAMEPAD_VIEW = 0x02,
 		GAMEPAD_X = 0x16,
 		GAMEPAD_Y = 0x32,
-		GAMEPAD_MAX = 0xFF
+		GAMEPAD_MAX = 0x131073
 	};
 
 
