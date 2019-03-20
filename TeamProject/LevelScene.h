@@ -19,8 +19,7 @@ namespace NCL {
 			LevelScene(bool& quitGame);
 			~LevelScene();
 			void LoadWorld();
-
-
+			
 		protected:
 			void ResetWorld();
 

@@ -25,9 +25,8 @@ public:
 	void ResetDamageControl();
 	void SetDamage(int d);
 
-private:
+protected:
 	int damage = 0;
 	DamageType typeOfDamage = DamageType::SingleShot;
-	
 };
 

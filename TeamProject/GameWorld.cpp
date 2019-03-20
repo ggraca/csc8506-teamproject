@@ -43,7 +43,7 @@ void GameWorld::SwitchToFPS()
 
 void GameWorld::SwitchToTPS()
 {
-	cameraOffset = Vector3(0, 30, -150);
+	cameraOffset = Vector3(0, 70, -150);
 	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
 
 	if (child)
@@ -130,6 +130,21 @@ void GameWorld::LateInstantiate(GameObject * obj)
 	objectsToInstantiate.push_back(obj);
 }
 
+void GameWorld::LateInstantiateRecursively(GameObject * obj)
+{
+	if (!obj) { return; }
+
+	LateInstantiate(obj);
+
+	if ((int)obj->GetTransform().GetChildrenList().size() > 0)
+	{
+		for (auto&i : obj->GetTransform().GetChildrenList())
+		{
+			LateInstantiateRecursively(i->GetGameObject());
+		}
+	}
+}
+
 void GameWorld::HandleObjectsToInstantiate()
 {
 	for (auto& i : objectsToInstantiate)
@@ -169,17 +184,19 @@ void GameWorld::Instantiate(GameObject* o)
 	
 	CallInitialObjectFunctions(o);
 	gameObjects.push_back(o);
-
-	PhysicsObject* pc = o->GetComponent<PhysicsObject*>();
   
-	if (pc)
-	{
-		btCollisionShape* po = pc->GetShape();
-		physics->collisionShapes.push_back(po);
+	AddObjectPhysicsToWorld(o->GetComponent<PhysicsObject*>());
+}
 
-		btRigidBody* pb = pc->GetRigidbody();
-		physics->dynamicsWorld->addRigidBody(pb);
-	}
+void GameWorld::AddObjectPhysicsToWorld(PhysicsObject * pc)
+{
+	if (!pc) { return; }
+
+	btCollisionShape* po = pc->GetShape();
+	physics->collisionShapes.push_back(po);
+
+	btRigidBody* pb = pc->GetRigidbody();
+	physics->dynamicsWorld->addRigidBody(pb);
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
@@ -190,12 +207,37 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	o->SetUpInitialScripts();	
 }
 
+const btCollisionObject* GameWorld::Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd)
+{
+	return physics->Raycast(start, end, newEnd);
+}
+
+const btCollisionObject* GameWorld::Raycast(const Vector3 & start, const Vector3& dir, float magnitude, Vector3& newEnd)
+{
+	return physics->RaycastPosDir(start, dir, magnitude,newEnd);
+}
+
 void GameWorld::Instantiate(GameObject* o, GameObject* parent )
 {
 	if (!o) { return; }
 
 	o->SetParent(parent);
 	Instantiate(o);
+}
+
+void GameWorld::InstantiateRecursively(GameObject * o)
+{
+	if (!o) { return; }
+
+	Instantiate(o);
+
+	if ((int)o->GetTransform().GetChildrenList().size() > 0)
+	{
+		for (auto&i : o->GetTransform().GetChildrenList())
+		{
+			InstantiateRecursively(i->GetGameObject());
+		}
+	}
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 
@@ -214,6 +256,19 @@ void GameWorld::RemoveGameObject(GameObject* o)
 			return;
 		}
 	}
+}
+
+GameObject * GameWorld::CollisionObjectToGameObject(const btCollisionObject * co)
+{
+	if (!co) { return nullptr; }
+
+	for (auto&i : gameObjects)
+	{
+		if (!i->GetComponent<PhysicsObject*>()) { continue; }
+
+		if (i->GetComponent<PhysicsObject*>()->GetRigidbody() == co) { return i; }
+	}
+	return nullptr;
 }
 
 void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {

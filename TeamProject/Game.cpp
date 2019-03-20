@@ -21,6 +21,11 @@ Game::Game() {
 	currentScene = new MenuScene(this);
 	currentScene->SetRenderer(renderer);
 	
+	//currentScene = new NetworkExampleScene();	
+	//currentScene->SetRenderer(renderer);
+	//currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
+	//network->GetEntity()->SetWorld(currentScene->GetGameWorld());
+
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
 

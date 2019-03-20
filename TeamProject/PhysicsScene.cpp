@@ -1,6 +1,7 @@
 #include "PhysicsScene.h"
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
+#include "HammerControl.h"
 #include "ParticleSystem.h"
 
 
@@ -9,25 +10,33 @@ PhysicsScene::PhysicsScene(bool& qG) : GameScene(qG) {
 }
 
 void PhysicsScene::ResetWorld() {
-	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
+	auto floor = new CubePrefab(Vector3(200, -40, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
 
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-	//Remove particle system - it's a dummy to test
-	/*player->AddComponent<ParticleSystem*>(new ParticleSystem(5.0f, 100, 15, 5.0f, 1.0f, Vector3(0.0f, 1.0f, 0.0f),
-		Vector3(0.2f, 0.0f, 0.2f), 30.0f, Assets::AssetManager::LoadTexture("Particles/White puff/whitepuff18.png")));*/
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
+
+
+	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);
+	audio->SetCamera(world->GetMainCamera());
 
-	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f,0.4f);
+	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f,0.4f);
 	resource1->SetName("Resource 1");
 
-	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
-	
-	world->Instantiate(player);
+  
+	auto des = new CubePrefab(Vector3(500, 100, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
+	des->AddComponent<Destructible*>(new Destructible(des));
+	des->AddComponent<HealthManager*>(new HealthManager(des));
+	des->GetComponent<HealthManager*>()->SetHealth(8);
+	des->SetName("Destructible");
+
+	world->Instantiate(des);
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
 	world->Instantiate(floor);
-	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+	world->InstantiateRecursively(player);
+
 }
 
 
@@ -77,15 +86,10 @@ void PhysicsScene::UpdateKeys() {
 		renderer->health = 1.0f;
 	}
 	//HUD TESTING ENDS
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-		console.Toggle();
-		debugMenu.Toggle();
-	}
+
 }
 
 void PhysicsScene::LateUpdate(float dt) {
 	GameScene::LateUpdate(dt);
 	UpdateKeys();
-
-	
 }

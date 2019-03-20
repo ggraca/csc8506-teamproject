@@ -26,7 +26,7 @@ public:
 protected:
 	void ResetWorld();
 	void UpdateKeys();
-    
+  
 	bool isServer = false;
 
 	GameServer* server;

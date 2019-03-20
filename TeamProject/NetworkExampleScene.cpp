@@ -25,7 +25,7 @@ void NetworkExampleScene::ResetWorld() {
 		}
 	}
 
-	world->LateInstantiate(player);
+	world->LateInstantiateRecursively(player);
 	world->LateInstantiate(floor);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
