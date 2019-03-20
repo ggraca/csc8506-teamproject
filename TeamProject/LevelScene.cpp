@@ -25,8 +25,6 @@
 #include "DWallPrefab.h"
 #include "CartPrefab.h"
 #include "Destructible.h"
-
-
 #include "../Common/OBJGeometry.h"
 
 using namespace NCL;
@@ -42,10 +40,11 @@ void LevelScene::ResetWorld() {
 		Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
-	//Player
-	InitPlayer();
 
-	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f, 0.4f);
+	//Player
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
+
+	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource1->SetName("Resource 1");
 
 	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f, 0.4f);
@@ -55,7 +54,7 @@ void LevelScene::ResetWorld() {
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
 	world->Instantiate(floor);
-
+	world->InstantiateRecursively(player);
 
 	LoadWorld();
 	
@@ -64,62 +63,6 @@ void LevelScene::ResetWorld() {
 LevelScene::~LevelScene() {
 }
 
-void LevelScene::InitializeGuns(GameObject * player)
-{
-	auto  playerLeft = new CubePrefab(CubePrefab::PrefabType::GUN);
-	auto  playerRight = new CubePrefab(CubePrefab::PrefabType::GUN);
-
-	playerLeft->SetParent(player);
-	playerRight->SetParent(player);
-
-	playerRight->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
-	playerLeft->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
-
-	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
-	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
-
-	world->Instantiate(playerLeft);
-	world->Instantiate(playerRight);
-}
-
-void LevelScene::InitializeHammer(GameObject * player)
-{
-	auto  handle = new CubePrefab(CubePrefab::PrefabType::HANDLE);
-	handle->SetParent(player);
-	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
-
-	player->GetComponent<HammerControl*>()->SetHandle(handle);
-
-	world->Instantiate(handle);
-}
-
-void LevelScene::InitializeShield(GameObject * player)
-{
-	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
-	GameObject * shieldDummy = new GameObject();
-	shieldDummy->SetParent(player);
-	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
-
-	player->GetComponent<ShieldControl*>()->SetShield(shield);
-	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
-	player->GetComponent<ShieldControl*>()->SetShieldDummy(shieldDummy);
-
-	world->Instantiate(shieldDummy);
-	world->Instantiate(shield);
-}
-
-void LevelScene::InitPlayer()
-{
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
-
-	InitializeGuns(player);
-	InitializeHammer(player);
-	InitializeShield(player);
-
-	world->Instantiate(player);
-	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-	audio->SetPlayer(player);
-}
 void LevelScene::LoadWorld() {
 	std::ifstream infile(Assets::DATADIR + "level1.txt");
 	int size, x_length, z_length;

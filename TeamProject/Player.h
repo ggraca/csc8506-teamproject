@@ -17,6 +17,7 @@ public:
 	void Start() override;
 	void Update(float dt) override;
 	void CheckAirStrikeControls();
+	void CheckBigGunControls(float dt);
 	void CheckShieldControls();
 	void CheckHammerControls();
 	void CheckGunControls();
@@ -38,5 +39,8 @@ protected:
 	bool isGunActive = false;
 	bool isHammerActive = false;
 	bool isShieldActive = false;
+	bool isBigGunActive = false;
+	bool isJumping = false;
+	float timeCounter = -1;
 };
 

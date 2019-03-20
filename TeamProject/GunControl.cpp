@@ -43,14 +43,15 @@ void GunControl::SetRightGun(GameObject * obj)
 
 Vector3 GunControl::CalculateDirection()
 {
-	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0,0,0); }
+	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0, 0, 0); }
 
 	Vector3 forward;
-	Transform *ctransform = camera->GetTransform().GetChildrenList()[0];
+	Vector3 ctransform = camera->GetTransform().GetChildrenList()[0]->GetWorldOrientation().ToEuler();
+	ctransform.y *= -1;
 
-	forward.x = sin(camera->GetTransform().GetLocalOrientation().ToEuler().y* (PI / 180)) * cos(camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180));
-	forward.y = sin(-camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180));
-	forward.z = cos(camera->GetTransform().GetLocalOrientation().ToEuler().x * (PI / 180)) * cos(camera->GetTransform().GetLocalOrientation().ToEuler().y * (PI / 180));
+	forward.x = sin(ctransform.y* (PI / 180)) * cos(ctransform.x * (PI / 180));
+	forward.y = sin(ctransform.x * (PI / 180));
+	forward.z = -1 * cos(ctransform.x * (PI / 180)) * cos(ctransform.y * (PI / 180));
 
 	return forward.Normalised();
 }
@@ -71,9 +72,19 @@ void GunControl::DeactivateGun()
 	rightGun->SetActiveStatus(false);
 }
 
+void GunControl::FireObjectAndRemoveFromResources(std::vector<GameObject *> &children, int i )
+{
+	children[i]->GetComponent<Resource*>()->Reset();
+	children[i]->GetComponent<DamageControl*>()->SetDamage(idealProjectileDamage);
+
+	Vector3 projMov = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * projectileSpeed)) - children[i]->GetTransform().GetWorldPosition();
+	children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
+	gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
+}
+
 void GunControl::Fire()
 {
-	if (!leftGun || !rightGun) { std::cout << "Guns are not attached" << std::endl; return; }
+	if (!leftGun || !rightGun) {return; }
 
 	//This part will change later on
 	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
@@ -81,14 +92,7 @@ void GunControl::Fire()
 	if ((int)children.size() > 0)
 	{
 		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetChildrenList()[currentGun=!currentGun]->GetWorldPosition() + CalculateDirection() *30.0f );
-		children[0]->GetComponent<Resource*>()->Reset();
-		children[0]->GetComponent<DamageControl*>()->SetDamage(4);
-
-		Vector3 projMov = CalculateDirection() * projectileSpeed;
-		projMov.y = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition()).y + 200;
-		children[0]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
-		gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
-		
+		FireObjectAndRemoveFromResources(children);	
 	}
 }
 

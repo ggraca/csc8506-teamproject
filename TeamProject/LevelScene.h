@@ -19,7 +19,7 @@ namespace NCL {
 			LevelScene();
 			~LevelScene();
 			void LoadWorld();
-
+			
 		protected:
 			void InitializeGuns(GameObject * player);
 			void InitializeShield(GameObject * player);

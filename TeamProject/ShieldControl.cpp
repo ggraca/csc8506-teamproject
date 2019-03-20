@@ -79,7 +79,7 @@ void ShieldControl::FormShield()
 
 	int resourceAmount = gameObject->GetComponent<Player*>()->GetResourceCount();
 	int singleDimension = (int)sqrt(resourceAmount);
-	shield->GetTransform().SetLocalScale(Vector3(singleDimension * 10.0f, singleDimension * 10.0f, 5.0f ));
+	shield->GetTransform().ForceUpdateScale(Vector3(singleDimension * 10.0f, singleDimension * 10.0f, 5.0f ));
 
 	for (int i = 0; i < singleDimension; i++)
 	{
@@ -110,8 +110,8 @@ void ShieldControl::DeformShield()
 
 		i->GetGameObject()->GetComponent<Resource*>()->SetTarget(gameObject);
 		i->GetGameObject()->SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
-		i->GetGameObject()->GetTransform().SetLocalScale(Vector3(5, 5, 5));
 		i->GetGameObject()->AddComponent<PhysicsObject*>(new PhysicsObject(i, ShapeType::cube, 10));
+		i->GetGameObject()->GetTransform().ForceUpdateScaleWithTransform(Vector3(5, 5, 5));
 
 		GameObject::gameWorld->AddObjectPhysicsToWorld(i->GetGameObject()->GetComponent<PhysicsObject*>());
 	}

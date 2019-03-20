@@ -6,6 +6,7 @@
 #include "AirStrikeControl.h"
 #include "CameraControl.h"
 #include "PhysicsObject.h"
+#include "BigGunControl.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -27,6 +28,7 @@ void Player::Update(float dt)
 	CheckHammerControls();
 	CheckShieldControls();
 	CheckAirStrikeControls();
+	CheckBigGunControls(dt);
 }
 
 void Player::CheckAirStrikeControls()
@@ -37,9 +39,32 @@ void Player::CheckAirStrikeControls()
 	}
 }
 
+void Player::CheckBigGunControls(float dt)
+{
+	if (timeCounter >= 0.0f) { timeCounter += dt;}
+	if (!isHammerActive && !isShieldActive && !isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	{
+		isBigGunActive = true;
+		timeCounter = dt;
+
+		gameObject->GetComponent<BigGunControl*>()->ActivateGun();
+	}
+
+	if (isBigGunActive && !InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::HIT))
+	{
+		if (resourceCount > 3)
+		{
+			gameObject->GetComponent<BigGunControl*>()->Fire(timeCounter);	
+		}
+		gameObject->GetComponent<BigGunControl*>()->DeactivateGun();
+		isBigGunActive = false;
+		timeCounter = -1;
+	}
+}
+
 void Player::CheckShieldControls()
 {
-	if (!isGunActive && !isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_SHIELD))
+	if (!isGunActive && !isHammerActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_SHIELD))
 	{
 		isShieldActive = true;
 
@@ -56,7 +81,7 @@ void Player::CheckShieldControls()
 
 void Player::CheckHammerControls()
 {
-	if (!isGunActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
+	if (!isGunActive && !isShieldActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
 	{
 		isHammerActive = !isHammerActive;
 
@@ -72,7 +97,7 @@ void Player::CheckHammerControls()
 
 void Player::CheckGunControls()
 {
-	if (!isHammerActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
+	if (!isHammerActive && !isShieldActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
 	{
 		isGunActive = !isGunActive;
 
@@ -154,12 +179,11 @@ void Player::PlayerMovement(float dt)
 		}
 	}
 
-	if (InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
+	if (!isJumping && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::JUMP))
 	{
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 200, 0));
+		isJumping = true;
 	}
-
-	
 }
 
 
@@ -177,9 +201,15 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
 		UpdateResourceCount(1);
 	}
+
+	else if (otherObject->CompareTag(LayerAndTag::Tags::Ground) || otherObject->CompareTag(LayerAndTag::Tags::Destructible))
+	{
+		isJumping = false;
+	}
 }
 
-void Player::OnCollisionEnd(GameObject * otherObject) {
+void Player::OnCollisionEnd(GameObject * otherObject) 
+{
 }
 
 int Player::GetResourceCount() const

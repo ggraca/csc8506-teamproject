@@ -115,13 +115,10 @@
     <ClCompile Include="ShieldControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="AirStrikeControl.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="TypeId.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="AirStrikeControl.cpp">
+    <ClCompile Include="BigGunControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CameraControl.cpp">
@@ -325,6 +322,9 @@
     <ClInclude Include="Destructible.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="HealthManager.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
     </ClInclude>
@@ -337,17 +337,8 @@
     <ClInclude Include="ShieldControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="AirStrikeControl.h">
+    <ClInclude Include="BigGunControl.h">
       <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="AirStrikeControl.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthManager.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="TypeId.h">
-      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="CameraControl.h">
       <Filter>Scripts</Filter>
@@ -366,6 +357,9 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeId.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
