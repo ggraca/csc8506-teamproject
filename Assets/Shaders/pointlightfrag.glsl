@@ -7,6 +7,7 @@ uniform sampler2DShadow shadowTex;
 
 uniform vec2 pixelSize;
 uniform vec3 cameraPos;
+in mat4 inverseProjView;
 uniform mat4 shadowMatrix;
 uniform bool drawShadows;
 
@@ -15,8 +16,6 @@ uniform float lightBrightness;
 uniform vec3 lightPos;
 uniform vec4 lightColour;
 
-in mat4 inverseProjView;
-in vec4 shadowProj;
 out vec4 fragColour [2];
 
 void main (void) {	
