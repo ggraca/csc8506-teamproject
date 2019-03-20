@@ -16,9 +16,10 @@ MenuScene::MenuScene(Game* g) : game(g)
 	menuEntries[1].push_back(MenuEntry(3, "Back", false));
 
 	//Audio Settings
-	menuEntries[2].push_back(MenuEntry(0, "Volume Up", true));
-	menuEntries[2].push_back(MenuEntry(1, "Volume Down", false));
-	menuEntries[2].push_back(MenuEntry(2, "Back", false));
+	menuEntries[2].push_back(MenuEntry(0, "Mute", true));
+	menuEntries[2].push_back(MenuEntry(1, "Volume Up", false));
+	menuEntries[2].push_back(MenuEntry(2, "Volume Down", false));
+	menuEntries[2].push_back(MenuEntry(3, "Back", false));
 
 	//Controls
 	menuEntries[3].push_back(MenuEntry(0, "Back", true));
@@ -118,13 +119,19 @@ void MenuScene::MenuUpdate(float dt)
 		}
 		else if (menuPathIndex == 2 && menuEntries[2][0].selected)
 		{
-			//Increase volume
+			//Mute/unmute
+			if (menuEntries[2][0].menuTitle == "Mute") menuEntries[2][0].menuTitle = "Unmute";
+			else menuEntries[2][0].menuTitle = "Mute";
 		}
 		else if (menuPathIndex == 2 && menuEntries[2][1].selected)
 		{
-			//Decrease volume
+			//Increase volume
 		}
 		else if (menuPathIndex == 2 && menuEntries[2][2].selected)
+		{
+			//Decrease volume
+		}
+		else if (menuPathIndex == 2 && menuEntries[2][3].selected)
 		{
 			//Go Back to Settings from Audio
 			menuPathIndex = 1;
@@ -132,7 +139,7 @@ void MenuScene::MenuUpdate(float dt)
 		else if (menuPathIndex == 3 && menuEntries[3][0].selected)
 		{
 			//Go Back to Settings from Controls
-			menuPathIndex = 2;
+			menuPathIndex = 1;
 		}
 	}
 }
