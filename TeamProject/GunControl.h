@@ -12,8 +12,9 @@ public:
 	GunControl(GameObject * gameObject, float projSpeed, int projDamage);
 	virtual ~GunControl();
 
-	void ActivateGun();
-	void DeactivateGun();
+	virtual void ActivateGun();
+	virtual void DeactivateGun();
+	void FireObjectAndRemoveFromResources(std::vector<GameObject *> &children, int i=0);
 	void Fire();
 
 	void Awake()  override;
@@ -24,7 +25,7 @@ public:
 
 protected:
 
-	float projectileSpeed = 2000.0f;
+	float projectileSpeed = 6000.0f;
 	int idealProjectileDamage = 4;
 	GameObject * camera = nullptr;
 	GameObject * leftGun = nullptr;

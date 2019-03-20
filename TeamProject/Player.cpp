@@ -3,6 +3,7 @@
 #include "GunControl.h"
 #include "HammerControl.h"
 #include "ShieldControl.h"
+#include "BigGunControl.h"
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
@@ -23,11 +24,35 @@ void Player::Update(float dt)
 	CheckGunControls();
 	CheckHammerControls();
 	CheckShieldControls();
+	CheckBigGunControls(dt);
+}
+
+void Player::CheckBigGunControls(float dt)
+{
+	if (timeCounter >= 0.0f) { timeCounter += dt;}
+	if (!isHammerActive && !isShieldActive && !isGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::HIT))
+	{
+		isBigGunActive = true;
+		timeCounter = dt;
+
+		gameObject->GetComponent<BigGunControl*>()->ActivateGun();
+	}
+
+	if (isBigGunActive && !InputManager::GetInstance().IsButtonDown(InputManager::ActionButton::HIT))
+	{
+		if (resourceCount > 3)
+		{
+			gameObject->GetComponent<BigGunControl*>()->Fire(timeCounter);	
+		}
+		gameObject->GetComponent<BigGunControl*>()->DeactivateGun();
+		isBigGunActive = false;
+		timeCounter = -1;
+	}
 }
 
 void Player::CheckShieldControls()
 {
-	if (!isGunActive && !isHammerActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_SHIELD))
+	if (!isGunActive && !isHammerActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_SHIELD))
 	{
 		isShieldActive = true;
 
@@ -44,7 +69,7 @@ void Player::CheckShieldControls()
 
 void Player::CheckHammerControls()
 {
-	if (!isGunActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
+	if (!isGunActive && !isShieldActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_HAMMER))
 	{
 		isHammerActive = !isHammerActive;
 
@@ -60,7 +85,7 @@ void Player::CheckHammerControls()
 
 void Player::CheckGunControls()
 {
-	if (!isHammerActive && !isShieldActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
+	if (!isHammerActive && !isShieldActive && !isBigGunActive && InputManager::GetInstance().IsButtonPressed(InputManager::ActionButton::TOGGLE_GUN))
 	{
 		isGunActive = !isGunActive;
 

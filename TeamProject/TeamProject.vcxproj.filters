@@ -25,7 +25,6 @@
     <ClCompile Include="SpherePrefab.cpp" />
     <ClCompile Include="ScriptObject.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="TypeId.cpp" />
     <ClCompile Include="CubePrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
@@ -125,13 +124,19 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="ShieldControl.cpp" />
     <ClCompile Include="GunControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="HammerControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="ShieldControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeId.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="BigGunControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -298,9 +303,6 @@
     <ClInclude Include="Component.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="TypeId.h">
-      <Filter>Gameplay</Filter>
-    </ClInclude>
     <ClInclude Include="NetworkClient.h">
       <Filter>Networking</Filter>
     </ClInclude>
@@ -340,13 +342,19 @@
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="ShieldControl.h" />
     <ClInclude Include="GunControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="HammerControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="ShieldControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeId.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="BigGunControl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">

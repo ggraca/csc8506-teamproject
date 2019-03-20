@@ -173,6 +173,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
+    <ClCompile Include="BigGunControl.cpp" />
     <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="BulletPhysics.cpp" />
     <ClCompile Include="CannonPrefab.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioEngine.h" />
+    <ClInclude Include="BigGunControl.h" />
     <ClInclude Include="CameraControl.h" />
     <ClInclude Include="BulletPhysics.h" />
     <ClInclude Include="CannonPrefab.h" />
