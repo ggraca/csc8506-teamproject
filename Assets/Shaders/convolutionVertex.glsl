@@ -12,5 +12,6 @@ out Vertex {
 void main()
 {
     OUT.normal = position;  
-    gl_Position =  projection * view * vec4(normal, 1.0);
+	mat4 rotView = mat4(mat3(viewMatrix)); // remove translation from the view matrix
+    gl_Position =  projMatrix * rotView * vec4(normal, 1.0);
 }
