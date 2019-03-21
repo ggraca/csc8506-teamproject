@@ -99,6 +99,27 @@ TextureBase* OGLTexture::EmptyTexture(int width, int height, bool depth) {
 	return tex;
 }
 
+TextureBase* OGLTexture::EmptyCubeTexture(int width, int height) {
+	OGLTexture* tex = new OGLTexture();
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, tex->texID);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	for (unsigned int i = 0; i < 6; ++i)
+	{
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, width, height, 0,
+			GL_RGB, GL_FLOAT, nullptr);
+	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return tex;
+}
+
 TextureBase* OGLTexture::ShadowTexture(int width, int height) {
 	OGLTexture* tex = new OGLTexture();
 
