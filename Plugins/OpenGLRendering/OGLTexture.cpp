@@ -91,8 +91,8 @@ TextureBase* OGLTexture::EmptyTexture(int width, int height, bool depth) {
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, depth ? GL_DEPTH_COMPONENT : GL_RGBA8, width, height, 0,
-		depth ? GL_DEPTH_COMPONENT : GL_RGBA, depth ? GL_FLOAT : GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, depth ? GL_DEPTH_COMPONENT : GL_RGBA32F, width, height, 0,
+		depth ? GL_DEPTH_COMPONENT : GL_RGBA, depth ? GL_FLOAT : GL_FLOAT, NULL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 

@@ -38,6 +38,8 @@ void main (void) {
 	}
 	
 	vec3 normal = normalize(texture(normTex, pos.xy).xyz * 2.0 - 1.0);
+	vec4 material = texture(materialTex, pos.xy);
+	vec3 diffuse = texture(diffuseTex, pos.xy).xyz;
 
 	vec4 clip = inverseProjView * vec4(pos * 2.0 - 1.0, 1.0);
 	pos = clip.xyz / clip.w;
@@ -45,7 +47,7 @@ void main (void) {
 	vec4 shadowProj = (shadowMatrix * vec4(pos + (normal * 1.5), 1));
 	float shadow = 1.0; // New !
 
-	if(shadowProj.w > 0.0) { // New !
+	if((shadowProj.w > 0.0)) { // New !
 		shadow = textureProj(shadowTex, shadowProj);
 	}
 	
@@ -57,14 +59,11 @@ void main (void) {
 		return;
 	}
 	
-	vec4 material = texture(materialTex, pos.xy);
 	float roughness = material.r;
 	float metalness = material.g;
 	float ao = material.b;
-	
-	vec3 diffuse = texture(diffuseTex, pos.xy).xyz;
 
-	vec3 lightDir = normalize(lightDirection);
+	vec3 lightDir = normalize(-lightDirection);
 	vec3 viewDir = normalize(cameraPos - pos);
 	vec3 halfDir = normalize(lightDir + viewDir);
 	

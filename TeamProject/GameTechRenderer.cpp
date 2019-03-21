@@ -194,10 +194,10 @@ void GameTechRenderer::RenderShadowMap() {
 
 	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(20, 0, 0), Vector4(1, 0, 0, 1));
 	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 20, 0), Vector4(0, 1, 0, 1));
-	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 0, 20), Vector4(0, 0, 1, 1));
+	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 0, -20), Vector4(0, 0, 1, 1));
 
 	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(cameraPosition + newlightPos, cameraPosition, newlightPosUp);
-	Matrix4 shadowProjMatrix = Matrix4::Orthographic(-10, 10000, -1000, 1000, -1000, 1000);
+	Matrix4 shadowProjMatrix = Matrix4::Orthographic(10, 10000, 1000, -1000, 1000, -1000);
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
 	shadowMatrix = biasMatrix * mvMatrix; //we'll use this one later on
 
@@ -348,7 +348,7 @@ void GameTechRenderer::RenderLights() {
 			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
 			BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 			BindMatrix4ToShader(projMatrix, "cameraProjMatrix");
-			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1), "lightDirection");
+			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, -1), "lightDirection");
 			BindIntToShader(drawShadows, "drawShadows");
 			BindTextureToShader(shadowTex, "shadowTex", 20);
 			BindMesh(screenQuad);
