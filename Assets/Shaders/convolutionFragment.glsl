@@ -28,7 +28,7 @@ void main()
 			// spherical to cartesian (in tangent space)
 			vec3 tangentSample = vec3(sin(theta) * cos(phi),  sin(theta) * sin(phi), cos(theta));
 			// tangent space to world
-			vec3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * N; 
+			vec3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * IN.normal; 
 
 			irradiance += texture(cubeTex, sampleVec).rgb * cos(theta) * sin(theta);
 			nrSamples++;
@@ -36,5 +36,5 @@ void main()
 	}
 	irradiance = PI * irradiance * (1.0 / float(nrSamples));
   
-    fragColor = vec4(irradiance, 1.0);
+    fragColour = vec4(irradiance, 1.0);
 }

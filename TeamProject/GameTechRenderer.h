@@ -31,7 +31,10 @@ namespace NCL {
 
 			void SetLightMesh(MeshGeometry* mesh) { lightSphere = mesh; }
 			
-			void SetSkyBox(TextureBase* Skybox) { skybox = Skybox; }
+			void SetSkyBox(TextureBase* Skybox) {
+				skybox = Skybox;
+				GenerateIrradianceMap(skybox, irradianceMap, convolutionShader, cube, (void*)&convFBO);
+			}
 
 			//HUD
 			void AddHUDObjects();

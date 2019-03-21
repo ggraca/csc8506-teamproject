@@ -13,5 +13,5 @@ void main()
 {
     OUT.normal = position;  
 	mat4 rotView = mat4(mat3(viewMatrix)); // remove translation from the view matrix
-    gl_Position =  projMatrix * rotView * vec4(normal, 1.0);
+    gl_Position =  projMatrix * rotView * vec4(position, 1.0);
 }
