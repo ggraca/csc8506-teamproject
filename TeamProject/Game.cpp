@@ -36,10 +36,10 @@ void Game::Update(float dt) {
 }
 
 void Game::InitialiseAssets() {
-	OGLMesh* cubeMesh = (OGLMesh*)Assets::AssetManager::LoadMesh("Cube.msh");
-	OGLMesh* sphereMesh = (OGLMesh*)Assets::AssetManager::LoadMesh("sphere2.msh");
-	OGLMesh* cylinderMesh = (OGLMesh*)Assets::AssetManager::LoadMesh("cylinder.obj");
-	OGLMesh* coneMesh = (OGLMesh*)Assets::AssetManager::LoadMesh("cone.obj");
+	MeshGeometry* cubeMesh = Assets::AssetManager::LoadMesh("Cube.msh");
+	MeshGeometry* sphereMesh = Assets::AssetManager::LoadMesh("sphere2.msh");
+	MeshGeometry* cylinderMesh = Assets::AssetManager::LoadMesh("cylinder.obj");
+	MeshGeometry* coneMesh = Assets::AssetManager::LoadMesh("cone.obj");
 
 	TextureBase* basicTex = Assets::AssetManager::LoadTexture("checkerboard.png");
 	TextureBase* brickTex = Assets::AssetManager::LoadTexture("brick.png");
