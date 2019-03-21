@@ -76,6 +76,6 @@ void Game::InitialiseAssets() {
 
 	TextureBase* cubeMap = (OGLTexture*)TextureLoader::LoadAPICubeTexture(faces);
 
-	renderer->skybox = cubeMap;
+	renderer->SetSkyBox(cubeMap);
 	renderer->SetLightMesh(sphereMesh);
 }

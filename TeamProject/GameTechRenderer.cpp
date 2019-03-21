@@ -102,6 +102,7 @@ void GameTechRenderer::GenBuffers() {
 	postTexture[1] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	//Generate Convolution buffer textures
 	TextureBase* tempConvTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	irradianceMap = OGLTexture::EmptyCubeTexture(32, 32);
 
 	vector<TextureBase*> gBufferTexes;
 	gBufferTexes.push_back(gBufferColourTex);
@@ -123,6 +124,7 @@ void GameTechRenderer::GenBuffers() {
 	GenerateFrameBuffer(&lightFBO, lightBufferTexes, nullptr);
 	GenerateFrameBuffer(&postFBO, postBufferTexes, nullptr);
 	GenerateFrameBuffer(&convFBO, convBufferTexes, nullptr);
+	delete tempConvTex;
 }
 
 void GameTechRenderer::RenderFrame() {

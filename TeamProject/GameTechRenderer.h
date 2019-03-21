@@ -31,7 +31,7 @@ namespace NCL {
 
 			void SetLightMesh(MeshGeometry* mesh) { lightSphere = mesh; }
 			
-			TextureBase* skybox;
+			void SetSkyBox(TextureBase* Skybox) { skybox = Skybox; }
 
 			//HUD
 			void AddHUDObjects();
@@ -76,6 +76,7 @@ namespace NCL {
 			ShaderBase* skyBoxShader;
 			ShaderBase* convolutionShader;
 			GLuint convFBO;
+			TextureBase* skybox;
 			TextureBase* irradianceMap;
 			MeshGeometry* cube;
 
