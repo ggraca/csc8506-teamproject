@@ -4,6 +4,7 @@
 #include "GameWorld.h"
 #include "BulletPhysics.h"
 #include "Debug.h"
+
 HammerControl::HammerControl(GameObject * gameObject):ScriptObject(gameObject)
 {
 }
@@ -53,8 +54,8 @@ void HammerControl::FormHammer()
 	{
 		i->GetComponent<PhysicsObject*>()->GetRigidbody()->clearForces();
 		i->GetComponent<Resource*>()->SetTarget(nullptr);
-		i->RemoveComponent<PhysicsObject*>();
 		GameObject::gameWorld->RemoveCollisionsFromGameObject(i);
+		i->RemoveComponent<PhysicsObject*>();
 		i->GetTransform().SetLocalScale(Vector3(5,5,5)/Vector3(2.0f,25.0f,2.0f));
 		i->GetTransform().SetLocalPosition(GenerateRandomPositionInHammer());
 		i->SetParent(handle);

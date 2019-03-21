@@ -46,7 +46,7 @@ void PlayerPrefab::InitializeShield(GameObject * player)
 	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
 	GameObject * shieldDummy = new GameObject();
 	shieldDummy->SetParent(player);
-	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
+	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 6));
 
 	player->GetComponent<ShieldControl*>()->SetShield(shield);
 	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());

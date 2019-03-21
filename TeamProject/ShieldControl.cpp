@@ -45,8 +45,8 @@ void ShieldControl::DeactivateShield()
 
 	shield->SetActiveStatus(false);
 
-	shield->RemoveComponent<PhysicsObject*>();
 	GameObject::gameWorld->RemoveCollisionsFromGameObject(shield);
+	shield->RemoveComponent<PhysicsObject*>();
 
 	DeformShield();
 }
@@ -89,8 +89,8 @@ void ShieldControl::FormShield()
 			Vector3 pos = Vector3(i * 3.0f, j * 3.0f, 0) - Vector3(singleDimension, singleDimension,0);
 			children[index]->GetComponent<PhysicsObject*>()->GetRigidbody()->clearForces();
 			children[index]->GetComponent<Resource*>()->SetTarget(nullptr);
-			children[index]->RemoveComponent<PhysicsObject*>();
 			GameObject::gameWorld->RemoveCollisionsFromGameObject(children[index]);
+			children[index]->RemoveComponent<PhysicsObject*>();
 			children[index]->GetTransform().SetLocalPosition(pos);
 			children[index]->SetParent(shieldDummy);
 			index++;
