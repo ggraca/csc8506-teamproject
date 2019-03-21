@@ -34,7 +34,7 @@ void main (void) {
 		return;
 	}
 	
-	vec3 lightOutput = ((kDiffuse * diffuse.xyz) + specular.xyz) * radiance.xyz * NdotL;
+	vec3 lightOutput = ((kDiffuse * diffuse.xyz / PI) + specular.xyz) * radiance.xyz * NdotL;
 	vec3 ambient = ambientColour.xyz * diffuse.xyz * ao;
 	
 	vec3 finalCol = ambient + lightOutput;

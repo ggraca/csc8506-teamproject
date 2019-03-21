@@ -40,6 +40,9 @@ void main (void) {
 	vec3 normal = normalize(texture(normTex, pos.xy).xyz * 2.0 - 1.0);
 	vec4 material = texture(materialTex, pos.xy);
 	vec3 diffuse = texture(diffuseTex, pos.xy).xyz;
+	diffuse.x = pow(diffuse.x, 2.2f);
+	diffuse.y = pow(diffuse.y, 2.2f);
+	diffuse.z = pow(diffuse.z, 2.2f);
 
 	vec4 clip = inverseProjView * vec4(pos * 2.0 - 1.0, 1.0);
 	pos = clip.xyz / clip.w;
