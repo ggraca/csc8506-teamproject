@@ -5,8 +5,9 @@ uniform sampler2D materialTex;
 uniform sampler2D emissiveTex;
 uniform sampler2D lightSpecularTex;
 uniform sampler2D KDTex;
+uniform sampler2D normTex;
 
-uniform vec4 ambientColour;
+uniform samplerCube irradianceMap;
 
 const float PI = 3.14159265359;
 
@@ -22,6 +23,7 @@ void main (void) {
 	vec4 radiance = texture(emissiveTex, IN.texCoord);
 	vec4 specular = texture(lightSpecularTex, IN.texCoord);
 	vec4 KDCol = texture(KDTex, IN.texCoord);
+	vec3 normal = texture(normTex, IN.texCoord).xyz;
 	vec3 kDiffuse = KDCol.rgb;
 	float NdotL = KDCol.a;
 	
@@ -36,7 +38,9 @@ void main (void) {
 	diffuse.z = pow(diffuse.z, 2.2f);
 	
 	vec3 lightOutput = ((kDiffuse * diffuse.xyz) + specular.xyz) * radiance.xyz * NdotL;
-	vec3 ambient = ambientColour.xyz * diffuse.xyz * ao;
+	
+	vec3 irradiance = texture(irradianceMap, normal).rgb;
+	vec3 ambient    = (kDiffuse * irradiance * diffuse.xyz) * ao; 
 	
 	vec3 finalCol = ambient + lightOutput;
 	finalCol = finalCol / (finalCol + vec3(1.0f));

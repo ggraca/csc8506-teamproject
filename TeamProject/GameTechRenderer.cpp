@@ -133,6 +133,12 @@ void GameTechRenderer::RenderFrame() {
 	pixOps.SetClearColor(Vector4(0.3f, 0.8f, 1, 1));
 	BuildObjectList();
 	SortObjectList();
+
+	if (RegenerateIrradianceMap) {
+		GenerateIrradianceMap(skybox, irradianceMap, convolutionShader, cube, (void*)&convFBO);
+		RegenerateIrradianceMap = false;
+	}
+
 	RenderShadowMap();
 	RenderSkybox();
 	RenderCamera();
@@ -435,13 +441,14 @@ void GameTechRenderer::CombineBuffers() {
 	BindMatrix4ToShader(viewMatrix, "viewMatrix");
 	BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 	BindMatrix4ToShader(identity, "textureMatrix");
-	BindVector4ToShader(ambientColour, "ambientColour");
 
 	BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 	BindTextureToShader(gBufferMaterialTex, "materialTex", 3);
 	BindTextureToShader(lightEmissiveTex, "emissiveTex", 4);
 	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 5);
 	BindTextureToShader(lightKDTex, "KDTex", 6);
+	BindTextureToShader(gBufferNormalTex, "normTex", 7);
+	BindTextureCubeToShader(irradianceMap, "irradianceMap", 8);
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();

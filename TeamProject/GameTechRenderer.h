@@ -31,10 +31,7 @@ namespace NCL {
 
 			void SetLightMesh(MeshGeometry* mesh) { lightSphere = mesh; }
 			
-			void SetSkyBox(TextureBase* Skybox) {
-				skybox = Skybox;
-				GenerateIrradianceMap(skybox, irradianceMap, convolutionShader, cube, (void*)&convFBO);
-			}
+			void SetSkyBox(TextureBase* Skybox) { skybox = Skybox; RegenerateIrradianceMap = true; }
 
 			//HUD
 			void AddHUDObjects();
@@ -82,6 +79,7 @@ namespace NCL {
 			TextureBase* skybox;
 			TextureBase* irradianceMap;
 			MeshGeometry* cube;
+			bool RegenerateIrradianceMap = false;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			TextureBase* gBufferDepthTex; // Depth goes here
