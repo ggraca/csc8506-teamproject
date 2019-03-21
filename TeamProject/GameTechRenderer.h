@@ -29,7 +29,7 @@ namespace NCL {
 			int GetVertsDrawn() const { return vertsDrawn; }
 			int GetShadowCasters() const { return shadowCasters; }
 
-			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
+			void SetLightMesh(MeshGeometry* mesh) { lightSphere = mesh; }
 			
 			TextureBase* skybox;
 
@@ -74,6 +74,10 @@ namespace NCL {
 			Matrix4     shadowMatrix;
 
 			ShaderBase* skyBoxShader;
+			ShaderBase* convolutionShader;
+			GLuint convFBO;
+			TextureBase* irradianceMap;
+			MeshGeometry* cube;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			TextureBase* gBufferDepthTex; // Depth goes here
@@ -97,7 +101,7 @@ namespace NCL {
 			ShaderBase* directionalLightShader;
 			ShaderBase* particleShader;
 			ShaderBase* hudShader;
-			OGLMesh* lightSphere;
+			MeshGeometry* lightSphere;
 			OGLMesh* screenQuad;
 
 			GLuint hudTex;

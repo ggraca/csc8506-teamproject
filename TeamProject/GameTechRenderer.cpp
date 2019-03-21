@@ -24,6 +24,7 @@ GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
 	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
 	presentShader = Assets::AssetManager::LoadShader("PresentShader", "TexturedVertex.glsl", "TexturedFragment.glsl");
 	particleShader = Assets::AssetManager::LoadShader("ParticleShader", "ParticleVert.glsl", "ParticleFrag.glsl");
+	convolutionShader = Assets::AssetManager::LoadShader("ConvolutionShader", "convolutionVertex.glsl", "convolutionFragment.glsl");
 
 	// Temporary until post process material or something is set up
 	// postProcessShaders.push_back(Assets::AssetManager::LoadShader("PostShader", "TexturedVertex.glsl", "blurfrag.glsl"));
@@ -35,6 +36,7 @@ GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
 	screenQuad = OGLMesh::GenerateQuad();
 	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	screenQuad->UploadToGPU();
+	cube = Assets::AssetManager::LoadMesh("Cube.msh");
 
 	AddHUDObjects();
 
