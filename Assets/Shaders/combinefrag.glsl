@@ -18,9 +18,6 @@ out vec4 fragColour;
 
 void main (void) {
 	vec4 diffuse = texture(diffuseTex, IN.texCoord);
-	diffuse.x = pow(diffuse.x, 2.2f);
-	diffuse.y = pow(diffuse.y, 2.2f);
-	diffuse.z = pow(diffuse.z, 2.2f);
 	float ao = texture(diffuseTex, IN.texCoord).b;
 	vec4 radiance = texture(emissiveTex, IN.texCoord);
 	vec4 specular = texture(lightSpecularTex, IN.texCoord);
@@ -34,7 +31,11 @@ void main (void) {
 		return;
 	}
 	
-	vec3 lightOutput = ((kDiffuse * diffuse.xyz / PI) + specular.xyz) * radiance.xyz * NdotL;
+	diffuse.x = pow(diffuse.x, 2.2f);
+	diffuse.y = pow(diffuse.y, 2.2f);
+	diffuse.z = pow(diffuse.z, 2.2f);
+	
+	vec3 lightOutput = ((kDiffuse * diffuse.xyz) + specular.xyz) * radiance.xyz * NdotL;
 	vec3 ambient = ambientColour.xyz * diffuse.xyz * ao;
 	
 	vec3 finalCol = ambient + lightOutput;
