@@ -22,6 +22,7 @@ public:
 	DamageType GetTypeOfDamage(DamageType typeOfDamage);
 	void OnCollisionBegin(GameObject * otherObject);
 	void ResolveDamage(GameObject * obj);
+	bool IsTagOccupied(LayerAndTag::Tags t);
 	void ResetDamageControl();
 	void SetDamage(int d);
 

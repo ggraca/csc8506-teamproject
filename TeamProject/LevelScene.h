@@ -21,6 +21,10 @@ namespace NCL {
 			void LoadWorld();
 			
 		protected:
+			void InitializeGuns(GameObject * player);
+			void InitializeShield(GameObject * player);
+			void InitPlayer();
+			void InitializeHammer(GameObject * player);
 			void ResetWorld();
 
 		};

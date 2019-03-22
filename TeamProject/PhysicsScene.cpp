@@ -31,7 +31,14 @@ void PhysicsScene::ResetWorld() {
 	des->GetComponent<HealthManager*>()->SetHealth(8);
 	des->SetName("Destructible");
 
+	auto des2 = new CubePrefab(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
+	des2->AddComponent<Destructible*>(new Destructible(des2));
+	des2->AddComponent<HealthManager*>(new HealthManager(des2));
+	des2->GetComponent<HealthManager*>()->SetHealth(8);
+	des2->SetName("Destructible");
+
 	world->Instantiate(des);
+	world->Instantiate(des2);
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
 	world->Instantiate(floor);

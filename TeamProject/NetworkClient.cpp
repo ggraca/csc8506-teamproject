@@ -1,8 +1,9 @@
 #include "NetworkClient.h"
 #include "GameWorld.h"
-#include "ResourcePrefab.h"
 #include "NetworkPackets.h"
 
+#include "PlayerPrefab.h"
+#include "ResourcePrefab.h"
 #include "WallPrefab.h"
 #include "StallPrefab.h"
 #include "TentPrefab.h"
@@ -15,8 +16,16 @@
 #include "CartPrefab.h"
 
 
-GameObject* GetGameObjectFromPacket(InstantiatePacket* packet) {
+GameObject* NetworkClient::GetGameObjectFromPacket(InstantiatePacket* packet) {
 	switch (packet->prefabId) {
+	case NetworkObject::Resource:
+		return new ResourcePrefab(packet->position, packet->rotation, Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+	case NetworkObject::Player: {
+		GameObject* player = new PlayerPrefab(packet->position, packet->rotation, Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+		// player->AddComponent<PlayerMovement*>(new PlayerMovement());
+		world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+		return player;
+	}
 	case NetworkObject::Wall:
 		return new WallPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Stall:
@@ -37,8 +46,6 @@ GameObject* GetGameObjectFromPacket(InstantiatePacket* packet) {
 		return new DWallPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Cart:
 		return new CartPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
-	case NetworkObject::Resource:
-		return new ResourcePrefab(packet->position, packet->rotation, Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	}
 	return nullptr;
 }
@@ -58,6 +65,15 @@ void NetworkClient::ReceivePacket(int type, GamePacket* payload, int source) {
 		NetworkObject* no = go->GetComponent<NetworkObject*>();
 		no->SetId(packet->networkId);
 		objects.push_back(no);
+	}
+	else if (type == DestroyMessage) {
+		DestroyPacket* packet = (DestroyPacket*)payload;
+
+		NetworkObject* no = FindObject(packet->networkId);
+		if (!no) return;
+
+		objects.erase(remove(objects.begin(), objects.end(), no), objects.end());
+		world->LateDestroy(no->GetGameObject());
 	}
 	else if (type == ObjectUpdateMessage) {
 		ObjectUpdatePacket* packet = (ObjectUpdatePacket*)payload;

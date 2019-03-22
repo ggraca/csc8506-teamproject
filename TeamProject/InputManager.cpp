@@ -69,6 +69,58 @@ void InputManager::Dispose()
 	delete[] GetInstance().registeredActionButtons;
 }
 
+short InputManager::GetInputBitsPressed()
+{
+	short result = 0;
+
+	for (int i = ActionButton::FORWARD; i < ActionButton::MAX; i++)
+	{
+		short temp = IsButtonPressed(static_cast<ActionButton>(i)) << i;
+		result |= temp;
+	}
+
+	return result;
+}
+
+short InputManager::GetInputBitsDown()
+{
+	short result = 0;
+
+	for (int i = 0; i < ActionButton::MAX; i++)
+	{
+		short temp = IsButtonDown(static_cast<ActionButton>(i)) << i;
+		result |= temp;
+	}
+
+	return result;
+}
+
+short InputManager::GetInputBitsHeld()
+{
+	short result = 0;
+
+	for (int i = 0; i < ActionButton::MAX; i++)
+	{
+		short temp = IsButtonHeld(static_cast<ActionButton>(i)) << i;
+		result |= temp;
+	}
+
+	return result;
+}
+
+short InputManager::GenerateShortFromContainer(InputContainer ic)
+{
+	short result = 0;
+
+	for (int i = 0; i < ActionButton::MAX; i++)
+	{
+		short temp = ic.inputs[i] << i;
+		result |= temp;
+	}
+
+	return result;
+}
+
 
 //Change content for action binding//
 void InputManager::InitializeButtonRelations()
@@ -83,6 +135,7 @@ void InputManager::InitializeButtonRelations()
 
 	GetInstance().registeredActionButtons[ActionButton::TOGGLE_GUN].relatedKeyboardKeys.push_back(NCL::KEYBOARD_1);
 	GetInstance().registeredActionButtons[ActionButton::TOGGLE_HAMMER].relatedKeyboardKeys.push_back(NCL::KEYBOARD_2);
+	GetInstance().registeredActionButtons[ActionButton::CALL_AIR_STRIKE].relatedKeyboardKeys.push_back(NCL::KEYBOARD_3);
 	GetInstance().registeredActionButtons[ActionButton::TOGGLE_SHIELD].relatedMouseKeys.push_back(NCL::MOUSE_RIGHT);
 
 

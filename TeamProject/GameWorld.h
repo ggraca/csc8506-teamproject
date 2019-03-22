@@ -86,6 +86,11 @@ namespace NCL {
 			{
 				network = ne;
 			}
+			
+			NetworkEntity* GetNetwork() const {
+				return network;
+			}
+
 
 			GameObject* GetPlayerGameObject();
 			vector<GameObject*> GetGameObjectList();
