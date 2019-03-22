@@ -74,7 +74,7 @@ void ShieldControl::FormShield()
 	if (!shield || !target || !shieldDummy) { return; }
 
 	//Will be changed
-	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
+	auto children = GameObject::FindGameObjectsWithTag(gameObject->GetComponent<Player*>()->GetResourceTag());
 	int index = 0;
 
 	int resourceAmount = gameObject->GetComponent<Player*>()->GetResourceCount();

@@ -52,7 +52,7 @@ void Resource::OnCollisionEnd(GameObject * otherObject)
 void Resource::Aquire(GameObject * obj) 
 {
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
-	gameObject->SetTag(LayerAndTag::Tags::Occupied);
+	gameObject->SetTag(obj->GetComponent<Player*>()->GetResourceTag());
 	gameObject->GetComponent<RenderObject*>()->GetMaterial()->SetColour(obj->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	SetTarget(obj);
 }

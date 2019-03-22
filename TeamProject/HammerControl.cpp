@@ -49,7 +49,7 @@ void HammerControl::ActivateHammer()
 void HammerControl::FormHammer()
 {
 	//Will be changed later on
-	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
+	auto children = GameObject::FindGameObjectsWithTag(gameObject->GetComponent<Player*>()->GetResourceTag());
 
 	for (auto&i : children)
 	{

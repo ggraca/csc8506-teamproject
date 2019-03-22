@@ -220,6 +220,14 @@ int Player::GetResourceCount() const
 	return resourceCount;
 }
 
+LayerAndTag::Tags Player::GetResourceTag() 
+{
+	int networkID = GetNetworkId();
+	
+	if (networkID == -2) { return LayerAndTag::Tags::ResourceParent; }
+	return (LayerAndTag::Tags)((networkID + 1) + LayerAndTag::Occupied0);
+}
+
 void Player::ResetPlayer()
 {
 	resourceCount = 0;

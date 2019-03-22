@@ -31,8 +31,7 @@ void AirStrikeControl::LaunchAirStrike()
 	Vector3 hit;
 	auto res = GameObject::gameWorld->Raycast(start, end, hit);
 
-	//Will be changed later on
-	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
+	auto children = GameObject::FindGameObjectsWithTag(gameObject->GetComponent<Player*>()->GetResourceTag());
 
 	if ((int)children.size() < 5) { return; }
 

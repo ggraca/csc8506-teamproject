@@ -87,7 +87,7 @@ void GunControl::Fire()
 	if (!leftGun || !rightGun) {return; }
 
 	//This part will change later on
-	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
+	auto children = GameObject::FindGameObjectsWithTag(gameObject->GetComponent<Player*>()->GetResourceTag());
 
 	if ((int)children.size() > 0)
 	{

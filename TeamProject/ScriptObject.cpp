@@ -42,7 +42,8 @@ void ScriptObject::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
-PlayerState* ScriptObject::GetPlayerInput() {
+PlayerState* ScriptObject::GetPlayerInput() 
+{
 	GameWorld* gw = gameObject->gameWorld;
 	if (!gw) return nullptr;
 
@@ -55,16 +56,26 @@ PlayerState* ScriptObject::GetPlayerInput() {
 	return ps;
 }
 
-InputContainer ScriptObject::GetKeysDown() {
+InputContainer ScriptObject::GetKeysDown() 
+{
 	PlayerState* ps = GetPlayerInput();
 	if (!ps) return InputContainer();
 
 	return ps->keysDown;
 }
 
-InputContainer ScriptObject::GetKeysPressed() {
+InputContainer ScriptObject::GetKeysPressed() 
+{
 	PlayerState* ps = GetPlayerInput();
 	if (!ps) return InputContainer();
 
 	return ps->keysPressed;
+}
+
+int ScriptObject::GetNetworkId()
+{
+	PlayerState* ps = GetPlayerInput();
+	if (ps) return -2;
+
+	return ps->peerId;
 }

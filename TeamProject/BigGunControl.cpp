@@ -35,8 +35,7 @@ void BigGunControl::Fire(float time)
 		projectileAmount = gameObject->GetComponent<Player*>()->GetResourceCount();
 	}
 
-	//This part will change later on
-	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
+	auto children = GameObject::FindGameObjectsWithTag(gameObject->GetComponent<Player*>()->GetResourceTag());
 
 	for (int i = 0; i < projectileAmount; i++)
 	{
