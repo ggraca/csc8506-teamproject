@@ -79,20 +79,27 @@ void ShieldControl::FormShield()
 
 	int resourceAmount = gameObject->GetComponent<Player*>()->GetResourceCount();
 	int singleDimension = (int)sqrt(resourceAmount);
-	shield->GetTransform().ForceUpdateScale(Vector3(singleDimension * 10.0f, singleDimension * 10.0f, 5.0f ));
+	shield->GetTransform().ForceUpdateScale(Vector3(singleDimension * 10.0f, singleDimension * 10.0f, 5.0f));
 
 	for (int i = 0; i < singleDimension; i++)
 	{
 		for (int j = 0; j < singleDimension; j++)
 		{
-			children[index]->GetTransform().SetLocalScale(Vector3(5, 5, 5) / shield->GetTransform().GetLocalScale());
-			Vector3 pos = Vector3(i * 3.0f, j * 3.0f, 0) - Vector3(singleDimension, singleDimension,0);
-			children[index]->GetComponent<PhysicsObject*>()->GetRigidbody()->clearForces();
-			children[index]->GetComponent<Resource*>()->SetTarget(nullptr);
-			GameObject::gameWorld->RemoveCollisionsFromGameObject(children[index]);
-			children[index]->RemoveComponent<PhysicsObject*>();
-			children[index]->GetTransform().SetLocalPosition(pos);
-			children[index]->SetParent(shieldDummy);
+			GameObject* child = children[index];
+			
+			// Remove PhysicsObject
+			GameObject::gameWorld->RemoveCollisionsFromGameObject(child);
+			child->RemoveComponent<PhysicsObject*>();
+
+			// Scale
+			child->GetTransform().SetLocalScale(Vector3(0.5f, 0.5f, 0.5f));
+
+			// Position
+			Vector3 pos = Vector3(i * 3.0f, j * 3.0f, 0) - Vector3(singleDimension, singleDimension, 0);
+			child->GetTransform().SetLocalPosition(pos);
+			child->SetParent(shieldDummy);
+
+			child->GetComponent<Resource*>()->SetTarget(nullptr);
 			index++;
 		}
 	}

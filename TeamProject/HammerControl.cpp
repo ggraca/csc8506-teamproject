@@ -52,11 +52,10 @@ void HammerControl::FormHammer()
 
 	for (auto&i : children)
 	{
-		i->GetComponent<PhysicsObject*>()->GetRigidbody()->clearForces();
 		i->GetComponent<Resource*>()->SetTarget(nullptr);
 		GameObject::gameWorld->RemoveCollisionsFromGameObject(i);
 		i->RemoveComponent<PhysicsObject*>();
-		i->GetTransform().SetLocalScale(Vector3(5,5,5)/Vector3(2.0f,25.0f,2.0f));
+		i->GetTransform().SetWorldScale(Vector3(2.5,2.5/12.5,2.5));
 		i->GetTransform().SetLocalPosition(GenerateRandomPositionInHammer());
 		i->SetParent(handle);
 	}

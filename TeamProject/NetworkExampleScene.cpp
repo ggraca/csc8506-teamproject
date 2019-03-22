@@ -19,7 +19,7 @@ void NetworkExampleScene::ResetWorld() {
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
 	audio->SetPlayer(player);
 
-	int size = 1;
+	int size = 3;
 	for (int i = -size; i <= size; i++) {
 		for (int j = -size; j <= size; j++) {
 			world->LateInstantiate(new ResourcePrefab(Vector3(i * 30, 190, j * 30), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f));

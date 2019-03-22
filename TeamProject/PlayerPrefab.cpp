@@ -1,5 +1,12 @@
 #include "PlayerPrefab.h"
 
+int PlayerPrefab::currentColour = 0;
+Vector4 PlayerPrefab::colours[] = {
+	Vector4(1, 0, 0, 1),
+	Vector4(0, 1, 0, 1),
+	Vector4(0, 0, 1, 1),
+	Vector4(1, 0, 1, 1)
+};
 
 PlayerPrefab::PlayerPrefab() :CubePrefab()
 {
@@ -46,7 +53,7 @@ void PlayerPrefab::InitializeShield(GameObject * player)
 	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
 	GameObject * shieldDummy = new GameObject();
 	shieldDummy->SetParent(player);
-	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 6));
+	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 10));
 
 	player->GetComponent<ShieldControl*>()->SetShield(shield);
 	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
@@ -72,7 +79,7 @@ void PlayerPrefab::ResetPlayer()
 	GetComponent<HammerControl*>()->SetHammerSize(-5000, 5000, 800, 3000, -8000, 8000);
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-	GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
+	GetComponent<RenderObject*>()->GetMaterial()->SetColour(GetNextColour());
 
 	InitializeGuns(this);
 	InitializeHammer(this);

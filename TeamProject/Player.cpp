@@ -43,7 +43,7 @@ void Player::Update(float dt)
 
 void Player::CheckAirStrikeControls()
 {
-	if (resourceCount >= 5 && keysPressed.inputs[InputManager::ActionButton::CALL_AIR_STRIKE])
+	if (!isHammerActive && !isShieldActive && resourceCount >= 5 && keysPressed.inputs[InputManager::ActionButton::CALL_AIR_STRIKE])
 	{
 		gameObject->GetComponent<AirStrikeControl*>()->LaunchAirStrike();
 	}
@@ -62,7 +62,7 @@ void Player::CheckBigGunControls(float dt)
 
 	if (isBigGunActive && !keysDown.inputs[InputManager::ActionButton::HIT])
 	{
-		if (resourceCount > 3)
+		if (resourceCount >= 3)
 		{
 			gameObject->GetComponent<BigGunControl*>()->Fire(timeCounter);
 		}
