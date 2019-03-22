@@ -126,11 +126,12 @@ short InputManager::GenerateShortFromContainer(InputContainer ic)
 void InputManager::InitializeButtonRelations()
 {
 	GetInstance().registeredActionButtons = new ButtonRelation[ActionButton::MAX];
+
 	GetInstance().registeredActionButtons[ActionButton::FORWARD].relatedKeyboardKeys.push_back(NCL::KEYBOARD_W);
-	GetInstance().registeredActionButtons[ActionButton::FORWARD].relatedKeyboardKeys.push_back(NCL::KEYBOARD_UP);
+	//GetInstance().registeredActionButtons[ActionButton::FORWARD].relatedKeyboardKeys.push_back(NCL::KEYBOARD_UP);
 
 	GetInstance().registeredActionButtons[ActionButton::BACKWARD].relatedKeyboardKeys.push_back(NCL::KEYBOARD_S);
-	GetInstance().registeredActionButtons[ActionButton::BACKWARD].relatedKeyboardKeys.push_back(NCL::KEYBOARD_DOWN);
+	//GetInstance().registeredActionButtons[ActionButton::BACKWARD].relatedKeyboardKeys.push_back(NCL::KEYBOARD_DOWN);
 
 	GetInstance().registeredActionButtons[ActionButton::TOGGLE_GUN].relatedKeyboardKeys.push_back(NCL::KEYBOARD_1);
 	GetInstance().registeredActionButtons[ActionButton::TOGGLE_HAMMER].relatedKeyboardKeys.push_back(NCL::KEYBOARD_2);
@@ -139,10 +140,10 @@ void InputManager::InitializeButtonRelations()
 
 
 	GetInstance().registeredActionButtons[ActionButton::LEFT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_A);
-	GetInstance().registeredActionButtons[ActionButton::LEFT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_LEFT);
+	//GetInstance().registeredActionButtons[ActionButton::LEFT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_LEFT);
 
 	GetInstance().registeredActionButtons[ActionButton::RIGHT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_D);
-	GetInstance().registeredActionButtons[ActionButton::RIGHT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_RIGHT);
+	//GetInstance().registeredActionButtons[ActionButton::RIGHT].relatedKeyboardKeys.push_back(NCL::KEYBOARD_RIGHT);
 
 	GetInstance().registeredActionButtons[ActionButton::HIT].relatedMouseKeys.push_back(NCL::MOUSE_LEFT);
 

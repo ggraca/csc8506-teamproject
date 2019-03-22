@@ -5,7 +5,7 @@
 
 class NetworkExampleScene : public GameScene {
 public:
-	NetworkExampleScene();
+	NetworkExampleScene(bool& quitGame);
 
 protected:
 	void ResetWorld();

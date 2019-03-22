@@ -1,8 +1,10 @@
 #include "Game.h"
 #include "NetworkExampleScene.h"
+#include "MenuScene.h"
 #include "ExampleScene.h"
 #include "PhysicsScene.h"
 #include "LevelScene.h"
+
 #include "InputManager.h"
 #include "../Common/Material.h"
 
@@ -11,15 +13,15 @@ Game::Game() {
 	renderer = new GameTechRenderer();
 	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
-	network = new NetworkManager();
-
-	currentScene = new NetworkExampleScene();	
+	currentScene = new MenuScene(this);
 	currentScene->SetRenderer(renderer);
-	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
-	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
-
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
+	
+	//currentScene = new NetworkExampleScene();	
+	//currentScene->SetRenderer(renderer);
+	//currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
+	//network->GetEntity()->SetWorld(currentScene->GetGameWorld());
 
 	InputManager::InitializeButtonRelations();
 }
@@ -33,9 +35,22 @@ Game::~Game() {
 }
 
 void Game::Update(float dt) {
-	network->Update();
+	if (network) network->Update();
 	currentScene->Update(dt);
 	renderer->Render();
+}
+
+void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server)
+{ 
+	currentScene = nullptr;
+	delete currentScene;
+	currentScene = newScene; 
+	currentScene->SetRenderer(renderer);
+	network = new NetworkManager(server);
+	renderer->SetGameWorld(currentScene->GetGameWorld());
+	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
+	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
+	Debug::SetRenderer(renderer);
 }
 
 void Game::InitialiseAssets() {

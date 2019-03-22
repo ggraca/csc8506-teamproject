@@ -1,11 +1,11 @@
 #include "NetworkManager.h"
 
 
-NetworkManager::NetworkManager() {
+NetworkManager::NetworkManager(bool server) {
 	NetworkBase::Initialise();
 	port = NetworkBase::GetDefaultPort();
 
-	if (CreateServer());
+	if (server) CreateServer();
 	else CreateClient();
 }
 
