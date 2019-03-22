@@ -89,7 +89,7 @@ Vector3 ScriptObject::GetCameraPosition() {
 int ScriptObject::GetNetworkId()
 {
 	PlayerState* ps = GetPlayerInput();
-	if (ps) return -2;
+	if (!ps) return -2;
 
 	return ps->peerId;
 }

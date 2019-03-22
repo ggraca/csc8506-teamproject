@@ -40,7 +40,7 @@ void AirStrikeControl::LaunchAirStrike()
 		for (int i = 0; i < 5; i++)
 		{
 			children[i]->GetComponent<Resource*>()->Reset();
-			children[i]->GetTransform().SetWorldPosition(hit + Vector3(0, 500, 0) + (forward  * 30) );
+			children[i]->GetTransform().SetWorldPosition(hit + Vector3(0, 500, 0) + (forward  * 30));
 			children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, -400.0f, 0));
 			children[i]->GetComponent<DamageControl*>()->SetDamage(1);
 			gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
