@@ -1,0 +1,56 @@
+ConstantBuffer ShaderConstants
+{
+	column_major matrix modelMatrix;
+	column_major matrix viewMatrix;
+	column_major matrix projMatrix;
+
+};
+
+ConstantBuffer ShaderConstants2
+{
+	
+	column_major matrix transforms[10];
+};
+
+struct VS_INPUT
+{
+	float3 position : POSITION0;
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	
+	float4 weightIndices : TEXCOORD6;
+	float4 weightValues : TEXCOORD7;
+};
+
+struct VS_OUTPUT
+{
+	float4 colour : TEXCOORD0;
+	float2 texCoord : TEXCOORD1;
+	float4 position : S_POSITION;
+};
+
+VS_OUTPUT main(VS_INPUT Input)
+{
+	VS_OUTPUT Output;
+	
+	matrix mvp = mul(mul(projMatrix, viewMatrix), modelMatrix);
+
+	float4 skelPos = float4(0,0,0,0);
+	
+	for(int i=0; i<4; ++i)
+	{
+		int index = int(weightIndices[i]);
+		float weight = weightValues[i];
+		
+		skelPos += (transforms[index] * float4(Input.position, 1)) * weight;
+		skelPos += mul(transforms[index], float4(Input.position, 1)) * weight;
+	}
+	skelPos.w = 1.0f;
+	
+	Output.postion = mvp * skelPos;
+	Output.texCoord = Input.texCoord;
+	Output.colour = Input.colour;
+	
+	return Output;
+}
+	

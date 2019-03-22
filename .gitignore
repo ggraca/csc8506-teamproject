@@ -18,6 +18,7 @@
 x64/
 x86/
 Win32/
+ORBIS*/
 bld/
 [Bb]in/
 [Oo]bj/

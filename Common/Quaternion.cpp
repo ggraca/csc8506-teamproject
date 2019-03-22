@@ -2,6 +2,7 @@
 #include "Matrix3.h"
 #include "Maths.h"
 #include <algorithm>
+#include <cmath>
 
 using namespace NCL;
 using namespace NCL::Maths;
@@ -125,14 +126,6 @@ Quaternion Quaternion::Conjugate() const
 
 Quaternion Quaternion::FromMatrix(const Matrix4 &m) {
 	Quaternion q;
-	//
-	//q.x = sqrt( max( 0.0f, (1.0f + m.values[0] - m.values[5] - m.values[10]) ) ) / 2.0f;
-	//q.y = sqrt( max( 0.0f, (1.0f - m.values[0] + m.values[5] - m.values[10]) ) ) / 2.0f;
-	//q.z = sqrt( max( 0.0f, (1.0f - m.values[0] - m.values[5] + m.values[10]) ) ) / 2.0f;
-
-	//q.x = (float)_copysign( q.x, m.values[9] - m.values[6] );
-	//q.y = (float)_copysign( q.y, m.values[2] - m.values[8] );
-	//q.z = (float)_copysign( q.z, m.values[4] - m.values[1] );
 
 	q.w = sqrt(std::max(0.0f, (1.0f + m.values[0] + m.values[5] + m.values[10])))  * 0.5f;
 
@@ -141,9 +134,9 @@ Quaternion Quaternion::FromMatrix(const Matrix4 &m) {
 		q.y = sqrt( std::max( 0.0f, (1.0f - m.values[0] + m.values[5] - m.values[10]) ) ) / 2.0f;
 		q.z = sqrt( std::max( 0.0f, (1.0f - m.values[0] - m.values[5] + m.values[10]) ) ) / 2.0f;
 
-		q.x = (float)_copysign( q.x, m.values[9] - m.values[6] );
-		q.y = (float)_copysign( q.y, m.values[2] - m.values[8] );
-		q.z = (float)_copysign( q.z, m.values[4] - m.values[1] );
+		q.x = (float)copysign( q.x, m.values[9] - m.values[6] );
+		q.y = (float)copysign( q.y, m.values[2] - m.values[8] );
+		q.z = (float)copysign( q.z, m.values[4] - m.values[1] );
 	}
 	else {
 		float qrFour = 4.0f * q.w;
@@ -159,15 +152,6 @@ Quaternion Quaternion::FromMatrix(const Matrix4 &m) {
 
 Quaternion Quaternion::FromMatrix(const Matrix3 &m) {
 	Quaternion q;
-
-	//q.w = sqrt(max(0.0f, (1.0f + m.values[0] + m.values[4] + m.values[8]))) / 2.0f;
-	//q.x = sqrt(max(0.0f, (1.0f + m.values[0] - m.values[4] - m.values[8]))) / 2.0f;
-	//q.y = sqrt(max(0.0f, (1.0f - m.values[0] + m.values[4] - m.values[8]))) / 2.0f;
-	//q.z = sqrt(max(0.0f, (1.0f - m.values[0] - m.values[4] + m.values[8]))) / 2.0f;
-
-	//q.x = (float)_copysign(q.x, m.values[7] - m.values[5]);
-	//q.y = (float)_copysign(q.y, m.values[2] - m.values[6]);
-	//q.z = (float)_copysign(q.z, m.values[3] - m.values[1]);
 
 	q.w = sqrt(std::max(0.0f, (1.0f + m.values[0] + m.values[4] + m.values[8]))) * 0.5f;
 

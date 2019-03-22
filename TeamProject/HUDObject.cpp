@@ -1,6 +1,5 @@
 #include "HUDObject.h"
-#include "../Common/Assets.h"
-
+#ifdef _WIN32
 HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform objTransform, bool activeTex)
 {
 	objectMesh = objMesh;
@@ -11,6 +10,21 @@ HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform
 	activeTexture = activeTex;
 	shader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl");
 }
+#endif
+
+#ifdef __ORBIS__
+HUDObject::HUDObject(PS4Mesh* objMesh, vector<PS4Texture*> objTexture, Transform objTransform, bool activeTex)
+{
+	objectMesh = objMesh;
+	objectMesh->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
+	objectMesh->UploadToGPU();
+	texture = objTexture;
+	transform = objTransform;
+	activeTexture = activeTex;
+	//shader = objShader;
+}
+#endif
+
 
 HUDObject::~HUDObject()
 {

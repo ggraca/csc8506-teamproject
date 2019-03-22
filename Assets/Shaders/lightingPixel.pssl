@@ -1,0 +1,42 @@
+ConstantBuffer ShaderConstants
+{
+	float3 camerPos;
+	float3 lightColour;
+	float3 lightPos;
+	float lightRadius;
+};
+
+SamplerState samp0 : register(s0);
+Texture2D mainTex : register(t0);
+
+struct VS_INPUT
+{
+	float3 worldPos : POSITION1;
+	float2 texCoord : TEXCOORD1;
+	float3 normal : NORMAL0;
+};
+
+float4 main(VS_INPUT In) : S_TARGET_OUTPUT
+{
+	float3 incident		= normalize(lightPos  - Input.worldPos);
+	float3 viewDir		= normalize(cameraPos - Input.worldPos);
+	float3 halfDir		= normalize(incident  + viewDir);
+	
+	float dist 			= length(lightPos - Input.worldPos);
+	float atten   		= 1.0 - clamp(dist / lightRadius, 0.0, 1.0);
+
+	float lambert		= max(0.0, dot(incident, normalize(Input.normal)));
+
+	float rFactor   	= max(0.0, dot(halfDir, normalize(Input.normal)));
+	float sFactor   	= pow(rFactor, 150.0 );
+
+	float4 texCol       = mainTex.Sample(samp0, Input.texCoord);
+	float3 ambient		= texCol.rgb  * lightColour * 0.1;
+	float3 diffuse		= texCol.rgb  * lightColour * lambert * atten;
+	float3 specular		= vec3(1,1,1) * sFactor;
+	float4 fragColor 	= vec4(ambient + diffuse + specular, texCol.a);
+	
+	fragColor.rgb = float3(sFactor);
+	
+	return fragColour;
+}

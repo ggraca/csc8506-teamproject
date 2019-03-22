@@ -11,11 +11,8 @@
 #include "Vector4.h"
 #include "MeshGeometry.h"
 #include "Assets.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "TextureLoader.h"
 #include "Material.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
 
 
 #define OBJCOMMENT		"#"			//The current line of the obj file is a comment
@@ -83,7 +80,7 @@ struct OBJSubMesh {
 	string mtlType;
 	string mtlSrc;
 };
-
+#ifdef _WIN32
 // TODO: Make this compatible with PS4
 class OBJMesh : public OGLMesh {
 public:
@@ -91,6 +88,7 @@ public:
 	NCL::Rendering::Material* material = nullptr; // TODO: fix this naming
 	static OBJMesh* FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals);
 };
+#endif
 
 class OBJGeometry : public ChildMeshInterface {
 public:

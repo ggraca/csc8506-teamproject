@@ -27,14 +27,6 @@ void Win32Keyboard::UpdateRAW(RAWINPUT* raw)	{
 
 		//First bit of the flags tag determines whether the key is down or up
 		keyStates[key] = !(raw->data.keyboard.Flags & RI_KEY_BREAK);
-
-		//Used to find keycode of pressed key
-		/*for (int i = 0; i < 255; i++)
-		{
-			if (keyStates[i] == true) {
-				std::cout << key << std::endl;
-			}
-		}*/
 	}
 }
 

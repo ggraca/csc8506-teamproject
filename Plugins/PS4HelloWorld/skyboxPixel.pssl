@@ -1,0 +1,21 @@
+SamplerState samp0 : register(s0);
+TextureCube cubeTex : register(t0);
+
+ConstantBuffer ShaderConstants
+{
+	float3 cameraPos;
+};
+
+struct VS_INPUT
+{
+	float3 normal: NORMAL0;
+};
+
+float4 main(VS_INPUT Input) : S_TARGET_OUTPUT
+{
+	float4 fragColour[2];
+	fragColour[0] = cubeTex.Sample(samp0, normalize(Input.normal));
+	fragColour[1] = float4(0,0,0,0);
+	
+	return fragColour;
+}

@@ -32,11 +32,15 @@ namespace NCL {
 
 			~Vector4(void) {}
 
-			float x;
-			float y;
-			float z;
-			float w;
-
+			union {
+				struct {
+					float x;
+					float y;
+					float z;
+					float w;
+				};
+				float array[4];
+			};
 
 			inline Vector4  operator*(const float a) const {
 				return Vector4(x * a, y * a, z * a, w * a);

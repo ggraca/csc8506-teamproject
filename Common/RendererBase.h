@@ -17,14 +17,14 @@ namespace NCL {
 	namespace Rendering {
 		class RendererBase {
 		public:
-			friend class Window;
+			friend class NCL::Window;
 
 			RendererBase(Window& w);
 			virtual ~RendererBase();
 
 			virtual bool HasInitialised() const {return true;}
 
-			virtual void Update(float msec) {}
+			virtual void Update(float dt) {}
 
 			void Render() {
 				BeginFrame();

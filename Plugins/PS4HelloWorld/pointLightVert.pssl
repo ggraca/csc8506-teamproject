@@ -1,0 +1,30 @@
+ConstantBuffer ShaderConstants
+{
+	column_major matrix modelMatrix;
+	column_major matrix viewMatrix;
+	column_major matrix projMatrix;
+	column_major matrix textureMatrix;
+	column_major matrix shadowMatrix;
+};
+
+struct VS_INPUT
+{
+	float3 position : POSITION0;
+};
+
+struct VS_OUTPUT
+{
+	matrix inverseProjView;
+	float3 position : S_POSITION;
+};
+
+VS_OUTPUT main(VS_INPUT Input)
+{
+	VS_OUTPUT Output;
+	
+	Output.Position = mul(mul(projMatrix, viewMatrix), modelMatrix) * float4(Input.position, 1.0);
+	
+	inverseProjView = inverse(mul(projMatrix, viewMatrix));
+	
+	return Output;
+}
