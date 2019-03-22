@@ -12,7 +12,7 @@ void NetworkServer::Update() {
 	for (auto o : objects) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
-		Quaternion rot = t.GetLocalOrientation();
+		Quaternion rot = t.GetWorldOrientation();
 
 		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot));
 		if (hashed == o->GetHash()) continue;
@@ -44,8 +44,9 @@ void NetworkServer::OnClientConnect(int source) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetLocalOrientation();
+		Vector3 sca = t.GetLocalScale();
 
-		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot);
+		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot, sca);
 		server->SendGlobalPacket(p);
 	}
 
@@ -87,7 +88,7 @@ void NetworkServer::Instantiate(GameObject* go) {
 	no->SetId(lastestId++);
 	objects.push_back(no);
 
-	server->SendGlobalPacket(InstantiatePacket(no->GetPrefabId(), no->GetId(), go->GetTransform().GetWorldPosition(), go->GetTransform().GetLocalOrientation()));
+	server->SendGlobalPacket(InstantiatePacket(no->GetPrefabId(), no->GetId(), go->GetTransform().GetWorldPosition(), go->GetTransform().GetLocalOrientation(), go->GetTransform().GetLocalScale()));
 }
 
 void NetworkServer::AddPlayer(int peerId, GameObject* go) {
