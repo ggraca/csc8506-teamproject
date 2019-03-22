@@ -32,6 +32,9 @@ void PlayerPrefab::InitializeGuns(GameObject * player)
 	playerLeft->SetParent(player);
 	playerRight->SetParent(player);
 
+	playerLeft->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
+	playerRight->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
+
 	playerRight->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
 	playerLeft->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
 
@@ -43,6 +46,7 @@ void PlayerPrefab::InitializeHammer(GameObject * player)
 {
 	auto  handle = new CubePrefab(CubePrefab::PrefabType::HANDLE);
 	handle->SetParent(player);
+	handle->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
 
 	player->GetComponent<HammerControl*>()->SetHandle(handle);
@@ -64,6 +68,7 @@ void PlayerPrefab::InitializeBigGun(GameObject * player)
 {
 	auto bigGun = new CubePrefab(CubePrefab::PrefabType::BIG_GUN);
 	bigGun->SetParent(player);
+	bigGun->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	bigGun->GetTransform().SetLocalPosition(Vector3(-4, 2, 0));
 	player->GetComponent<BigGunControl*>()->SetBigGun(bigGun);
 }

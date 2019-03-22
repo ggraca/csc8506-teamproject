@@ -28,6 +28,7 @@ public:
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void UpdateResourceCount(int amount);
 	int GetResourceCount() const;
+	LayerAndTag::Tags GetResourceTag() ;
 
 protected:
 
