@@ -24,7 +24,7 @@ out vec4 fragColour [3];
 float DistributionGGX(vec3 Normal, vec3 HalfDir, float Roughness);
 float GeometrySchlickGGX(float NdotV, float Roughness);
 float GeometrySmith(vec3 Normal, vec3 ViewDir, vec3 LightDir, float Roughness);
-vec3 FresnelSchlick(float cosTheta, vec3 F0);
+vec3 FresnelSchlick(float cosTheta, vec3 F0, float Roughness);
 
 void main (void) {	
 	vec3 pos = vec3((gl_FragCoord.x * pixelSize.x ), (gl_FragCoord.y * pixelSize.y), 0.0);
@@ -63,7 +63,7 @@ void main (void) {
 
 	float NDF = DistributionGGX(normal, halfDir, roughness);
 	float G = GeometrySmith(normal, viewDir, lightDir, roughness);
-	vec3 F = FresnelSchlick(max(dot(halfDir, viewDir), 0.0f), F0);
+	vec3 F = FresnelSchlick(max(dot(halfDir, viewDir), 0.0f), F0, roughness);
 	
 	vec3 kSpecular = F;
     vec3 kDiffuse = vec3(1.0) - kSpecular;
@@ -115,7 +115,7 @@ float GeometrySmith(vec3 Normal, vec3 ViewDir, vec3 LightDir, float Roughness)
     return ggx1 * ggx2;
 }
 
-vec3 FresnelSchlick(float cosTheta, vec3 F0)
+vec3 FresnelSchlick(float cosTheta, vec3 F0, float Roughness)
 {
-    return F0 + (1.0f - F0) * pow(1.0f - cosTheta, 5.0f);
+    return F0 + (max(vec3(1.0 - Roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
 } 
