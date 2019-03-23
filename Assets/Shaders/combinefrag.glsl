@@ -28,7 +28,7 @@ void main (void) {
 	float NdotL = KDCol.a;
 	
 	//Checking if skybox
-	if(kDiffuse == vec3(0.0f) && radiance == vec4(1.0f)){
+	if(kDiffuse == vec3(1.0f) && radiance == vec4(1.0f) && specular == vec4(1.0f)){
 		fragColour = diffuse;
 		return;
 	}
@@ -44,6 +44,6 @@ void main (void) {
 	
 	vec3 finalCol = ambient + lightOutput;
 	finalCol = finalCol / (finalCol + vec3(1.0f));
-	
+		
 	fragColour = vec4(finalCol, 1.0f);
 }

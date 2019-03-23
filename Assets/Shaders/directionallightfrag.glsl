@@ -5,6 +5,7 @@ uniform sampler2D depthTex;
 uniform sampler2D normTex;
 uniform sampler2D materialTex;
 uniform sampler2DShadow shadowTex;
+uniform samplerCube cubeTex;
 
 uniform vec2 pixelSize;
 uniform vec3 cameraPos;
@@ -32,8 +33,8 @@ void main (void) {
 	//If skybox output 1.0f as emisive light
 	if(pos.z == 1.0) {
 		fragColour [0] = vec4(1.0f);
-		fragColour [1] = vec4(0.0f);
-		fragColour [2] = vec4(0.0f);
+		fragColour [1] = vec4(1.0f);
+		fragColour [2] = vec4(1.0f);
 		return;
 	}
 	
@@ -81,11 +82,14 @@ void main (void) {
 	
 	vec3 kSpecular = F;
     vec3 kDiffuse = vec3(1.0) - kSpecular;
-    kDiffuse *= 1.0 - metalness;	  
+    kDiffuse *= 1.0 - metalness;
+
+	vec3 reflectangle = reflect(-viewDir, normal);
+	vec3 reflection = texture(cubeTex, reflectangle).rgb;
         
     vec3 numerator    = NDF * G * F;
     float denominator = 4.0f * max(dot(normal, viewDir), 0.0f) * max(dot(normal, lightDir), 0.0f);
-    vec3 specular     = numerator / max(denominator, 0.001f);
+    vec3 specular     = reflection * kSpecular + numerator / max(denominator, 0.001f);
 	
 	float NdotL = max(dot(normal, lightDir), 0.0f);
 	

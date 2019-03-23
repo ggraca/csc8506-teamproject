@@ -362,6 +362,7 @@ void GameTechRenderer::RenderLights() {
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
 			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
+			BindTextureCubeToShader(skybox, "cubeTex", 6);
 			BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 			BindMatrix4ToShader(projMatrix, "cameraProjMatrix");
 			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, -1), "lightDirection");
