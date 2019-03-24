@@ -20,6 +20,8 @@ void DebugMenu::Update(const float dt, GameTechRenderer* renderer) {
 
 		auto functionTimes = GetInstance().timerManager.GetFunctionTimerMap();
 
+		Debug::AddStringToDebugMenu("");
+		Debug::AddStringToDebugMenu("Feature Timings:");
 		for (auto i = functionTimes.begin(); i != functionTimes.end(); i++)
 		{
 			Debug::AddStringToDebugMenu(i->first + ": " + std::to_string(i->second) + " %" + std::to_string(i->second * 100 / GetInstance().frameTime));
