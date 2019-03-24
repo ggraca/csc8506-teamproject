@@ -160,6 +160,9 @@
     <ClCompile Include="FunctionTimerManager.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="FunctionTimer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />

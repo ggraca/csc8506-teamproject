@@ -8,6 +8,8 @@
 #include "InputManager.h"
 #include "../Common/Material.h"
 
+#include "FunctionTimer.h"
+
 
 Game::Game() {
 	debugMenu = DebugMenu();
