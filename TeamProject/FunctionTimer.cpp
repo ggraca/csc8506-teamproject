@@ -7,6 +7,11 @@ FunctionTimerManager* FunctionTimer::manager = nullptr;
 
 FunctionTimer::FunctionTimer()
 {
+	
+}
+
+FunctionTimer::FunctionTimer(std::string FunctionName) {
+	functionName = FunctionName;
 	startTime = static_cast<float>(clock());
 }
 

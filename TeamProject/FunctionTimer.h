@@ -8,6 +8,7 @@ friend class FunctionTimerManager;
 
 public:
 	FunctionTimer();
+	FunctionTimer(std::string FunctionName);
 	~FunctionTimer();
 protected:
 	static FunctionTimerManager* manager;
