@@ -24,13 +24,18 @@ class AnimationState
 {
 	
 public:
-	Animation * animation;
-
+	Animation * animation = nullptr;
+	
 	AnimationState(Animation * anim)
 	{
 		animation = anim;
 	}
 	
+	AnimationState(Animation * anim, GameObject * target)
+	{
+		animation = anim;
+		targetObject = target;
+	}
 
 	~AnimationState()
 	{
@@ -39,6 +44,7 @@ public:
 			delete i;
 		}
 		transitions.clear();
+		if (animation) { delete animation; }
 	}
 
 	void AddTransition(Transition * transition)
@@ -59,8 +65,20 @@ public:
 		}
 		return nullptr;
 	}
+
+	void SetTargetObject(GameObject * target)
+	{
+		targetObject = target;
+	}
+
+	GameObject * GetTargetObject()
+	{
+		return targetObject;
+	}
+
 protected:
 	std::vector<Transition*> transitions;
+	GameObject * targetObject = nullptr;
 };
 
 

@@ -42,6 +42,8 @@ namespace NCL {
 			static void FlushMaterials();
 			static void FlushAssets();
 
+			static std::map<std::string, OBJGeometry*>* GetOBJMeshes() { return &GetInstance().loadedOBJs; }
+
 		protected:
 			std::map<std::string, Rendering::TextureBase*> loadedTextures;
 			std::map<std::string, MeshGeometry*> loadedMeshes;

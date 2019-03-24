@@ -3,6 +3,7 @@
 #include "../Common/Window.h"
 #include "Game.h"
 
+
 using namespace NCL;
 
 int main(int argc, char** argv) {
@@ -18,7 +19,9 @@ int main(int argc, char** argv) {
 
 	Game* game = new Game();
 
-	while (w->UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) {
+	//Scene* scene = new PhysicsScene(quitGame);
+	
+	while (w->UpdateWindow() && !game->QuittingGame()) {
 		float dt = w->GetTimer()->GetTimeDelta() / 1000.0f;
 
 		if (dt > 3.0f) {

@@ -1,0 +1,46 @@
+# Blender MTL File: 'market-stand.blend'
+# Material Count: 4
+
+newmtl Corrugated01s
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.429804 0.426666 0.417255
+Ks 0.026053 0.026053 0.026053
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd TextureAtlas.png
+map_Bump Normals.png
+
+newmtl THATCH
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 1
+map_Kd TextureAtlas.png
+map_d thath.png
+
+newmtl WOOD_#2_
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd TextureAtlas.png
+map_Bump Normals.png
+
+newmtl wood
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd TextureAtlas.png
+map_Bump Normals.png

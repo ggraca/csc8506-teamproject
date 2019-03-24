@@ -37,18 +37,17 @@ void GameObject::ClearComponents()
 
 void GameObject::SetParent(GameObject * parent)
 {
+	if (GetTransform().GetParent() != nullptr)
+	{
+		GetTransform().GetParent()->RemoveChild(&GetTransform());
+	}
 	if (parent)
 	{
 		GetTransform().SetParent(&parent->GetTransform());
-		GetTransform().AddChild(&parent->GetTransform());
+		parent->GetTransform().AddChild(&GetTransform());
 	}
 	else
 	{
-		if (GetTransform().GetParent() != nullptr)
-		{
-			GetTransform().GetParent()->RemoveChild(&parent->GetTransform());
-		}
-
 		GetTransform().SetParent(nullptr);
 	}
 }
@@ -170,20 +169,6 @@ void GameObject::Destroy(GameObject * obj)
 	if (!gameWorld) { return; }
 
 	return gameWorld->LateDestroy(obj);
-}
-
-void GameObject::AddObjectToWorld(GameObject * obj)
-{
-	if (!gameWorld) { return; }
-	
-	gameWorld->Instantiate(obj);
-}
-
-void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
-{
-	if (!gameWorld) { return; }
-
-	gameWorld->Instantiate(obj, parent);
 }
 
 GameObject * GameObject::GetMainCamera()

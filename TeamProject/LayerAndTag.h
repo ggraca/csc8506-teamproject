@@ -18,9 +18,14 @@ public:
 		ResourceParent,
 		CaptureParent,
 		Destructible,
-		Occupied,
+		Occupied0,
+		Occupied1,
+		Occupied2,
+		Occupied3,
 		Enemy,
-		EnemyProjectile
+		EnemyProjectile,
+		HammerHead,
+		Ground
 	};
 
 	LayerAndTag()

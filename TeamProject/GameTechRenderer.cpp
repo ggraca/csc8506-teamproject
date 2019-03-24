@@ -152,23 +152,18 @@ void GameTechRenderer::RenderFrame() {
 }
 
 void GameTechRenderer::BuildObjectList() {
-	std::vector<GameObject*>::const_iterator first;
-	std::vector<GameObject*>::const_iterator last;
-
-	gameWorld->GetObjectIterators(first, last);
-
 	activeObjects.clear();
 	activeLights.clear();
 	activeParticleSystems.clear();
 
-	for (std::vector<GameObject*>::const_iterator i = first; i != last; ++i) {
-		if ((*i)->IsActive()) {
-			const RenderObject* g = (*i)->GetComponent<RenderObject*>();
-			const Light* l = (*i)->GetComponent<Light*>();
-			ParticleSystem* p = (*i)->GetComponent<ParticleSystem*>();
+	for (auto go : gameWorld->GetGameObjectList()) {
+		if (go->IsActive()) {
+			const RenderObject* ro = go->GetComponent<RenderObject*>();
+			const Light* l = go->GetComponent<Light*>();
+			ParticleSystem* p = go->GetComponent<ParticleSystem*>();
 
-			if (g) {
-				activeObjects.emplace_back(g);
+			if (ro) {
+				activeObjects.emplace_back(ro);
 			}
 
 			if (l) {

@@ -15,6 +15,8 @@ Implementation::~Implementation() {
 }
 
 void Implementation::Update() {   // if channel stops playing this will delete it
+	if (disabled) return;
+
 	vector<ChannelMap::iterator> pStoppedChannels;
 	for (auto it = mChannels.begin(), itEnd = mChannels.end(); it != itEnd; ++it)
 	{
@@ -29,7 +31,9 @@ void Implementation::Update() {   // if channel stops playing this will delete i
 	{
 		mChannels.erase(it);
 	}
-	CAudioEngine::ErrorCheck(mpStudioSystem->update());
+
+	// Currently we can only have one running executable with sound. After the error this should disable the sound system;
+	disabled = CAudioEngine::ErrorCheck(mpStudioSystem->update());
 	
 }
 

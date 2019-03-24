@@ -32,7 +32,7 @@ void Destructible::CheckIfDestroyed()
 
 	if (health->IsDead())
 	{
-		for (int i = 0; i < (health->GetHealth()/25);i++)
+		for (int i = 0; i < (health->GetMaxHealth()/1);i++) //Will be changed to divide by 25
 		{
 			GenerateResource();
 		}

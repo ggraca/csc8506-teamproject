@@ -16,18 +16,38 @@ public:
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;
+	void CheckAirStrikeControls();
+	void CheckBigGunControls(float dt);
+	void CheckShieldControls();
+	void CheckHammerControls();
+	void CheckGunControls();
+	void PlayerRotation();
 	void PlayerMovement(float dt);
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void UpdateResourceCount(int amount);
 	int GetResourceCount() const;
+	LayerAndTag::Tags GetResourceTag() ;
+
 protected:
 
 	void ResetPlayer();
-	
+
 	int resourceCount;
 	float movementSpeed;
 	float jumpSpeed;
+	float dodgeAmount;
+	bool isGunActive = false;
+	bool isHammerActive = false;
+	bool isShieldActive = false;
+	bool isBigGunActive = false;
+	bool isJumping = false;
+	float timeCounter = -1;
+
+	InputContainer keysDown;
+	InputContainer keysPressed;
+	Quaternion cameraRotation;
+	Vector3 cameraPosition;
 };
 
