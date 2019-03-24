@@ -89,7 +89,7 @@ void main (void) {
         
     vec3 numerator    = NDF * G * F;
     float denominator = 4.0f * max(dot(normal, viewDir), 0.0f) * max(dot(normal, lightDir), 0.0f);
-    vec3 specular     = reflection * kSpecular + numerator / max(denominator, 0.001f);
+    vec3 specular     = reflection * (1.0f - (kDiffuse + kSpecular)) + numerator / max(denominator, 0.001f);
 	
 	float NdotL = max(dot(normal, lightDir), 0.0f);
 	
