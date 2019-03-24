@@ -61,7 +61,7 @@ void LevelScene::ResetWorld() {
 	world->InstantiateRecursively(player);
 
 	//This 2
-	world->Instantiate(player);
+//	world->Instantiate(player);
 
 	//This 3
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);

@@ -1,13 +1,15 @@
 #version 400 core
 
 uniform sampler2D diffuseTex;
-uniform sampler2D depthTex;
-uniform sampler2D normTex;
+uniform sampler2D materialTex;
 uniform sampler2D emissiveTex;
 uniform sampler2D lightSpecularTex;
-uniform sampler2D specularTex;
+uniform sampler2D KDTex;
+uniform sampler2D normTex;
 
-uniform vec4 ambientColour;
+uniform samplerCube irradianceMap;
+
+const float PI = 3.14159265359;
 
 in Vertex {
 	vec2 texCoord;
@@ -16,20 +18,32 @@ in Vertex {
 out vec4 fragColour;
 
 void main (void) {
-	vec3 diffuse = texture(diffuseTex, IN.texCoord).xyz;
-	vec3 depth = texture(depthTex, IN.texCoord).xyz;
-	vec4 normal = texture(normTex, IN.texCoord);
-	vec3 specular = texture(specularTex, IN.texCoord).xyz;
-	vec3 light = texture(emissiveTex, IN.texCoord).xyz;
-	vec3 lightSpecular = texture(lightSpecularTex, IN.texCoord).xyz;
-
-	vec3 ambient = ambientColour.xyz;
+	vec4 diffuse = texture(diffuseTex, IN.texCoord);
+	float ao = texture(diffuseTex, IN.texCoord).b;
+	vec4 radiance = texture(emissiveTex, IN.texCoord);
+	vec4 specular = texture(lightSpecularTex, IN.texCoord);
+	vec4 KDCol = texture(KDTex, IN.texCoord);
+	vec3 normal = texture(normTex, IN.texCoord).xyz;
+	vec3 kDiffuse = KDCol.rgb;
+	float NdotL = KDCol.a;
 	
-	if (normal.w == 0.0f) { //(normal.x == 1.0f && normal.y == 1.0f && normal.z == 1.0f){
-		ambient = vec3(1.0f, 1.0f, 1.0f);
+	//Checking if skybox
+	if(kDiffuse == vec3(1.0f) && radiance == vec4(1.0f) && specular == vec4(1.0f)){
+		fragColour = diffuse;
+		return;
 	}
-	fragColour.xyz = diffuse * ambient; // ambient
-	fragColour.xyz += (diffuse * light);// lambert
-	fragColour.xyz += lightSpecular * specular; // Specular
-	fragColour.a = 1.0;
+	
+	diffuse.x = pow(diffuse.x, 2.2f);
+	diffuse.y = pow(diffuse.y, 2.2f);
+	diffuse.z = pow(diffuse.z, 2.2f);
+	
+	vec3 lightOutput = ((kDiffuse * diffuse.xyz) + specular.xyz) * radiance.xyz * NdotL;
+	
+	vec3 irradiance = texture(irradianceMap, normal).rgb;
+	vec3 ambient    = (kDiffuse * irradiance * diffuse.xyz) * ao; 
+	
+	vec3 finalCol = ambient + lightOutput;
+	finalCol = finalCol / (finalCol + vec3(1.0f));
+		
+	fragColour = vec4(finalCol, 1.0f);
 }
