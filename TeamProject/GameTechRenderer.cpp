@@ -117,7 +117,7 @@ void GameTechRenderer::GenBuffers() {
 }
 
 void GameTechRenderer::RenderFrame() {
-	FunctionTimer timer(__FUNCTION__);
+	FunctionTimer timer("Render Frame");
 
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 	pixOps.SetDepthComparison(COMPARISON::LESS);

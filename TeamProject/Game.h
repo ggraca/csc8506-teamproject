@@ -18,7 +18,6 @@ public:
 	void ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server);
 
 private:
-	DebugMenu debugMenu;
 	Console console;
 	Scene* currentScene;
 	GameTechRenderer* renderer;
