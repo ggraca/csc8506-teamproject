@@ -48,21 +48,6 @@ void main (void) {
 	vec4 clip = inverseProjView * vec4(pos * 2.0 - 1.0, 1.0);
 	pos = clip.xyz / clip.w;
 	
-	vec4 shadowProj = (shadowMatrix * vec4(pos + (normal * 1.5), 1));
-	float shadow = 1.0; // New !
-
-	if((shadowProj.w > 0.0)) { // New !
-		shadow = textureProj(shadowTex, shadowProj);
-	}
-	
-	//If in shadow then just return darkness... no need to do any light calc
-	if (drawShadows && (shadow == 0.0f)){
-		fragColour [0] = vec4(0.0f);
-		fragColour [1] = vec4(0.0f);
-		fragColour [2] = vec4(0.0f);
-		return;
-	}
-	
 	float roughness = material.r;
 	float metalness = material.g;
 	float ao = material.b;
@@ -92,6 +77,26 @@ void main (void) {
     vec3 specular     = reflection * (1.0f - (kDiffuse + kSpecular)) + numerator / max(denominator, 0.001f);
 	
 	float NdotL = max(dot(normal, lightDir), 0.0f);
+	
+	float fragDistToCam = length(cameraPos - pos);
+
+	//If in shadow --- fragDistToCam should be checked against a uniform shadowMaxDist
+	if (drawShadows && fragDistToCam < 1300){
+		vec4 shadowProj = (shadowMatrix * vec4(pos + (normal * 1.5), 1));
+		float shadow = 1.0; // New !
+
+		if((shadowProj.w > 0.0)) { // New !
+			shadow = textureProj(shadowTex, shadowProj);
+		}
+		
+		//Fade shadows in from max range
+		if (shadow == 0.0f && fragDistToCam > 1000){
+			shadow += ((fragDistToCam - 1000.0f) / 300.0f);
+		}
+		
+		radiance *= shadow;
+		specular *= shadow;
+	}
 	
 	fragColour [0] = vec4(radiance, 1.0f);
 	fragColour [1] = vec4(specular, 1.0f);
