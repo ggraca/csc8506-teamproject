@@ -18,7 +18,7 @@ public:
 	~FunctionTimer() {
 		endTime = static_cast<float>(clock());
 
-		float totalTime = endTime - startTime;
+		float totalTime = (endTime - startTime) / CLOCKS_PER_SEC;
 
 		manager->UpdateFunctionTimer(functionName, totalTime);
 	};
