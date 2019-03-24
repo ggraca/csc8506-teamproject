@@ -9,7 +9,7 @@ public:
 	~FunctionTimerManager();
 
 	void UpdateFunctionTimer(std::string FunctionName, float timeTaken) {
-		functionTimers.insert(std::pair<std::string, float>(FunctionName, timeTaken));
+		functionTimers[FunctionName] =  timeTaken;
 	}
 
 	std::map<std::string, float>& GetFunctionTimerMap() { return functionTimers; }
