@@ -8,6 +8,8 @@
 #include "ParticleSystem.h"
 #include "Debug.h"
 
+#include "FunctionTimer.h"
+
 using namespace NCL;
 using namespace Rendering;
 using namespace CSC8503;
@@ -128,6 +130,8 @@ void GameTechRenderer::GenBuffers() {
 }
 
 void GameTechRenderer::RenderFrame() {
+	FunctionTimer timer("Render Frame");
+
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 	pixOps.SetDepthComparison(COMPARISON::LESS);
 	pixOps.SetClearColor(Vector4(0.3f, 0.8f, 1, 1));

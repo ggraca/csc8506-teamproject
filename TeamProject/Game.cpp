@@ -8,8 +8,11 @@
 #include "InputManager.h"
 #include "../Common/Material.h"
 
+#include "FunctionTimer.h"
+
 
 Game::Game() {
+	console = Console();
 	renderer = new GameTechRenderer();
 	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
@@ -35,9 +38,16 @@ Game::~Game() {
 }
 
 void Game::Update(float dt) {
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
+		console.Toggle();
+		DebugMenu::Toggle();
+	}
+	DebugMenu::Update(dt, renderer);
+	console.Update();
 	if (network) network->Update();
 	currentScene->Update(dt);
 	renderer->Render();
+	Debug::FlushRenderables();
 }
 
 void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server)

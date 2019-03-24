@@ -157,6 +157,12 @@
     <ClCompile Include="AirStrikeControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="FunctionTimerManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionTimer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -385,9 +391,6 @@
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -402,6 +405,12 @@
     </ClInclude>
     <ClInclude Include="MenuScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionTimerManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionTimer.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

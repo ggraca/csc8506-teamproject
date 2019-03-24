@@ -4,27 +4,25 @@
 using namespace NCL;
 using namespace NCL::CSC8503;
 
-DebugMenu::DebugMenu()
-{
-}
-
-
-DebugMenu::~DebugMenu()
-{
-}
-
 void DebugMenu::Update(const float dt, GameTechRenderer* renderer) {
-	if (debugMenuOpen) {
+	if (GetInstance().debugMenuOpen) {
 		Debug::AddStringToDebugMenu("Graphics: ");
-		calculateNewFPS++;
-		if (calculateNewFPS >= 10) {
-			frameTime = dt;
-			calculateNewFPS = 0;
+		GetInstance().calculateNewFPS++;
+		if (GetInstance().calculateNewFPS >= 10) {
+			GetInstance().frameTime = dt;
+			GetInstance().calculateNewFPS = 0;
 		}
-		Debug::AddStringToDebugMenu("FPS: " + std::to_string((int)(1 / frameTime)) + "." + std::to_string((int)(10 / frameTime) % 10));
+		Debug::AddStringToDebugMenu("FPS: " + std::to_string((int)(1 / GetInstance().frameTime)) + "." + std::to_string((int)(10 / GetInstance().frameTime) % 10));
 		Debug::AddStringToDebugMenu("Screen Size: " + std::to_string(renderer->GetRendererWidth())
 			+ "x" + std::to_string(renderer->GetRendererHeight()));
 		Debug::AddStringToDebugMenu("Verts: " + std::to_string(renderer->GetVertsDrawn()));
 		Debug::AddStringToDebugMenu("Shadow Casters: " + std::to_string(renderer->GetShadowCasters()));
+
+		auto functionTimes = GetInstance().timerManager.GetFunctionTimerMap();
+
+		for (auto i = functionTimes.begin(); i != functionTimes.end(); i++)
+		{
+			Debug::AddStringToDebugMenu(i->first + ": " + std::to_string(i->second) + " %" + std::to_string(i->second * 100 / GetInstance().frameTime));
+		}
 	}
 }

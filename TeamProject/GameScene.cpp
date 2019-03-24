@@ -3,10 +3,8 @@
 
 
 GameScene::GameScene(bool& qG) : Scene(), quitGame(qG) {
-	debugMenu = DebugMenu();
-	console = Console();
 	InitStateMachine();
-	RegisterConsoleCommands();
+	//RegisterConsoleCommands();
 
 	GameObject* light = new GameObject("Directional Light");
 	//Directional
@@ -26,12 +24,6 @@ GameScene::~GameScene()  {
 
 
 void GameScene::LateUpdate(float dt) {
-	//Might want moved into a seperate function that handles input
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-		console.Toggle();
-		debugMenu.Toggle();
-	}
-
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
 		world->SwitchToFPS();
 	}
@@ -69,9 +61,6 @@ void GameScene::LateUpdate(float dt) {
 
 	pauseMenu.Update(quitGame, showPauseMenu, audio, currentMenuPath, dt, renderer);
 	objectStateMachine->Update();
-	Debug::FlushRenderables();
-	debugMenu.Update(dt, renderer);
-	console.Update();
 	hud.Update(dt, renderer);
 }
 
@@ -84,9 +73,10 @@ void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 	world->GetMainCamera()->GetTransform().SetWorldPosition(Vector3(x, y, z));
 }
 
-void GameScene::RegisterConsoleCommands() {
-	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
-}
+//Console needs to be static first
+//void GameScene::RegisterConsoleCommands() {
+//	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
+//}
 
 void GameScene::ShowMenu()
 {
