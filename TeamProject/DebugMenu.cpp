@@ -26,5 +26,12 @@ void DebugMenu::Update(const float dt, GameTechRenderer* renderer) {
 			+ "x" + std::to_string(renderer->GetRendererHeight()));
 		Debug::AddStringToDebugMenu("Verts: " + std::to_string(renderer->GetVertsDrawn()));
 		Debug::AddStringToDebugMenu("Shadow Casters: " + std::to_string(renderer->GetShadowCasters()));
+
+		auto functionTimes = timerManager.GetFunctionTimerMap();
+
+		for (auto i = functionTimes.begin(); i != functionTimes.end(); i++)
+		{
+			Debug::AddStringToDebugMenu(i->first + std::to_string(i->second));
+		}
 	}
 }

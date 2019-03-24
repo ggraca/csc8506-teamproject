@@ -1,6 +1,7 @@
 #pragma once
 #include "GameTechRenderer.h"
 #include "Debug.h"
+#include "FunctionTimerManager.h"
 
 using namespace NCL;
 using namespace NCL::CSC8503;
@@ -17,5 +18,7 @@ protected:
 	float frameTime = 60.0f;
 	int calculateNewFPS = 0;
 	bool debugMenuOpen = false;
+
+	FunctionTimerManager timerManager;
 };
 
