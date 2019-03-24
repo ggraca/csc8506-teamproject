@@ -51,6 +51,8 @@ namespace NCL {
 			virtual void SetupDebugMatrix(OGLShader*s) {
 			}
 
+			void GenerateIrradianceMap(TextureBase* skybox, TextureBase* irradianceMap, ShaderBase* convShader, MeshGeometry* cube, void* ConvFBO);
+
 			void GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& bufferTexs, TextureBase* depth);
 			void DeleteFrameBuffer(void* buffer);
 			void BindFBO(void* buffer);

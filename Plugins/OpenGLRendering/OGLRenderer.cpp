@@ -78,6 +78,41 @@ void OGLRenderer::EndFrame()		{
 	::SwapBuffers(deviceContext);
 }
 
+void OGLRenderer::GenerateIrradianceMap(TextureBase* skybox, TextureBase* irradianceMap, ShaderBase* convShader, MeshGeometry* cube, void* ConvFBO) {
+	BindShader(convShader);
+
+	Matrix4 captureProjection = Matrix4::Perspective(0.1f, 10.0f, 1.0f, 90.0f);
+	Matrix4 captureViews[] =
+	{
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f,   0.0f,  0.0f), Vector3(0.0f, -1.0f,  0.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(-1.0f,  0.0f,  0.0f), Vector3(0.0f, -1.0f,  0.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   1.0f,  0.0f), Vector3(0.0f,  0.0f,  1.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,  -1.0f,  0.0f), Vector3(0.0f,  0.0f, -1.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   0.0f,  1.0f), Vector3(0.0f, -1.0f,  0.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   0.0f, -1.0f), Vector3(0.0f, -1.0f,  0.0f))
+	};
+
+	BindMatrix4ToShader(captureProjection, "projMatrix");
+	BindTextureCubeToShader(skybox, "cubeTex", 0);
+
+	SetViewport(0, 0, 32, 32);
+	BindFBO(ConvFBO);
+	BindMesh(cube);
+
+	for (unsigned int i = 0; i < 6; ++i)
+	{
+		BindMatrix4ToShader(captureViews[i], "viewMatrix");
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, ((OGLTexture*)irradianceMap)->GetObjectID(), 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		DrawBoundMesh();
+	}
+
+	SetViewport(0, 0, currentWidth, currentHeight);
+	BindFBO(nullptr);
+}
+
 void OGLRenderer::BindShader(ShaderBase*s) {
 	if (!s) {
 		glUseProgram(0);

@@ -29,9 +29,9 @@ namespace NCL {
 			int GetVertsDrawn() const { return vertsDrawn; }
 			int GetShadowCasters() const { return shadowCasters; }
 
-			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
+			void SetLightMesh(MeshGeometry* mesh) { lightSphere = mesh; }
 			
-			TextureBase* skybox;
+			void SetSkyBox(TextureBase* Skybox) { skybox = Skybox; RegenerateIrradianceMap = true; }
 
 			//HUD
 			void AddHUDObjects();
@@ -74,16 +74,23 @@ namespace NCL {
 			Matrix4     shadowMatrix;
 
 			ShaderBase* skyBoxShader;
+			ShaderBase* convolutionShader;
+			GLuint convFBO;
+			TextureBase* skybox;
+			TextureBase* irradianceMap;
+			MeshGeometry* cube;
+			bool RegenerateIrradianceMap = false;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			TextureBase* gBufferDepthTex; // Depth goes here
 			TextureBase* gBufferColourTex; // Albedo goes here
 			TextureBase* gBufferNormalTex; // Normals go here
-			TextureBase* gBufferSpecularTex; // Specular goes here
+			TextureBase* gBufferMaterialTex; // Specular goes here
 
 			GLuint lightFBO; // FBO for our lighting pass
 			TextureBase* lightEmissiveTex; // emissive lighting
 			TextureBase* lightSpecularTex; // specular lighting
+			TextureBase* lightKDTex;
 
 			GLuint postFBO; // FBO for our post process pass
 			TextureBase* postTexture[2]; // post process texture [0] and [1]
@@ -96,7 +103,7 @@ namespace NCL {
 			ShaderBase* directionalLightShader;
 			ShaderBase* particleShader;
 			ShaderBase* hudShader;
-			OGLMesh* lightSphere;
+			MeshGeometry* lightSphere;
 			OGLMesh* screenQuad;
 
 			GLuint hudTex;

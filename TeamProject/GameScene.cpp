@@ -7,8 +7,12 @@ GameScene::GameScene(bool& qG) : Scene(), quitGame(qG) {
 	//RegisterConsoleCommands();
 
 	GameObject* light = new GameObject("Directional Light");
-	light->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(90.0f, 0.0f, 0.0f));
-	light->AddComponent<Light*>(new Light(LightType::Directional, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 1.0f));
+	//Directional
+	light->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(30.0f, 60.0f, 0.0f));
+	light->AddComponent<Light*>(new Light(LightType::Directional, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f, 1.0f));
+	//Point
+	//light->GetTransform().SetWorldPosition(Vector3(0.0f, 100.0f, 0.0f));
+	//light->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f, 1.0f));
 	world->Instantiate(light);
 }
 
