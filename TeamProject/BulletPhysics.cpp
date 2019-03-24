@@ -1,5 +1,7 @@
 #include "BulletPhysics.h"
 
+#include "FunctionTimer.h"
+
 using namespace NCL;
 using namespace CSC8503;
 
@@ -44,6 +46,8 @@ BulletPhysics::~BulletPhysics()
 }
 
 void BulletPhysics::Update(float dt) {
+	FunctionTimer timer("Physics Update");
+
 	const float iterationDt = 1.0f / 120.0f; 
 	dTOffset += dt;
 	int iterationCount = (int)(dTOffset / iterationDt);
