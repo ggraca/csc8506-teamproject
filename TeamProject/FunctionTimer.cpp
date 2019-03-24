@@ -3,6 +3,8 @@
 #include <time.h>
 #include <stdio.h>
 
+FunctionTimerManager* FunctionTimer::manager = nullptr;
+
 FunctionTimer::FunctionTimer()
 {
 	startTime = static_cast<float>(clock());
