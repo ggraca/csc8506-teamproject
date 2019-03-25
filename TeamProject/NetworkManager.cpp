@@ -46,6 +46,7 @@ void NetworkManager::CreateClient()
 	client->RegisterPacketHandler(InstantiateMessage, networkEntity);
 	client->RegisterPacketHandler(DestroyMessage, networkEntity);
 	client->RegisterPacketHandler(ObjectUpdateMessage, networkEntity);
+	client->RegisterPacketHandler(PlayerStateMessage, networkEntity);
 
 	bool canConnect = client->Connect(127, 0, 0, 1, port);
 	if (canConnect) std::cout << "Conneced to Server" << std::endl;

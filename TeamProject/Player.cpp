@@ -252,6 +252,7 @@ bool Player::IsHammerActive()
 
 void Player::ResetPlayer()
 {
+	hp = 100;
 	movementSpeed = 200;
 	jumpSpeed = 400;
 	dodgeAmount = 500;

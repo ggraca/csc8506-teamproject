@@ -3,14 +3,16 @@
 
 
 GameScene::GameScene(bool& qG) : Scene(), quitGame(qG) {
-	debugMenu = DebugMenu();
-	console = Console();
 	InitStateMachine();
-	RegisterConsoleCommands();
+	//RegisterConsoleCommands();
 
 	GameObject* light = new GameObject("Directional Light");
-	light->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(90.0f, 0.0f, 0.0f));
-	light->AddComponent<Light*>(new Light(LightType::Directional, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2000.0f, 1.0f));
+	//Directional
+	light->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(30.0f, 60.0f, 0.0f));
+	light->AddComponent<Light*>(new Light(LightType::Directional, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f, 1.0f));
+	//Point
+	//light->GetTransform().SetWorldPosition(Vector3(0.0f, 100.0f, 0.0f));
+	//light->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f, 1.0f));
 	world->Instantiate(light);
 }
 
@@ -22,12 +24,6 @@ GameScene::~GameScene()  {
 
 
 void GameScene::LateUpdate(float dt) {
-	//Might want moved into a seperate function that handles input
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-		console.Toggle();
-		debugMenu.Toggle();
-	}
-
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
 		world->SwitchToFPS();
 	}
@@ -65,10 +61,7 @@ void GameScene::LateUpdate(float dt) {
 
 	pauseMenu.Update(quitGame, showPauseMenu, audio, currentMenuPath, dt, renderer);
 	objectStateMachine->Update();
-	Debug::FlushRenderables();
-	debugMenu.Update(dt, renderer);
-	console.Update();
-	hud.Update(dt, renderer);
+	hud.Update(dt, renderer, world->GetNetwork());
 }
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {
@@ -80,9 +73,10 @@ void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 	world->GetMainCamera()->GetTransform().SetWorldPosition(Vector3(x, y, z));
 }
 
-void GameScene::RegisterConsoleCommands() {
-	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
-}
+//Console needs to be static first
+//void GameScene::RegisterConsoleCommands() {
+//	console.RegisterCommand("setcamerapos", CommandSetCameraPosition, world);
+//}
 
 void GameScene::ShowMenu()
 {

@@ -22,6 +22,8 @@ namespace NCL {
 
 			static TextureBase* EmptyTexture(int width, int height, bool depth = false);
 
+			static TextureBase* EmptyCubeTexture(int width, int height);
+
 			static TextureBase* ShadowTexture(int width, int height);
 
 			static TextureBase* CubeTextureFromFilename(const std::vector<std::string>& faces);

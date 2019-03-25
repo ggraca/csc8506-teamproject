@@ -6,12 +6,15 @@
 #include "../Common/OBJGeometry.h"
 #include "Light.h"
 #include "ParticleSystem.h"
+#include "Debug.h"
+
+#include "FunctionTimer.h"
 
 using namespace NCL;
 using namespace Rendering;
 using namespace CSC8503;
 
-#define SHADOWSIZE 4096
+#define SHADOWSIZE 8192
 
 Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
@@ -23,6 +26,7 @@ GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
 	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
 	presentShader = Assets::AssetManager::LoadShader("PresentShader", "TexturedVertex.glsl", "TexturedFragment.glsl");
 	particleShader = Assets::AssetManager::LoadShader("ParticleShader", "ParticleVert.glsl", "ParticleFrag.glsl");
+	convolutionShader = Assets::AssetManager::LoadShader("ConvolutionShader", "convolutionVertex.glsl", "convolutionFragment.glsl");
 
 	// Temporary until post process material or something is set up
 	// postProcessShaders.push_back(Assets::AssetManager::LoadShader("PostShader", "TexturedVertex.glsl", "blurfrag.glsl"));
@@ -34,6 +38,7 @@ GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
 	screenQuad = OGLMesh::GenerateQuad();
 	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	screenQuad->UploadToGPU();
+	cube = Assets::AssetManager::LoadMesh("Cube.msh");
 
 	AddHUDObjects();
 
@@ -89,37 +94,55 @@ void GameTechRenderer::GenBuffers() {
 	gBufferDepthTex = OGLTexture::EmptyTexture(currentWidth, currentHeight, true);
 	gBufferColourTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	gBufferNormalTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
-	gBufferSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	gBufferMaterialTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	//Generate light buffer textures
 	lightEmissiveTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	lightSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	lightKDTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	//Generate post process buffer textures
 	postTexture[0] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	postTexture[1] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	//Generate Convolution buffer textures
+	TextureBase* tempConvTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	irradianceMap = OGLTexture::EmptyCubeTexture(32, 32);
 
 	vector<TextureBase*> gBufferTexes;
 	gBufferTexes.push_back(gBufferColourTex);
 	gBufferTexes.push_back(gBufferNormalTex);
-	gBufferTexes.push_back(gBufferSpecularTex);
+	gBufferTexes.push_back(gBufferMaterialTex);
 
 	vector<TextureBase*> lightBufferTexes;
 	lightBufferTexes.push_back(lightEmissiveTex);
 	lightBufferTexes.push_back(lightSpecularTex);
+	lightBufferTexes.push_back(lightKDTex);
 
 	vector<TextureBase*> postBufferTexes;
 	postBufferTexes.push_back(postTexture[0]);
 
+	vector<TextureBase*> convBufferTexes;
+	convBufferTexes.push_back(tempConvTex);
+
 	GenerateFrameBuffer(&gBufferFBO, gBufferTexes, gBufferDepthTex);
 	GenerateFrameBuffer(&lightFBO, lightBufferTexes, nullptr);
 	GenerateFrameBuffer(&postFBO, postBufferTexes, nullptr);
+	GenerateFrameBuffer(&convFBO, convBufferTexes, nullptr);
+	delete tempConvTex;
 }
 
 void GameTechRenderer::RenderFrame() {
+	FunctionTimer timer("Render Frame");
+
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 	pixOps.SetDepthComparison(COMPARISON::LESS);
 	pixOps.SetClearColor(Vector4(0.3f, 0.8f, 1, 1));
 	BuildObjectList();
 	SortObjectList();
+
+	if (RegenerateIrradianceMap) {
+		GenerateIrradianceMap(skybox, irradianceMap, convolutionShader, cube, (void*)&convFBO);
+		RegenerateIrradianceMap = false;
+	}
+
 	RenderShadowMap();
 	RenderSkybox();
 	RenderCamera();
@@ -184,8 +207,12 @@ void GameTechRenderer::RenderShadowMap() {
 	Vector3 newlightPos = (lightRot * Vector3(0, 0, 1)) * 1000.0f;
 	Vector3 newlightPosUp = (lightRot * Vector3(0, 1, 0));
 
+	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(20, 0, 0), Vector4(1, 0, 0, 1));
+	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 20, 0), Vector4(0, 1, 0, 1));
+	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 0, -20), Vector4(0, 0, 1, 1));
+
 	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(cameraPosition + newlightPos, cameraPosition, newlightPosUp);
-	Matrix4 shadowProjMatrix = Matrix4::Orthographic(-10, 10000, -1000, 1000, -1000, 1000);
+	Matrix4 shadowProjMatrix = Matrix4::Orthographic(10, 10000, 1000, -1000, 1000, -1000);
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
 	shadowMatrix = biasMatrix * mvMatrix; //we'll use this one later on
 
@@ -262,8 +289,6 @@ void GameTechRenderer::RenderCamera() {
 				(*(currentMaterial->GetTextureParameters()))[j].first, j);
 		}
 
-		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
-
 		BindVector3ToShader(gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
@@ -308,8 +333,10 @@ void GameTechRenderer::RenderLights() {
 				* activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation().ToMatrix4()
 				* Matrix4::Scale(Vector3(radius, radius, radius));
 
+			BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
 			BindMatrix4ToShader(projMatrix, "projMatrix");
 			BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
 			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition(), "lightPos");
@@ -330,12 +357,14 @@ void GameTechRenderer::RenderLights() {
 
 			Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 
+			BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
+			BindTextureCubeToShader(skybox, "cubeTex", 6);
 			BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 			BindMatrix4ToShader(projMatrix, "cameraProjMatrix");
-			Vector3 rot = activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1);
-			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, 1), "lightDir");
+			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation() * Vector3(0, 0, -1), "lightDirection");
 			BindIntToShader(drawShadows, "drawShadows");
 			BindTextureToShader(shadowTex, "shadowTex", 20);
 			BindMesh(screenQuad);
@@ -348,8 +377,10 @@ void GameTechRenderer::RenderLights() {
 				* activeLights[x]->GetGameObject()->GetTransform().GetWorldOrientation().ToMatrix4()
 				* Matrix4::Scale(Vector3(radius, radius, radius));
 
+			BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 			BindTextureToShader(gBufferDepthTex, "depthTex", 3);
 			BindTextureToShader(gBufferNormalTex, "normTex", 4);
+			BindTextureToShader(gBufferMaterialTex, "materialTex", 5);
 			BindMatrix4ToShader(projMatrix, "projMatrix");
 			BindMatrix4ToShader(tempModelMatrix, "modelMatrix");
 			BindVector3ToShader(activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition(), "lightPos");
@@ -410,14 +441,14 @@ void GameTechRenderer::CombineBuffers() {
 	BindMatrix4ToShader(viewMatrix, "viewMatrix");
 	BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 	BindMatrix4ToShader(identity, "textureMatrix");
-	BindVector4ToShader(ambientColour, "ambientColour");
 
 	BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
-	BindTextureToShader(gBufferDepthTex, "depthTex", 3);
-	BindTextureToShader(gBufferNormalTex, "normTex", 4);
-	BindTextureToShader(gBufferSpecularTex, "specularTex", 5);
-	BindTextureToShader(lightEmissiveTex, "emissiveTex", 6);
-	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 7);
+	BindTextureToShader(gBufferMaterialTex, "materialTex", 3);
+	BindTextureToShader(lightEmissiveTex, "emissiveTex", 4);
+	BindTextureToShader(lightSpecularTex, "lightSpecularTex", 5);
+	BindTextureToShader(lightKDTex, "KDTex", 6);
+	BindTextureToShader(gBufferNormalTex, "normTex", 7);
+	BindTextureCubeToShader(irradianceMap, "irradianceMap", 8);
 
 	BindMesh(screenQuad);
 	DrawBoundMesh();
@@ -440,8 +471,8 @@ void GameTechRenderer::RenderParticleSystems() {
 
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 	pixOps.SetDepthMask(false);
-	pixOps.SetSourceFactor(BLEND::SRC_ALPHA);
-	pixOps.SetDestinationFactor(BLEND::ONE);
+	pixOps.SetSourceFactor(BLEND::ONE);
+	pixOps.SetDestinationFactor(BLEND::ONE_MINUS_SRC_ALPHA);
 
 	BindShader(particleShader);
 	BindMesh(screenQuad);
@@ -466,6 +497,9 @@ void GameTechRenderer::RenderParticleSystems() {
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindFloatToShader(activeParticleSystems[i]->GetParticleMaxLifeTime(), "particleMaxLifeTime");
 
+		//Temporary to test colour
+		BindVector3ToShader(Vector3(0.2f, 0.2f, 0.2f), "objectColour");
+
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, particles.size());
 	}
 
@@ -483,25 +517,15 @@ void GameTechRenderer::RenderPostProcess() {
 
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 
-	for (unsigned int i = 0; i < postProcessShaders.size(); i++)
-	{
-		int currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
-		//Create bind texture to framebuffer color attachment
-		//Like this:
-		//							TextureBase*								Attachment slot
-		//BindTextureToFBO(((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
-		ClearBuffer(true, true, false);
-
-		BindShader(postProcessShaders[i]);
-
-		//These lines are just setup for a blur shader
-		//Should really be handled by a post process shader class (maybe material?)
-		BindVector2ToShader(Vector2(1.0f / currentWidth, 1.0f / currentHeight), "pixelSize");
-		BindMatrix4ToShader(tempProjMatrix, "projMatrix");
-		for (int x = 0; x < 0; ++x) {
-			currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+	DoPostProcess = false;
+	if (DoPostProcess) {
+		for (int i = 0; i < postProcessShaders.size(); i++)
+		{
+			int currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
+			//Create bind texture to framebuffer color attachment
+			//Like this:
+			//							TextureBase*								Attachment slot
+			//BindTextureToFBO(((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 				GL_TEXTURE_2D, ((OGLTexture*)postTexture[currentRendererdPostTex])->GetObjectID(), 0);
 			ClearBuffer(true, true, false);
@@ -540,7 +564,6 @@ void GameTechRenderer::RenderPostProcess() {
 			lastRendererdPostTex = currentRendererdPostTex;
 		}
 	}
-
 	BindFBO(nullptr);
 	BindShader(nullptr);
 }

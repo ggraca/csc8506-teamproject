@@ -4,6 +4,17 @@
 #include "NetworkObject.h"
 
 
+struct PlayerState {
+	PlayerState() {}
+	PlayerState(int hp, int res) {
+		health = hp;
+		resources = res;
+	}
+	
+	int health;
+	int resources;
+};
+
 class NetworkEntity : public PacketReceiver {
 public:
 	virtual void Update() = 0;
@@ -11,6 +22,7 @@ public:
 	virtual void Destroy() = 0;
 
 	void SetWorld(GameWorld* w) { world = w; }
+	PlayerState GetPlayerState() const { return playerState; }
 
 protected:
 	NetworkObject* FindObject(int id) {
@@ -22,4 +34,5 @@ protected:
 
 	GameWorld* world = nullptr;
 	vector<NetworkObject*> objects;
+	PlayerState playerState;
 };

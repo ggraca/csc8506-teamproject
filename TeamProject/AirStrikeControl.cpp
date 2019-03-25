@@ -20,7 +20,7 @@ void AirStrikeControl::Awake()
 
 void AirStrikeControl::Update(float dt)
 {
-	Debug::DrawLine(gameObject->GetTransform().GetWorldPosition(), GameObject::gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * 500));
+	//Debug::DrawLine(gameObject->GetTransform().GetWorldPosition(), GameObject::gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * 500));
 }
 
 void AirStrikeControl::LaunchAirStrike()

@@ -158,6 +158,12 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="PlayerAnimation.cpp" />
+    <ClCompile Include="FunctionTimerManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionTimer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -402,6 +408,12 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="PlayerAnimation.h" />
+    <ClInclude Include="FunctionTimerManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionTimer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">

@@ -190,6 +190,8 @@
     <ClCompile Include="DWallPrefab.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="ExampleScene.cpp" />
+    <ClCompile Include="FunctionTimer.cpp" />
+    <ClCompile Include="FunctionTimerManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -204,6 +206,7 @@
     <ClCompile Include="LayerAndTag.cpp" />
     <ClCompile Include="LevelScene.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="NetworkClient.cpp" />
@@ -256,6 +259,8 @@
     <ClInclude Include="DWallPrefab.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="ExampleScene.h" />
+    <ClInclude Include="FunctionTimer.h" />
+    <ClInclude Include="FunctionTimerManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
@@ -268,6 +273,7 @@
     <ClInclude Include="HUDObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LayerAndTag.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="MenuScene.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="NetworkClient.h" />
