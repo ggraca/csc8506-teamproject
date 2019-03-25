@@ -15,6 +15,7 @@ public:
 	virtual void ActivateGun();
 	virtual void DeactivateGun();
 	void FireObjectAndRemoveFromResources(std::vector<GameObject *> &children, int i=0);
+	void FireObjectAndRemoveFromResources(GameObject * child);
 	void Fire();
 
 	void Awake()  override;
