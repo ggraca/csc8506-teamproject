@@ -4,6 +4,19 @@
 #include "WellPrefab.h"
 
 
+#include "WallPrefab.h"
+#include "StallPrefab.h"
+#include "TentPrefab.h"
+#include "MarketPrefab.h"
+#include "CastlePrefab.h"
+#include "TowerPrefab.h"
+#include "CannonPrefab.h"
+#include "DWallPrefab.h"
+#include "CartPrefab.h"
+#include "Destructible.h"
+#include "SpherePrefab.h"
+
+
 NetworkExampleScene::NetworkExampleScene(bool& qG) : GameScene(qG) {
 	ResetWorld();
 }
@@ -26,10 +39,21 @@ void NetworkExampleScene::ResetWorld() {
 		}
 	}
 
+//	auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(19 + 37.5, 0, 20 + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -225));
+
+	for (int i = -size; i <= size; i++) {
+		for (int j = -size; j <= size; j++) {
+			new SpherePrefab(Vector3(i * 100, 590, j * 30), 10, 10, 0.5, 0.5);
+			world->LateInstantiate((new SpherePrefab(Vector3(i * 100, 590, j * 30), 10, 10, 0.5, 0.5)));
+		}
+	}
+	auto ball = new SpherePrefab(Vector3(1.6, 1, 1.6), 10, 10, 0.5, 0.5);
+
 	//auto well = new WellPrefab(Vector3(50, 50, 50), Vector3(-100, 20, -100), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 
 	world->LateInstantiateRecursively(player);
 	world->LateInstantiate(floor);
+	world->LateInstantiate(ball);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
