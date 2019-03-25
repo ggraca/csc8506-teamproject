@@ -166,6 +166,10 @@ void OGLRenderer::DrawBoundMesh(int subLayer, int numInstances) {
 		case GeometryPrimitive::Patches:		mode = GL_PATCHES;			break;
 	}
 
+	if (mode == GL_PATCHES) {
+		glPatchParameteri(GL_PATCH_VERTICES, 4);
+	}
+
 	if (boundMesh->GetIndexCount() > 0) {
 		glDrawElements(mode, boundMesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
 	}
