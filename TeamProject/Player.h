@@ -28,6 +28,7 @@ public:
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void UpdateResourceCount(int amount);
 	int GetResourceCount() const;
+	int GetHP() const;
 	LayerAndTag::Tags GetResourceTag() ;
 
 protected:
@@ -35,6 +36,7 @@ protected:
 	void ResetPlayer();
 
 	int resourceCount;
+	int hp;
 	float movementSpeed;
 	float jumpSpeed;
 	float dodgeAmount;

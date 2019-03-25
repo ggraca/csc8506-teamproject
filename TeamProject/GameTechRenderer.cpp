@@ -151,7 +151,7 @@ void GameTechRenderer::RenderFrame() {
 	RenderParticleSystems();
 	RenderPostProcess();
 	PresentScene();
-	RenderHUD();
+	if (activeHUD) RenderHUD();
 	pixOps.SetFaceCulling(CULLFACE::NOCULL); //Todo - text indices are going the wrong way...
 }
 

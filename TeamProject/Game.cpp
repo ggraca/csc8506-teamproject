@@ -54,7 +54,8 @@ void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server)
 { 
 	currentScene = nullptr;
 	delete currentScene;
-	currentScene = newScene; 
+	currentScene = newScene;
+	renderer->HUDState(true);
 	currentScene->SetRenderer(renderer);
 	network = new NetworkManager(server);
 	renderer->SetGameWorld(currentScene->GetGameWorld());
