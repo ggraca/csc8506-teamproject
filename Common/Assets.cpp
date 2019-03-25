@@ -52,17 +52,24 @@ Rendering::ShaderBase* Assets::AssetManager::LoadShader(const string& shadername
 	return newShader;
 }
 
-MeshGeometry* Assets::AssetManager::LoadMesh(const std::string& filename) {
+MeshGeometry* Assets::AssetManager::LoadMesh(const std::string& filename, bool tesselated) {
 	auto iter = GetInstance().loadedMeshes.find(filename);
 
-	if (iter != GetInstance().loadedMeshes.end()) {
-		return (*iter).second;
+	if (!tesselated) {
+		if (iter != GetInstance().loadedMeshes.end()) {
+			return (*iter).second;
+		}
 	}
 
 	// TODO: Make this compatible with PS4
 	MeshGeometry* newMesh = (MeshGeometry*) new Rendering::OGLMesh(filename);
 	// .msh files have always triangles as faces
-	newMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+	if (tesselated) {
+		newMesh->SetPrimitiveType(GeometryPrimitive::Patches);
+	}
+	else {
+		newMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
+	}
 	newMesh->UploadToGPU();
 	GetInstance().loadedMeshes.insert(std::make_pair(filename, newMesh));
 	return newMesh;
