@@ -1,3 +1,5 @@
+#ifdef _WIN32
+
 #include "NetworkObject.h"
 
 using namespace NCL;
@@ -53,3 +55,4 @@ bool NetworkObject::GetNetworkState(int stateID, NetworkState& state) {
 
 void NetworkObject::UpdateStateHistory(int minID) {
 }
+#endif

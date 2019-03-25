@@ -8,8 +8,6 @@
 
 using std::vector;
 
-using namespace NCL::Maths;
-
 namespace NCL {
 	namespace CSC8503 {
 		class PhysicsObject;
@@ -19,14 +17,14 @@ namespace NCL {
 		{
 		public:
 			Transform();
-			Transform(const Vector3& position, Transform* parent = nullptr);
+			Transform(const  NCL::Maths::Vector3& position, Transform* parent = nullptr);
 			~Transform();
 
-			void SetWorldPosition(const Vector3& worldPos);
-			void SetLocalPosition(const Vector3& localPos);
+			void SetWorldPosition(const NCL::Maths::Vector3& worldPos);
+			void SetLocalPosition(const  NCL::Maths::Vector3& localPos);
 
-			void SetWorldScale(const Vector3& worldScale);
-			void SetLocalScale(const Vector3& localScale);
+			void SetWorldScale(const  NCL::Maths::Vector3& worldScale);
+			void SetLocalScale(const  NCL::Maths::Vector3& localScale);
 
 			Transform* GetParent() const {
 				return parent;
@@ -36,39 +34,39 @@ namespace NCL {
 				parent = newParent;
 			}
 
-			Matrix4 GetWorldMatrix() const {
+			NCL::Maths::Matrix4 GetWorldMatrix() const {
 				return worldMatrix;
 			}
 
-			Matrix4 GetLocalMatrix() const {
+			NCL::Maths::Matrix4 GetLocalMatrix() const {
 				return localMatrix;
 			}
 
-			Vector3 GetWorldPosition() const {
+			NCL::Maths::Vector3 GetWorldPosition() const {
 				return worldMatrix.GetPositionVector();
 			}
 
-			Vector3 GetLocalPosition() const {
+			NCL::Maths::Vector3 GetLocalPosition() const {
 				return localPosition;
 			}
 
-			Vector3 GetLocalScale() const {
+			NCL::Maths::Vector3 GetLocalScale() const {
 				return localScale;
 			}
 
-			Quaternion GetLocalOrientation() const {
+			NCL::Maths::Quaternion GetLocalOrientation() const {
 				return localOrientation;
 			}
 
-			void SetLocalOrientation(const Quaternion& newOr) {
+			void SetLocalOrientation(const  NCL::Maths::Quaternion& newOr) {
 				localOrientation = newOr;
 			}
 
-			Quaternion GetWorldOrientation() const {
+			NCL::Maths::Quaternion GetWorldOrientation() const {
 				return worldOrientation;
 			}
 
-			Matrix3 GetInverseWorldOrientationMat() const {
+			NCL::Maths::Matrix3 GetInverseWorldOrientationMat() const {
 				return worldOrientation.Conjugate().ToMatrix3();
 			}
 
@@ -100,29 +98,29 @@ namespace NCL {
 			void UpdateMatrices();
 			vector<Transform*> GetChildrenList();
 
-			void ForceUpdateWorldPosition(Vector3 pos);
+			void ForceUpdateWorldPosition(NCL::Maths::Vector3 pos);
 			void ForceUpdateBulletWorldTransform(btTransform &temp);
-			void ForceUpdateLocalRotation(Quaternion qt);
+			void ForceUpdateLocalRotation(NCL::Maths::Quaternion qt);
 
-			void ForceUpdateWorldPositionWithTransform(Vector3 pos);
-			void ForceUpdateLocalPositionWithTransform(Vector3 pos);
-			void ForceUpdateLocalRotationWithTransform(Quaternion qt);
+			void ForceUpdateWorldPositionWithTransform(NCL::Maths::Vector3 pos);
+			void ForceUpdateLocalPositionWithTransform(NCL::Maths::Vector3 pos);
+			void ForceUpdateLocalRotationWithTransform(NCL::Maths::Quaternion qt);
 
-			void ForceUpdateScale(Vector3 scale);
-			void ForceUpdateScaleWithTransform(Vector3 scale);
+			void ForceUpdateScale(NCL::Maths::Vector3 scale);
+			void ForceUpdateScaleWithTransform(NCL::Maths::Vector3 scale);
 
 			void SetGameObject(GameObject * obj);
 			GameObject* GetGameObject();
 
 
 		protected:
-			Matrix4		localMatrix;
-			Matrix4		worldMatrix;
+			NCL::Maths::Matrix4		localMatrix;
+			NCL::Maths::Matrix4		worldMatrix;
 
-			Vector3		localPosition;
-			Vector3		localScale;
-			Quaternion	localOrientation;
-			Quaternion  worldOrientation;
+			NCL::Maths::Vector3		localPosition;
+			NCL::Maths::Vector3		localScale;
+			NCL::Maths::Quaternion	localOrientation;
+			NCL::Maths::Quaternion  worldOrientation;
 
 			Transform*	parent = nullptr;
 			GameObject * gameObject;

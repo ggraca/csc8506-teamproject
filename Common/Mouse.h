@@ -14,7 +14,6 @@ _-_-_-_-_-_-_-""  ""
 #include "Vector2.h"
 
 namespace NCL {
-	using namespace NCL::Maths;
 	enum MouseButtons {
 		MOUSE_LEFT = 0,
 		MOUSE_RIGHT = 1,
@@ -41,11 +40,11 @@ namespace NCL {
 		}
 
 		//Get how much this mouse has moved since last frame
-		inline Vector2	GetRelativePosition() const { return relativePosition; }
+		inline  NCL::Maths::Vector2	GetRelativePosition() const { return relativePosition; }
 		//Get the window position of the mouse pointer
-		inline Vector2	GetAbsolutePosition() const { return absolutePosition; }
+		inline NCL::Maths::Vector2	GetAbsolutePosition() const { return absolutePosition; }
 
-		inline Vector2 GetWindowPosition() const {
+		inline  NCL::Maths::Vector2 GetWindowPosition() const {
 			return windowPosition;
 		}
 
@@ -74,11 +73,11 @@ namespace NCL {
 		virtual ~Mouse() {}
 
 		//Set the mouse's current screen position. Maybe should be public?
-		void	SetAbsolutePosition(const Vector2& pos);
+		void	SetAbsolutePosition(const  NCL::Maths::Vector2& pos);
 
 		//Set the absolute screen bounds (<0 is always assumed dissallowed). Used
 		//by the window resize routine...
-		void	SetAbsolutePositionBounds(const Vector2& bounds);
+		void	SetAbsolutePositionBounds(const  NCL::Maths::Vector2& bounds);
 
 		void	UpdateFrameState(float msec);
 		void	Sleep();
@@ -87,13 +86,13 @@ namespace NCL {
 		bool		isAwake;		//Is the device awake...
 
 		//Screen position if windowing API provides it
-		Vector2		windowPosition;
+		NCL::Maths::Vector2		windowPosition;
 		//Current mouse absolute position
-		Vector2		absolutePosition;
+		NCL::Maths::Vector2		absolutePosition;
 		//Current mouse absolute position maximum bounds
-		Vector2		absolutePositionBounds;
+		NCL::Maths::Vector2		absolutePositionBounds;
 		//How much as the mouse moved since the last raw packet?
-		Vector2		relativePosition;
+		NCL::Maths::Vector2		relativePosition;
 		//Current button down state for each button
 		bool		buttons[MOUSE_MAX];
 		//Current button held state for each button

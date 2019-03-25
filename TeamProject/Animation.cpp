@@ -2,7 +2,7 @@
 #include "PhysicsObject.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
-Animation::Animation(int fps = 60)
+Animation::Animation(int fps)
 {
 	currentFrame = nullptr;
 	nextFrame = nullptr;

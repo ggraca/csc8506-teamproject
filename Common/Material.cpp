@@ -15,7 +15,7 @@ Material::Material()
 {
 	shader = nullptr;
 	textureMatrix.ToIdentity();
-	colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	colour = NCL::Maths::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 Material::~Material()

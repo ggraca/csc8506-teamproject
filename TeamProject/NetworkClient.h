@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _WIN32
 
 #include "NetworkEntity.h"
 #include "../Common/GameClient.h"
@@ -35,3 +36,4 @@ private:
 
 	GameClient* client;
 };
+#endif

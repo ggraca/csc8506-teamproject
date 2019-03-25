@@ -48,10 +48,10 @@ void	Mouse::Wake() {
 	isAwake = true; 
 }
 
-void	Mouse::SetAbsolutePosition(const Vector2& pos) {
+void	Mouse::SetAbsolutePosition(const  NCL::Maths::Vector2& pos) {
 	absolutePosition = pos;
 }
 
-void	Mouse::SetAbsolutePositionBounds(const Vector2& bounds) {
+void	Mouse::SetAbsolutePositionBounds(const  NCL::Maths::Vector2& bounds) {
 	absolutePositionBounds = bounds;
 }

@@ -25,7 +25,7 @@ namespace NCL {
 			Win32Mouse(HWND &hwnd);
 			virtual ~Win32Mouse(void) {}
 
-			void UpdateWindowPosition(const Vector2& newPos) {
+			void UpdateWindowPosition(const NCL::Maths::Vector2& newPos) {
 				windowPosition = newPos;
 			}
 

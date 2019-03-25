@@ -1,3 +1,5 @@
+#ifdef _WIN32
+
 #include "ShaderLoader.h"
 #include <iostream>
 
@@ -24,3 +26,4 @@ Rendering::ShaderBase* ShaderLoader::LoadAPIShader(const string& vertex, const s
 	}
 	return apiFunction(vertex, fragment, geometry, domain, hull);
 }
+#endif

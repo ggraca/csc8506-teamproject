@@ -1,4 +1,6 @@
 #pragma once
+#ifdef _WIN32
+
 #include <thread>
 #include <atomic>
 
@@ -43,3 +45,4 @@ namespace NCL {
 		};
 	}
 }
+#endif

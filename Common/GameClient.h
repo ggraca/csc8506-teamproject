@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _WIN32
 #include "NetworkBase.h"
 #include <stdint.h>
 #include <thread>
@@ -25,3 +26,4 @@ namespace NCL {
 		};
 	}
 }
+#endif

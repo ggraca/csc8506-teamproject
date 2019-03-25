@@ -8,8 +8,7 @@
 #include "Quaternion.h"
 
 using namespace std;
-using namespace NCL::Maths;
 
 vector<string> split_string(const string &s, char delimiter = ' ');
-string ToString(Vector3 v);
-string ToString(Quaternion q);
+string ToString(NCL::Maths::Vector3 v);
+string ToString(NCL::Maths::Quaternion q);

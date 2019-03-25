@@ -1,7 +1,9 @@
+#ifdef _WIN32
+
 #include "OBJGeometry.h"
 #include "Utils.h"
-#include "../../OpenGLRendering/OGLTexture.h"
 
+#include "../../OpenGLRendering/OGLTexture.h"
 bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	std::ifstream f(filename.c_str(), std::ios::in);
 	if (!f) return false;
@@ -239,3 +241,4 @@ string OBJGeometry::NormalisePath(string path) {
 	}
 	return path;
 }
+#endif

@@ -85,7 +85,7 @@ void CameraControl::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
-Matrix4 CameraControl::BuildViewMatrix() const 
+Matrix4 CameraControl::BuildViewMatrix() const
 {
 	vector<Transform*> children = gameObject->GetTransform().GetChildrenList();
 	

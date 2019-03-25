@@ -7,7 +7,10 @@ CastlePrefab::CastlePrefab(const Vector3& Scale, const Vector3& Position, const 
 	go->GetTransform().SetLocalScale(Scale);
 	go->GetTransform().SetWorldPosition(Position);
 	go->GetTransform().SetLocalOrientation(orient);
+#ifdef _WIN32
+
 	go->AddComponent<NetworkObject*>(new NetworkObject(go, NetworkObject::Castle));
+#endif
 }
 
 CastlePrefab::~CastlePrefab()

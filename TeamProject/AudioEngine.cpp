@@ -279,9 +279,9 @@ void CAudioEngine::SetPlayer(GameObject* player1) {
 
 void CAudioEngine::SetOrientation() {
 
-	forward.x = sin(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
-	forward.y = sin(-player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
-	forward.z = cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180));
+	forward.x = sin(player->GetTransform().GetLocalOrientation().ToEuler().y * (N_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (N_PI / 180));
+	forward.y = sin(-player->GetTransform().GetLocalOrientation().ToEuler().x * (N_PI / 180));
+	forward.z = cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (N_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().y * (N_PI / 180));
 }
 
 // code tutorial from https://codyclaborn.me/tutorials/making-a-basic-fmod-audio-engine-in-c/

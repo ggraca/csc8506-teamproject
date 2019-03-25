@@ -1,7 +1,9 @@
 #pragma once
 #include "Component.h"
 #include "InputManager.h"
+#ifdef _WIN32
 #include "NetworkServer.h"
+#endif
 
 using namespace NCL;
 using namespace CSC8503;
@@ -28,8 +30,10 @@ namespace NCL
 			virtual void LateUpdate(float dt);
 			virtual void OnCollisionBegin(GameObject* otherObject);
 			virtual void OnCollisionEnd(GameObject* otherObject);
+#ifdef _WIN32
 
 			PlayerState* GetPlayerInput();
+#endif
 			InputContainer GetKeysDown();
 			InputContainer GetKeysPressed();
 			Quaternion GetCameraRotation();

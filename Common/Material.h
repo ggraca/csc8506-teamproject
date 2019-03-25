@@ -5,8 +5,6 @@
 #include <vector>
 #include <string>
 
-using namespace NCL::Maths;
-
 namespace NCL {
 	namespace Rendering {
 		class Material
@@ -19,12 +17,12 @@ namespace NCL {
 			ShaderBase* GetShader() const { return shader; }
 			void SetShader(ShaderBase* s) { shader = s; }
 
-			Matrix4 GetTextureMatrix() const { return textureMatrix; }
-			void SetTextureMatrix(Matrix4 t) { textureMatrix = t; }
+			NCL::Maths::Matrix4 GetTextureMatrix() const { return textureMatrix; }
+			void SetTextureMatrix(NCL::Maths::Matrix4 t) { textureMatrix = t; }
 
-			void SetColour(const Vector4& c) { colour = c; }
+			void SetColour(const  NCL::Maths::Vector4& c) { colour = c; }
 
-			Vector4 GetColour() const { return colour; }
+			NCL::Maths::Vector4 GetColour() const { return colour; }
 
 			void AddTextureParameter(std::string parameter, TextureBase* texture) {
 				textureParameters.push_back(std::make_pair(parameter, texture));
@@ -37,8 +35,8 @@ namespace NCL {
 			std::vector<std::pair<std::string, TextureBase*>> textureParameters;
 
 			//Think of better way to hold shader parameters
-			Matrix4 textureMatrix;
-			Vector4 colour;
+			NCL::Maths::Matrix4 textureMatrix;
+			NCL::Maths::Vector4 colour;
 		};
 	}
 }

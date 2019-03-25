@@ -1,3 +1,4 @@
+#ifdef _WIN32
 #include "GameClient.h"
 #include <iostream>
 #include <string>
@@ -54,3 +55,4 @@ void GameClient::ThreadedUpdate() {
 		std::this_thread::yield();
 	}
 }
+#endif

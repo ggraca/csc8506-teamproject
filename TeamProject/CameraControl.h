@@ -42,8 +42,8 @@ public:
 		farPlane = val;
 	}
 
-	Matrix4 BuildViewMatrix() const;
-	Matrix4 BuildProjectionMatrix(float currentAspect = 1.0f) const;
+	NCL::Maths::Matrix4 BuildViewMatrix() const;
+	NCL::Maths::Matrix4 BuildProjectionMatrix(float currentAspect = 1.0f) const;
 
 	void SetPlayer(GameObject * obj);
 	void FollowPlayer();

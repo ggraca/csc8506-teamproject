@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _WIN32
 
 #include <vector>
 #include "NetworkBase.h"
@@ -78,4 +79,5 @@ namespace NCL {
 		};
 	}
 }
+#endif
 

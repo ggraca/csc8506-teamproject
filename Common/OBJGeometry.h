@@ -13,6 +13,9 @@
 #include "Assets.h"
 #include "TextureLoader.h"
 #include "Material.h"
+#ifdef _WIN32
+#include "../Plugins/OpenGLRendering/OGLMesh.h"
+#endif
 
 
 #define OBJCOMMENT		"#"			//The current line of the obj file is a comment
@@ -96,7 +99,7 @@ public:
 	OBJGeometry(std::string filename) { LoadOBJMesh(filename); }
 	~OBJGeometry(void) {}
 	bool	LoadOBJMesh(std::string filename);
-	Vector4 colour;
+	NCL::Maths::Vector4 colour;
 
 protected:
 	void LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes);

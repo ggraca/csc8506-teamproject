@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _WIN32
 
 #include "NetworkEntity.h"
 #include "../Common/GameServer.h"
@@ -43,3 +44,4 @@ private:
 	int lastestId = 0;
 	vector<PlayerState*> players;
 };
+#endif

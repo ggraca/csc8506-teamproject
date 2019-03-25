@@ -11,7 +11,6 @@
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 using namespace NCL;
-using namespace NCL::Maths;
 using namespace NCL::CSC8503;
 
 class BulletPhysics

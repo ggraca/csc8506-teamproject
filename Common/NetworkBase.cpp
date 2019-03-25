@@ -1,3 +1,5 @@
+#ifdef _WIN32
+
 #include <iostream>
 #include "NetworkBase.h"
 
@@ -37,3 +39,4 @@ bool NetworkBase::ProcessPacket(GamePacket* packet, int peerID) {
 
 	return false;
 }
+#endif

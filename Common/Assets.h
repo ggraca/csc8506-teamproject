@@ -6,7 +6,6 @@
 #include "ShaderLoader.h"
 #include "Material.h"
 #include "MeshGeometry.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
 
 
 class OBJGeometry;

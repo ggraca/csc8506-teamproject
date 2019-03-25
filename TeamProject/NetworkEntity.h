@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _WIN32
 
 #include "../Common/NetworkBase.h"
 #include "NetworkObject.h"
@@ -23,3 +24,4 @@ protected:
 	GameWorld* world = nullptr;
 	vector<NetworkObject*> objects;
 };
+#endif

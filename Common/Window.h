@@ -44,8 +44,8 @@ namespace NCL {
 			return size.x / size.y;
 		}
 
-		Vector2		GetScreenSize()		const { return size; }
-		Vector2		GetScreenPosition()	const { return position; }
+		NCL::Maths::Vector2		GetScreenSize()		const { return size; }
+		NCL::Maths::Vector2		GetScreenPosition()	const { return position; }
 
 		const std::string&  GetTitle()   const { return windowTitle; }
 		void				SetTitle(const std::string& title) {
@@ -78,9 +78,9 @@ namespace NCL {
 		RendererBase*	renderer;
 
 		bool				init;
-		Vector2				position;
-		Vector2				size;
-		Vector2				defaultSize;
+		NCL::Maths::Vector2				position;
+		NCL::Maths::Vector2				size;
+		NCL::Maths::Vector2				defaultSize;
 
 		std::string			windowTitle;
 

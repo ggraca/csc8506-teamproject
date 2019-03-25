@@ -1,5 +1,5 @@
 #pragma once
-
+#ifdef _WIN32
 #include <enet/enet.h>
 #include <map>
 #include <iostream>
@@ -158,3 +158,4 @@ protected:
 	std::multimap<int, PacketReceiver*> packetHandlers;
 	PacketReceiver* connectionHandler = nullptr;
 };
+#endif

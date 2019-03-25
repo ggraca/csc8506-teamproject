@@ -1,3 +1,4 @@
+#ifdef _WIN32
 #include "GameServer.h"
 // #include "GameWorld.h"
 #include <iostream>
@@ -93,3 +94,4 @@ void GameServer::BroadcastSnapshot(bool deltaFrame) {
 void GameServer::UpdateMinimumState() {
 
 }
+#endif

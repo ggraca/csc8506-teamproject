@@ -81,6 +81,7 @@ namespace NCL {
 			CAudioEngine* GetAudio() {
 				return audio;
 			}
+#ifdef _WIN32
 
 			void SetNetwork(NetworkEntity* ne)
 			{
@@ -90,7 +91,7 @@ namespace NCL {
 			NetworkEntity* GetNetwork() const {
 				return network;
 			}
-
+#endif
 
 			GameObject* GetPlayerGameObject();
 			vector<GameObject*> GetGameObjectList();
@@ -117,7 +118,10 @@ namespace NCL {
 
 			BulletPhysics* physics;
 			CAudioEngine* audio;
+#ifdef _WIN32
+
 			NetworkEntity* network;
+#endif
 		};
 	}
 }

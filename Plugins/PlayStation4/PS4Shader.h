@@ -31,7 +31,7 @@ namespace NCL {
 		protected:
 			PS4Shader();
 
-			void ReloadShader() override {
+			void ReloadShader() {
 				//we load binaries in directly...
 			}
 

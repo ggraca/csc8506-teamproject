@@ -195,7 +195,7 @@ void Console::Update() {
           previousCommandIndex = (int) previousCommands.size() - 1;
         }
 
-        if (!empty(previousCommands)) {
+        if (!(previousCommands.empty())) {
           currentCommand = previousCommands[previousCommandIndex];
         }
       }
@@ -206,7 +206,7 @@ void Console::Update() {
           previousCommandIndex = 0;
         }
 
-        if (!empty(previousCommands)) {
+        if (!(previousCommands.empty())) {
           currentCommand = previousCommands[previousCommandIndex];
         }
       }

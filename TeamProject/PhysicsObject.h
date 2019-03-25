@@ -5,7 +5,6 @@
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 #include "Component.h"
 
-using namespace NCL::Maths;
 
 enum ShapeType { cube, sphere, cylinder, cone, complexMesh };
 
