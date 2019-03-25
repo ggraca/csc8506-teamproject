@@ -157,12 +157,17 @@
     <ClCompile Include="AirStrikeControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerAnimation.cpp" />
     <ClCompile Include="FunctionTimerManager.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="FunctionTimer.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAnimation.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -407,12 +412,17 @@
     <ClInclude Include="MenuScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerAnimation.h" />
     <ClInclude Include="FunctionTimerManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="FunctionTimer.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAnimation.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
