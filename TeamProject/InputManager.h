@@ -2,6 +2,7 @@
 #include "ExampleScene.h"
 #include "LevelScene.h"
 #include <vector>
+#include "pad.h" 
 
 using namespace NCL;
 using namespace CSC8503;
@@ -53,7 +54,7 @@ namespace NCL
 			{
 				std::vector<NCL::KeyboardKeys> relatedKeyboardKeys;
 				std::vector<NCL::MouseButtons> relatedMouseKeys;
-				std::vector<NCL::GamepadKeys> relatedGamepadKeys;
+				std::vector<ScePadButtonDataOffset> relatedGamepadKeys;
 
 			};
 

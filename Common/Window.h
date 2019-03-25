@@ -14,7 +14,8 @@ _-_-_-_-_-_-_-""  ""
 
 #include "Keyboard.h"
 #include "Mouse.h"
-#include "Gamepad.h"
+#include "pad.h"
+#include "../PlayStation4/InputBase.h"
 #include "GameTimer.h"
 
 #include "Vector2.h"
@@ -63,7 +64,7 @@ namespace NCL {
 
 		static const Keyboard*	 GetKeyboard() { return keyboard; }
 		static const Mouse*		 GetMouse() { return mouse; }
-		static const Gamepad*	 GetGamepad() { return gamepad; }
+		static const InputBase*	 GetGamepad() { return gamepad; }
 		static const GameTimer*	 GetTimer() { return timer; }
 
 		static Window*	const GetWindow() { return window; }
@@ -89,7 +90,7 @@ namespace NCL {
 		static Window*		window;
 		static Keyboard*	keyboard;
 		static Mouse*		mouse;
-		static Gamepad*		gamepad;
+		static InputBase*	gamepad;
 		static GameTimer*	timer;
 	};
 }

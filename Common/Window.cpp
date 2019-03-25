@@ -1,6 +1,7 @@
 #include "Window.h"
 #include <thread>
 
+
 #ifdef _WIN32
 #include "Win32Window.h"
 #endif
@@ -17,7 +18,7 @@ using namespace Rendering;
 Window*		Window::window		= nullptr;
 Keyboard*	Window::keyboard	= nullptr;
 Mouse*		Window::mouse		= nullptr;
-Gamepad*    Window::gamepad		= nullptr;
+InputBase*   Window::gamepad	= nullptr;
 GameTimer*	Window::timer		= nullptr;
 
 Window::Window()	{
