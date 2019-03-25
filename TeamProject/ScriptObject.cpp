@@ -42,7 +42,7 @@ void ScriptObject::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
-PlayerState* ScriptObject::GetPlayerInput() 
+PlayerInput* ScriptObject::GetPlayerInput()
 {
 	GameWorld* gw = GameObject::gameWorld;
 	if (!gw) return nullptr;
@@ -50,7 +50,7 @@ PlayerState* ScriptObject::GetPlayerInput()
 	NetworkServer* ns = dynamic_cast<NetworkServer*>(gw->GetNetwork());
 	if (!ns) return nullptr;
 
-	PlayerState* ps = ns->FindPlayer(gameObject);
+	PlayerInput* ps = ns->FindPlayer(gameObject);
 	if (!ps) return nullptr;
 
 	return ps;
@@ -58,7 +58,7 @@ PlayerState* ScriptObject::GetPlayerInput()
 
 InputContainer ScriptObject::GetKeysDown() 
 {
-	PlayerState* ps = GetPlayerInput();
+	PlayerInput* ps = GetPlayerInput();
 	if (!ps) return InputContainer();
 
 	return ps->keysDown;
@@ -66,21 +66,21 @@ InputContainer ScriptObject::GetKeysDown()
 
 InputContainer ScriptObject::GetKeysPressed() 
 {
-	PlayerState* ps = GetPlayerInput();
+	PlayerInput* ps = GetPlayerInput();
 	if (!ps) return InputContainer();
 
 	return ps->keysPressed;
 }
 
 Quaternion ScriptObject::GetCameraRotation() {
-	PlayerState* ps = GetPlayerInput();
+	PlayerInput* ps = GetPlayerInput();
 	if (!ps) return Quaternion();
 
 	return ps->cameraRotation;
 }
 
 Vector3 ScriptObject::GetCameraPosition() {
-	PlayerState* ps = GetPlayerInput();
+	PlayerInput* ps = GetPlayerInput();
 	if (!ps) return Vector3();
 
 	return ps->cameraPosition;
@@ -88,7 +88,7 @@ Vector3 ScriptObject::GetCameraPosition() {
 
 int ScriptObject::GetNetworkId()
 {
-	PlayerState* ps = GetPlayerInput();
+	PlayerInput* ps = GetPlayerInput();
 	if (!ps) return -2;
 
 	return ps->peerId;

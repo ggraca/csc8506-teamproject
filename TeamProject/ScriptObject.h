@@ -29,7 +29,7 @@ namespace NCL
 			virtual void OnCollisionBegin(GameObject* otherObject);
 			virtual void OnCollisionEnd(GameObject* otherObject);
 
-			PlayerState* GetPlayerInput();
+			PlayerInput* GetPlayerInput();
 			InputContainer GetKeysDown();
 			InputContainer GetKeysPressed();
 			Quaternion GetCameraRotation();

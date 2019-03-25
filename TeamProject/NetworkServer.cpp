@@ -7,8 +7,25 @@
 
 
 void NetworkServer::Update() {
+	PlayerInput* ps = FindPlayer(-1);
+	if (ps) {
+		ps->keysDown = InputContainer(InputManager::GetInputBitsDown());
+		ps->keysPressed = InputContainer(InputManager::GetInputBitsPressed());
+		ps->cameraPosition = world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
+		ps->cameraRotation = world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldOrientation();
+	}
+	else {
+		for (auto go : world->GetGameObjectList()) {
+			if (go->CompareTag(LayerAndTag::Tags::Player)) {
+				AddPlayer(-1, go);
+				break;
+			}
+		}
+	}
+
 	server->UpdateServer();
 
+	// Send Object Updates to Clients
 	for (auto o : objects) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
@@ -22,19 +39,19 @@ void NetworkServer::Update() {
 		server->SendGlobalPacket(p);
 	}
 
-	PlayerState* ps = FindPlayer(-1);
-	if (ps) {
-		ps->keysDown = InputContainer(InputManager::GetInputBitsDown());
-		ps->keysPressed = InputContainer(InputManager::GetInputBitsPressed());
-		ps->cameraPosition = world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
-		ps->cameraRotation = world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldOrientation();
-	}
-	else {
-		for (auto go : world->GetGameObjectList()) {
-			if (go->CompareTag(LayerAndTag::Tags::Player)) {
-				AddPlayer(-1, go);
-				return;
-			}
+	// Send Player State to Clients
+	for (auto player : players) {
+		PlayerState ps = PlayerState(
+			player->gameObject->GetComponent<Player*>()->GetHP(),
+			player->gameObject->GetComponent<Player*>()->GetResourceCount()
+		);
+
+		if (player->peerId == -1) {
+			playerState = ps;
+		}
+		else {
+			PlayerStatePacket p = PlayerStatePacket(ps);
+			server->SendPacket(p, player->peerId);
 		}
 	}
 }
@@ -71,7 +88,7 @@ void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {
 	{
 		PlayerInputPacket* realPacket = (PlayerInputPacket*)payload;
 
-		PlayerState* ps = FindPlayer(source);
+		PlayerInput* ps = FindPlayer(source);
 		ps->keysDown = realPacket->keysDown;
 		ps->keysPressed = realPacket->keysPressed;
 		ps->cameraPosition = realPacket->cameraPosition;
@@ -92,11 +109,11 @@ void NetworkServer::Instantiate(GameObject* go) {
 }
 
 void NetworkServer::AddPlayer(int peerId, GameObject* go) {
-	players.push_back(new PlayerState(peerId, go));
+	players.push_back(new PlayerInput(peerId, go));
 }
 
 void NetworkServer::RemovePlayer(int peerId) {
-	PlayerState* ps = FindPlayer(peerId);
+	PlayerInput* ps = FindPlayer(peerId);
 	if (!ps) return;
 
 	world->LateDestroy(ps->gameObject);
@@ -104,14 +121,14 @@ void NetworkServer::RemovePlayer(int peerId) {
 	players.erase(remove(players.begin(), players.end(), ps), players.end());
 }
 
-PlayerState* NetworkServer::FindPlayer(int peerId) {
+PlayerInput* NetworkServer::FindPlayer(int peerId) {
 	for (auto p : players) {
 		if (p->peerId == peerId) return p;
 	}
 	return nullptr;
 }
 
-PlayerState* NetworkServer::FindPlayer(GameObject* go) {
+PlayerInput* NetworkServer::FindPlayer(GameObject* go) {
 	for (auto p : players) {
 		if (p->gameObject == go) return p;
 	}

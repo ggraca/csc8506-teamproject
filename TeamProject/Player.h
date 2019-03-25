@@ -28,12 +28,14 @@ public:
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void UpdateResourceCount(int amount);
 	int GetResourceCount() const;
+	int GetHP() const { return hp; };
 	LayerAndTag::Tags GetResourceTag() ;
 
 protected:
 
 	void ResetPlayer();
 
+	int hp;
 	int resourceCount;
 	float movementSpeed;
 	float jumpSpeed;

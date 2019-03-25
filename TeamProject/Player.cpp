@@ -242,6 +242,7 @@ LayerAndTag::Tags Player::GetResourceTag()
 
 void Player::ResetPlayer()
 {
+	hp = 100;
 	resourceCount = 0;
 	movementSpeed = 200;
 	jumpSpeed = 400;

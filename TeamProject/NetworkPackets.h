@@ -63,3 +63,12 @@ struct PlayerInputPacket : public GamePacket {
 		cameraRotation = cameraRot;
 	}
 };
+
+struct PlayerStatePacket : public GamePacket {
+	PlayerState playerState;
+
+	PlayerStatePacket(PlayerState ps) : playerState(ps) {
+		type = BasicNetworkMessages::PlayerStateMessage;
+		size = sizeof(PlayerState);
+	}
+};

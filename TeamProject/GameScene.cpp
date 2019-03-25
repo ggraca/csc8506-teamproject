@@ -61,7 +61,7 @@ void GameScene::LateUpdate(float dt) {
 
 	pauseMenu.Update(quitGame, showPauseMenu, audio, currentMenuPath, dt, renderer);
 	objectStateMachine->Update();
-	hud.Update(dt, renderer);
+	hud.Update(dt, renderer, world->GetNetwork());
 }
 
 void CommandSetCameraPosition(vector<string> commandParams, void* data) {
