@@ -13,7 +13,12 @@ CubePrefab::CubePrefab(const Vector3& position, const Quaternion& orient, Vector
 {
 	SetTransformDetails(dimensions, position, orient);
 	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, mass, restitution, friction));
-	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl"))));
+	//AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"),
+		//Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl"))));
+
+	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh", true),
+		Assets::AssetManager::LoadMaterial("PBRD Material", Assets::AssetManager::LoadShader("PBRDShader", "pbrvert.glsl", "pbrfrag.glsl", "", "pbrDisplaceTCS.glsl", "pbrDisplaceTES.glsl"))));
+
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
 }
 

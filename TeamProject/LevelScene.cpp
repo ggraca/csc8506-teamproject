@@ -66,7 +66,7 @@ void LevelScene::ResetWorld() {
 	//This 3
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
-	LoadWorld();
+	//LoadWorld();
 	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();
 	
 }
