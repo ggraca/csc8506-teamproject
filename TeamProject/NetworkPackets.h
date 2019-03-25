@@ -8,16 +8,18 @@ struct InstantiatePacket : public GamePacket {
 	Vector3 position;
 	Quaternion rotation;
 	Vector3 scale;
+	bool isActive;
 
-	InstantiatePacket(int pid, int nid, Vector3 pos, Quaternion rot, Vector3 sca) {
+	InstantiatePacket(int pid, int nid, Vector3 pos, Quaternion rot, Vector3 sca, bool ia = true) {
 		type = BasicNetworkMessages::InstantiateMessage;
-		size = sizeof(int) * 2 + sizeof(Vector3) * 2 + sizeof(Quaternion);
+		size = sizeof(int) * 2 + sizeof(Vector3) * 2 + sizeof(Quaternion) + sizeof(bool);
 
 		networkId = nid;
 		prefabId = pid;
 		position = pos;
 		rotation = rot;
 		scale = sca;
+		isActive = ia;
 	}
 };
 
@@ -36,14 +38,18 @@ struct ObjectUpdatePacket : public GamePacket {
 	int networkId;
 	Vector3 position;
 	Quaternion rotation;
+	Vector3 scale;
+	bool isActive;
 
-	ObjectUpdatePacket(int nid, Vector3 pos, Quaternion rot) {
+	ObjectUpdatePacket(int nid, Vector3 pos, Quaternion rot, Vector3 sca, bool ia = true) {
 		type = BasicNetworkMessages::ObjectUpdateMessage;
-		size = sizeof(int) + sizeof(Vector3) + sizeof(Quaternion);
+		size = sizeof(int) + sizeof(Vector3) * 2 + sizeof(Quaternion) + sizeof(bool);
 
 		networkId = nid;
 		position = pos;
 		rotation = rot;
+		scale = sca;
+		isActive = ia;
 	}
 };
 
