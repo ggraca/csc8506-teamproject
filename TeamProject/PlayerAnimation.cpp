@@ -47,7 +47,7 @@ void PlayerAnimation::InitializeHammerAnimations()
 
 	////First Hit////
 	Animation * firstHammerHit = new Animation(60);
-	//(-1, 0, 2));
+	
 	KeyFrame * firstKeyFrame = new KeyFrame();
 	firstKeyFrame->localPosition = Vector3(-2, 0, 1);
 	firstKeyFrame->localRotation = Vector3(0, -45, 45);
@@ -70,7 +70,7 @@ void PlayerAnimation::InitializeHammerAnimations()
 	firstKeyFrame3->localPosition = Vector3(2, 0, 1);
 	firstKeyFrame3->localRotation = Vector3(45, 90, -45);
 	firstKeyFrame3->localScale = ht.GetLocalScale();
-	firstKeyFrame3->time = 0.7f;
+	firstKeyFrame3->time = 0.6f;
 
 	firstHammerHit->AddKeyFrame(firstKeyFrame);
 	firstHammerHit->AddKeyFrame(firstKeyFrame1);
@@ -82,7 +82,7 @@ void PlayerAnimation::InitializeHammerAnimations()
 	////Second Hit////
 
 	Animation * secondHammerHit = new Animation(60);
-	//(-1, 0, 2));
+	
 	KeyFrame * secondKeyFrame = new KeyFrame();
 	secondKeyFrame->localPosition = Vector3(2, 0, 1);
 	secondKeyFrame->localRotation = Vector3(0, 90, -45);
@@ -110,7 +110,7 @@ void PlayerAnimation::InitializeHammerAnimations()
 	////Third Hit////
 
 	Animation * thirdHammerHit = new Animation(60);
-	//(-1, 0, 2));
+	
 	KeyFrame * thirdKeyFrame = new KeyFrame();
 	thirdKeyFrame->localPosition = Vector3(-2, 0, 0);
 	thirdKeyFrame->localRotation = Vector3(-90, 45, 0);
@@ -127,7 +127,7 @@ void PlayerAnimation::InitializeHammerAnimations()
 	thirdKeyFrame3->localPosition = Vector3(0, 0, 1);
 	thirdKeyFrame3->localRotation = Vector3(90, 45, 0);
 	thirdKeyFrame3->localScale = ht.GetLocalScale();
-	thirdKeyFrame3->time = 0.9f;
+	thirdKeyFrame3->time = 0.7f;
 	thirdKeyFrame3->keyFunction = PlayerAnimation::ResetHammerHit;
 
 	thirdHammerHit->AddKeyFrame(thirdKeyFrame);
@@ -165,22 +165,22 @@ void PlayerAnimation::InitializeHammerAnimations()
 
 bool PlayerAnimation::IdleToFirstHit(GameObject * obj)
 {
-	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 1);
+	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 1 && obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
 }
 
 bool PlayerAnimation::FirstHitToSecondHit(GameObject * obj)
 {
-	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 2);
+	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 2 && obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
 }
 
 bool PlayerAnimation::SecondHitToThirdHit(GameObject * obj)
 {
-	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 3);
+	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 3 && obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
 }
 
 bool PlayerAnimation::ThirdHitToIdle(GameObject * obj)
 {
-	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 0);
+	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 0 && obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
 }
 
 void PlayerAnimation::ResetHammerHit(GameObject * obj)
