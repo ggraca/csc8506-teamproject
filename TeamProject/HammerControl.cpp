@@ -107,24 +107,13 @@ void HammerControl::HammerHit()
 			colliding->GetComponent<HealthManager*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());
 		}
 	}
-
-	hitCounter = (hitCounter + 1) % 4;
 }
 
-void HammerControl::ResetHammerHit(bool resetTransform)
+void HammerControl::ResetHammerHit()
 {
-	hitCounter = 0;
-
-	if(resetTransform)
-	{
-		handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
-		handle->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, 0, 45));
-	}
-}
-
-int HammerControl::GetHitCounter() const
-{
-	return hitCounter;
+	
+	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
+	handle->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, 0, 45));
 }
 
 void HammerControl::SetHammerSize(float minx, float maxx, float miny, float maxy, float minz, float maxz)

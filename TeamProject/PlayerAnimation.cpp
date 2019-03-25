@@ -1,6 +1,6 @@
 #include "PlayerAnimation.h"
 #include "HammerControl.h"
-
+#include "Player.h"
 
 PlayerAnimation::PlayerAnimation(GameObject * obj) : ScriptObject(obj)
 {
@@ -138,17 +138,17 @@ void PlayerAnimation::InitializeHammerAnimations()
 	
 	////Transitions////
 	Transition * idleHammerToFirstHit = new Transition();
-	idleHammerToFirstHit->transitionFunction = PlayerAnimation::IdleToFirstHit;
+	idleHammerToFirstHit->transitionFunction = PlayerAnimation::HitTransition;
 	idleHammerToFirstHit->destinationState = firstHitAnimationState;
 	idleHammerState->AddTransition(idleHammerToFirstHit);
 
 	Transition * firstHitToSecondHit = new Transition();
-	firstHitToSecondHit->transitionFunction = PlayerAnimation::FirstHitToSecondHit;
+	firstHitToSecondHit->transitionFunction = PlayerAnimation::HitTransition;
 	firstHitToSecondHit->destinationState = secondHitAnimationState;
 	firstHitAnimationState->AddTransition(firstHitToSecondHit);
 
 	Transition * secondHitToThirdHit = new Transition();
-	secondHitToThirdHit->transitionFunction = PlayerAnimation::SecondHitToThirdHit;
+	secondHitToThirdHit->transitionFunction = PlayerAnimation::HitTransition;
 	secondHitToThirdHit->destinationState = thirdHitAnimationState;
 	secondHitAnimationState->AddTransition(secondHitToThirdHit);
 
@@ -157,30 +157,34 @@ void PlayerAnimation::InitializeHammerAnimations()
 	thirdHitToIdle->destinationState = idleHammerState;
 	thirdHitAnimationState->AddTransition(thirdHitToIdle);
 
+	animator->SetDefaultAnimationState(idleHammerState);
 	animator->AddAnimationState(idleHammerState);
 	animator->AddAnimationState(firstHitAnimationState);
 	animator->AddAnimationState(secondHitAnimationState);
 	animator->AddAnimationState(thirdHitAnimationState);
 }
 
-bool PlayerAnimation::IdleToFirstHit(GameObject * obj)
+bool PlayerAnimation::HitTransition(GameObject * obj)
 {
-	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 1 && obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
-}
-
-bool PlayerAnimation::FirstHitToSecondHit(GameObject * obj)
-{
-	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 2 && obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
-}
-
-bool PlayerAnimation::SecondHitToThirdHit(GameObject * obj)
-{
-	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 3 && obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
+	if (obj->GetComponent<Player*>()->IsHammerActive() && 
+		obj->GetComponent<Player*>()->GetKeysPressed().inputs[InputManager::ActionButton::HIT] && 
+		obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished()
+		)
+	{
+		obj->GetComponent<HammerControl*>()->HammerHit();
+		return true;
+	}
+	return false;
 }
 
 bool PlayerAnimation::ThirdHitToIdle(GameObject * obj)
 {
-	return (obj->GetComponent<HammerControl*>()->GetHitCounter() == 0 && obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
+	if (obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished())
+	{
+		obj->GetComponent<HammerControl*>()->ResetHammerHit();
+		return true;
+	}
+	return false;
 }
 
 void PlayerAnimation::ResetHammerHit(GameObject * obj)

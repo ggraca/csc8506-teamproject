@@ -15,14 +15,13 @@ public:
 	void DeformHammer();
 	void DeactivateHammer();
 	void HammerHit();
-	void ResetHammerHit(bool resetTransform = false);
+	void ResetHammerHit();
 	int GetHitCounter() const;
 	void SetHammerSize(float minx, float maxx, float miny, float maxy, float minz, float maxz);
 	void Awake() override;
 
 protected:
 	GameObject * handle = nullptr;
-	int hitCounter = 0;
 
 	float minX;
 	float minY;

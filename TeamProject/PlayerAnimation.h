@@ -18,9 +18,7 @@ protected:
 
 	void InitializeAnimations();
 	void InitializeHammerAnimations();
-	static bool IdleToFirstHit(GameObject * obj);
-	static bool FirstHitToSecondHit(GameObject * obj);
-	static bool SecondHitToThirdHit(GameObject * obj);
+	static bool HitTransition(GameObject * obj);
 	static bool ThirdHitToIdle(GameObject * obj);
 	static void ResetHammerHit(GameObject * obj);
 };

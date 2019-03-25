@@ -31,6 +31,7 @@ public:
 	int GetResourceCount() const;
 	LayerAndTag::Tags GetResourceTag() ;
 	vector<GameObject*> GetResources() const;
+	bool IsHammerActive();
 
 protected:
 
