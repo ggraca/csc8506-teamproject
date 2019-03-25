@@ -6,8 +6,8 @@
 
 using namespace NCL::Networking;
 
-struct PlayerState {
-	PlayerState(int pi, GameObject* go) : peerId(pi), gameObject(go) {
+struct PlayerInput {
+	PlayerInput(int pi, GameObject* go) : peerId(pi), gameObject(go) {
 		keysPressed = InputContainer();
 		keysDown = InputContainer();
 	}
@@ -31,8 +31,8 @@ public:
 
 	void AddPlayer(int peerId, GameObject* go);
 	void RemovePlayer(int peerId);
-	PlayerState* FindPlayer(int peerId);
-	PlayerState* FindPlayer(GameObject* go);
+	PlayerInput* FindPlayer(int peerId);
+	PlayerInput* FindPlayer(GameObject* go);
 
 private:
 	void OnClientConnect(int source) override;
@@ -41,5 +41,5 @@ private:
 
 	GameServer* server;
 	int lastestId = 0;
-	vector<PlayerState*> players;
+	vector<PlayerInput*> players;
 };

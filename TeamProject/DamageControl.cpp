@@ -37,7 +37,7 @@ void DamageControl::ResolveDamage(GameObject * obj)
 
  	if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile) && obj->CompareTag(LayerAndTag::Tags::Player)) 
 	{
-		obj->GetComponent<Player*>()->UpdateResourceCount(-damage);
+		obj->GetComponent<Player*>()->LoseResource(-damage);
 		
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 	}

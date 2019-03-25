@@ -20,7 +20,7 @@ void AirStrikeControl::Awake()
 
 void AirStrikeControl::Update(float dt)
 {
-	Debug::DrawLine(gameObject->GetTransform().GetWorldPosition(), GameObject::gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * 500));
+	//Debug::DrawLine(gameObject->GetTransform().GetWorldPosition(), GameObject::gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * 500));
 }
 
 void AirStrikeControl::LaunchAirStrike()
@@ -31,7 +31,7 @@ void AirStrikeControl::LaunchAirStrike()
 	Vector3 hit;
 	auto res = GameObject::gameWorld->Raycast(start, end, hit);
 
-	auto children = GameObject::FindGameObjectsWithTag(gameObject->GetComponent<Player*>()->GetResourceTag());
+	auto children = gameObject->GetComponent<Player*>()->GetResources();
 
 	if ((int)children.size() < 5) { return; }
 
@@ -43,7 +43,7 @@ void AirStrikeControl::LaunchAirStrike()
 			children[i]->GetTransform().SetWorldPosition(hit + Vector3(0, 500, 0) + (forward  * 30));
 			children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, -400.0f, 0));
 			children[i]->GetComponent<DamageControl*>()->SetDamage(1);
-			gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
+			gameObject->GetComponent<Player*>()->LoseResource(children[i]);
 			
 		}
 	}

@@ -8,6 +8,7 @@ public:
 	enum prefabIds {
 		Player,
 		Resource,
+		Cube,
 		Cannon,
 		Cart,
 		Castle,

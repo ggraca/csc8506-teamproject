@@ -38,6 +38,9 @@ void PlayerPrefab::InitializeGuns(GameObject * player)
 	playerRight->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
 	playerLeft->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
 
+	playerLeft->AddComponent<NetworkObject*>(new NetworkObject(playerLeft, NetworkObject::Cube));
+	playerRight->AddComponent<NetworkObject*>(new NetworkObject(playerRight, NetworkObject::Cube));
+
 	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
 	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
 }
@@ -48,6 +51,7 @@ void PlayerPrefab::InitializeHammer(GameObject * player)
 	handle->SetParent(player);
 	handle->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
+	handle->AddComponent<NetworkObject*>(new NetworkObject(handle, NetworkObject::Cube));
 
 	player->GetComponent<HammerControl*>()->SetHandle(handle);
 }
@@ -70,6 +74,7 @@ void PlayerPrefab::InitializeBigGun(GameObject * player)
 	bigGun->SetParent(player);
 	bigGun->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	bigGun->GetTransform().SetLocalPosition(Vector3(-4, 2, 0));
+	bigGun->AddComponent<NetworkObject*>(new NetworkObject(bigGun, NetworkObject::Cube));
 	player->GetComponent<BigGunControl*>()->SetBigGun(bigGun);
 }
 void PlayerPrefab::ResetPlayer()

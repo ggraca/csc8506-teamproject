@@ -7,15 +7,17 @@ struct InstantiatePacket : public GamePacket {
 	int prefabId, networkId;
 	Vector3 position;
 	Quaternion rotation;
+	Vector3 scale;
 
-	InstantiatePacket(int pid, int nid, Vector3 pos, Quaternion rot) {
+	InstantiatePacket(int pid, int nid, Vector3 pos, Quaternion rot, Vector3 sca) {
 		type = BasicNetworkMessages::InstantiateMessage;
-		size = sizeof(int) * 2 + sizeof(Vector3) + sizeof(Quaternion);
+		size = sizeof(int) * 2 + sizeof(Vector3) * 2 + sizeof(Quaternion);
 
 		networkId = nid;
 		prefabId = pid;
 		position = pos;
 		rotation = rot;
+		scale = sca;
 	}
 };
 
@@ -59,5 +61,14 @@ struct PlayerInputPacket : public GamePacket {
 		keysPressed = kp;
 		cameraPosition = cameraPos;
 		cameraRotation = cameraRot;
+	}
+};
+
+struct PlayerStatePacket : public GamePacket {
+	PlayerState playerState;
+
+	PlayerStatePacket(PlayerState ps) : playerState(ps) {
+		type = BasicNetworkMessages::PlayerStateMessage;
+		size = sizeof(PlayerState);
 	}
 };

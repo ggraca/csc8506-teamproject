@@ -46,6 +46,7 @@ void NetworkManager::CreateClient()
 	client->RegisterPacketHandler(InstantiateMessage, networkEntity);
 	client->RegisterPacketHandler(DestroyMessage, networkEntity);
 	client->RegisterPacketHandler(ObjectUpdateMessage, networkEntity);
+	client->RegisterPacketHandler(PlayerStateMessage, networkEntity);
 	
 	ifstream file;
 	
