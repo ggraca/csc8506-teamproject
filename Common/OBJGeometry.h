@@ -66,6 +66,12 @@ protected:
 	ChildMeshInterface(void){};
 };
 
+struct VertData {
+	int vertIndex = -1;
+	int vertTex = -1;
+	int vertNormal = -1;
+};
+
 struct OBJSubMesh {
 	std::vector<int> texIndices;
 	std::vector<int> vertIndices;

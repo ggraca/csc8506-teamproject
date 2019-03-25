@@ -1,8 +1,10 @@
+#include <algorithm>
+
 #include "GameWorld.h"
 #include "GameObject.h"
-#include "../Common/Camera.h"
-#include <algorithm>
 #include "BulletPhysics.h"
+#include "NetworkObject.h"
+#include "NetworkClient.h"
 
 using namespace NCL;
 using namespace NCL::CSC8503;
@@ -14,7 +16,7 @@ GameWorld::GameWorld()	{
 
 void GameWorld::InitCamera()
 {
-	cameraOffset = Vector3(0, 30, -150);
+	cameraOffset = Vector3(0, 70, -150);
 
 	mainCamera = new GameObject();
 	mainCamera->AddComponent<CameraControl*>((Component*)new CameraControl(mainCamera));
@@ -41,7 +43,7 @@ void GameWorld::SwitchToFPS()
 
 void GameWorld::SwitchToTPS()
 {
-	cameraOffset = Vector3(0, 30, -150);
+	cameraOffset = Vector3(0, 70, -150);
 	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
 
 	if (child)
@@ -104,7 +106,7 @@ void GameWorld::Destroy(GameObject * obj)
 	RemoveGameObject(obj);
 }
 
-void GameWorld::ClearObjectsToDestroy() {
+void GameWorld::HandleObjectsToDestroy() {
 	for (auto go : objectsToDestroy) {
 		Destroy(go);
 	}
@@ -123,6 +125,43 @@ void GameWorld::ClearAndErase() {
 	Clear();
 }
 
+void GameWorld::LateInstantiate(GameObject * obj)
+{
+	objectsToInstantiate.push_back(obj);
+}
+
+void GameWorld::LateInstantiateRecursively(GameObject * obj)
+{
+	if (!obj) { return; }
+
+	LateInstantiate(obj);
+
+	if ((int)obj->GetTransform().GetChildrenList().size() > 0)
+	{
+		for (auto&i : obj->GetTransform().GetChildrenList())
+		{
+			LateInstantiateRecursively(i->GetGameObject());
+		}
+	}
+}
+
+void GameWorld::HandleObjectsToInstantiate()
+{
+	for (auto& i : objectsToInstantiate)
+	{
+		if (i->GetComponent<NetworkObject*>()) {
+			network->Instantiate(i);
+
+			if (dynamic_cast<NetworkClient*>(network))
+				continue;
+		}
+
+		Instantiate(i);
+	}
+
+	objectsToInstantiate.clear();
+}
+
 void GameWorld::UpdateGameObjects(float dt)
 {
 	for (auto&i : gameObjects) 
@@ -139,23 +178,25 @@ void GameWorld::LateUpdateGameObjects(float dt)
 	}
 }
 
-void GameWorld::AddGameObject(GameObject* o)
+void GameWorld::Instantiate(GameObject* o)
 {
 	if (!o) { return; }
 	
 	CallInitialObjectFunctions(o);
 	gameObjects.push_back(o);
-
-	PhysicsObject* pc = o->GetComponent<PhysicsObject*>();
   
-	if (pc)
-  {
-		btCollisionShape* po = pc->GetShape();
-		physics->collisionShapes.push_back(po);
+	AddObjectPhysicsToWorld(o->GetComponent<PhysicsObject*>());
+}
 
-		btRigidBody* pb = pc->GetRigidbody();
-		physics->dynamicsWorld->addRigidBody(pb);
-	}
+void GameWorld::AddObjectPhysicsToWorld(PhysicsObject * pc)
+{
+	if (!pc) { return; }
+
+	btCollisionShape* po = pc->GetShape();
+	physics->collisionShapes.push_back(po);
+
+	btRigidBody* pb = pc->GetRigidbody();
+	physics->dynamicsWorld->addRigidBody(pb);
 }
 
 void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
@@ -166,12 +207,37 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	o->SetUpInitialScripts();	
 }
 
-void GameWorld::AddGameObject(GameObject* o, GameObject* parent )
+const btCollisionObject* GameWorld::Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd)
+{
+	return physics->Raycast(start, end, newEnd);
+}
+
+const btCollisionObject* GameWorld::Raycast(const Vector3 & start, const Vector3& dir, float magnitude, Vector3& newEnd)
+{
+	return physics->RaycastPosDir(start, dir, magnitude,newEnd);
+}
+
+void GameWorld::Instantiate(GameObject* o, GameObject* parent )
 {
 	if (!o) { return; }
 
 	o->SetParent(parent);
-	AddGameObject(o);
+	Instantiate(o);
+}
+
+void GameWorld::InstantiateRecursively(GameObject * o)
+{
+	if (!o) { return; }
+
+	Instantiate(o);
+
+	if ((int)o->GetTransform().GetChildrenList().size() > 0)
+	{
+		for (auto&i : o->GetTransform().GetChildrenList())
+		{
+			InstantiateRecursively(i->GetGameObject());
+		}
+	}
 }
 
 void GameWorld::RemoveGameObject(GameObject* o) 
@@ -192,6 +258,19 @@ void GameWorld::RemoveGameObject(GameObject* o)
 	}
 }
 
+GameObject * GameWorld::CollisionObjectToGameObject(const btCollisionObject * co)
+{
+	if (!co) { return nullptr; }
+
+	for (auto&i : gameObjects)
+	{
+		if (!i->GetComponent<PhysicsObject*>()) { continue; }
+
+		if (i->GetComponent<PhysicsObject*>()->GetRigidbody() == co) { return i; }
+	}
+	return nullptr;
+}
+
 void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {
 	for (auto collidingGo : obj->collidingObjects) {
 		collidingGo->collidingObjects.erase(
@@ -202,16 +281,7 @@ void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {
 			collidingGo->collidingObjects.end()
 		);
 	}
-
 	obj->collidingObjects.clear();
-}
-
-void GameWorld::GetObjectIterators(
-	std::vector<GameObject*>::const_iterator& first,
-	std::vector<GameObject*>::const_iterator& last) const {
-
-	first	= gameObjects.begin();
-	last	= gameObjects.end();
 }
 
 GameObject* GameWorld::GetPlayerGameObject()
@@ -219,13 +289,13 @@ GameObject* GameWorld::GetPlayerGameObject()
 	return gameObjects.at(1);
 }
 
-vector<GameObject*> NCL::CSC8503::GameWorld::GetGameObjectList()
+vector<GameObject*> GameWorld::GetGameObjectList()
 {
   return gameObjects;
 }
 
 int GameWorld::GetObjectCount(){
-	return gameObjects.size();
+	return (int) gameObjects.size();
 }
 
 void GameWorld::UpdateWorld(float dt) 
@@ -233,6 +303,8 @@ void GameWorld::UpdateWorld(float dt)
 	UpdateGameObjects(dt);
 	UpdateTransforms();
 	LateUpdateGameObjects(dt);
+	HandleObjectsToDestroy();
+	HandleObjectsToInstantiate();
 	mainCamera->GetComponent<CameraControl*>()->Update(dt);
 }
 

@@ -1,7 +1,5 @@
 #include "OBJGeometry.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
+#include "Utils.h"
 
 bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	std::ifstream f(filename.c_str(), std::ios::in);
@@ -90,8 +88,8 @@ bool OBJGeometry::LoadOBJMesh(std::string filename) {
 OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals) {
 	if (sm->vertIndices.empty()) return nullptr;
 
-	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
-	Material* material = Assets::AssetManager::LoadMaterial(sm->mtlType, basicShader);
+	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
+	Material* material = Assets::AssetManager::LoadMaterial(sm->mtlType, pbrShader);
 	OBJMesh* m = new OBJMesh(material);
 
 	for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
@@ -131,82 +129,53 @@ void OBJGeometry::LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, s
 		inputSubMeshes.push_back(currentMesh);
 	}
 
-	std::string faceData;
-	getline(f, faceData);
+	std::string data;
+	getline(f, data);
 
-	// f <vertex index>//<normal index>
-	bool skipTex = false;
-	if (faceData.find("//") != std::string::npos) {
-		skipTex = true;
-	}
+	vector<VertData> verts;
+	vector<string> faceData = split_string(data, ' ');
 
-	// "f  0/0/0" becomes "f 0 0 0" etc
-	for (size_t i = 0; i < faceData.length(); ++i) {
-		if (faceData[i] == '/') {
-			faceData[i] = ' ';
+	for (auto vertData : faceData) {
+		VertData vert;
+		bool hasTex = true;
+		if (vertData.find("//") != std::string::npos) hasTex = false;
+
+		vector<string> attribues = split_string(vertData, '/');
+		vert.vertIndex = stoi(attribues[0]);
+
+		if (attribues.size() == 3) {
+			vert.vertTex = stoi(attribues[1]);
+			vert.vertNormal = stoi(attribues[2]);
 		}
-	}
-
-	int tempIndex;
-	std::vector<int> faceIndices;
-	std::stringstream ss(faceData);
-	while (ss >> tempIndex) {
-		faceIndices.push_back(tempIndex);
-	}
-
-	// This face has only vertex information;
-	if (faceIndices.size() == 3) {
-		currentMesh->vertIndices.push_back(faceIndices.at(0));
-		currentMesh->vertIndices.push_back(faceIndices.at(1));
-		currentMesh->vertIndices.push_back(faceIndices.at(2));
-	}
-
-	// This face has vertex, normal and tex information!
-	else if (faceIndices.size() == 9) {
-		for (int i = 0; i < 9; i += 3) {
-			currentMesh->vertIndices.push_back(faceIndices.at(i));
-			currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-			currentMesh->normIndices.push_back(faceIndices.at(i + 2));
+		else if (attribues.size() == 2) {
+			if (hasTex) vert.vertTex = stoi(attribues[1]);
+			else vert.vertNormal = stoi(attribues[1]);
 		}
+
+		verts.push_back(vert);
 	}
 
-	// This face has vertex, and one other index...
-	else if (faceIndices.size() == 6) {
-		for (int i = 0; i < 6; i += 2) {
-			currentMesh->vertIndices.push_back(faceIndices.at(i));
-			if (!skipTex) {		// a double slash means it's skipping tex info...
-				currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-			}
-			else {
-				currentMesh->normIndices.push_back(faceIndices.at(i + 1));
-			}
-		}
-	}
-
-	// This face has more than 3 vertices. We assume it has all 3 properties
-	else {
-
+	
 	// First Face
-	for (int i = 0; i < 9; i += 3) {
-		currentMesh->vertIndices.push_back(faceIndices.at(i));
-		currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-		currentMesh->normIndices.push_back(faceIndices.at(i + 2));
+	for (int i = 0; i < 3; i++) {
+		currentMesh->vertIndices.push_back(verts[i].vertIndex);
+		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[i].vertTex);
+		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[i].vertNormal);
 	}
 
-	// Following Faces
-	for (int i = 6; i < faceIndices.size() - 3; i += 3) {
-		currentMesh->vertIndices.push_back(faceIndices.at(i));
-		currentMesh->texIndices.push_back(faceIndices.at(i + 1));
-		currentMesh->normIndices.push_back(faceIndices.at(i + 2));
+	//// Following Faces
+	for (unsigned int i = 2; i < verts.size(); i++) {
+		currentMesh->vertIndices.push_back(verts[i - 1].vertIndex);
+		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[i - 1].vertTex);
+		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[i - 1].vertNormal);
 
-		currentMesh->vertIndices.push_back(faceIndices.at(i + 3));
-		currentMesh->texIndices.push_back(faceIndices.at(i + 4));
-		currentMesh->normIndices.push_back(faceIndices.at(i + 5));
+		currentMesh->vertIndices.push_back(verts[i].vertIndex);
+		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[i].vertTex);
+		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[i].vertNormal);
 
-		currentMesh->vertIndices.push_back(faceIndices.at(0));
-		currentMesh->texIndices.push_back(faceIndices.at(1));
-		currentMesh->normIndices.push_back(faceIndices.at(2));
-	}
+		currentMesh->vertIndices.push_back(verts[0].vertIndex);
+		if (verts[i].vertTex != -1) currentMesh->texIndices.push_back(verts[0].vertTex);
+		if (verts[i].vertNormal != -1) currentMesh->normIndices.push_back(verts[0].vertNormal);
 	}
 }
 
@@ -214,7 +183,7 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 	std::ifstream f(string(Assets::MESHDIR + filename).c_str(), std::ios::in);
 	if (!f) return;
 
-	OGLShader* basicShader = new OGLShader("pbrvert.glsl", "pbrfrag.glsl");
+	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
 	Material* material = nullptr;
 
 	int counter = 0;
@@ -224,7 +193,7 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 
 		if (lineHeader == MTLNEW) {
 			f >> data;
-			material = Assets::AssetManager::LoadMaterial(data, basicShader);
+			material = Assets::AssetManager::LoadMaterial(data, pbrShader);
 		}
 		else if (lineHeader == MTLDIFFUSE) {
 			float r, g, b;
@@ -260,11 +229,11 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 
 string OBJGeometry::NormalisePath(string path) {
 	if (path.find_last_of('/') != string::npos) {
-		int at = path.find_last_of('/');
+		int at = (int) path.find_last_of('/');
 		path = path.substr(at + 1);
 	}
 	else if (path.find_last_of('\\') != string::npos) {
-		int at = path.find_last_of('\\');
+		int at = (int) path.find_last_of('\\');
 		path = path.substr(at + 1);
 	}
 	return path;

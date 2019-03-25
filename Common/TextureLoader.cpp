@@ -15,8 +15,8 @@ using namespace NCL;
 using namespace Rendering;
 
 std::map<std::string, TextureLoadFunction> TextureLoader::fileHandlers;
-APILoadFunction TextureLoader::apiFunction = nullptr;
-APILoadFunctionCube TextureLoader::apiFunctionCube = nullptr;
+APILoadTextureFunction TextureLoader::apiFunction = nullptr;
+APILoadTextureCubeFunction TextureLoader::apiFunctionCube = nullptr;
 
 bool TextureLoader::LoadTexture(const std::string& filename, char*& outData, int& width, int &height, int &channels, int&flags) {
 	if (filename.empty()) {
@@ -59,14 +59,14 @@ std::string TextureLoader::GetFileExtension(const std::string& fileExtension) {
 #endif
 }
 
-void TextureLoader::RegisterAPILoadFunction(APILoadFunction f) {
+void TextureLoader::RegisterAPILoadFunction(APILoadTextureFunction f) {
 	if (apiFunction) {
 		std::cout << __FUNCTION__ << " replacing previously defined API function." << std::endl;
 	}
 	apiFunction = f;
 }
 
-void TextureLoader::RegisterAPILoadCubeFunction(APILoadFunctionCube f) {
+void TextureLoader::RegisterAPILoadCubeFunction(APILoadTextureCubeFunction f) {
 	if (apiFunctionCube) {
 		std::cout << __FUNCTION__ << " replacing previously defined API function." << std::endl;
 	}

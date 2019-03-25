@@ -1,15 +1,22 @@
 #include "DamageControl.h"
-
+#include "PhysicsObject.h"
 
 
 DamageControl::DamageControl(GameObject * obj): ScriptObject(obj)
 {
-	
+	ResetDamageControl();
 }
 
 
 DamageControl::~DamageControl()
 {
+}
+
+void DamageControl::OnCollisionBegin(GameObject * otherObject)
+{
+	if (!otherObject) { return; }
+
+	ResolveDamage(otherObject);
 }
 
 void DamageControl::SetTypeOfDamage(DamageType d)
@@ -23,18 +30,12 @@ DamageControl::DamageType DamageControl::GetTypeOfDamage(DamageControl::DamageTy
 	return typeOfDamage;
 }
 
-void DamageControl::OnCollisionBegin(GameObject * otherObject)
-{
-	if (!otherObject) { return; }
-
-	ResolveDamage(otherObject);
-}
 
 void DamageControl::ResolveDamage(GameObject * obj)
 {
 	if (damage == 0) { return; }
 
-	if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile) && obj->CompareTag(LayerAndTag::Tags::Player)) 
+ 	if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile) && obj->CompareTag(LayerAndTag::Tags::Player)) 
 	{
 		obj->GetComponent<Player*>()->UpdateResourceCount(-damage);
 		
@@ -46,7 +47,7 @@ void DamageControl::ResolveDamage(GameObject * obj)
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 	}
 
-	else if (gameObject->CompareTag(LayerAndTag::Tags::Occupied) || gameObject->CompareTag(LayerAndTag::Tags::Resources))
+	else if ((IsTagOccupied(gameObject->GetTag()) || gameObject->CompareTag(LayerAndTag::Tags::Resources)) && !IsTagOccupied(obj->GetTag()) &&  !obj->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		if (obj->GetComponent<HealthManager*>())
 		{
@@ -57,11 +58,35 @@ void DamageControl::ResolveDamage(GameObject * obj)
 	}
 }
 
+bool DamageControl::IsTagOccupied(LayerAndTag::Tags t)
+{
+	switch (t)
+	{
+	case LayerAndTag::Occupied0:
+		return true;
+	case LayerAndTag::Occupied1:
+		return true;
+	case LayerAndTag::Occupied2:
+		return true;
+	case LayerAndTag::Occupied3:
+		return true;
+	default:
+		return false;
+	}
+}
+
 void DamageControl::ResetDamageControl()
 {
 	damage = 0;
 	typeOfDamage = DamageType::SingleShot;
 }
+
+void DamageControl::SetDamage(int d)
+{
+	damage = d;
+}
+
+
 
 
 

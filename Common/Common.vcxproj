@@ -97,15 +97,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Platform)_$(Configuration)\tmp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Platform)_$(Configuration)\tmp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)$(Platform)\$(Configuration)\;$(IncludePath)</IncludePath>
+    <IntDir>$(SolutionDir)$(Platform)_$(Configuration)\tmp\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)$(Platform)_$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">
     <IncludePath>$(SolutionDir)$(Platform)\$(Configuration)\;$(IncludePath)</IncludePath>
@@ -114,6 +116,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)$(Platform)\$(Configuration)\;$(IncludePath)</IncludePath>
+    <IntDir>$(SolutionDir)$(Platform)_$(Configuration)\tmp\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)$(Platform)_$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ORBIS'">
     <IncludePath>$(SolutionDir)$(Platform)\$(Configuration)\;$(IncludePath)</IncludePath>
@@ -126,7 +130,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,7 +140,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ORBIS'">
@@ -155,7 +161,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -170,7 +177,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -195,6 +203,8 @@
   <ItemGroup>
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GameClient.cpp" />
+    <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -205,14 +215,18 @@
     <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="OBJGeometry.cpp" />
+    <ClCompile Include="NetworkBase.cpp" />
+    <ClCompile Include="NetworkObject.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RendererBase.cpp" />
     <ClCompile Include="ShaderBase.cpp" />
+    <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="SimpleFont.cpp" />
     <ClCompile Include="TextureBase.cpp" />
     <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="TextureWriter.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Win32Keyboard.cpp" />
     <ClCompile Include="Win32Mouse.cpp" />
     <ClCompile Include="Win32Window.cpp" />
@@ -221,6 +235,8 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="GameClient.h" />
+    <ClInclude Include="GameServer.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Material.h" />
@@ -232,14 +248,19 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="OBJGeometry.h" />
     <ClInclude Include="PixOpsFlags.h" />
+    <ClInclude Include="NetworkBase.h" />
+    <ClInclude Include="NetworkObject.h" />
+    <ClInclude Include="NetworkState.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RendererBase.h" />
     <ClInclude Include="ShaderBase.h" />
+    <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="SimpleFont.h" />
     <ClInclude Include="TextureBase.h" />
     <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="TextureWriter.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />

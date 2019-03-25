@@ -1,4 +1,6 @@
 #include "ScriptObject.h"
+#include "NetworkServer.h"
+#include "GameWorld.h"
 
 
 ScriptObject::ScriptObject()
@@ -25,7 +27,7 @@ void ScriptObject::Start()
 
 void ScriptObject::Update(float dt)
 {
-	std::cout << "Script Update" << std::endl;
+
 }
 
 void ScriptObject::LateUpdate(float dt)
@@ -38,4 +40,56 @@ void ScriptObject::OnCollisionBegin(GameObject * otherObject)
 
 void ScriptObject::OnCollisionEnd(GameObject * otherObject)
 {
+}
+
+PlayerState* ScriptObject::GetPlayerInput() 
+{
+	GameWorld* gw = GameObject::gameWorld;
+	if (!gw) return nullptr;
+
+	NetworkServer* ns = dynamic_cast<NetworkServer*>(gw->GetNetwork());
+	if (!ns) return nullptr;
+
+	PlayerState* ps = ns->FindPlayer(gameObject);
+	if (!ps) return nullptr;
+
+	return ps;
+}
+
+InputContainer ScriptObject::GetKeysDown() 
+{
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return InputContainer();
+
+	return ps->keysDown;
+}
+
+InputContainer ScriptObject::GetKeysPressed() 
+{
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return InputContainer();
+
+	return ps->keysPressed;
+}
+
+Quaternion ScriptObject::GetCameraRotation() {
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return Quaternion();
+
+	return ps->cameraRotation;
+}
+
+Vector3 ScriptObject::GetCameraPosition() {
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return Vector3();
+
+	return ps->cameraPosition;
+}
+
+int ScriptObject::GetNetworkId()
+{
+	PlayerState* ps = GetPlayerInput();
+	if (!ps) return -2;
+
+	return ps->peerId;
 }

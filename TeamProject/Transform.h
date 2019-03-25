@@ -2,6 +2,7 @@
 #include "../Common/Matrix4.h"
 #include "../Common/Vector3.h"
 #include "../Common/Quaternion.h"
+#include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 
 #include <vector>
 
@@ -11,6 +12,9 @@ using namespace NCL::Maths;
 
 namespace NCL {
 	namespace CSC8503 {
+		class PhysicsObject;
+		class GameObject;
+		
 		class Transform
 		{
 		public:
@@ -75,7 +79,15 @@ namespace NCL {
 
 			void RemoveChild(Transform * transform)
 			{
-				std::remove(children.begin(), children.end(), transform);
+				int count = 0;
+				for (auto&i : children)
+				{
+					if (i->gameObject == transform->GetGameObject())
+					{
+						children.erase(children.begin() + count);
+					}
+					count++;
+				}
 			}
 
 			void GetChildTransformIterators(std::vector<Transform*>::const_iterator&b, std::vector<Transform*>::const_iterator&e) const
@@ -88,6 +100,20 @@ namespace NCL {
 			void UpdateMatrices();
 			vector<Transform*> GetChildrenList();
 
+			void ForceUpdateWorldPosition(Vector3 pos);
+			void ForceUpdateBulletWorldTransform(btTransform &temp);
+			void ForceUpdateLocalRotation(Quaternion qt);
+
+			void ForceUpdateWorldPositionWithTransform(Vector3 pos);
+			void ForceUpdateLocalPositionWithTransform(Vector3 pos);
+			void ForceUpdateLocalRotationWithTransform(Quaternion qt);
+
+			void ForceUpdateScale(Vector3 scale);
+			void ForceUpdateScaleWithTransform(Vector3 scale);
+
+			void SetGameObject(GameObject * obj);
+			GameObject* GetGameObject();
+
 
 		protected:
 			Matrix4		localMatrix;
@@ -98,7 +124,8 @@ namespace NCL {
 			Quaternion	localOrientation;
 			Quaternion  worldOrientation;
 
-			Transform*	parent;
+			Transform*	parent = nullptr;
+			GameObject * gameObject;
 
 			vector<Transform*> children;
 		};

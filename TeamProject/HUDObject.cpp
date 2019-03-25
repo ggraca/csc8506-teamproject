@@ -1,5 +1,7 @@
 #include "HUDObject.h"
 #ifdef _WIN32
+#include "../Common/Assets.h"
+
 HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform objTransform, bool activeTex)
 {
 	objectMesh = objMesh;
@@ -8,7 +10,7 @@ HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform
 	texture = objTexture;
 	transform = objTransform;
 	activeTexture = activeTex;
-	//shader = objShader;
+	shader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl");
 }
 #endif
 

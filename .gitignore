@@ -24,6 +24,11 @@ bld/
 [Oo]bj/
 [Ll]og/
 
+# Current Build Folders
+/Win32*/
+/x64*/
+/ORBIS*/
+
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 

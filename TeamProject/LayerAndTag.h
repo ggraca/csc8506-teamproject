@@ -13,14 +13,19 @@ public:
 	enum Tags
 	{
 		Untagged,
+		Player,
 		Resources,
 		ResourceParent,
 		CaptureParent,
-		Destructable,
-		Occupied,
-		Player,
+		Destructible,
+		Occupied0,
+		Occupied1,
+		Occupied2,
+		Occupied3,
 		Enemy,
-		EnemyProjectile
+		EnemyProjectile,
+		HammerHead,
+		Ground
 	};
 
 	LayerAndTag()

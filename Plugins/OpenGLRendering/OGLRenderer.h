@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Common/RendererBase.h"
+#include "../../Common/Assets.h"
 #include "OGLPixOpsFLags.h"
 
 #include "../../Common/Vector2.h"
@@ -51,6 +52,8 @@ namespace NCL {
 			virtual void SetupDebugMatrix(OGLShader*s) {
 			}
 
+			void GenerateIrradianceMap(TextureBase* skybox, TextureBase* irradianceMap, ShaderBase* convShader, MeshGeometry* cube, void* ConvFBO);
+
 			void GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& bufferTexs, TextureBase* depth);
 			void DeleteFrameBuffer(void* buffer);
 			void BindFBO(void* buffer);
@@ -61,6 +64,7 @@ namespace NCL {
 			void BindBoolToShader(const bool val, const std::string& uniform) const;
 			void BindIntToShader(const int val, const std::string& uniform) const;
 			void BindFloatToShader(const float val, const std::string& uniform) const;
+			void BindVector2ToShader(const Vector2& val, const std::string& uniform) const;
 			void BindVector3ToShader(const Vector3& val, const std::string& uniform) const;
 			void BindVector4ToShader(const Vector4& val, const std::string& uniform) const;
 			void BindMatrix4ToShader(const Matrix4& val, const std::string& uniform) const;

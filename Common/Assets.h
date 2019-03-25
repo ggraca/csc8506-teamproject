@@ -3,6 +3,7 @@
 #include <map>
 
 #include "TextureLoader.h"
+#include "ShaderLoader.h"
 #include "Material.h"
 #include "MeshGeometry.h"
 
@@ -31,6 +32,7 @@ namespace NCL {
 			}
 
 			static Rendering::TextureBase* LoadTexture(const std::string& filename);
+			static Rendering::ShaderBase* LoadShader(const std::string& shadername, const string& vertex, const string& fragment, const string& geometry = "", const string& domain = "", const string& hull = "");
 			static MeshGeometry* LoadMesh(const std::string& filename);
 			static OBJGeometry* LoadOBJ(const std::string& filename);
 			static Rendering::Material* LoadMaterial(const std::string& materialname, Rendering::ShaderBase* shader);
@@ -39,6 +41,8 @@ namespace NCL {
 			static void FlushShaders();
 			static void FlushMaterials();
 			static void FlushAssets();
+
+			static std::map<std::string, OBJGeometry*>* GetOBJMeshes() { return &GetInstance().loadedOBJs; }
 
 		protected:
 			std::map<std::string, Rendering::TextureBase*> loadedTextures;

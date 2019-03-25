@@ -1,34 +1,37 @@
 #pragma once
 
 #include "GameTechRenderer.h"
-#include "Scene.h"
-
-#include "Console.h"
-#include "DebugMenu.h"
+#include "GameScene.h"
 #include "Player.h"
 #include "Resource.h"
 #include "InputManager.h"
 #include "CameraControl.h"
+#include "Destructible.h"
+#include "../Common/NetworkBase.h"
+#include "../Common/GameServer.h"
+#include "../Common/GameClient.h"
 
-namespace NCL {
-  namespace CSC8503 {
-    class PhysicsScene : public Scene {
-    public:
-      PhysicsScene();
-      ~PhysicsScene();
-      void UpdateGame(float dt);
-	    static InputManager * inputManager;
+using namespace NCL::Networking;
 
-    protected:
-      void ResetWorld();
-      void DebugScene(float dt);
-	  void UpdateKeys();
+class PhysicsScene : public GameScene {
+public:
+	PhysicsScene(bool& quitGame);
+	~PhysicsScene() {};
+    
+	bool CreateServer();
+	void CreateClient();
 
-	  GameObject* bestcube;
+	void LateUpdate(float dt) override;
 
-      DebugMenu debugMenu;
-      Console console;
-	  HUD hud;
-    };
-  }
-}
+protected:
+	void ResetWorld();
+	void UpdateKeys();
+  
+	bool isServer = false;
+
+	GameServer* server;
+	vector<GameClient*> clients;
+	GameObject* bestcube;
+	
+	
+};

@@ -1,5 +1,5 @@
 #include "Console.h"
-#include "utils.h"
+#include "../Common/Utils.h"
 
 using namespace NCL;
 
@@ -34,7 +34,7 @@ void Console::HandleCommand() {
 
 	auto foundCommand = commands.find(parsedCommand[0]);
 	AddToPreviousCommandList();
-	previousCommandIndex = previousCommands.size();
+	previousCommandIndex = (int) previousCommands.size();
 	currentCommand = "";
 
 	if (foundCommand == commands.end()) {
@@ -192,7 +192,7 @@ void Console::Update() {
 			  previousCommandIndex--;
 
         if (previousCommandIndex < 0) {
-          previousCommandIndex = previousCommands.size() - 1;
+          previousCommandIndex = (int) previousCommands.size() - 1;
         }
 
         if (!empty(previousCommands)) {

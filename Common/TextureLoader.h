@@ -12,9 +12,9 @@ namespace NCL {
 
 	typedef std::function<bool(const std::string& filename, char*& outData, int& width, int &height, int &channels, int&flags)> TextureLoadFunction;
 
-	typedef std::function<Rendering::TextureBase*(const std::string& filename)> APILoadFunction;
+	typedef std::function<Rendering::TextureBase*(const std::string& filename)> APILoadTextureFunction;
 
-	typedef std::function<Rendering::TextureBase*(const std::vector<std::string>& faces)> APILoadFunctionCube;
+	typedef std::function<Rendering::TextureBase*(const std::vector<std::string>& faces)> APILoadTextureCubeFunction;
 
 	class TextureLoader
 	{
@@ -24,9 +24,9 @@ namespace NCL {
 
 		static void RegisterTextureLoadFunction(TextureLoadFunction f, const std::string&fileExtension);
 
-		static void RegisterAPILoadFunction(APILoadFunction f);
+		static void RegisterAPILoadFunction(APILoadTextureFunction f);
 
-		static void RegisterAPILoadCubeFunction(APILoadFunctionCube f);
+		static void RegisterAPILoadCubeFunction(APILoadTextureCubeFunction f);
 
 		static Rendering::TextureBase* LoadAPITexture(const std::string&filename);
 
@@ -38,9 +38,9 @@ namespace NCL {
 
 		static std::map<std::string, TextureLoadFunction> fileHandlers;
 
-		static APILoadFunction apiFunction;
+		static APILoadTextureFunction apiFunction;
 
-		static APILoadFunctionCube apiFunctionCube;
+		static APILoadTextureCubeFunction apiFunctionCube;
 
 	};
 }
