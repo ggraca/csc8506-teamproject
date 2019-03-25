@@ -93,6 +93,14 @@ void Game::InitialiseAssets() {
 	basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 	basicMaterial->AddTextureParameter("aoTex", pbrWoodAO);
 
+	Material* PBRDMaterial = Assets::AssetManager::LoadMaterial("PBRD Material", pbrdShader);
+	PBRDMaterial->AddTextureParameter("diffuseTex", pbrWoodDiff);
+	PBRDMaterial->AddTextureParameter("bumpTex", pbrWoodBump);
+	PBRDMaterial->AddTextureParameter("specularTex", pbrWoodRough);
+	PBRDMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
+	PBRDMaterial->AddTextureParameter("aoTex", pbrWoodAO);
+	PBRDMaterial->AddTextureParameter("heightMap", pbrWoodDisp);
+
 	vector<std::string> faces {
 		"hw_alps/alps_ft.png",
 		"hw_alps/alps_bk.png",
