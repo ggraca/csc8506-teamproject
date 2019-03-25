@@ -157,6 +157,7 @@
     <ClCompile Include="AirStrikeControl.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -385,9 +386,6 @@
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -403,6 +401,7 @@
     <ClInclude Include="MenuScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">

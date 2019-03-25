@@ -15,6 +15,7 @@
 #include "ShieldControl.h"
 #include "AirStrikeControl.h"
 #include "BigGunControl.h"
+#include "PlayerAnimation.h"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ int TypeId::GetTypeId(const type_info &info)
 	if (info.hash_code() == typeid(ShieldControl*).hash_code()) { return 16; }
 	if (info.hash_code() == typeid(BigGunControl*).hash_code()) { return 18; }
 	if (info.hash_code() == typeid(AirStrikeControl*).hash_code()) { return 19; }
+	if (info.hash_code() == typeid(PlayerAnimation*).hash_code()) { return 20; }
 
 	else
 	{

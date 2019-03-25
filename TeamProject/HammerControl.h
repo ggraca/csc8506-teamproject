@@ -8,12 +8,14 @@ public:
 	HammerControl(GameObject * gameObject);
 	~HammerControl();
 	void SetHandle(GameObject * h);
+	GameObject * GetHandle();
 	Vector3 CalculateDirection();
 	void ActivateHammer();
 	void FormHammer();
 	void DeformHammer();
 	void DeactivateHammer();
 	void HammerHit();
+	void ResetHammerHit(bool resetTransform = false);
 	int GetHitCounter() const;
 	void SetHammerSize(float minx, float maxx, float miny, float maxy, float minz, float maxz);
 	void Awake() override;

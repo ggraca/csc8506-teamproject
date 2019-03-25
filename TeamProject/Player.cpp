@@ -96,7 +96,11 @@ void Player::CheckHammerControls()
 		isHammerActive = !isHammerActive;
 
 		if (isHammerActive) { gameObject->GetComponent<HammerControl*>()->ActivateHammer(); }
-		else { gameObject->GetComponent<HammerControl*>()->DeactivateHammer(); }
+		else 
+		{ 
+			gameObject->GetComponent<HammerControl*>()->DeactivateHammer();
+			gameObject->GetComponent<HammerControl*>()->ResetHammerHit(true);
+		}
 	}
 
 	if (isHammerActive && keysPressed.inputs[InputManager::ActionButton::HIT])
