@@ -77,7 +77,7 @@ void GunControl::FireObjectAndRemoveFromResources(std::vector<GameObject *> &chi
 
 	Vector3 projMov = (GetCameraPosition() + (CalculateDirection() * projectileSpeed)) - children[i]->GetTransform().GetWorldPosition();
 	children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
-	gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
+	gameObject->GetComponent<Player*>()->LoseResource(children[i]);
 }
 
 void GunControl::FireObjectAndRemoveFromResources(GameObject * child)
@@ -87,14 +87,14 @@ void GunControl::FireObjectAndRemoveFromResources(GameObject * child)
 
 	Vector3 projMov = (GetCameraPosition() + (CalculateDirection() * projectileSpeed)) - child->GetTransform().GetWorldPosition();
 	child->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
-	gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
+	gameObject->GetComponent<Player*>()->LoseResource(child);
 }
 
 void GunControl::Fire()
 {
 	if (!leftGun || !rightGun) {return; }
 
-	auto child = GameObject::FindGameObjectWithTag(gameObject->GetComponent<Player*>()->GetResourceTag());
+	auto child = gameObject->GetComponent<Player*>()->GetResources()[0];
 
 	if (child)
 	{

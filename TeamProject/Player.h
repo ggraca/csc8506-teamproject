@@ -26,15 +26,17 @@ public:
 	void LateUpdate(float dt) override;
 	void OnCollisionBegin(GameObject* otherObject)override;
 	void OnCollisionEnd(GameObject* otherObject)override;
-	void UpdateResourceCount(int amount);
+	void LoseResource(int amount);
+	void LoseResource(GameObject * resource);
 	int GetResourceCount() const;
 	LayerAndTag::Tags GetResourceTag() ;
+	vector<GameObject*> GetResources() const;
 
 protected:
 
 	void ResetPlayer();
 
-	int resourceCount;
+	//int resourceCount;
 	float movementSpeed;
 	float jumpSpeed;
 	float dodgeAmount;
@@ -49,5 +51,7 @@ protected:
 	InputContainer keysPressed;
 	Quaternion cameraRotation;
 	Vector3 cameraPosition;
+
+	vector<GameObject*> resources;
 };
 

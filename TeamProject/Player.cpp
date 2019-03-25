@@ -43,7 +43,7 @@ void Player::Update(float dt)
 
 void Player::CheckAirStrikeControls()
 {
-	if (!isHammerActive && !isShieldActive && resourceCount >= 5 && keysPressed.inputs[InputManager::ActionButton::CALL_AIR_STRIKE])
+	if (!isHammerActive && !isShieldActive && GetResourceCount() >= 5 && keysPressed.inputs[InputManager::ActionButton::CALL_AIR_STRIKE])
 	{
 		gameObject->GetComponent<AirStrikeControl*>()->LaunchAirStrike();
 	}
@@ -62,7 +62,7 @@ void Player::CheckBigGunControls(float dt)
 
 	if (isBigGunActive && !keysDown.inputs[InputManager::ActionButton::HIT])
 	{
-		if (resourceCount >= 3)
+		if (GetResourceCount() >= 3)
 		{
 			gameObject->GetComponent<BigGunControl*>()->Fire(timeCounter);
 		}
@@ -101,7 +101,7 @@ void Player::CheckHammerControls()
 
 	if (isHammerActive && keysPressed.inputs[InputManager::ActionButton::HIT])
 	{
-		if (resourceCount > 0) { gameObject->GetComponent<HammerControl*>()->HammerHit(); }
+		if (GetResourceCount() > 0) { gameObject->GetComponent<HammerControl*>()->HammerHit(); }
 	}
 }
 
@@ -117,7 +117,7 @@ void Player::CheckGunControls()
 
 	if (isGunActive && keysPressed.inputs[InputManager::ActionButton::HIT])
 	{
-		if (resourceCount > 0) { gameObject->GetComponent<GunControl*>()->Fire(); }
+		if (GetResourceCount() > 0) { gameObject->GetComponent<GunControl*>()->Fire(); }
 	}
 }
 
@@ -214,7 +214,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
-		UpdateResourceCount(1);
+		resources.push_back(otherObject);
 	}
 
 	else if (otherObject->CompareTag(LayerAndTag::Tags::Ground) || otherObject->CompareTag(LayerAndTag::Tags::Destructible))
@@ -229,7 +229,7 @@ void Player::OnCollisionEnd(GameObject * otherObject)
 
 int Player::GetResourceCount() const
 {
-	return resourceCount;
+	return (int)resources.size();
 }
 
 LayerAndTag::Tags Player::GetResourceTag() 
@@ -240,17 +240,36 @@ LayerAndTag::Tags Player::GetResourceTag()
 	return (LayerAndTag::Tags)((networkID + 1) + LayerAndTag::Occupied0);
 }
 
+vector<GameObject*> Player::GetResources() const
+{
+	return resources;
+}
+
 void Player::ResetPlayer()
 {
-	resourceCount = 0;
 	movementSpeed = 200;
 	jumpSpeed = 400;
 	dodgeAmount = 500;
 }
 
-void Player::UpdateResourceCount(int amount)
+void Player::LoseResource(int amount)
 {
-	resourceCount += amount;
+	if (!GetResourceCount() >= amount) { return; }
+	
+	for (int i = 0; i < amount; i++)
+	{
+		resources.erase(resources.begin());
+	}
+}
 
-	if (resourceCount <= 0) resourceCount = 0;
+void Player::LoseResource(GameObject * resource)
+{
+	if (GetResourceCount() <= 0) { return; }
+	
+	int index = 0;
+	for (auto i : resources)
+	{
+		if (i == resource) { resources.erase(resources.begin() + index); return; }
+		index++;
+	}
 }
