@@ -1,5 +1,6 @@
 #include "OBJGeometry.h"
 #include "Utils.h"
+#include "../../OpenGLRendering/OGLTexture.h"
 
 bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	std::ifstream f(filename.c_str(), std::ios::in);

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <algorithm>
 
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
 #include "OBJGeometry.h"
 
 using namespace NCL;
