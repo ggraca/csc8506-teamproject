@@ -21,6 +21,7 @@ namespace NCL {
 
 			bool SendGlobalPacket(int msgID);
 			bool SendGlobalPacket(GamePacket& packet);
+			bool SendPacket(GamePacket& packet, int peerId);
 
 			void BroadcastSnapshot(bool deltaFrame);
 			void UpdateMinimumState();

@@ -26,6 +26,8 @@ GameObject* NetworkClient::GetGameObjectFromPacket(InstantiatePacket* packet) {
 		world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 		return player;
 	}
+	case NetworkObject::Cube:
+		return new CubePrefab(packet->position, packet->rotation, packet->scale);
 	case NetworkObject::Wall:
 		return new WallPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Stall:
@@ -83,5 +85,9 @@ void NetworkClient::ReceivePacket(int type, GamePacket* payload, int source) {
 
 		no->GetGameObject()->GetTransform().SetWorldPosition(packet->position);
 		no->GetGameObject()->GetTransform().SetLocalOrientation(packet->rotation);
+	}
+	else if (type == PlayerStateMessage) {
+		PlayerStatePacket* packet = (PlayerStatePacket*)payload;
+		playerState = packet->playerState;
 	}
 }

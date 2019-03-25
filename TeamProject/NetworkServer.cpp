@@ -7,22 +7,7 @@
 
 
 void NetworkServer::Update() {
-	server->UpdateServer();
-
-	for (auto o : objects) {
-		Transform t = o->GetGameObject()->GetTransform();
-		Vector3 pos = t.GetWorldPosition();
-		Quaternion rot = t.GetLocalOrientation();
-
-		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot));
-		if (hashed == o->GetHash()) continue;
-
-		o->SetHash(hashed);
-		ObjectUpdatePacket p = ObjectUpdatePacket(o->GetId(), pos, rot);
-		server->SendGlobalPacket(p);
-	}
-
-	PlayerState* ps = FindPlayer(-1);
+	PlayerInput* ps = FindPlayer(-1);
 	if (ps) {
 		ps->keysDown = InputContainer(InputManager::GetInputBitsDown());
 		ps->keysPressed = InputContainer(InputManager::GetInputBitsPressed());
@@ -33,8 +18,40 @@ void NetworkServer::Update() {
 		for (auto go : world->GetGameObjectList()) {
 			if (go->CompareTag(LayerAndTag::Tags::Player)) {
 				AddPlayer(-1, go);
-				return;
+				break;
 			}
+		}
+	}
+
+	server->UpdateServer();
+
+	// Send Object Updates to Clients
+	for (auto o : objects) {
+		Transform t = o->GetGameObject()->GetTransform();
+		Vector3 pos = t.GetWorldPosition();
+		Quaternion rot = t.GetWorldOrientation();
+
+		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot));
+		if (hashed == o->GetHash()) continue;
+
+		o->SetHash(hashed);
+		ObjectUpdatePacket p = ObjectUpdatePacket(o->GetId(), pos, rot);
+		server->SendGlobalPacket(p);
+	}
+
+	// Send Player State to Clients
+	for (auto player : players) {
+		PlayerState ps = PlayerState(
+			player->gameObject->GetComponent<Player*>()->GetHP(),
+			player->gameObject->GetComponent<Player*>()->GetResourceCount()
+		);
+
+		if (player->peerId == -1) {
+			playerState = ps;
+		}
+		else {
+			PlayerStatePacket p = PlayerStatePacket(ps);
+			server->SendPacket(p, player->peerId);
 		}
 	}
 }
@@ -44,8 +61,9 @@ void NetworkServer::OnClientConnect(int source) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetLocalOrientation();
+		Vector3 sca = t.GetLocalScale();
 
-		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot);
+		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot, sca);
 		server->SendGlobalPacket(p);
 	}
 
@@ -70,7 +88,7 @@ void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {
 	{
 		PlayerInputPacket* realPacket = (PlayerInputPacket*)payload;
 
-		PlayerState* ps = FindPlayer(source);
+		PlayerInput* ps = FindPlayer(source);
 		ps->keysDown = realPacket->keysDown;
 		ps->keysPressed = realPacket->keysPressed;
 		ps->cameraPosition = realPacket->cameraPosition;
@@ -87,15 +105,15 @@ void NetworkServer::Instantiate(GameObject* go) {
 	no->SetId(lastestId++);
 	objects.push_back(no);
 
-	server->SendGlobalPacket(InstantiatePacket(no->GetPrefabId(), no->GetId(), go->GetTransform().GetWorldPosition(), go->GetTransform().GetLocalOrientation()));
+	server->SendGlobalPacket(InstantiatePacket(no->GetPrefabId(), no->GetId(), go->GetTransform().GetWorldPosition(), go->GetTransform().GetLocalOrientation(), go->GetTransform().GetLocalScale()));
 }
 
 void NetworkServer::AddPlayer(int peerId, GameObject* go) {
-	players.push_back(new PlayerState(peerId, go));
+	players.push_back(new PlayerInput(peerId, go));
 }
 
 void NetworkServer::RemovePlayer(int peerId) {
-	PlayerState* ps = FindPlayer(peerId);
+	PlayerInput* ps = FindPlayer(peerId);
 	if (!ps) return;
 
 	world->LateDestroy(ps->gameObject);
@@ -103,14 +121,14 @@ void NetworkServer::RemovePlayer(int peerId) {
 	players.erase(remove(players.begin(), players.end(), ps), players.end());
 }
 
-PlayerState* NetworkServer::FindPlayer(int peerId) {
+PlayerInput* NetworkServer::FindPlayer(int peerId) {
 	for (auto p : players) {
 		if (p->peerId == peerId) return p;
 	}
 	return nullptr;
 }
 
-PlayerState* NetworkServer::FindPlayer(GameObject* go) {
+PlayerInput* NetworkServer::FindPlayer(GameObject* go) {
 	for (auto p : players) {
 		if (p->gameObject == go) return p;
 	}
