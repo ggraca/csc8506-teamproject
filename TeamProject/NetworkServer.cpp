@@ -30,12 +30,14 @@ void NetworkServer::Update() {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetWorldOrientation();
+		Vector3 sca = t.GetWorldScale();
+		bool ia = o->GetGameObject()->IsActive();
 
-		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot));
+		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot) + ToString(sca) + (ia ? '1' : '0'));
 		if (hashed == o->GetHash()) continue;
 
 		o->SetHash(hashed);
-		ObjectUpdatePacket p = ObjectUpdatePacket(o->GetId(), pos, rot);
+		ObjectUpdatePacket p = ObjectUpdatePacket(o->GetId(), pos, rot, sca, ia);
 		server->SendGlobalPacket(p);
 	}
 
@@ -60,10 +62,11 @@ void NetworkServer::OnClientConnect(int source) {
 	for (auto o : objects) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
-		Quaternion rot = t.GetLocalOrientation();
-		Vector3 sca = t.GetLocalScale();
+		Quaternion rot = t.GetWorldOrientation();
+		Vector3 sca = t.GetWorldScale();
+		bool ia = o->GetGameObject()->IsActive();
 
-		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot, sca);
+		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot, sca, ia);
 		server->SendGlobalPacket(p);
 	}
 
