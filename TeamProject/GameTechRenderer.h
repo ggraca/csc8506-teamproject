@@ -204,12 +204,12 @@ namespace NCL {
 
 			Vec4 ambientColour = Vec4(0.2f, 0.2f, 0.2f, 1.0f);
 
-			NCL::Maths::Matrix4*	projMatrix;
-			NCL::Maths::Matrix4*	viewMatrix;
-			NCL::Maths::Matrix4*	modelMatrix;
-			NCL::Maths::Matrix4*	textureMatrix;
-			NCL::Maths::Vector3*	cameraPos;
-			NCL::Maths::Vector4*	objectColour;
+			NCL::Maths::Mat4*	projMatrix;
+			NCL::Maths::Mat4*	viewMatrix;
+			NCL::Maths::Mat4*	modelMatrix;
+			NCL::Maths::Mat4*	textureMatrix;
+			NCL::Maths::Vec3*	cameraPos;
+			NCL::Maths::Vec4*	objectColour;
 
 			Gnm::Buffer	cameraBuffer;
 

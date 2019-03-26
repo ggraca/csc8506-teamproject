@@ -825,8 +825,8 @@ void GameTechRenderer::RenderCamera() {
 	ClearBuffer(true, false, false);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	/*Matrix4*/ *viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
-	/*Matrix4*/ *projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	/*Mat4*/ *viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	/*Mat4*/ *projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	shadowCasters = 0;
 	vertsDrawn = 0;
@@ -865,29 +865,29 @@ void GameTechRenderer::RenderCamera() {
 		cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO);
 
 		//BindMatrix4ToShader(projMatrix, "projMatrix");
-		projMatrix = (Matrix4*)onionAllocator->allocate(sizeof(Matrix4), Gnm::kEmbeddedDataAlignment4);
-		*projMatrix = Matrix4();
-		cameraBuffer.initAsConstantBuffer(projMatrix, sizeof(Matrix4));
+		projMatrix = (Mat4*)onionAllocator->allocate(sizeof(Mat4), Gnm::kEmbeddedDataAlignment4);
+		*projMatrix = Mat4();
+		cameraBuffer.initAsConstantBuffer(projMatrix, sizeof(Mat4));
 		cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO);
 
 		//BindMatrix4ToShader(viewMatrix, "viewMatrix");
-		viewMatrix = (Matrix4*)onionAllocator->allocate(sizeof(Matrix4), Gnm::kEmbeddedDataAlignment4);
-		*viewMatrix = Matrix4();
-		cameraBuffer.initAsConstantBuffer(viewMatrix, sizeof(Matrix4));
+		viewMatrix = (Mat4*)onionAllocator->allocate(sizeof(Mat4), Gnm::kEmbeddedDataAlignment4);
+		*viewMatrix = Mat4();
+		cameraBuffer.initAsConstantBuffer(viewMatrix, sizeof(Mat4));
 		cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO);
 
 		//BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");
 		*modelMatrix = (*i).GetTransform()->GetWorldMatrix();
-		modelMatrix= (Matrix4*)onionAllocator->allocate(sizeof(Matrix4), Gnm::kEmbeddedDataAlignment4);
-		*modelMatrix = Matrix4();
-		cameraBuffer.initAsConstantBuffer(modelMatrix, sizeof(Matrix4));
+		modelMatrix= (Mat4*)onionAllocator->allocate(sizeof(Mat4), Gnm::kEmbeddedDataAlignment4);
+		*modelMatrix = Mat4();
+		cameraBuffer.initAsConstantBuffer(modelMatrix, sizeof(Mat4));
 		cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO);
 
 		//BindMatrix4ToShader(currentMaterial->GetTextureMatrix(), "textureMatrix");
 		*textureMatrix = currentMaterial->GetTextureMatrix();
-		textureMatrix = (Matrix4*)onionAllocator->allocate(sizeof(Matrix4), Gnm::kEmbeddedDataAlignment4);
-		*textureMatrix = Matrix4();
-		cameraBuffer.initAsConstantBuffer(textureMatrix, sizeof(Matrix4));
+		textureMatrix = (Mat4*)onionAllocator->allocate(sizeof(Mat4), Gnm::kEmbeddedDataAlignment4);
+		*textureMatrix = Mat4();
+		cameraBuffer.initAsConstantBuffer(textureMatrix, sizeof(Mat4));
 		cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO);
 
 		//BindVector4ToShader(currentMaterial->GetColour(), "objectColour");

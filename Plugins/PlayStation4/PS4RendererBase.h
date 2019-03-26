@@ -18,7 +18,7 @@ using namespace Gnmx::Toolkit;
 
 namespace NCL {
 	namespace Maths {
-		class Matrix4;
+		class Mat4;
 	}
 	namespace PS4 {
 		enum MemoryLocation {
@@ -36,7 +36,7 @@ namespace NCL {
 		class PS4Shader;
 		class PS4Mesh;
 
-		class RenderObject;
+		class RenderObjectPS4;
 
 		class PS4RendererBase :
 			public RendererBase, public PS4MemoryAware
@@ -99,7 +99,7 @@ namespace NCL {
 			//Individual Frames
 			PS4Frame*	frames;
 
-			NCL::Maths::Matrix4*	viewProjMat;
+			Maths::Mat4*	viewProjMat;
 			Gnm::Buffer	cameraBuffer;
 
 			int framesSubmitted;
