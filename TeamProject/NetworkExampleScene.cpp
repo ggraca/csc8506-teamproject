@@ -49,14 +49,14 @@ void NetworkExampleScene::ResetWorld() {
 		}
 	}*/
 	auto ball = new SpherePrefab(Vector3(1.6, 1, 1.6), 10, 10, 0.5, 0.5);
-	auto cone = new ConePrefab(Vector3(1.6, 1, 1.6), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(16, 10, 16), 10, 0.5, 0.5);
+	auto cone = new ConePrefab(Vector3(1.6, 50, 1.6), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(160, 100, 160), 0, 0.5, 0.5);
 
 	//auto well = new WellPrefab(Vector3(50, 50, 50), Vector3(-100, 20, -100), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 
 	world->LateInstantiateRecursively(player);
 	world->LateInstantiate(floor);
-	world->LateInstantiate(ball);
-	world->LateInstantiate(cone);
+	//world->LateInstantiate(ball);
+	//world->LateInstantiateRecursively(cone);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }
