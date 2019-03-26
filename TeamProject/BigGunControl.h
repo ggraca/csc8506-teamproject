@@ -12,6 +12,7 @@ public:
 	void Fire(float time);
 
 	void SetBigGun(GameObject * gun);
+	GameObject * GetBigGun();
 
 protected:
 	GameObject * bigGun = nullptr;

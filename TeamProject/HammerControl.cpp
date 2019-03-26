@@ -23,6 +23,11 @@ void HammerControl::SetHandle(GameObject * h)
 	handle = h;
 }
 
+GameObject * HammerControl::GetHandle()
+{
+	return handle;
+}
+
 Vector3 HammerControl::CalculateDirection()
 {
 	Vector3 forward;
@@ -104,13 +109,13 @@ void HammerControl::HammerHit()
 			colliding->GetComponent<HealthManager*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());
 		}
 	}
-
-	hitCounter = (hitCounter + 1) % 3;
 }
 
-int HammerControl::GetHitCounter() const
+void HammerControl::ResetHammerHit()
 {
-	return hitCounter;
+	
+	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
+	handle->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, 0, 45));
 }
 
 void HammerControl::SetHammerSize(float minx, float maxx, float miny, float maxy, float minz, float maxz)

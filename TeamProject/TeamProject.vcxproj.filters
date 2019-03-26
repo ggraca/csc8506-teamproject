@@ -163,6 +163,12 @@
     <ClCompile Include="FunctionTimer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerAnimation.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -411,6 +417,12 @@
     </ClInclude>
     <ClInclude Include="FunctionTimer.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAnimation.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

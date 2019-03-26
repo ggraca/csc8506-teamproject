@@ -25,7 +25,6 @@ ParticleSystem::ParticleSystem()
 {
 }
 
-
 ParticleSystem::~ParticleSystem()
 {
 }

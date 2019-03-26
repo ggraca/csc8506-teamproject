@@ -1,6 +1,7 @@
 #include "GameServer.h"
 // #include "GameWorld.h"
 #include <iostream>
+#include <fstream>
 
 using namespace NCL;
 using namespace NCL::Networking;
@@ -29,12 +30,30 @@ void GameServer::Shutdown() {
 	netHandle = nullptr;
 }
 
-bool GameServer::Initialise() {
-	ENetAddress address;
-	address.host = ENET_HOST_ANY; //(147 << 24) | (33 << 16) | (70 << 8) | 10;
-	address.port = port;
+bool GameServer::Initialise()
+{
 
+	ifstream file;
+	file.open("../Assets/Data/ip.txt");
+	int connectingIP[4];
+
+	if (file.is_open())
+	{
+		string line;
+		int lineNumber = 0;
+		while (getline(file, line))
+		{
+			connectingIP[lineNumber] = stoi(line);
+			lineNumber += 1;
+		}
+	}
+	file.close();
+
+	ENetAddress address;
+	address.host = (connectingIP[3] << 24) | (connectingIP[2] << 16) | (connectingIP[1] << 8) | connectingIP[0];
+	address.port = port;
 	netHandle = enet_host_create(&address, clientMax, 1, 0, 0);
+	
 
 	if (!netHandle) {
 		std::cout << __FUNCTION__
