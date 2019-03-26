@@ -48,15 +48,15 @@ void NetworkExampleScene::ResetWorld() {
 			world->LateInstantiate((new SpherePrefab(Vector3(i * 100, 590, j * 30), 10, 10, 0.5, 0.5)));
 		}
 	}*/
-//	auto ball = new SpherePrefab(Vector3(1.6, 30, 1.6), 30, 0, 0.5, 0.5);
-	auto cone = new ConePrefab(Vector3(0, 0, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(1, 1, 1), 0, 0.5, 0.5);
-	cone->SetTag(LayerAndTag::Tags::Ground);
+	auto ball = new SpherePrefab(Vector3(1.6, 30, 1.6), 10, 0, 0.5, 0.5);
+	auto cone = new ConePrefab(Vector3(50, 50, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(20, 10, 20), 10, 0.5, 0.5);
+//	cone->SetTag(LayerAndTag::Tags::Ground);
 	//auto well = new WellPrefab(Vector3(50, 50, 50), Vector3(-100, 20, -100), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 
 	world->LateInstantiateRecursively(player);
 	world->LateInstantiate(floor);
-//	world->LateInstantiate(ball);
-	world->LateInstantiateRecursively(cone);
+	world->LateInstantiate(ball);
+	world->LateInstantiate(cone);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 }

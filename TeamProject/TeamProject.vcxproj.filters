@@ -417,7 +417,9 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="ConePrefab.h" />
+    <ClInclude Include="ConePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">

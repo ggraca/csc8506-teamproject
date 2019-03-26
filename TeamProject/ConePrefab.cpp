@@ -14,14 +14,17 @@ ConePrefab::ConePrefab()
 
 ConePrefab::ConePrefab(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction)
 {
-	string filename = "full_wall.obj";
+	string filename = "cylinder.obj";
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ(filename);
 	GameObject* go = GameObject::FromOBJ(objGeometry);
-	GetTransform().SetWorldScale(dimensions);
-	GetTransform().SetWorldPosition(position);
-	GetTransform().SetLocalOrientation(orient);
+	go->GetTransform().SetWorldScale(dimensions);
+	go->GetTransform().SetWorldPosition(position);
+	go->GetTransform().SetLocalOrientation(orient);
+	//GetTransform().SetWorldScale(dimensions);
+	//GetTransform().SetWorldPosition(position);
+	//GetTransform().SetLocalOrientation(orient);
 
-	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::complexMesh, mass, restitution, friction, filename));
+	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::cylinder , mass, restitution, friction, filename));
 }
 
 
