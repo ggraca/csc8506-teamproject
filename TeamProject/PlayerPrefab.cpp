@@ -1,9 +1,17 @@
 #include "PlayerPrefab.h"
+#include "PlayerAnimation.h"
 
+int PlayerPrefab::currentColour = 0;
+Vector4 PlayerPrefab::colours[] = {
+	Vector4(1, 0, 0, 1),
+	Vector4(0, 1, 0, 1),
+	Vector4(0, 0, 1, 1),
+	Vector4(1, 0, 1, 1)
+};
 
 PlayerPrefab::PlayerPrefab() :CubePrefab()
 {
-	//TODO Set transform values if needed.
+	// TODO Set transform values if needed.
 	ResetPlayer();
 }
 
@@ -25,8 +33,14 @@ void PlayerPrefab::InitializeGuns(GameObject * player)
 	playerLeft->SetParent(player);
 	playerRight->SetParent(player);
 
+	playerLeft->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
+	playerRight->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
+
 	playerRight->GetTransform().SetLocalPosition(Vector3(-2, 0, 1));
 	playerLeft->GetTransform().SetLocalPosition(Vector3(2, 0, 1));
+
+	playerLeft->AddComponent<NetworkObject*>(new NetworkObject(playerLeft, NetworkObject::Cube));
+	playerRight->AddComponent<NetworkObject*>(new NetworkObject(playerRight, NetworkObject::Cube));
 
 	player->GetComponent<GunControl*>()->SetRightGun(playerRight);
 	player->GetComponent<GunControl*>()->SetLeftGun(playerLeft);
@@ -36,7 +50,9 @@ void PlayerPrefab::InitializeHammer(GameObject * player)
 {
 	auto  handle = new CubePrefab(CubePrefab::PrefabType::HANDLE);
 	handle->SetParent(player);
+	handle->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
+	handle->AddComponent<NetworkObject*>(new NetworkObject(handle, NetworkObject::Cube));
 
 	player->GetComponent<HammerControl*>()->SetHandle(handle);
 }
@@ -46,7 +62,7 @@ void PlayerPrefab::InitializeShield(GameObject * player)
 	auto shield = new CubePrefab(CubePrefab::PrefabType::SHIELD);
 	GameObject * shieldDummy = new GameObject();
 	shieldDummy->SetParent(player);
-	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 5));
+	shieldDummy->GetTransform().SetLocalPosition(Vector3(0, 2.5f, 10));
 
 	player->GetComponent<ShieldControl*>()->SetShield(shield);
 	player->GetComponent<ShieldControl*>()->SetTarget(&shieldDummy->GetTransform());
@@ -57,20 +73,26 @@ void PlayerPrefab::InitializeBigGun(GameObject * player)
 {
 	auto bigGun = new CubePrefab(CubePrefab::PrefabType::BIG_GUN);
 	bigGun->SetParent(player);
+	bigGun->GetComponent<RenderObject*>()->GetMaterial()->SetColour(player->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	bigGun->GetTransform().SetLocalPosition(Vector3(-4, 2, 0));
+	bigGun->AddComponent<NetworkObject*>(new NetworkObject(bigGun, NetworkObject::Cube));
 	player->GetComponent<BigGunControl*>()->SetBigGun(bigGun);
 }
 void PlayerPrefab::ResetPlayer()
 {
 	AddComponent<Player*>((Component*)new Player(this));
+	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::Player));
 	AddComponent<GunControl*>(new GunControl(this));
 	AddComponent<HammerControl*>(new HammerControl(this));
 	AddComponent<ShieldControl*>(new ShieldControl(this));
+	AddComponent<AirStrikeControl*>(new AirStrikeControl(this));
 	AddComponent<BigGunControl*>(new BigGunControl(this));
-	GetComponent<HammerControl*>()->SetHammerSize(3000, 0, 500, 3000, 0, 3000);
+	AddComponent<Animator*>(new Animator(this));
+	AddComponent<PlayerAnimation*>(new PlayerAnimation(this));
+	GetComponent<HammerControl*>()->SetHammerSize(-5000, 5000, 800, 3000, -8000, 8000);
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-	GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
+	GetComponent<RenderObject*>()->GetMaterial()->SetColour(GetNextColour());
 
 	InitializeGuns(this);
 	InitializeHammer(this);

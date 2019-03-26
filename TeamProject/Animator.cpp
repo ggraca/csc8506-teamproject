@@ -53,9 +53,8 @@ void Animator::AddAnimationState(AnimationState * anim)
 void Animator::Update(float dt)
 {
 	if (!currentAnimation) { return; }
-
+	
 	AnimationState* nextState = currentAnimation->ShouldStateChange(gameObject);
-
 	if (!nextState) 
 	{
 		if (!currentAnimation->GetTargetObject())
@@ -69,7 +68,6 @@ void Animator::Update(float dt)
 		
 		return; 
 	}
-	
 	currentAnimation->animation->ResetAnimation();
 	currentAnimation = nextState;
 	currentAnimation->animation->Play();

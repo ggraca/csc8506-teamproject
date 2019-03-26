@@ -157,6 +157,21 @@
     <ClCompile Include="CannonScript.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="AirStrikeControl.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionTimerManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionTimer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAnimation.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -358,9 +373,6 @@
     <ClInclude Include="BigGunControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="TypeId.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="CameraControl.h">
       <Filter>Scripts</Filter>
     </ClInclude>
@@ -378,6 +390,12 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="AirStrikeControl.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeId.h">
+      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
@@ -402,6 +420,18 @@
     </ClInclude>
     <ClInclude Include="MenuScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionTimerManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionTimer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAnimation.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -483,7 +513,6 @@
     <ClInclude Include="ScriptObject.h">
       <Filter>Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="TypeId.h" />
     <ClInclude Include="AudioEngine.h">
       <Filter>Audio</Filter>
     </ClInclude>

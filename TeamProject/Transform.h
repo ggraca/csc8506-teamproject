@@ -56,6 +56,11 @@ namespace NCL {
 				return localScale;
 			}
 
+			Vector3 GetWorldScale() const {
+				if (parent) return parent->GetWorldScale() * localScale;
+				else return localScale;
+			}
+
 			Quaternion GetLocalOrientation() const {
 				return localOrientation;
 			}

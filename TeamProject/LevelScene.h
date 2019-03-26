@@ -2,7 +2,6 @@
 #pragma once
 #include "GameTechRenderer.h"
 #include "GameScene.h"
-#include "DebugMenu.h"
 #include "HUD.h"
 #include "HUDObject.h"
 #include "Animation.h"
@@ -21,6 +20,10 @@ namespace NCL {
 			void LoadWorld();
 			
 		protected:
+			void InitializeGuns(GameObject * player);
+			void InitializeShield(GameObject * player);
+			void InitPlayer();
+			void InitializeHammer(GameObject * player);
 			void ResetWorld();
 
 		};

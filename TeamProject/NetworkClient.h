@@ -2,6 +2,9 @@
 
 #include "NetworkEntity.h"
 #include "../Common/GameClient.h"
+#include "NetworkPackets.h"
+#include "InputManager.h"
+#include "GameWorld.h"
 
 using namespace NCL::Networking;
 
@@ -13,7 +16,14 @@ public:
 
 	void Update() {
 		client->UpdateClient();
-		client->SendPacket(StringPacket("hello!"));
+
+		world->GetMainCamera()->GetTransform().GetChildrenList()[0]->UpdateMatrices();
+		client->SendPacket(PlayerInputPacket(
+			InputManager::GetInputBitsDown(),
+			InputManager::GetInputBitsPressed(),
+			world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(),
+			world->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldOrientation()
+		));
 	}
 	
 	void Instantiate(GameObject* go) override {}
@@ -21,6 +31,7 @@ public:
 
 private:
 	void ReceivePacket(int type, GamePacket* payload, int source) override;
-
+	GameObject* GetGameObjectFromPacket(InstantiatePacket* packet);
 	GameClient* client;
+	int peerId = -1;
 };

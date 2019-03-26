@@ -1,6 +1,6 @@
 #include "Resource.h"
 #include "InputManager.h"
-
+#include "RenderObject.h"
 
 
 Resource::Resource(GameObject * obj) : ScriptObject(obj)
@@ -33,7 +33,7 @@ void Resource::FollowTarget(float &dt)
 		auto amount = direction * moveSpeed * dt;
 		auto pos = (gameObject->GetTransform().GetWorldPosition());
 		pos += amount;
-		gameObject->GetTransform().SetLocalPosition(pos);
+		gameObject->GetTransform().ForceUpdateLocalPositionWithTransform(pos);
 	}
 }
 
@@ -52,7 +52,7 @@ void Resource::OnCollisionEnd(GameObject * otherObject)
 void Resource::Aquire(GameObject * obj) 
 {
 	gameObject->GameObject::SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
-	gameObject->SetTag(LayerAndTag::Tags::Occupied);
+	gameObject->SetTag(obj->GetComponent<Player*>()->GetResourceTag());
 	gameObject->GetComponent<RenderObject*>()->GetMaterial()->SetColour(obj->GetComponent<RenderObject*>()->GetMaterial()->GetColour());
 	SetTarget(obj);
 }

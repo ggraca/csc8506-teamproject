@@ -1,5 +1,7 @@
 #include "BulletPhysics.h"
 
+#include "FunctionTimer.h"
+
 using namespace NCL;
 using namespace CSC8503;
 
@@ -44,6 +46,8 @@ BulletPhysics::~BulletPhysics()
 }
 
 void BulletPhysics::Update(float dt) {
+	FunctionTimer timer("Physics Update");
+
 	const float iterationDt = 1.0f / 120.0f; 
 	dTOffset += dt;
 	int iterationCount = (int)(dTOffset / iterationDt);
@@ -115,12 +119,13 @@ void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidB
 		for (auto val : key.second) {
 			GameObject* go2 = (GameObject*)collisionObjectGameObjectPair[val];
 
-			if (!count(go1->collidingObjects.begin(), go1->collidingObjects.end(), go2)) {
+			if (!go1 || !go2) continue;
+			if (!count(go1->collidingObjects.begin(), go1->collidingObjects.end(), go2) && 
+				!count(go2->collidingObjects.begin(), go2->collidingObjects.end(), go1)) {
+
 				go1->CallOnCollisionEnterForScripts(go2);
-				go1->collidingObjects.push_back(go2);
-			}
-			if (!count(go2->collidingObjects.begin(), go2->collidingObjects.end(), go1)) {
 				go2->CallOnCollisionEnterForScripts(go1);
+				go1->collidingObjects.push_back(go2);
 				go2->collidingObjects.push_back(go1);
 			}
 		}
@@ -130,6 +135,8 @@ void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidB
 void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, btRigidBody* body, GameObject*& go) {
 	vector<btRigidBody*> pairs = collisionPairs[body];
 	for (auto collidingGo : go->collidingObjects) {
+		if (!collidingGo->GetComponent<PhysicsObject*>()) continue;
+		if (!collidingGo->GetComponent<PhysicsObject*>()->GetRigidbody()) continue;
 		if (find(pairs.begin(), pairs.end(), collidingGo->GetComponent<PhysicsObject*>()->GetRigidbody()) != pairs.end()) continue;
 
 		go->CallOnCollisionEndForScripts(collidingGo);

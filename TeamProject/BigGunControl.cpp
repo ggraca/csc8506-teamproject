@@ -35,12 +35,11 @@ void BigGunControl::Fire(float time)
 		projectileAmount = gameObject->GetComponent<Player*>()->GetResourceCount();
 	}
 
-	//This part will change later on
-	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
+	auto children = gameObject->GetComponent<Player*>()->GetResources();
 
 	for (int i = 0; i < projectileAmount; i++)
 	{
-		children[i]->GetTransform().ForceUpdateLocalPositionWithTransform(bigGun->GetTransform().GetWorldPosition() + CalculateDirection() *200.0f);
+		children[i]->GetTransform().ForceUpdateLocalPositionWithTransform(bigGun->GetTransform().GetWorldPosition() + CalculateDirection() *80.0f);
 		FireObjectAndRemoveFromResources(children,i);
 	}
 }
@@ -48,4 +47,9 @@ void BigGunControl::Fire(float time)
 void BigGunControl::SetBigGun(GameObject * gun)
 {
 	bigGun = gun;
+}
+
+GameObject * BigGunControl::GetBigGun()
+{
+	return bigGun;
 }

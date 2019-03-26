@@ -9,6 +9,15 @@ CubePrefab::CubePrefab()
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
 }
 
+CubePrefab::CubePrefab(const Vector3& position, const Quaternion& orient, Vector3 dimensions)
+{
+	SetTransformDetails(dimensions, position, orient);
+	AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, 10));
+	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));
+	GetComponent<RenderObject*>()->SetMaterialInstanced();
+	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::Cube));
+}
+
 CubePrefab::CubePrefab(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction)
 {
 	SetTransformDetails(dimensions, position, orient);

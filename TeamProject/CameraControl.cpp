@@ -1,5 +1,7 @@
 #include "CameraControl.h"
 #include "InputManager.h"
+#include "GameWorld.h"
+#include "../Common/Window.h"
 
 
 CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)
@@ -36,7 +38,6 @@ void CameraControl::Update(float dt)
 {
 	FollowPlayer();
 	UpdateCamera();
-	RotatePlayer();
 }
 
 void CameraControl::UpdateCamera()
@@ -127,15 +128,6 @@ void CameraControl::FollowPlayer()
 	if (!player) { return; }
 
 	gameObject->GetTransform().SetWorldPosition(player->GetTransform().GetWorldPosition());
-}
-
-void CameraControl::RotatePlayer()
-{
-	if (!player) { return; }
-
-	Vector3 playerRot = player->GetTransform().GetLocalOrientation().ToEuler();
-	playerRot.y = gameObject->GetTransform().GetLocalOrientation().ToEuler().y;
-	player->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, playerRot.y, 0));
 }
 
 void CameraControl::SetCameraType(bool isTPSType)

@@ -41,12 +41,20 @@ void GunControl::SetRightGun(GameObject * obj)
 	rightGun = obj;
 }
 
+GameObject * GunControl::GetLeftGun()
+{
+	return leftGun;
+}
+
+GameObject * GunControl::GetRightGun()
+{
+	return rightGun;
+}
+
 Vector3 GunControl::CalculateDirection()
 {
-	if (!camera || camera->GetTransform().GetChildrenList().size() == 0) { return Vector3(0, 0, 0); }
-
 	Vector3 forward;
-	Vector3 ctransform = camera->GetTransform().GetChildrenList()[0]->GetWorldOrientation().ToEuler();
+	Vector3 ctransform = GetCameraRotation().ToEuler();
 	ctransform.y *= -1;
 
 	forward.x = sin(ctransform.y* (PI / 180)) * cos(ctransform.x * (PI / 180));
@@ -77,22 +85,31 @@ void GunControl::FireObjectAndRemoveFromResources(std::vector<GameObject *> &chi
 	children[i]->GetComponent<Resource*>()->Reset();
 	children[i]->GetComponent<DamageControl*>()->SetDamage(idealProjectileDamage);
 
-	Vector3 projMov = (camera->GetTransform().GetChildrenList()[0]->GetWorldPosition() + (CalculateDirection() * projectileSpeed)) - children[i]->GetTransform().GetWorldPosition();
+	Vector3 projMov = (GetCameraPosition() + (CalculateDirection() * projectileSpeed)) - children[i]->GetTransform().GetWorldPosition();
 	children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
-	gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
+	gameObject->GetComponent<Player*>()->LoseResource(children[i]);
+}
+
+void GunControl::FireObjectAndRemoveFromResources(GameObject * child)
+{
+	child->GetComponent<Resource*>()->Reset();
+	child->GetComponent<DamageControl*>()->SetDamage(idealProjectileDamage);
+
+	Vector3 projMov = (GetCameraPosition() + (CalculateDirection() * projectileSpeed)) - child->GetTransform().GetWorldPosition();
+	child->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
+	gameObject->GetComponent<Player*>()->LoseResource(child);
 }
 
 void GunControl::Fire()
 {
 	if (!leftGun || !rightGun) {return; }
 
-	//This part will change later on
-	auto children = GameObject::FindGameObjectsWithTag(LayerAndTag::Tags::Occupied);
+	auto child = gameObject->GetComponent<Player*>()->GetResources()[0];
 
-	if ((int)children.size() > 0)
+	if (child)
 	{
-		children[0]->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetChildrenList()[currentGun=!currentGun]->GetWorldPosition() + CalculateDirection() *30.0f );
-		FireObjectAndRemoveFromResources(children);	
+		child->GetTransform().ForceUpdateLocalPositionWithTransform(gameObject->GetTransform().GetChildrenList()[currentGun=!currentGun]->GetWorldPosition() + CalculateDirection() *30.0f );
+		FireObjectAndRemoveFromResources(child);
 	}
 }
 

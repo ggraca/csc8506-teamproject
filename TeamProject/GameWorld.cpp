@@ -281,7 +281,6 @@ void GameWorld::RemoveCollisionsFromGameObject(GameObject* obj) {
 			collidingGo->collidingObjects.end()
 		);
 	}
-
 	obj->collidingObjects.clear();
 }
 

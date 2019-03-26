@@ -25,7 +25,6 @@ void ExampleScene::InitPlayer()
 	world->Instantiate(player);
 	world->Instantiate(playerLeft);
 	world->Instantiate(playerRight);
-	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);
 }
 void ExampleScene::ResetWorld() {

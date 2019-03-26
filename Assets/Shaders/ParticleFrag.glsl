@@ -1,6 +1,7 @@
 #version 400 core
 
 uniform sampler2D diffuseTex;
+uniform vec3 objectColour;
 
 in Vertex {
 	vec2 texCoord;
@@ -18,5 +19,9 @@ void main(void){
 		alphaFromLifeTime = (1.0f - IN.lifetime) * 5.0f;
 	}
 	fragColor = texture(diffuseTex, IN.texCoord);
+	fragColor.r *= objectColour.r;
+	fragColor.g *= objectColour.g;
+	fragColor.b *= objectColour.b;
 	fragColor.a *= alphaFromLifeTime;
+	fragColor.rgb *= fragColor.a;
 }
