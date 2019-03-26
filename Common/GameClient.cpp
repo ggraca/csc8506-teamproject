@@ -1,14 +1,33 @@
 #include "GameClient.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace NCL;
 using namespace NCL::Networking;
 
 GameClient::GameClient()	{
 	netHandle = enet_host_create(nullptr, 1, 1, 0, 0);
+
+
+	ifstream file;
+	file.open("../Assets/Data/ip.txt");
+	int connectingIP[4];
+
+	if (file.is_open())
+	{
+		string line;
+		int lineNumber = 0;
+		while (getline(file, line))
+		{
+			connectingIP[lineNumber] = stoi(line);
+			lineNumber += 1;
+		}
+	}
+	file.close();
+
 	ENetAddress address2;
-	address2.host = (141 << 24) | (33 << 16) | (70 << 8) | 10;
+	address2.host = (connectingIP[3] << 24) | (connectingIP[2] << 16) | (connectingIP[1] << 8) | connectingIP[0];
 	address2.port = 1234;
 	
 	netHandle->address = address2;
