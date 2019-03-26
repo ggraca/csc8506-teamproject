@@ -32,6 +32,9 @@ public:
 	int GetHP() const;
 	LayerAndTag::Tags GetResourceTag() ;
 	vector<GameObject*> GetResources() const;
+	bool IsHammerActive();
+	bool IsGunActive();
+	bool IsBugGunActive();
 
 protected:
 

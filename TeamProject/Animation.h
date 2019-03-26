@@ -30,6 +30,7 @@ public:
 	void ShiftFrames(GameObject * obj);
 	void SetupFirstFrameIterations(GameObject * obj);
 	void ResetAnimation();
+	bool HasAnimationFinished();
 protected:
 	vector<KeyFrame*> keyFrames;
 	KeyFrame* currentFrame;
