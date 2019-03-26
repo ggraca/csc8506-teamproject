@@ -69,33 +69,4 @@ void NetworkManager::CreateClient()
 	bool canConnect = client->Connect(connectingIP[0], connectingIP[1], connectingIP[2], connectingIP[3], port);
 	if (canConnect) std::cout << "Connected to Server" << std::endl;
 
-	/*file.open(Assets::DATADIR + "ip.txt");
-
-	if (file.is_open())
-	{
-		string line;
-		int lineNumber = 0;
-		while (getline(file, line))
-		{
-			address[lineNumber] = stoi(line);		
-			lineNumber += 1;
-		}
-		
-	}
-
-	file.close();
-
-	for (int i = 0; i < 20; i += 4)
-	{
-		canConnect = client->Connect(address[i], address[i+1], address[i+2], address[i+3], port);
-		if (canConnect)
-		{
-			std::cout << "Connected to: " << address[i] << ", " << address[i + 1] << ", " << address[i + 2] << ", " << address[i + 3] << ", " << port << " succeeded. " << std::endl;
-		
-		}
-		else
-		{
-			std::cout << "Address:  " << address[i] << ", " << address[i + 1] << ", " << address[i + 2] << ", " << address[i + 3] << ", " << port << " failed. " << std::endl;
-		}
-	}*/
 }
