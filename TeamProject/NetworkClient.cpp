@@ -23,7 +23,9 @@ GameObject* NetworkClient::GetGameObjectFromPacket(InstantiatePacket* packet) {
 	case NetworkObject::Player: {
 		GameObject* player = new PlayerPrefab(packet->position, packet->rotation, packet->scale, 100, 0.2f, 0.4f);
 		// player->AddComponent<PlayerMovement*>(new PlayerMovement());
-		world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+		if (!world->GetMainCamera()->GetComponent<CameraControl*>()->GetPlayer()) {
+			world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+		}
 		return player;
 	}
 	case NetworkObject::Cube: {
