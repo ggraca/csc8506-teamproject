@@ -9,6 +9,7 @@
 #include "BigGunControl.h"
 #include "GameWorld.h"
 #include "Animator.h"
+#include "CameraControl.h"
 
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
@@ -26,6 +27,12 @@ void Player::Start()
 
 void Player::Update(float dt)
 {
+	int objectId = GameObject::gameWorld->GetNetwork()->GetPlayerState().objectId;
+	if (gameObject->GetComponent<NetworkObject*>() && gameObject->GetComponent<NetworkObject*>()->GetId() == objectId)
+	{
+		GameObject::gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(gameObject);
+	}
+
 	if (!dynamic_cast<NetworkServer*>(GameObject::gameWorld->GetNetwork())) return;
 
 	keysDown = GetKeysDown();

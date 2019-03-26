@@ -55,7 +55,8 @@ void NetworkServer::Update() {
 	for (auto player : players) {
 		PlayerState ps = PlayerState(
 			player->gameObject->GetComponent<Player*>()->GetHP(),
-			player->gameObject->GetComponent<Player*>()->GetResourceCount()
+			player->gameObject->GetComponent<Player*>()->GetResourceCount(),
+			player->gameObject->GetComponent<NetworkObject*>()->GetId()
 		);
 
 		if (player->peerId == -1) {

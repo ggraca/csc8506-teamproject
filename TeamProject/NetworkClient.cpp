@@ -20,14 +20,8 @@ GameObject* NetworkClient::GetGameObjectFromPacket(InstantiatePacket* packet) {
 	switch (packet->prefabId) {
 	case NetworkObject::Resource:
 		return new ResourcePrefab(packet->position, packet->rotation, packet->scale, 1000, 0.2f, 0.4f);
-	case NetworkObject::Player: {
-		GameObject* player = new PlayerPrefab(packet->position, packet->rotation, packet->scale, 100, 0.2f, 0.4f);
-		// player->AddComponent<PlayerMovement*>(new PlayerMovement());
-		if (!world->GetMainCamera()->GetComponent<CameraControl*>()->GetPlayer()) {
-			world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-		}
-		return player;
-	}
+	case NetworkObject::Player:
+		return new PlayerPrefab(packet->position, packet->rotation, packet->scale, 100, 0.2f, 0.4f);
 	case NetworkObject::Cube: {
 		GameObject* cube = new CubePrefab(packet->position, packet->rotation, packet->scale);
 		cube->SetActiveStatus(packet->isActive);
