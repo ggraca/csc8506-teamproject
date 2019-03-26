@@ -86,14 +86,17 @@ void CannonScript::Aim() {
 	if (!closest) { return; }
 
 	Vector3 Diff = closest->GetTransform().GetWorldPosition() - posCannon;
+	cout << posCannon << endl;
+	cout << Diff << endl;
 
 	float x, y;
 
-	x = -asin(Diff.y)* (180/M_PI);
-	y = asin(Diff.x / (cos(asin(x)))) * (180 / M_PI);
-
-	cannon->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), x) * Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), y));
-	//cannon->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), y));
+	//x = -asin(Diff.y)/** (180/M_PI)*/;
+	//y = asin(Diff.x / (cos(asin(x))))/* * (180 / M_PI)*/;
+	y = 90;
+	//cout << y << endl;
+	//cannon->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), x) * Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), y));
+	cannon->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), y));
 }
 
 void CannonScript::Fire() {
