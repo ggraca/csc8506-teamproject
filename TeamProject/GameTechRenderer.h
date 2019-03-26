@@ -204,6 +204,15 @@ namespace NCL {
 
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
+			NCL::Maths::Matrix4*	projMatrix;
+			NCL::Maths::Matrix4*	viewMatrix;
+			NCL::Maths::Matrix4*	modelMatrix;
+			NCL::Maths::Matrix4*	textureMatrix;
+			NCL::Maths::Vector3*	cameraPos;
+			NCL::Maths::Vector4*	objectColour;
+
+			Gnm::Buffer	cameraBuffer;
+
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
 			bool drawShadows = true;

@@ -316,7 +316,6 @@ void	PS4RendererBase::ClearBuffer(bool colour, bool depth, bool stencil) {
 	}
 }
 
-
 void PS4RendererBase::DrawMesh(PS4Mesh& mesh) {
 	defaultMesh->SubmitDraw(*currentGFXContext, Gnm::ShaderStage::kShaderStageVs);
 }
