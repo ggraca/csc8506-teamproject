@@ -27,17 +27,27 @@ void NetworkServer::Update() {
 
 	// Send Object Updates to Clients
 	for (auto o : objects) {
-		Transform t = o->GetGameObject()->GetTransform();
+		GameObject* go = o->GetGameObject();
+		if (!go) continue;
+
+		Transform t = go->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetWorldOrientation();
 		Vector3 sca = t.GetWorldScale();
-		bool ia = o->GetGameObject()->IsActive();
+		bool ia = go->IsActive();
 
-		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot) + ToString(sca) + (ia ? '1' : '0'));
+		RenderObject* ro = go->GetComponent<RenderObject*>();
+		Vector3 col;
+		if (ro) {
+			Vector4 originalCol = ro->GetMaterial()->GetColour();
+			col = Vector3(originalCol.x, originalCol.y, originalCol.z);
+		}
+
+		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot) + ToString(sca) + ToString(col) + (ia ? '1' : '0'));
 		if (hashed == o->GetHash()) continue;
 
 		o->SetHash(hashed);
-		ObjectUpdatePacket p = ObjectUpdatePacket(o->GetId(), pos, rot, sca, ia);
+		ObjectUpdatePacket p = ObjectUpdatePacket(o->GetId(), pos, rot, sca, col, ia);
 		server->SendGlobalPacket(p);
 	}
 
@@ -119,8 +129,11 @@ void NetworkServer::RemovePlayer(int peerId) {
 	PlayerInput* ps = FindPlayer(peerId);
 	if (!ps) return;
 
-	world->LateDestroy(ps->gameObject);
+	cout << objects.size() << endl;
 	objects.erase(remove(objects.begin(), objects.end(), ps->gameObject->GetComponent<NetworkObject*>()), objects.end());
+	cout << objects.size() << endl;
+	//ps->gameObject->RemoveComponent<NetworkObject*>();
+	world->LateDestroy(ps->gameObject);
 	players.erase(remove(players.begin(), players.end(), ps), players.end());
 }
 

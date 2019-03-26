@@ -48,6 +48,9 @@ void NetworkManager::CreateClient()
 	client->RegisterPacketHandler(ObjectUpdateMessage, networkEntity);
 	client->RegisterPacketHandler(PlayerStateMessage, networkEntity);
 	
+	client->Connect(127, 0, 0, 1, port);
+	return;
+
 	ifstream file;
 	
 	int address[20];

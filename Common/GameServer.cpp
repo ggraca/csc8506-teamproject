@@ -31,7 +31,7 @@ void GameServer::Shutdown() {
 
 bool GameServer::Initialise() {
 	ENetAddress address;
-	address.host = ENET_HOST_ANY;
+	address.host = ENET_HOST_ANY; //(147 << 24) | (33 << 16) | (70 << 8) | 10;
 	address.port = port;
 
 	netHandle = enet_host_create(&address, clientMax, 1, 0, 0);

@@ -39,16 +39,18 @@ struct ObjectUpdatePacket : public GamePacket {
 	Vector3 position;
 	Quaternion rotation;
 	Vector3 scale;
+	Vector3 colour;
 	bool isActive;
 
-	ObjectUpdatePacket(int nid, Vector3 pos, Quaternion rot, Vector3 sca, bool ia = true) {
+	ObjectUpdatePacket(int nid, Vector3 pos, Quaternion rot, Vector3 sca, Vector3 col, bool ia = true) {
 		type = BasicNetworkMessages::ObjectUpdateMessage;
-		size = sizeof(int) + sizeof(Vector3) * 2 + sizeof(Quaternion) + sizeof(bool);
+		size = sizeof(int) + sizeof(Vector3) * 3 + sizeof(Quaternion) + sizeof(bool);
 
 		networkId = nid;
 		position = pos;
 		rotation = rot;
 		scale = sca;
+		colour = col;
 		isActive = ia;
 	}
 };
