@@ -60,7 +60,7 @@ void HammerControl::FormHammer()
 		i->GetComponent<Resource*>()->SetTarget(nullptr);
 		GameObject::gameWorld->RemoveCollisionsFromGameObject(i);
 		i->RemoveComponent<PhysicsObject*>();
-		i->GetTransform().SetWorldScale(Vector3(2.5,2.5/12.5,2.5));
+		i->GetTransform().ForceUpdateScaleWithTransform(Vector3(2.5,2.5/12.5,2.5));
 		i->GetTransform().SetLocalPosition(GenerateRandomPositionInHammer());
 		i->SetParent(handle);
 	}
@@ -75,10 +75,12 @@ void HammerControl::DeformHammer()
 	{
 		if (i->GetGameObject()->GetTag() == LayerAndTag::Tags::HammerHead) { continue; }
 
+		Vector3 currentPos = i->GetWorldPosition();
 		i->GetGameObject()->GetComponent<Resource*>()->SetTarget(gameObject);
-		i->GetGameObject()->SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
-		i->GetGameObject()->GetTransform().SetLocalScale(Vector3(5,5,5));
+		i->GetGameObject()->SetParent(nullptr);
+		i->SetLocalScale(Vector3(5,5,5));
 		i->GetGameObject()->AddComponent<PhysicsObject*>(new PhysicsObject(i, ShapeType::cube, 10));
+		i->SetWorldPosition(currentPos);
 
 		GameObject::gameWorld->AddObjectPhysicsToWorld(i->GetGameObject()->GetComponent<PhysicsObject*>());
 	}

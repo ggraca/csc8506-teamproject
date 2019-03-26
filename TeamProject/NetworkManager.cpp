@@ -47,7 +47,6 @@ void NetworkManager::CreateClient()
 	client->RegisterPacketHandler(DestroyMessage, networkEntity);
 	client->RegisterPacketHandler(ObjectUpdateMessage, networkEntity);
 	client->RegisterPacketHandler(PlayerStateMessage, networkEntity);
-	
 
 	ifstream file;
 	file.open("../Assets/Data/ip.txt");
