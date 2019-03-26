@@ -17,6 +17,7 @@ void PlayerAnimation::Awake()
 	hammer = gameObject->GetComponent<HammerControl*>()->GetHandle();
 	leftGun = gameObject->GetComponent<GunControl*>()->GetLeftGun();
 	rightGun = gameObject->GetComponent<GunControl*>()->GetRightGun();
+	bigGun = gameObject->GetComponent<BigGunControl*>()->GetBigGun();
 	animator = gameObject->GetComponent<Animator*>();
 	InitializeAnimations();
 }
@@ -27,6 +28,7 @@ void PlayerAnimation::InitializeAnimations()
 
 	InitializeHammerAnimations();
 	InitializeGunAnimations();
+	InitializeBigGunAnimations();
 	SetupIdleTransitions();
 }
 
@@ -257,6 +259,52 @@ void PlayerAnimation::InitializeGunAnimations()
 	animator->AddAnimationState(leftGunActivationState);
 }
 
+void PlayerAnimation::InitializeBigGunAnimations()
+{
+	if (!bigGun) { return; }
+
+	Transform bgt = bigGun->GetTransform();
+
+	////Idle////
+	Animation * idleBigGunAnimation = new Animation(60);
+
+	KeyFrame * idleBigGunFrame = new KeyFrame();
+	idleBigGunFrame->localPosition = Vector3(-2,0,-3);
+	idleBigGunFrame->localRotation = Vector3(0, 0, 0);
+	idleBigGunFrame->localScale = bgt.GetLocalScale();
+	idleBigGunFrame->time = 0.1f;
+
+	idleBigGunAnimation->AddKeyFrame(idleBigGunFrame);
+
+	bigGunIdleState = new AnimationState(idleBigGunAnimation, bigGun);
+
+	////Activation////
+	Animation * bigGunActivationAnimation = new Animation(60);
+
+	KeyFrame * activeBigGunFrame = new KeyFrame();
+	activeBigGunFrame->localPosition = Vector3(-4, 2, 0);
+	activeBigGunFrame->localRotation = Vector3( 90, 0, 0);
+	activeBigGunFrame->localScale = bgt.GetLocalScale();
+	activeBigGunFrame->time = 0.2f;
+
+	bigGunActivationAnimation->AddKeyFrame(activeBigGunFrame);
+
+	AnimationState * bigGunState = new AnimationState(bigGunActivationAnimation, bigGun);
+
+	Transition * activationTransition = new Transition();
+	activationTransition->transitionFunction = PlayerAnimation::BigGunActiveTransition;
+	activationTransition->destinationState = bigGunState;
+	bigGunIdleState->AddTransition(activationTransition);
+
+	Transition * deactivationTransition = new Transition();
+	deactivationTransition->transitionFunction = PlayerAnimation::BigGunDeactiveTransition;
+	deactivationTransition->destinationState = bigGunIdleState;
+	bigGunState->AddTransition(deactivationTransition);
+	
+	animator->AddAnimationState(bigGunIdleState);
+	animator->AddAnimationState(bigGunState);
+}
+
 void PlayerAnimation::SetupIdleTransitions()
 {
 	Transition * hammerIdleToGunIdle = new Transition();
@@ -268,6 +316,27 @@ void PlayerAnimation::SetupIdleTransitions()
 	gunIdleToHammerIdle->transitionFunction = PlayerAnimation::HammerActiveTransition;
 	gunIdleToHammerIdle->destinationState = hammerIdleState;
 	gunIdleStateLeft->AddTransition(gunIdleToHammerIdle);
+
+	Transition * gunIdleToBigGunIdle = new Transition();
+	gunIdleToBigGunIdle->transitionFunction = PlayerAnimation::BigGunActiveTransition;
+	gunIdleToBigGunIdle->destinationState = bigGunIdleState;
+	gunIdleStateLeft->AddTransition(gunIdleToBigGunIdle);
+
+	Transition * hammerIdleToBigGunIdle = new Transition();
+	hammerIdleToBigGunIdle->transitionFunction = PlayerAnimation::BigGunActiveTransition;
+	hammerIdleToBigGunIdle->destinationState = bigGunIdleState;
+	hammerIdleState->AddTransition(hammerIdleToBigGunIdle);
+
+	Transition * bigGunIdleToGunIdle = new Transition();
+	bigGunIdleToGunIdle->transitionFunction = PlayerAnimation::GunActiveTransition;
+	bigGunIdleToGunIdle->destinationState = gunIdleState;
+	bigGunIdleState->AddTransition(bigGunIdleToGunIdle);
+
+	Transition * bigGunIdleToHammerIdle = new Transition();
+	bigGunIdleToHammerIdle->transitionFunction = PlayerAnimation::HammerActiveTransition;
+	bigGunIdleToHammerIdle->destinationState = hammerIdleState;
+	bigGunIdleState->AddTransition(bigGunIdleToHammerIdle);
+
 }
 
 bool PlayerAnimation::HitTransition(GameObject * obj)
@@ -316,4 +385,14 @@ bool PlayerAnimation::GunDeactiveTransition(GameObject * obj)
 bool PlayerAnimation::HammerActiveTransition(GameObject * obj)
 {
 	return (obj->GetComponent<Player*>()->IsHammerActive());
+}
+
+bool PlayerAnimation::BigGunActiveTransition(GameObject * obj)
+{
+	return (obj->GetComponent<Player*>()->IsBugGunActive());
+}
+
+bool PlayerAnimation::BigGunDeactiveTransition(GameObject * obj)
+{
+	return (!obj->GetComponent<Player*>()->IsBugGunActive());
 }

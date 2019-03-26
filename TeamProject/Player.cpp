@@ -255,6 +255,11 @@ bool Player::IsGunActive()
 	return isGunActive;
 }
 
+bool Player::IsBugGunActive()
+{
+	return isBigGunActive;
+}
+
 void Player::ResetPlayer()
 {
 	hp = 100;

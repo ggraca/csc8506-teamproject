@@ -34,6 +34,7 @@ public:
 	vector<GameObject*> GetResources() const;
 	bool IsHammerActive();
 	bool IsGunActive();
+	bool IsBugGunActive();
 
 protected:
 

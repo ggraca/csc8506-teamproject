@@ -48,3 +48,8 @@ void BigGunControl::SetBigGun(GameObject * gun)
 {
 	bigGun = gun;
 }
+
+GameObject * BigGunControl::GetBigGun()
+{
+	return bigGun;
+}
