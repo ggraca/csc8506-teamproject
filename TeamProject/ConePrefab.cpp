@@ -14,15 +14,14 @@ ConePrefab::ConePrefab()
 
 ConePrefab::ConePrefab(const Vector3& position, const Quaternion& orient, Vector3 dimensions, float mass, float restitution, float friction)
 {
-	string filename = "cone.obj";
+	string filename = "full_wall.obj";
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ(filename);
 	GameObject* go = GameObject::FromOBJ(objGeometry);
 	GetTransform().SetWorldScale(dimensions);
 	GetTransform().SetWorldPosition(position);
 	GetTransform().SetLocalOrientation(orient);
-	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::cone, mass, restitution, friction, filename));
-	//AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh"), Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"))));*/
-	//GetComponent<RenderObject*>()->SetMaterialInstanced();
+
+	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::complexMesh, mass, restitution, friction, filename));
 }
 
 

@@ -48,6 +48,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 				boxData >> a;
 				a.erase(remove(a.begin(), a.end(), ','), a.end());
 				float elem = strtof(a.c_str(), NULL);
+				cout << elem << endl;
 				data.push_back(elem);
 			}
 			boxData.close();
