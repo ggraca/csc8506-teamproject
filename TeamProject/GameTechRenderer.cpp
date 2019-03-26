@@ -5,6 +5,10 @@
 #include "../Common/Vector3.h"
 #include "../Common/OBJGeometry.h"
 #include "Light.h"
+#include "ParticleSystem.h"
+#include "Debug.h"
+
+#include "FunctionTimer.h"
 
 using namespace NCL;
 using namespace Rendering;
@@ -14,21 +18,30 @@ using namespace CSC8503;
 using namespace PS4;
 #endif
 
-#define SHADOWSIZE 4096
+#define SHADOWSIZE 8192
 
 #ifdef _WIN32
-GameTechRenderer::GameTechRenderer(GameWorld& world) : OGLRenderer(*Window::GetWindow()), gameWorld(world)	{
-	shadowShader = new OGLShader("GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
-	skyBoxShader = new OGLShader("skyboxVertex.glsl", "skyboxFragment.glsl");
-	lightShader = new OGLShader("pointlightvert.glsl", "pointlightfrag.glsl");
-	combineShader = new OGLShader("combinevert.glsl", "combinefrag.glsl");
-	hudShader = new OGLShader("BasicVert.glsl", "BasicFrag.glsl");
+GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
+	shadowShader = Assets::AssetManager::LoadShader("GameTechShadowShader", "GameTechShadowVert.glsl", "GameTechShadowFrag.glsl");
+	skyBoxShader = Assets::AssetManager::LoadShader("SkyboxShader", "skyboxVertex.glsl", "skyboxFragment.glsl");
+	pointLightShader = Assets::AssetManager::LoadShader("PointLightShader", "pointlightvert.glsl", "pointlightfrag.glsl");
+	directionalLightShader = Assets::AssetManager::LoadShader("DirectionalLightShader", "directionallightvert.glsl", "directionallightfrag.glsl");
+	combineShader = Assets::AssetManager::LoadShader("CombineShader", "combinevert.glsl", "combinefrag.glsl");
+	presentShader = Assets::AssetManager::LoadShader("PresentShader", "TexturedVertex.glsl", "TexturedFragment.glsl");
+	particleShader = Assets::AssetManager::LoadShader("ParticleShader", "ParticleVert.glsl", "ParticleFrag.glsl");
+	convolutionShader = Assets::AssetManager::LoadShader("ConvolutionShader", "convolutionVertex.glsl", "convolutionFragment.glsl");
+
+	// Temporary until post process material or something is set up
+	// postProcessShaders.push_back(Assets::AssetManager::LoadShader("PostShader", "TexturedVertex.glsl", "blurfrag.glsl"));
+
+	hudShader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl");
 
 	GenBuffers();
 
 	screenQuad = OGLMesh::GenerateQuad();
 	screenQuad->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
 	screenQuad->UploadToGPU();
+	cube = Assets::AssetManager::LoadMesh("Cube.msh");
 
 	AddHUDObjects();
 
@@ -83,60 +96,88 @@ void GameTechRenderer::GenBuffers() {
 	gBufferDepthTex = OGLTexture::EmptyTexture(currentWidth, currentHeight, true);
 	gBufferColourTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	gBufferNormalTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
-	gBufferSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	gBufferMaterialTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	//Generate light buffer textures
 	lightEmissiveTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
 	lightSpecularTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	lightKDTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	//Generate post process buffer textures
+	postTexture[0] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	postTexture[1] = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	//Generate Convolution buffer textures
+	TextureBase* tempConvTex = OGLTexture::EmptyTexture(currentWidth, currentHeight);
+	irradianceMap = OGLTexture::EmptyCubeTexture(32, 32);
 
 	vector<TextureBase*> gBufferTexes;
 	gBufferTexes.push_back(gBufferColourTex);
 	gBufferTexes.push_back(gBufferNormalTex);
-	gBufferTexes.push_back(gBufferSpecularTex);
+	gBufferTexes.push_back(gBufferMaterialTex);
 
 	vector<TextureBase*> lightBufferTexes;
 	lightBufferTexes.push_back(lightEmissiveTex);
 	lightBufferTexes.push_back(lightSpecularTex);
+	lightBufferTexes.push_back(lightKDTex);
+
+	vector<TextureBase*> postBufferTexes;
+	postBufferTexes.push_back(postTexture[0]);
+
+	vector<TextureBase*> convBufferTexes;
+	convBufferTexes.push_back(tempConvTex);
 
 	GenerateFrameBuffer(&gBufferFBO, gBufferTexes, gBufferDepthTex);
 	GenerateFrameBuffer(&lightFBO, lightBufferTexes, nullptr);
+	GenerateFrameBuffer(&postFBO, postBufferTexes, nullptr);
+	GenerateFrameBuffer(&convFBO, convBufferTexes, nullptr);
+	delete tempConvTex;
 }
 
 void GameTechRenderer::RenderFrame() {
+	FunctionTimer timer("Render Frame");
+
 	pixOps.SetFaceCulling(CULLFACE::NOCULL);
 	pixOps.SetDepthComparison(COMPARISON::LESS);
 	pixOps.SetClearColor(Vec4(0.3f, 0.8f, 1, 1));
 	BuildObjectList();
 	SortObjectList();
+
+
+	if (RegenerateIrradianceMap) {
+		GenerateIrradianceMap(skybox, irradianceMap, convolutionShader, cube, (void*)&convFBO);
+		RegenerateIrradianceMap = false;
+	}
+
 	RenderShadowMap();
 	RenderSkybox();
 	RenderCamera();
 	RenderLights();
 	CombineBuffers();
+	RenderParticleSystems();
+	RenderPostProcess();
+	PresentScene();
 	RenderHUD();
 	pixOps.SetFaceCulling(CULLFACE::NOCULL); //Todo - text indices are going the wrong way...
 }
 
 void GameTechRenderer::BuildObjectList() {
-	std::vector<GameObject*>::const_iterator first;
-	std::vector<GameObject*>::const_iterator last;
-
-	gameWorld.GetObjectIterators(first, last);
-
 	activeObjects.clear();
 	activeLights.clear();
+	activeParticleSystems.clear();
 
 	for (auto go : gameWorld->GetGameObjectList()) {
 		if (go->IsActive()) {
-			const RenderObjectPS4* ro = go->GetComponent<RenderObjectPS4*>();
+			const RenderObject* ro = go->GetComponent<RenderObject*>();
 			const Light* l = go->GetComponent<Light*>();
 			ParticleSystem* p = go->GetComponent<ParticleSystem*>();
-
-			if (g) {
-				activeObjects.emplace_back(g);
+			if (ro) {
+				activeObjects.emplace_back(ro);
 			}
 
 			if (l) {
 				activeLights.emplace_back(l);
+			}
+
+			if (p) {
+				activeParticleSystems.emplace_back(p);
 			}
 		}
 	}
@@ -161,8 +202,8 @@ void GameTechRenderer::RenderShadowMap() {
 	Quaternion lightRot;
 	for (int i = 0; i < (int)activeLights.size(); i++)
 	{
-		if (activeLights[i]->GetGameObject()->GetName() == "Directional Light") {
-			directionalLightPos = activeLights[i]->GetGameObject()->GetTransform().GetWorldPosition();
+		if (activeLights[i]->GetType() == LightType::Directional) {
+			lightRot = activeLights[i]->GetGameObject()->GetTransform().GetWorldOrientation();
 		}
 	}
 	Vec3 newlightPos = (lightRot * Vec3(0, 0, 1)) * 1000.0f;
@@ -211,7 +252,7 @@ void GameTechRenderer::RenderSkybox() {
 	BindShader(skyBoxShader);
 
 	BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 2);
-	BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
+	BindVector3ToShader(gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
 	BindMatrix4ToShader(viewMatrix, "viewMatrix");
 	BindMatrix4ToShader(projMatrix, "projMatrix");
 
@@ -251,9 +292,7 @@ void GameTechRenderer::RenderCamera() {
 				(*(currentMaterial->GetTextureParameters()))[j].first, j);
 		}
 
-		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
-
-		BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
+		BindVector3ToShader(gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");//TODO give child position
 		BindMatrix4ToShader(projMatrix, "projMatrix");
 		BindMatrix4ToShader(viewMatrix, "viewMatrix");
 		BindMatrix4ToShader((*i).GetTransform()->GetWorldMatrix(), "modelMatrix");
@@ -279,16 +318,12 @@ void GameTechRenderer::RenderLights() {
 	Mat4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
 	Mat4 projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
-	BindShader(lightShader);
+	BindShader(directionalLightShader);
 
 	Mat4 identity;
 	identity.ToIdentity();
 
-	BindTextureToShader(gBufferDepthTex, "depthTex", 3);
-	BindTextureToShader(gBufferNormalTex, "normTex", 4);
-
-
-	for (int x = 0; x < activeLights.size(); ++x) {
+	for (int x = 0; x < (int)activeLights.size(); ++x) {
 		float radius = activeLights[x]->GetRadius();
 		float dist = (activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition() -
 			gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
@@ -311,13 +346,7 @@ void GameTechRenderer::RenderLights() {
 			BindFloatToShader(radius, "lightRadius");
 			//Turning shadows off until we can do point light shadows
 			BindIntToShader(false, "drawShadows");
-		}
-
-		BindTextureToShader(shadowTex, "shadowTex", 20);
-
-		float dist = (activeLights[x]->GetGameObject()->GetTransform().GetWorldPosition() - gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition()).Length();
-
-		if (activeLights[x]->GetType() == LightType::Point) {
+		
 			if (dist < radius) {// camera is inside the light volume !
 				pixOps.SetFaceCulling(CULLFACE::FRONT);
 			}
@@ -399,11 +428,10 @@ void GameTechRenderer::RenderLights() {
 }
 
 void GameTechRenderer::CombineBuffers() {
-	////Keep this here for now ready for when post processes are to be implemented
-	//glBindFramebuffer(GL_FRAMEBUFFER, postProcessFBO);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-	//	GL_TEXTURE_2D, postProcessTex[1], 0);
-	BindFBO(nullptr);
+	//Keep this here for now ready for when post processes are to be implemented
+	BindFBO((void*)&postFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+		GL_TEXTURE_2D, ((OGLTexture*)postTexture[0])->GetObjectID(), 0);
 	ClearBuffer(true, true, false);
 
 	Mat4 viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
@@ -417,7 +445,6 @@ void GameTechRenderer::CombineBuffers() {
 	BindMatrix4ToShader(viewMatrix, "viewMatrix");
 	BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 	BindMatrix4ToShader(identity, "textureMatrix");
-	BindVector4ToShader(ambientColour, "ambientColour");
 
 	BindTextureToShader(gBufferColourTex, "diffuseTex", 2);
 	BindTextureToShader(gBufferMaterialTex, "materialTex", 3);
@@ -822,8 +849,8 @@ void GameTechRenderer::RenderCamera() {
 	ClearBuffer(true, false, false);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	/*Matrix4*/ *viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
-	/*Matrix4*/ *projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	/*Mat4*/ *viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	/*Mat4*/ *projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	shadowCasters = 0;
 	vertsDrawn = 0;

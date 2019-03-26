@@ -47,10 +47,10 @@ PS4RendererBase::PS4RendererBase(PS4Window* window)
 	defaultMesh		= PS4Mesh::GenerateQuad();
 	defaultTexture	= PS4Texture::LoadTextureFromFile("/app0/doge.gnf");
 
-	viewProjMat		= (Matrix4*)onionAllocator->allocate(sizeof(Matrix4), Gnm::kEmbeddedDataAlignment4);
-	*viewProjMat	= Matrix4();
+	viewProjMat		= (Mat4*)onionAllocator->allocate(sizeof(Mat4), Gnm::kEmbeddedDataAlignment4);
+	*viewProjMat	= Mat4();
 
-	cameraBuffer.initAsConstantBuffer(viewProjMat, sizeof(Matrix4));
+	cameraBuffer.initAsConstantBuffer(viewProjMat, sizeof(Mat4));
 	cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO); // it's a constant buffer, so read-only is OK
 
 	EndFrame(); //buffers are swapped here
