@@ -24,6 +24,9 @@ public:
 	void SetLeftGun(GameObject * obj);
 	void SetRightGun(GameObject * obj);
 
+	GameObject * GetLeftGun();
+	GameObject*  GetRightGun();
+
 protected:
 
 	float projectileSpeed = 6000.0f;

@@ -136,6 +136,11 @@ void Animation::ResetAnimation()
 	hasAnimationFinished = false;
 }
 
+bool Animation::HasAnimationFinished()
+{
+	return hasAnimationFinished;
+}
+
 void Animation::ClearKeyFrames()
 {
 	for (auto&i : keyFrames)

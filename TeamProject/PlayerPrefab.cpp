@@ -1,4 +1,5 @@
 #include "PlayerPrefab.h"
+#include "PlayerAnimation.h"
 
 int PlayerPrefab::currentColour = 0;
 Vector4 PlayerPrefab::colours[] = {
@@ -86,6 +87,8 @@ void PlayerPrefab::ResetPlayer()
 	AddComponent<ShieldControl*>(new ShieldControl(this));
 	AddComponent<AirStrikeControl*>(new AirStrikeControl(this));
 	AddComponent<BigGunControl*>(new BigGunControl(this));
+	AddComponent<Animator*>(new Animator(this));
+	AddComponent<PlayerAnimation*>(new PlayerAnimation(this));
 	GetComponent<HammerControl*>()->SetHammerSize(-5000, 5000, 800, 3000, -8000, 8000);
 	SetTag(LayerAndTag::Tags::Player);
 	GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);

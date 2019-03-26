@@ -41,6 +41,16 @@ void GunControl::SetRightGun(GameObject * obj)
 	rightGun = obj;
 }
 
+GameObject * GunControl::GetLeftGun()
+{
+	return leftGun;
+}
+
+GameObject * GunControl::GetRightGun()
+{
+	return rightGun;
+}
+
 Vector3 GunControl::CalculateDirection()
 {
 	Vector3 forward;
