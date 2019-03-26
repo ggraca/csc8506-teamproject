@@ -13,6 +13,7 @@
 
 Game::Game() {
 	console = Console();
+	
 	renderer = new GameTechRenderer();
 	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
@@ -44,7 +45,9 @@ void Game::Update(float dt) {
 	}
 	DebugMenu::Update(dt, renderer);
 	console.Update();
+#ifdef _WIN32
 	if (network) network->Update();
+#endif
 	currentScene->Update(dt);
 	renderer->Render();
 	Debug::FlushRenderables();
@@ -56,10 +59,14 @@ void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server)
 	delete currentScene;
 	currentScene = newScene; 
 	currentScene->SetRenderer(renderer);
+#ifdef _WIN32
 	network = new NetworkManager(server);
+#endif
 	renderer->SetGameWorld(currentScene->GetGameWorld());
+#ifdef _WIN32
 	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
 	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
+#endif
 	Debug::SetRenderer(renderer);
 }
 

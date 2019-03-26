@@ -638,7 +638,7 @@ void GameTechRenderer::WeaponState(int index, bool state)
 #endif
 
 #ifdef __ORBIS__
-GameTechRenderer::GameTechRenderer(GameWorld& world) : PS4::PS4RendererBase((PS4::PS4Window*)Window::GetWindow()), gameWorld(world) {
+GameTechRenderer::GameTechRenderer() : PS4::PS4RendererBase((PS4::PS4Window*)Window::GetWindow()){
 	shadowShader = PS4Shader::GenerateShader("/app0/gameTechShadowVert.sb", "/app0/gameTechShadowPixel.sb");
 	skyBoxShader = PS4Shader::GenerateShader("/app0/skyboxVertex.sb", "/app0/skyboxPixel.sb");
 	lightShader = PS4Shader::GenerateShader("/app0/pointlightvert.sb", "/app0/pointlightPixel.sb");
@@ -852,8 +852,8 @@ void GameTechRenderer::RenderCamera() {
 	ClearBuffer(true, false, false);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	/*Mat4*/ *viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
-	/*Mat4*/ *projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	/*Mat4*/ *viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	/*Mat4*/ *projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	shadowCasters = 0;
 	vertsDrawn = 0;
@@ -881,14 +881,14 @@ void GameTechRenderer::RenderCamera() {
 			//BindTextureToShader((*(currentMaterial->GetTextureParameters()))[j].second, (*(currentMaterial->GetTextureParameters()))[j].first, j);
 		}
 
-		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
+		//BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
 		
 
 		//BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
 		*cameraPos = gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
-		cameraPos = (Vector3*)onionAllocator->allocate(sizeof(Vector3), Gnm::kEmbeddedDataAlignment4);
-		*cameraPos = Vector3();
-		cameraBuffer.initAsConstantBuffer(cameraPos, sizeof(Vector3));
+		cameraPos = (Vec3*)onionAllocator->allocate(sizeof(Vec3), Gnm::kEmbeddedDataAlignment4);
+		*cameraPos = Vec3();
+		cameraBuffer.initAsConstantBuffer(cameraPos, sizeof(Vec3));
 		cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO);
 
 		//BindMatrix4ToShader(projMatrix, "projMatrix");
@@ -919,8 +919,8 @@ void GameTechRenderer::RenderCamera() {
 
 		//BindVector4ToShader(currentMaterial->GetColour(), "objectColour");
 		*objectColour = currentMaterial->GetColour();
-		objectColour = (Vector4*)onionAllocator->allocate(sizeof(Vector3), Gnm::kEmbeddedDataAlignment4);
-		*objectColour = Vector4();
+		objectColour = (Vec4*)onionAllocator->allocate(sizeof(Vector3), Gnm::kEmbeddedDataAlignment4);
+		*objectColour = Vec4();
 		cameraBuffer.initAsConstantBuffer(objectColour, sizeof(Vector3));
 		cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO);
 

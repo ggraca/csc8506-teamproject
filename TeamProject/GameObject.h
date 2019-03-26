@@ -174,22 +174,22 @@ namespace NCL {
 		template<class T>
 		void GameObject::AddComponent(Component * obj)
 		{
-			//if (!obj) { return; }
+			if (!obj) { return; }
 
-			//int index = TypeId::GetTypeId(typeid(T));
+			int index = TypeId::GetTypeId(typeid(T));
 
-			//if (index == -1) { return; }
-			//auto it = components.find(index);
+			if (index == -1) { return; }
+			auto it = components.find(index);
 
-			//if (it != components.end())
-			//{
-			//	if (dynamic_cast<ScriptObject*>(obj)) { RemoveScript<T>(); }
-			//	delete it->second;
-			//}
+			if (it != components.end())
+			{
+				if (dynamic_cast<ScriptObject*>(obj)) { RemoveScript<T>(); }
+				delete it->second;
+			}
 
-			//if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
-			//obj->SetGameObject(this);
-			//components[index] = obj;
+			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
+			obj->SetGameObject(this);
+			components[index] = obj;
 		}
 	}
 }

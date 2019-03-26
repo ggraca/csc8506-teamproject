@@ -132,7 +132,7 @@ namespace NCL {
 		#ifdef __ORBIS__
 		class GameTechRenderer : public PS4::PS4RendererBase {
 		public:
-			GameTechRenderer(GameWorld& world);
+			GameTechRenderer();
 			~GameTechRenderer();
 
 			int GetRendererWidth() const { return currentWidth; }
@@ -159,7 +159,7 @@ namespace NCL {
 
 			PS4Shader*		defaultShader;
 
-			GameWorld&	gameWorld;
+			GameWorld*	gameWorld;
 
 			void BuildObjectList();
 			void SortObjectList();
