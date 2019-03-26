@@ -129,12 +129,18 @@ void NetworkServer::RemovePlayer(int peerId) {
 	PlayerInput* ps = FindPlayer(peerId);
 	if (!ps) return;
 
-	cout << objects.size() << endl;
-	objects.erase(remove(objects.begin(), objects.end(), ps->gameObject->GetComponent<NetworkObject*>()), objects.end());
-	cout << objects.size() << endl;
-	//ps->gameObject->RemoveComponent<NetworkObject*>();
-	world->LateDestroy(ps->gameObject);
+	GameObject* go = ps->gameObject;
+	for (auto childTransform : go->GetTransform().GetChildrenList()) {
+		GameObject* childGameObject = childTransform->GetGameObject();
+		NetworkObject* no = childGameObject->GetComponent<NetworkObject*>();
+		if (!no) continue;
+
+		objects.erase(remove(objects.begin(), objects.end(), no), objects.end());
+	}
+
+	objects.erase(remove(objects.begin(), objects.end(), go->GetComponent<NetworkObject*>()), objects.end());
 	players.erase(remove(players.begin(), players.end(), ps), players.end());
+	world->LateDestroy(go);
 }
 
 PlayerInput* NetworkServer::FindPlayer(int peerId) {
