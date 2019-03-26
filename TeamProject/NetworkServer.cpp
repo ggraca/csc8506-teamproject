@@ -55,7 +55,8 @@ void NetworkServer::Update() {
 	for (auto player : players) {
 		PlayerState ps = PlayerState(
 			player->gameObject->GetComponent<Player*>()->GetHP(),
-			player->gameObject->GetComponent<Player*>()->GetResourceCount()
+			player->gameObject->GetComponent<Player*>()->GetResourceCount(),
+			player->gameObject->GetComponent<NetworkObject*>()->GetId()
 		);
 
 		if (player->peerId == -1) {
@@ -77,7 +78,7 @@ void NetworkServer::OnClientConnect(int source) {
 		bool ia = o->GetGameObject()->IsActive();
 
 		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot, sca, ia);
-		server->SendGlobalPacket(p);
+		server->SendPacket(p, source);
 	}
 
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);

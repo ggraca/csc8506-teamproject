@@ -10,7 +10,7 @@ GameClient::GameClient()	{
 	netHandle = enet_host_create(nullptr, 1, 1, 0, 0);
 
 
-	ifstream file;
+	/*ifstream file;
 	file.open("../Assets/Data/ip.txt");
 	int connectingIP[4];
 
@@ -30,7 +30,7 @@ GameClient::GameClient()	{
 	address2.host = (connectingIP[3] << 24) | (connectingIP[2] << 16) | (connectingIP[1] << 8) | connectingIP[0];
 	address2.port = 1234;
 	
-	netHandle->address = address2;
+	netHandle->address = address2;*/
 }
 
 GameClient::~GameClient()	{

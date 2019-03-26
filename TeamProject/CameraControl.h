@@ -46,8 +46,10 @@ public:
 	Matrix4 BuildProjectionMatrix(float currentAspect = 1.0f) const;
 
 	void SetPlayer(GameObject * obj);
+	GameObject* GetPlayer() const {
+		return player;
+	};
 	void FollowPlayer();
-	void RotatePlayer();
 	void SetCameraType(bool isTPS);
 	bool GetCameraType() const;
 

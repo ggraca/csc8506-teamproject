@@ -6,13 +6,15 @@
 
 struct PlayerState {
 	PlayerState() {}
-	PlayerState(int hp, int res) {
+	PlayerState(int hp, int res, int oi) {
 		health = hp;
 		resources = res;
+		objectId = oi;
 	}
 	
 	int health = 100;
 	int resources;
+	int objectId;
 };
 
 class NetworkEntity : public PacketReceiver {
