@@ -50,7 +50,7 @@ namespace NCL {
 			float health = 1; //(100%);
 			//void UpdateHealthQuad();
 
-			Mat4 biasMatrix = Mat4::Translation(Vec3(0.5, 0.5, 0.5)) * Mat4::Scale(Vec3(0.5, 0.5, 0.5));
+			Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
 		protected:
 			void RenderFrame()	override;
@@ -74,7 +74,7 @@ namespace NCL {
 
 			//void SetupDebugMatrix(OGLShader*s) override;
 
-			vector<const RenderObjectPS4*> activeObjects;
+			vector<const RenderObject*> activeObjects;
 			vector<const Light*> activeLights;
 			vector<ParticleSystem*> activeParticleSystems;
 			vector<ShaderBase*> postProcessShaders;
@@ -83,7 +83,7 @@ namespace NCL {
 			ShaderBase*	shadowShader;
 			TextureBase* shadowTex;
 			GLuint		shadowFBO;
-			Mat4     shadowMatrix;
+			Matrix4     shadowMatrix;
 
 			ShaderBase* skyBoxShader;
 			ShaderBase* convolutionShader;
@@ -121,7 +121,7 @@ namespace NCL {
 			GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 			
-			Vec4 ambientColour = Vec4(0.2f, 0.2f, 0.2f, 1.0f);
+			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
@@ -150,7 +150,7 @@ namespace NCL {
 			float health = 1; //(100%);
 			//void UpdateHealthQuad();
 
-			Mat4 biasMatrix = Mat4::Translation(Vec3(0.5, 0.5, 0.5)) * Mat4::Scale(Vec3(0.5, 0.5, 0.5));
+			Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
 
 		protected:
 			void RenderFrame()	override;
@@ -177,7 +177,7 @@ namespace NCL {
 			PS4Shader*	shadowShader;
 			PS4Texture*		shadowTex;
 			sce::Gnm::RenderTarget		shadowFBO; //rendertargets are used instead of FBOs
-			Mat4     shadowMatrix;
+			Matrix4     shadowMatrix;
 
 			PS4Shader* skyBoxShader;
 
@@ -202,14 +202,14 @@ namespace NCL {
 			//GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 
-			Vec4 ambientColour = Vec4(0.2f, 0.2f, 0.2f, 1.0f);
+			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 
-			NCL::Maths::Matrix4*	projMatrix;
-			NCL::Maths::Matrix4*	viewMatrix;
-			NCL::Maths::Matrix4*	modelMatrix;
-			NCL::Maths::Matrix4*	textureMatrix;
-			NCL::Maths::Vector3*	cameraPos;
-			NCL::Maths::Vector4*	objectColour;
+			NCL::Maths::Mat4*	projMatrix;
+			NCL::Maths::Mat4*	viewMatrix;
+			NCL::Maths::Mat4*	modelMatrix;
+			NCL::Maths::Mat4*	textureMatrix;
+			NCL::Maths::Vec3*	cameraPos;
+			NCL::Maths::Vec4*	objectColour;
 
 			Gnm::Buffer	cameraBuffer;
 
