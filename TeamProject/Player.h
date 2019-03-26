@@ -33,6 +33,7 @@ public:
 	LayerAndTag::Tags GetResourceTag() ;
 	vector<GameObject*> GetResources() const;
 	bool IsHammerActive();
+	bool IsGunActive();
 
 protected:
 

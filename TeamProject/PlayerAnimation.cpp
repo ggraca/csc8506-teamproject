@@ -1,5 +1,6 @@
 #include "PlayerAnimation.h"
 #include "HammerControl.h"
+#include "GunControl.h"
 #include "Player.h"
 
 PlayerAnimation::PlayerAnimation(GameObject * obj) : ScriptObject(obj)
@@ -14,6 +15,8 @@ PlayerAnimation::~PlayerAnimation()
 void PlayerAnimation::Awake()
 {
 	hammer = gameObject->GetComponent<HammerControl*>()->GetHandle();
+	leftGun = gameObject->GetComponent<GunControl*>()->GetLeftGun();
+	rightGun = gameObject->GetComponent<GunControl*>()->GetRightGun();
 	animator = gameObject->GetComponent<Animator*>();
 	InitializeAnimations();
 }
@@ -23,6 +26,8 @@ void PlayerAnimation::InitializeAnimations()
 	if (!animator) { return; }
 
 	InitializeHammerAnimations();
+	InitializeGunAnimations();
+	SetupIdleTransitions();
 }
 
 void PlayerAnimation::InitializeHammerAnimations()
@@ -38,11 +43,11 @@ void PlayerAnimation::InitializeHammerAnimations()
 	idleHammerKeyFrame->localPosition = ht.GetLocalPosition();
 	idleHammerKeyFrame->localRotation = ht.GetLocalOrientation().ToEuler();
 	idleHammerKeyFrame->localScale = ht.GetLocalScale();
-	idleHammerKeyFrame->time = 0.2f;
+	idleHammerKeyFrame->time = 0.05f;
 
 	idleHammerAnimation->AddKeyFrame(idleHammerKeyFrame);
 
-	AnimationState * idleHammerState = new AnimationState(idleHammerAnimation, hammer);
+	hammerIdleState = new AnimationState(idleHammerAnimation, hammer);
 	
 
 	////First Hit////
@@ -140,7 +145,7 @@ void PlayerAnimation::InitializeHammerAnimations()
 	Transition * idleHammerToFirstHit = new Transition();
 	idleHammerToFirstHit->transitionFunction = PlayerAnimation::HitTransition;
 	idleHammerToFirstHit->destinationState = firstHitAnimationState;
-	idleHammerState->AddTransition(idleHammerToFirstHit);
+	hammerIdleState->AddTransition(idleHammerToFirstHit);
 
 	Transition * firstHitToSecondHit = new Transition();
 	firstHitToSecondHit->transitionFunction = PlayerAnimation::HitTransition;
@@ -154,14 +159,115 @@ void PlayerAnimation::InitializeHammerAnimations()
 
 	Transition * thirdHitToIdle = new Transition();
 	thirdHitToIdle->transitionFunction = PlayerAnimation::ThirdHitToIdle;
-	thirdHitToIdle->destinationState = idleHammerState;
+	thirdHitToIdle->destinationState = hammerIdleState;
 	thirdHitAnimationState->AddTransition(thirdHitToIdle);
 
-	animator->SetDefaultAnimationState(idleHammerState);
-	animator->AddAnimationState(idleHammerState);
+	//animator->SetDefaultAnimationState(hammerIdleState);
+	animator->AddAnimationState(hammerIdleState);
 	animator->AddAnimationState(firstHitAnimationState);
 	animator->AddAnimationState(secondHitAnimationState);
 	animator->AddAnimationState(thirdHitAnimationState);
+}
+
+void PlayerAnimation::InitializeGunAnimations()
+{
+	if (!leftGun || !rightGun) { return; }
+
+	Transform rt = rightGun->GetTransform();
+	Transform lt = leftGun->GetTransform();
+
+	/////Idles/////
+	////Right Idle///
+	Animation * idleGunAnimationRight = new Animation(60);
+
+	KeyFrame * idleGunKeyFrameRight = new KeyFrame();
+	idleGunKeyFrameRight->localPosition = Vector3(0, 0, 0);
+	idleGunKeyFrameRight->localRotation = Vector3(0, 0, 0);
+	idleGunKeyFrameRight->localScale = rt.GetLocalScale();
+	idleGunKeyFrameRight->time = 0.05f;
+
+	idleGunAnimationRight->AddKeyFrame(idleGunKeyFrameRight);
+
+	gunIdleState = new AnimationState(idleGunAnimationRight, rightGun);
+
+	////////////Left Idle////
+	Animation * idleGunAnimationLeft = new Animation(60);
+
+	KeyFrame * idleGunKeyFrameLeft = new KeyFrame();
+	idleGunKeyFrameLeft->localPosition = Vector3(0, 0, 0);
+	idleGunKeyFrameLeft->localRotation = Vector3(0, 0, 0);
+	idleGunKeyFrameLeft->localScale = lt.GetLocalScale();
+	idleGunKeyFrameLeft->time = 0.05f;
+
+	idleGunAnimationLeft->AddKeyFrame(idleGunKeyFrameLeft);
+
+	gunIdleStateLeft = new AnimationState(idleGunAnimationLeft, leftGun);
+
+	//Idle Transition (right to left idle)
+	Transition * gunIdlesTransition = new Transition();
+	gunIdlesTransition->transitionFunction = PlayerAnimation::ExitTransition;
+	gunIdlesTransition->destinationState = gunIdleStateLeft;
+	gunIdleState->AddTransition(gunIdlesTransition);
+
+	////
+	Animation * rightGunActiveAnimation = new Animation(60);
+
+	KeyFrame * rightGunKeyframe = new KeyFrame();
+	rightGunKeyframe->localPosition = Vector3(-2, 0, 1);
+	rightGunKeyframe->localRotation = Vector3(0, 0, 180);
+	rightGunKeyframe->localScale = rt.GetLocalScale();
+	rightGunKeyframe->time = 0.1f;
+
+	rightGunActiveAnimation->AddKeyFrame(rightGunKeyframe);
+
+	
+	AnimationState * rightGunActivationState = new AnimationState(rightGunActiveAnimation, rightGun);
+	////
+	Animation * leftGunActiveAnimation = new Animation(60);
+
+	KeyFrame * leftGunKeyframe = new KeyFrame();
+	leftGunKeyframe->localPosition = Vector3(2, 0, 1);
+	leftGunKeyframe->localRotation = Vector3(0,0,-180);
+	leftGunKeyframe->localScale = lt.GetLocalScale();
+	leftGunKeyframe->time = 0.1f;
+
+	leftGunActiveAnimation->AddKeyFrame(leftGunKeyframe);
+
+	AnimationState * leftGunActivationState = new AnimationState(leftGunActiveAnimation, leftGun);
+	//////
+	Transition * activationTransition = new Transition();
+	activationTransition->transitionFunction = PlayerAnimation::ExitTransition;
+	activationTransition->destinationState = leftGunActivationState;
+	rightGunActivationState->AddTransition(activationTransition);
+
+	Transition * idleToActivation = new Transition();
+	idleToActivation->transitionFunction = PlayerAnimation::GunActiveTransition;
+	idleToActivation->destinationState = rightGunActivationState;
+	gunIdleStateLeft->AddTransition(idleToActivation);
+
+	Transition * resetToIdle = new Transition();
+	resetToIdle->transitionFunction = PlayerAnimation::GunDeactiveTransition;
+	resetToIdle->destinationState = gunIdleState;
+	leftGunActivationState->AddTransition(resetToIdle);
+
+	////
+	animator->AddAnimationState(gunIdleState);
+	animator->AddAnimationState(gunIdleStateLeft);
+	animator->AddAnimationState(rightGunActivationState);
+	animator->AddAnimationState(leftGunActivationState);
+}
+
+void PlayerAnimation::SetupIdleTransitions()
+{
+	Transition * hammerIdleToGunIdle = new Transition();
+	hammerIdleToGunIdle->transitionFunction = PlayerAnimation::GunActiveTransition;
+	hammerIdleToGunIdle->destinationState = gunIdleState;
+	hammerIdleState->AddTransition(hammerIdleToGunIdle);
+
+	Transition * gunIdleToHammerIdle = new Transition();
+	gunIdleToHammerIdle->transitionFunction = PlayerAnimation::HammerActiveTransition;
+	gunIdleToHammerIdle->destinationState = hammerIdleState;
+	gunIdleStateLeft->AddTransition(gunIdleToHammerIdle);
 }
 
 bool PlayerAnimation::HitTransition(GameObject * obj)
@@ -190,4 +296,24 @@ bool PlayerAnimation::ThirdHitToIdle(GameObject * obj)
 void PlayerAnimation::ResetHammerHit(GameObject * obj)
 {
 	return (obj->GetComponent<HammerControl*>()->ResetHammerHit());
+}
+
+bool PlayerAnimation::ExitTransition(GameObject * obj)
+{
+	return (obj->GetComponent<Animator*>()->GetCurrentAnimationState()->animation->HasAnimationFinished());
+}
+
+bool PlayerAnimation::GunActiveTransition(GameObject * obj)
+{
+	return (obj->GetComponent<Player*>()->IsGunActive());
+}
+
+bool PlayerAnimation::GunDeactiveTransition(GameObject * obj)
+{
+	return (!obj->GetComponent<Player*>()->IsGunActive());
+}
+
+bool PlayerAnimation::HammerActiveTransition(GameObject * obj)
+{
+	return (obj->GetComponent<Player*>()->IsHammerActive());
 }

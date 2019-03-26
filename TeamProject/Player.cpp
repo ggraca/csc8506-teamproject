@@ -250,6 +250,11 @@ bool Player::IsHammerActive()
 	return isHammerActive;
 }
 
+bool Player::IsGunActive()
+{
+	return isGunActive;
+}
+
 void Player::ResetPlayer()
 {
 	hp = 100;
