@@ -74,7 +74,7 @@ namespace NCL {
 
 			//void SetupDebugMatrix(OGLShader*s) override;
 
-			vector<const RenderObjectPS4*> activeObjects;
+			vector<const RenderObject*> activeObjects;
 			vector<const Light*> activeLights;
 			vector<ParticleSystem*> activeParticleSystems;
 			vector<ShaderBase*> postProcessShaders;
