@@ -153,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
+      </ClCompile>
+    <ClCompile Include="CannonScript.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="AirStrikeControl.cpp">
       <Filter>Scripts</Filter>
@@ -396,6 +399,12 @@
     </ClInclude>
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Renderer</Filter>
+       </ClInclude>
+    <ClInclude Include="CannonScript.h">
+      <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Tools</Filter>

@@ -13,5 +13,6 @@ class TowerPrefab : public GameObject
 public:
 	TowerPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient);
 	virtual ~TowerPrefab();
+	void SetTransformDetails(NCL::Maths::Vector3 &dimensions, const NCL::Maths::Vector3 & position, const NCL::Maths::Quaternion & orient);
 };
 
