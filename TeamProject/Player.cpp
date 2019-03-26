@@ -232,6 +232,11 @@ int Player::GetResourceCount() const
 	return (int)resources.size();
 }
 
+int Player::GetHP() const
+{
+	return hp;
+}
+
 LayerAndTag::Tags Player::GetResourceTag() 
 {
 	int networkID = GetNetworkId();

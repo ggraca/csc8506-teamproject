@@ -29,7 +29,7 @@ public:
 	void LoseResource(int amount);
 	void LoseResource(GameObject * resource);
 	int GetResourceCount() const;
-	int GetHP() const { return hp; };
+	int GetHP() const;
 	LayerAndTag::Tags GetResourceTag() ;
 	vector<GameObject*> GetResources() const;
 	bool IsHammerActive();
@@ -41,7 +41,6 @@ protected:
 	void ResetPlayer();
 
 	int hp;
-	int resourceCount;
 	float movementSpeed;
 	float jumpSpeed;
 	float dodgeAmount;
