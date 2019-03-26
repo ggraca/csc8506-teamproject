@@ -13,13 +13,13 @@ namespace NCL {
 			void Update(float dt)	 override;
 
 		protected:
-			void DrawRenderObject(RenderObject* o);
+			void DrawRenderObject(RenderObjectPS4* o);
 			//void RenderFrame()		 override;
 			void RenderActiveScene() override;
 
 
 			float rotation;
-			RenderObject* defaultObject[2];
+			RenderObjectPS4* defaultObject[2];
 		};
 	}
 }

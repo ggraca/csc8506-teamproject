@@ -47,10 +47,10 @@ PS4RendererBase::PS4RendererBase(PS4Window* window)
 	defaultMesh		= PS4Mesh::GenerateQuad();
 	defaultTexture	= PS4Texture::LoadTextureFromFile("/app0/doge.gnf");
 
-	viewProjMat		= (Matrix4*)onionAllocator->allocate(sizeof(Matrix4), Gnm::kEmbeddedDataAlignment4);
-	*viewProjMat	= Matrix4();
+	viewProjMat		= (Mat4*)onionAllocator->allocate(sizeof(Mat4), Gnm::kEmbeddedDataAlignment4);
+	*viewProjMat	= Mat4();
 
-	cameraBuffer.initAsConstantBuffer(viewProjMat, sizeof(Matrix4));
+	cameraBuffer.initAsConstantBuffer(viewProjMat, sizeof(Mat4));
 	cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO); // it's a constant buffer, so read-only is OK
 
 	EndFrame(); //buffers are swapped here
@@ -298,7 +298,7 @@ void	PS4RendererBase::BindFBO(void* buffer) {
 
 void	PS4RendererBase::ClearBuffer(bool colour, bool depth, bool stencil) {
 	if (colour) {
-		//Vector4 defaultClearColour(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1.0f);
+		//Vec4 defaultClearColour(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, 1.0f);
 		SonyMath::Vector4 defaultClearColour(0.1f, 0.1f, 0.1f, 1.0f);
 
 

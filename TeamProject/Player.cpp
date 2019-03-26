@@ -123,17 +123,17 @@ void Player::CheckGunControls()
 
 void Player::PlayerRotation()
 {
-	Vector3 playerRot = gameObject->GetTransform().GetLocalOrientation().ToEuler();
+	Vec3 playerRot = gameObject->GetTransform().GetLocalOrientation().ToEuler();
 	playerRot.y = cameraRotation.ToEuler().y;
 	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, playerRot.y + 180, 0));
 }
 
 void Player::PlayerMovement(float dt)
 {
-	Vector3 playerPos = gameObject->GetTransform().GetWorldPosition();
-	Vector3 up = Vector3(0, 1, 0);
-	Vector3 forward = (Vector3(playerPos.x, 0, playerPos.z) - Vector3(cameraPosition.x, 0, cameraPosition.z)).Normalised();
-	Vector3 left = Vector3::Cross(up, forward).Normalised();
+	Vec3 playerPos = gameObject->GetTransform().GetWorldPosition();
+	Vec3 up = Vec3(0, 1, 0);
+	Vec3 forward = (Vec3(playerPos.x, 0, playerPos.z) - Vec3(cameraPosition.x, 0, cameraPosition.z)).Normalised();
+	Vec3 left = Vec3::Cross(up, forward).Normalised();
 
 	if (keysDown.inputs[InputManager::ActionButton::FORWARD])
 	{

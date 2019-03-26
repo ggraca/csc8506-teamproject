@@ -4,7 +4,7 @@ using namespace NCL;
 using namespace CSC8503;
 
 ParticleSystem::ParticleSystem(float Duration, int MaxParticles, int ParticleSpawnRate, float ParticleLifetime,
-	float ParticleStartSpeed, Vector3 ParticleSpeedDirection, Vector3 ParticleSpeedDeviation,
+	float ParticleStartSpeed, Vec3 ParticleSpeedDirection, Vec3 ParticleSpeedDeviation,
 	float ParticleStartSize, TextureBase* ParticleTexture) {
 
 	duration = Duration;
@@ -64,7 +64,7 @@ void ParticleSystem::RemoveOldParticles() {
 }
 
 void ParticleSystem::SpawnParticle() {
-	Vector3 randomVelocityDeviation;
+	Vec3 randomVelocityDeviation;
 	if (particleSpeedDeviation.x != 0.0f) {
 		randomVelocityDeviation.x = -particleSpeedDeviation.x + static_cast <float> (rand())
 			/ (static_cast <float> (RAND_MAX / (particleSpeedDeviation.x - -particleSpeedDeviation.x)));
@@ -78,7 +78,7 @@ void ParticleSystem::SpawnParticle() {
 			/ (static_cast <float> (RAND_MAX / (particleSpeedDeviation.z - -particleSpeedDeviation.z)));
 	}
 
-	Vector3 velocity = (particleSpeedDirection + randomVelocityDeviation) * particleStartSpeed;
+	Vec3 velocity = (particleSpeedDirection + randomVelocityDeviation) * particleStartSpeed;
 	Particle newParticle = Particle(gameObject->GetTransform().GetWorldPosition(), velocity, particleStartSize);
 	particles.push_back(newParticle);
 }

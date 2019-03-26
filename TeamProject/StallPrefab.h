@@ -11,7 +11,7 @@ using namespace NCL::CSC8503;
 class StallPrefab : public GameObject
 {
 public:
-	StallPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient);
+	StallPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient);
 	virtual ~StallPrefab();
 };
 

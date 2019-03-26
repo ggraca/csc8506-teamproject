@@ -37,7 +37,7 @@ namespace NCL
 			InputContainer GetKeysDown();
 			InputContainer GetKeysPressed();
 			Quaternion GetCameraRotation();
-			Vector3 GetCameraPosition();
+			Vec3 GetCameraPosition();
 			int GetNetworkId();
 		};
 	}

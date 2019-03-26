@@ -29,7 +29,7 @@ public:
 private:
 
 	void GenerateResource();
-	Vector3 resourceDimensions;
+	Vec3 resourceDimensions;
 	HealthManager * health;
 };
 

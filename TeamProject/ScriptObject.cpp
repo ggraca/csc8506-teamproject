@@ -79,9 +79,9 @@ Quaternion ScriptObject::GetCameraRotation() {
 	return ps->cameraRotation;
 }
 
-Vector3 ScriptObject::GetCameraPosition() {
+Vec3 ScriptObject::GetCameraPosition() {
 	PlayerState* ps = GetPlayerInput();
-	if (!ps) return Vector3();
+	if (!ps) return Vec3();
 
 	return ps->cameraPosition;
 }

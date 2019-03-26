@@ -9,7 +9,7 @@ std::vector<Debug::DebugLineEntry>		Debug::lineEntries;
 std::vector<Debug::DebugStringEntry>    Debug::DebugMenu;
 
 
-void Debug::Print(const std::string& text, const Vector2&pos, const Vector4& colour) {
+void Debug::Print(const std::string& text, const Vec2&pos, const Vec4& colour) {
 	DebugStringEntry newEntry;
 
 	newEntry.data		= text;
@@ -19,7 +19,7 @@ void Debug::Print(const std::string& text, const Vector2&pos, const Vector4& col
 	stringEntries.emplace_back(newEntry);
 }
 
-void Debug::DrawLine(const Vector3& startpoint, const Vector3& endpoint, const Vector4& colour) {
+void Debug::DrawLine(const Vec3& startpoint, const Vec3& endpoint, const Vec4& colour) {
 	DebugLineEntry newEntry;
 
 	newEntry.start = startpoint;
@@ -33,8 +33,8 @@ void Debug::AddStringToDebugMenu(const std::string &text) {
 	DebugStringEntry newEntry;
 
 	newEntry.data = text;
-	newEntry.position = Vector2(0, 0);
-	newEntry.colour = Vector4(1, 1, 1, 1);
+	newEntry.position = Vec2(0, 0);
+	newEntry.colour = Vec4(1, 1, 1, 1);
 	newEntry.size = 0.5f;
 
 	DebugMenu.emplace_back(newEntry);
@@ -54,7 +54,7 @@ void Debug::FlushRenderables() {
 
 	for (unsigned int i = 0; i < DebugMenu.size(); i++)
 	{
-		renderer->DrawString(DebugMenu[i].data, Vector2(20.0f, (DebugMenu.size() - i) * 20.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), DebugMenu[i].size);
+		renderer->DrawString(DebugMenu[i].data, Vec2(20.0f, (DebugMenu.size() - i) * 20.0f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), DebugMenu[i].size);
 	}
 
 	DebugMenu.clear();

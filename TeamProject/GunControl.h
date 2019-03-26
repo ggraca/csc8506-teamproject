@@ -31,7 +31,7 @@ protected:
 	GameObject * leftGun = nullptr;
 	GameObject * rightGun = nullptr;
 
-	Vector3 CalculateDirection();
+	Vec3 CalculateDirection();
 	bool currentGun = false;
 };
 

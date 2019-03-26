@@ -1,5 +1,5 @@
 #pragma once
-
+#ifdef _WIN32
 #include <vector>
 
 #include "NetworkEntity.h"
@@ -27,3 +27,4 @@ private:
 
 	int port;
 };
+#endif

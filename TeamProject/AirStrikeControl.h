@@ -14,7 +14,7 @@ public:
 	void LaunchAirStrike();
 
 protected:
-	Vector3 CalculateDirection();
+	Vec3 CalculateDirection();
 
 	float airStrikeDistance = 0;
 };

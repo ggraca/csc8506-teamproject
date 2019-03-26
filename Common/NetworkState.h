@@ -14,7 +14,7 @@ namespace NCL {
 			}
 			virtual ~NetworkState();
 
-			Vector3		position;
+			Vec3		position;
 			Quaternion	orientation;
 			int			stateID;
 		};

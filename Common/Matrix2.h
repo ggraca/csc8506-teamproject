@@ -13,7 +13,7 @@ namespace NCL {
 			void ToZero();
 			void ToIdentity();
 
-			void SetRow(unsigned int row, const Vector2 &val) {
+			void SetRow(unsigned int row, const Vec2 &val) {
 				assert(row < 2);
 
 				int start = 2 * row;
@@ -22,14 +22,14 @@ namespace NCL {
 				values[start += 2] = val.y;
 			}
 
-			void SetColumn(unsigned int column, const Vector2 &val) {
+			void SetColumn(unsigned int column, const Vec2 &val) {
 				assert(column < 2);
-				memcpy(&values[2 * column], &val, sizeof(Vector2));
+				memcpy(&values[2 * column], &val, sizeof(Vec2));
 			}
 
-			Vector2 GetRow(unsigned int row) const {
+			Vec2 GetRow(unsigned int row) const {
 				assert(row < 2);
-				Vector2 out(0, 0);
+				Vec2 out(0, 0);
 
 				int start = 2 * row;
 
@@ -38,26 +38,26 @@ namespace NCL {
 				return out;
 			}
 
-			Vector2 GetColumn(unsigned int column) const {
+			Vec2 GetColumn(unsigned int column) const {
 				assert(column < 2);
-				Vector2 out(0, 0);
+				Vec2 out(0, 0);
 
-				memcpy(&out, &values[3 * column], sizeof(Vector2));
+				memcpy(&out, &values[3 * column], sizeof(Vec2));
 
 				return out;
 			}
 
-			Vector2 GetDiagonal() const {
-				return Vector2(values[0], values[3]);
+			Vec2 GetDiagonal() const {
+				return Vec2(values[0], values[3]);
 			}
 
-			void	SetDiagonal(const Vector2 &in) {
+			void	SetDiagonal(const Vec2 &in) {
 				values[0] = in.x;
 				values[3] = in.y;
 			}
 
-			inline Vector2 operator*(const Vector2 &v) const {
-				Vector2 vec;
+			inline Vec2 operator*(const Vec2 &v) const {
+				Vec2 vec;
 
 				vec.x = v.x*values[0] + v.y*values[2];
 				vec.y = v.x*values[1] + v.y*values[3];

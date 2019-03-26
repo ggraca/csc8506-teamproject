@@ -37,8 +37,8 @@ namespace NCL {
 			void Instantiate(GameObject* o);
 			void AddObjectPhysicsToWorld(PhysicsObject * pc);
 			void CallInitialObjectFunctions(GameObject * o);
-			const btCollisionObject * Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd);
-			const btCollisionObject * Raycast(const Vector3 & start, const Vector3 & dir, float magnitude, Vector3 & newEnd);
+			const btCollisionObject * Raycast(const Vec3 & start, const Vec3& end, Vec3& newEnd);
+			const btCollisionObject * Raycast(const Vec3 & start, const Vec3 & dir, float magnitude, Vec3 & newEnd);
 			void Instantiate(GameObject* o,GameObject* parent);
 			void InstantiateRecursively(GameObject* o);
 			void RemoveGameObject(GameObject* o);
@@ -114,7 +114,7 @@ namespace NCL {
 
 			GameObject* mainCamera;
 			LayerAndTag layering;
-			Vector3 cameraOffset;
+			Vec3 cameraOffset;
 
 			BulletPhysics* physics;
 			CAudioEngine* audio;

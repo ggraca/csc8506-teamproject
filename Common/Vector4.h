@@ -1,8 +1,8 @@
 /*
-Class:Vector4
+Class:Vec4
 Implements:
 Author:Rich Davison
-Description:VERY simple Vector4 class. Students are encouraged to modify this as necessary!
+Description:VERY simple Vec4 class. Students are encouraged to modify this as necessary!
 
 -_-_-_-_-_-_-_,------,   
 _-_-_-_-_-_-_-|   /\_/\   NYANYANYAN
@@ -14,23 +14,23 @@ _-_-_-_-_-_-_-""  ""
 
 namespace NCL {
 	namespace Maths {
-		class Vector4 {
+		class Vec4 {
 		public:
-			Vector4(void) {
+			Vec4(void) {
 				x = y = z = w = 1.0f;
 			}
-			Vector4(float x, float y, float z, float w) {
+			Vec4(float x, float y, float z, float w) {
 				this->x = x;
 				this->y = y;
 				this->z = z;
 				this->w = w;
 			}
 
-			inline Vector3 ToVector3() {
-				return Vector3(x, y, z);
+			inline Vec3 ToVector3() {
+				return Vec3(x, y, z);
 			}
 
-			~Vector4(void) {}
+			~Vec4(void) {}
 
 			union {
 				struct {
@@ -42,31 +42,31 @@ namespace NCL {
 				float array[4];
 			};
 
-			inline Vector4  operator*(const float a) const {
-				return Vector4(x * a, y * a, z * a, w * a);
+			inline Vec4  operator*(const float a) const {
+				return Vec4(x * a, y * a, z * a, w * a);
 			}
 
-			inline Vector4  operator/(const float a) const {
+			inline Vec4  operator/(const float a) const {
 				float r = 1.0f / a;
-				return Vector4(x * r, y * r, z * r, w * r);
+				return Vec4(x * r, y * r, z * r, w * r);
 			}
 
-			inline Vector4  operator+(const Vector4  &a) const {
-				return Vector4(x + a.x, y + a.y, z + a.z, w + a.w);
+			inline Vec4  operator+(const Vec4  &a) const {
+				return Vec4(x + a.x, y + a.y, z + a.z, w + a.w);
 			}
 
-			inline Vector4  operator-(const Vector4  &a) const {
-				return Vector4(x - a.x, y - a.y, z - a.z, w - a.w);
+			inline Vec4  operator-(const Vec4  &a) const {
+				return Vec4(x - a.x, y - a.y, z - a.z, w - a.w);
 			}
 
-			inline void operator+=(const Vector4  &a) {
+			inline void operator+=(const Vec4  &a) {
 				x += a.x;
 				y += a.y;
 				z += a.z;
 				w += a.w;
 			}
 
-			inline void operator-=(const Vector4  &a) {
+			inline void operator-=(const Vec4  &a) {
 				x -= a.x;
 				y -= a.y;
 				z -= a.z;

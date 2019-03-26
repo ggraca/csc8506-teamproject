@@ -48,6 +48,6 @@ protected:
 	InputContainer keysDown;
 	InputContainer keysPressed;
 	Quaternion cameraRotation;
-	Vector3 cameraPosition;
+	Vec3 cameraPosition;
 };
 

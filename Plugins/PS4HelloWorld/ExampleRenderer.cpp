@@ -9,8 +9,8 @@ using namespace NCL::PS4;
 ExampleRenderer::ExampleRenderer(PS4Window* window) : PS4RendererBase(window)
 {
 	rotation = 0.0f;
-	defaultObject[0] = new RenderObject((MeshGeometry*)defaultMesh, (ShaderBase*)defaultShader, (TextureBase*)defaultTexture);
-	defaultObject[1] = new RenderObject((MeshGeometry*)defaultMesh, (ShaderBase*)defaultShader, (TextureBase*)defaultTexture);
+	defaultObject[0] = new RenderObjectPS4((MeshGeometry*)defaultMesh, (ShaderBase*)defaultShader, (TextureBase*)defaultTexture);
+	defaultObject[1] = new RenderObjectPS4((MeshGeometry*)defaultMesh, (ShaderBase*)defaultShader, (TextureBase*)defaultTexture);
 }
 
 ExampleRenderer::~ExampleRenderer()
@@ -22,9 +22,9 @@ ExampleRenderer::~ExampleRenderer()
 void ExampleRenderer::Update(float dt)	{
 	rotation += dt;
 
-	defaultObject[0]->SetLocalTransform(Matrix4::Translation(Vector3(-0.4, 0, 0)) * Matrix4::Rotation(rotation, Vector3(0,0,1)));
+	defaultObject[0]->SetLocalTransform(Mat4::Translation(Vec3(-0.4, 0, 0)) * Mat4::Rotation(rotation, Vec3(0,0,1)));
 
-	defaultObject[1]->SetLocalTransform(Matrix4::Translation(Vector3(0.4, 0, 0)));
+	defaultObject[1]->SetLocalTransform(Mat4::Translation(Vec3(0.4, 0, 0)));
 }
 
 void ExampleRenderer::RenderActiveScene() {
@@ -32,12 +32,12 @@ void ExampleRenderer::RenderActiveScene() {
 	DrawRenderObject(defaultObject[1]);
 }
 
-void ExampleRenderer::DrawRenderObject(RenderObject* o) {
-	Matrix4* transformMat = (Matrix4*)currentGFXContext->allocateFromCommandBuffer(sizeof(Matrix4), Gnm::kEmbeddedDataAlignment4);
+void ExampleRenderer::DrawRenderObject(RenderObjectPS4* o) {
+	Mat4* transformMat = (Mat4*)currentGFXContext->allocateFromCommandBuffer(sizeof(Mat4), Gnm::kEmbeddedDataAlignment4);
 	*transformMat = o->GetLocalTransform();
 
 	Gnm::Buffer constantBuffer;
-	constantBuffer.initAsConstantBuffer(transformMat, sizeof(Matrix4));
+	constantBuffer.initAsConstantBuffer(transformMat, sizeof(Mat4));
 	constantBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO); // it's a constant buffer, so read-only is OK
 
 	PS4Shader* realShader = (PS4Shader*)o->GetShader();

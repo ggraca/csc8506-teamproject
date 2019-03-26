@@ -23,10 +23,10 @@ void HammerControl::SetHandle(GameObject * h)
 	handle = h;
 }
 
-Vector3 HammerControl::CalculateDirection()
+Vec3 HammerControl::CalculateDirection()
 {
-	Vector3 forward;
-	Vector3 ctransform = GetCameraRotation().ToEuler();
+	Vec3 forward;
+	Vec3 ctransform = GetCameraRotation().ToEuler();
 	ctransform.y *= -1;
 
 	forward.x = sin(ctransform.y* (PI / 180)) * cos(ctransform.x * (PI / 180));
@@ -55,7 +55,7 @@ void HammerControl::FormHammer()
 		i->GetComponent<Resource*>()->SetTarget(nullptr);
 		GameObject::gameWorld->RemoveCollisionsFromGameObject(i);
 		i->RemoveComponent<PhysicsObject*>();
-		i->GetTransform().SetWorldScale(Vector3(2.5,2.5/12.5,2.5));
+		i->GetTransform().SetWorldScale(Vec3(2.5,2.5/12.5,2.5));
 		i->GetTransform().SetLocalPosition(GenerateRandomPositionInHammer());
 		i->SetParent(handle);
 	}
@@ -72,7 +72,7 @@ void HammerControl::DeformHammer()
 
 		i->GetGameObject()->GetComponent<Resource*>()->SetTarget(gameObject);
 		i->GetGameObject()->SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
-		i->GetGameObject()->GetTransform().SetLocalScale(Vector3(5,5,5));
+		i->GetGameObject()->GetTransform().SetLocalScale(Vec3(5,5,5));
 		i->GetGameObject()->AddComponent<PhysicsObject*>(new PhysicsObject(i, ShapeType::cube, 10));
 
 		GameObject::gameWorld->AddObjectPhysicsToWorld(i->GetGameObject()->GetComponent<PhysicsObject*>());
@@ -93,7 +93,7 @@ void HammerControl::HammerHit()
 	if (!handle) { return; }
 
 	//auto camera = GameObject::gameWorld->GetMainCamera();
-	Vector3 end;
+	Vec3 end;
 	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(gameObject->GetTransform().GetWorldPosition(), gameObject->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), end));
 	if (colliding)
 	{		
@@ -124,9 +124,9 @@ void HammerControl::SetHammerSize(float minx, float maxx, float miny, float maxy
 }
 
 
-Vector3 HammerControl::GenerateRandomPositionInHammer()
+Vec3 HammerControl::GenerateRandomPositionInHammer()
 {
-	Vector3 temp;
+	Vec3 temp;
 
 	temp.x = ((float)(rand() % (int)(maxX - minX))) / 1000 + (minX/1000.0f);
 	temp.y = ((float)(rand() % (int)(maxY - minY))) / 1000 + (minY/1000.0f);

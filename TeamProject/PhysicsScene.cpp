@@ -10,27 +10,27 @@ PhysicsScene::PhysicsScene(bool& qG) : GameScene(qG) {
 }
 
 void PhysicsScene::ResetWorld() {
-	auto floor = new CubePrefab(Vector3(200, -40, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
+	auto floor = new CubePrefab(Vec3(200, -40, 200), Quaternion::AxisAngleToQuaternion(Vec3(0, 0, 0), 0), Vec3(700, 10, 1000), 0, 1.0f, 1.0f);
 
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
+	auto player = new PlayerPrefab(Vec3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vec3(0, 0, 0), 0), Vec3(10, 10, 10), 10, 0.2f, 0.4f);
 
 	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 	audio->SetPlayer(player);
 	audio->SetCamera(world->GetMainCamera());
 
-	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f,0.4f);
+	auto resource1 = new ResourcePrefab(Vec3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vec3(0, 0, 0), 0), Vec3(5, 5, 5), 10, 0.2f,0.4f);
 	resource1->SetName("Resource 1");
 
-	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f, 0.4f);
+	auto resource2 = new ResourcePrefab(Vec3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vec3(0, 0, 0), 0), Vec3(5, 5, 5), 10, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
   
-	auto des = new CubePrefab(Vector3(500, 100, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
+	auto des = new CubePrefab(Vec3(500, 100, 500), Quaternion::AxisAngleToQuaternion(Vec3(0, 0, 0), 0), Vec3(200, 200, 200), 0, 0.0f, 1.0f);
 	des->AddComponent<Destructible*>(new Destructible(des));
 	des->AddComponent<HealthManager*>(new HealthManager(des));
 	des->GetComponent<HealthManager*>()->SetHealth(8);
 	des->SetName("Destructible");
 
-	auto des2 = new CubePrefab(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
+	auto des2 = new CubePrefab(Vec3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vec3(0, 0, 0), 0), Vec3(200, 200, 200), 0, 0.0f, 1.0f);
 	des2->AddComponent<Destructible*>(new Destructible(des2));
 	des2->AddComponent<HealthManager*>(new HealthManager(des2));
 	des2->GetComponent<HealthManager*>()->SetHealth(8);

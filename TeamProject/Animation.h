@@ -10,9 +10,9 @@ typedef void(*KeyFrameFunction)(GameObject* obj);
 struct KeyFrame
 {
 	float time;
-	Vector3 localPosition;
-	Vector3 localScale;
-	Vector3 localRotation;
+	Vec3 localPosition;
+	Vec3 localScale;
+	Vec3 localRotation;
 	KeyFrameFunction keyFunction = nullptr;
 };
 

@@ -5,7 +5,7 @@ namespace NCL {
 	namespace CSC8503 {
 		class Particle {
 		public:
-			Particle(Vector3 Position, Vector3 Velocity, float Size) {
+			Particle(Vec3 Position, Vec3 Velocity, float Size) {
 				position = Position;
 				velocity = Velocity;
 				size = Size;
@@ -15,8 +15,8 @@ namespace NCL {
 			~Particle() {};
 
 			float lifetime;
-			Vector3 position;
-			Vector3 velocity;
+			Vec3 position;
+			Vec3 velocity;
 			float size;
 		};
 
@@ -24,7 +24,7 @@ namespace NCL {
 		{
 		public:
 			ParticleSystem(float Duration, int MaxParticles, int ParticleSpawnRate, float ParticleLifetime,
-				float ParticleStartSpeed, Vector3 ParticleSpeedDirection, Vector3 ParticleSpeedDeviation,
+				float ParticleStartSpeed, Vec3 ParticleSpeedDirection, Vec3 ParticleSpeedDeviation,
 				float ParticleStartSize, TextureBase* ParticleTexture);
 			ParticleSystem();
 			~ParticleSystem();
@@ -44,8 +44,8 @@ namespace NCL {
 
 			float particleLifetime;
 			float particleStartSpeed;
-			Vector3 particleSpeedDirection;
-			Vector3 particleSpeedDeviation;
+			Vec3 particleSpeedDirection;
+			Vec3 particleSpeedDeviation;
 			float particleStartSize;
 			TextureBase* particleTexture;
 

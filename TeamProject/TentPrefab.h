@@ -11,7 +11,7 @@ using namespace NCL::CSC8503;
 class TentPrefab : public GameObject
 {
 public:
-	TentPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient);
+	TentPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient);
 	virtual ~TentPrefab();
 };
 

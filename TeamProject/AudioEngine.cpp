@@ -88,7 +88,7 @@ void CAudioEngine::UnLoadSound(const std::string& strSoundName) // unloads sound
 	sgpImplementation->mSounds.erase(tFoundIt);
 }
 
-int CAudioEngine::PlaySounds(const string& strSoundName, const Vector3& vPosition, float fVolumedB) // (filename, world pos, volume) it pauses sound to comfirm it is set up correctly then unpauses and returns a channel ID
+int CAudioEngine::PlaySounds(const string& strSoundName, const Vec3& vPosition, float fVolumedB) // (filename, world pos, volume) it pauses sound to comfirm it is set up correctly then unpauses and returns a channel ID
 {
 	int nChannelId = sgpImplementation->mnNextChannelId++;
 	auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
@@ -121,7 +121,7 @@ int CAudioEngine::PlaySounds(const string& strSoundName, const Vector3& vPositio
 }
 
 
-void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition) // sets position of sound use as well as prevoius function
+void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vec3& vPosition) // sets position of sound use as well as prevoius function
 {
 	auto tFoundIt = sgpImplementation->mChannels.find(nChannelId);
 	if (tFoundIt == sgpImplementation->mChannels.end())
@@ -220,7 +220,7 @@ void CAudioEngine::SetEventParameter(const string &strEventName, const string &s
 	CAudioEngine::ErrorCheck(pParameter->setValue(fValue));
 }
 
-FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world sapce to fmod co ord
+FMOD_VECTOR CAudioEngine::VectorToFmod(const Vec3& vPosition) { // sets world sapce to fmod co ord
 	FMOD_VECTOR fVec;
 	fVec.x = vPosition.x;
 	fVec.y = vPosition.y;
@@ -234,7 +234,7 @@ void CAudioEngine::SetCamera(GameObject* cam) { // sets world sapce to fmod co o
 }
 
 void CAudioEngine::SetCameraPos() {
-	Vector3 vPosition = camera->GetTransform().GetWorldPosition();
+	Vec3 vPosition = camera->GetTransform().GetWorldPosition();
 	cPos.x = vPosition.x;
 	cPos.y = vPosition.y;
 	cPos.z = vPosition.z;

@@ -12,7 +12,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 	this->restitution = restitution;
 	this->friction = friction;
 
-	Vector3 dimensions = transform->GetLocalScale();
+	Vec3 dimensions = transform->GetLocalScale();
 	
 	if (type == cube) {
 		shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));

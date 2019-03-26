@@ -1,6 +1,6 @@
 #include "StallPrefab.h"
 
-StallPrefab::StallPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient)
+StallPrefab::StallPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient)
 {
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("vws.obj");
 	GameObject* go = GameObject::FromOBJ(objGeometry);

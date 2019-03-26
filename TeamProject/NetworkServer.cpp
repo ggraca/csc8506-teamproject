@@ -11,7 +11,7 @@ void NetworkServer::Update() {
 
 	for (auto o : objects) {
 		Transform t = o->GetGameObject()->GetTransform();
-		Vector3 pos = t.GetWorldPosition();
+		Vec3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetLocalOrientation();
 
 		size_t hashed = std::hash<std::string>{}(ToString(pos) + ToString(rot));
@@ -42,14 +42,14 @@ void NetworkServer::Update() {
 void NetworkServer::OnClientConnect(int source) {
 	for (auto o : objects) {
 		Transform t = o->GetGameObject()->GetTransform();
-		Vector3 pos = t.GetWorldPosition();
+		Vec3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetLocalOrientation();
 
 		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot);
 		server->SendGlobalPacket(p);
 	}
 
-	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+	auto player = new PlayerPrefab(Vec3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vec3(0, 0, 0), 0), Vec3(10, 10, 10), 100, 0.2f, 0.4f);
 	world->LateInstantiateRecursively(player);
 
 	AddPlayer(source, player);

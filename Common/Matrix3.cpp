@@ -21,7 +21,7 @@ Matrix3::Matrix3(float elements[16]) {
 	values[8] = elements[10];
 }
 
-Matrix3::Matrix3(const Matrix4 &m4) {
+Matrix3::Matrix3(const Mat4 &m4) {
 	values[0] = m4.values[0];
 	values[1] = m4.values[1];
 	values[2] = m4.values[2];
@@ -40,10 +40,10 @@ Matrix3::~Matrix3(void)	{
 
 }
 
-Matrix3 Matrix3::Rotation(float degrees, const Vector3 &inaxis)	 {
+Matrix3 Matrix3::Rotation(float degrees, const Vec3 &inaxis)	 {
 	Matrix3 m;
 
-	Vector3 axis = inaxis;
+	Vec3 axis = inaxis;
 
 	axis.Normalise();
 
@@ -65,7 +65,7 @@ Matrix3 Matrix3::Rotation(float degrees, const Vector3 &inaxis)	 {
 	return m;
 }
 
-Matrix3 Matrix3::Scale( const Vector3 &scale )	{
+Matrix3 Matrix3::Scale( const Vec3 &scale )	{
 	Matrix3 m;
 
 	m.values[0]  = scale.x;
@@ -92,12 +92,12 @@ void	Matrix3::ToIdentity() {
 }
 
 //http://staff.city.ac.uk/~sbbh653/publications/euler.pdf
-Vector3 Matrix3::ToEuler() const {
+Vec3 Matrix3::ToEuler() const {
 	//float h = (float)RadiansToDegrees(atan2(-values[6], values[0]));
 	//float b = (float)RadiansToDegrees(atan2(-values[5], values[4]));
 	//float a = (float)RadiansToDegrees(asin(values[3]));
 
-	//return Vector3(a, h, b);
+	//return Vec3(a, h, b);
 
 	//psi  = x;
 	//theta = y;
@@ -123,7 +123,7 @@ Vector3 Matrix3::ToEuler() const {
 		theta1 = Maths::RadiansToDegrees(theta1);
 		theta2 = Maths::RadiansToDegrees(theta2);
 
-		return Vector3(psi1, theta1, phi1);
+		return Vec3(psi1, theta1, phi1);
 	}
 	else {
 		float phi	= 0.0f;	//x
@@ -143,7 +143,7 @@ Vector3 Matrix3::ToEuler() const {
 			psi = phi + delta;
 		}
 
-		return Vector3(Maths::RadiansToDegrees(psi), Maths::RadiansToDegrees(theta), Maths::RadiansToDegrees(phi));
+		return Vec3(Maths::RadiansToDegrees(psi), Maths::RadiansToDegrees(theta), Maths::RadiansToDegrees(phi));
 	}
 
 	//float sp = values[2];
@@ -156,7 +156,7 @@ Vector3 Matrix3::ToEuler() const {
 	//float cp = cos(theta);
 
 
-	//Vector3 pyr;
+	//Vec3 pyr;
 
 	//if (cp > 0.01f) {
 	//	pyr.x = RadiansToDegrees(theta);
@@ -175,7 +175,7 @@ Vector3 Matrix3::ToEuler() const {
 	//return pyr;
 }
 
-Matrix3 Matrix3::FromEuler(const Vector3 &euler) {
+Matrix3 Matrix3::FromEuler(const Vec3 &euler) {
 	Matrix3 m;
 
 	float heading	= Maths::DegreesToRadians(euler.y);

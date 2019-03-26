@@ -5,12 +5,12 @@
 
 struct InstantiatePacket : public GamePacket {
 	int prefabId, networkId;
-	Vector3 position;
+	Vec3 position;
 	Quaternion rotation;
 
-	InstantiatePacket(int pid, int nid, Vector3 pos, Quaternion rot) {
+	InstantiatePacket(int pid, int nid, Vec3 pos, Quaternion rot) {
 		type = BasicNetworkMessages::InstantiateMessage;
-		size = sizeof(int) * 2 + sizeof(Vector3) + sizeof(Quaternion);
+		size = sizeof(int) * 2 + sizeof(Vec3) + sizeof(Quaternion);
 
 		networkId = nid;
 		prefabId = pid;
@@ -32,12 +32,12 @@ struct DestroyPacket : public GamePacket {
 
 struct ObjectUpdatePacket : public GamePacket {
 	int networkId;
-	Vector3 position;
+	Vec3 position;
 	Quaternion rotation;
 
-	ObjectUpdatePacket(int nid, Vector3 pos, Quaternion rot) {
+	ObjectUpdatePacket(int nid, Vec3 pos, Quaternion rot) {
 		type = BasicNetworkMessages::ObjectUpdateMessage;
-		size = sizeof(int) + sizeof(Vector3) + sizeof(Quaternion);
+		size = sizeof(int) + sizeof(Vec3) + sizeof(Quaternion);
 
 		networkId = nid;
 		position = pos;
@@ -48,12 +48,12 @@ struct ObjectUpdatePacket : public GamePacket {
 struct PlayerInputPacket : public GamePacket {
 	short keysDown;
 	short keysPressed;
-	Vector3 cameraPosition;
+	Vec3 cameraPosition;
 	Quaternion cameraRotation;
 
-	PlayerInputPacket(short kd, short kp, Vector3 cameraPos, Quaternion cameraRot) {
+	PlayerInputPacket(short kd, short kp, Vec3 cameraPos, Quaternion cameraRot) {
 		type = BasicNetworkMessages::PlayerInputMessage;
-		size = sizeof(short) * 2 + sizeof(Vector3) + sizeof(Quaternion);
+		size = sizeof(short) * 2 + sizeof(Vec3) + sizeof(Quaternion);
 
 		keysDown = kd;
 		keysPressed = kp;

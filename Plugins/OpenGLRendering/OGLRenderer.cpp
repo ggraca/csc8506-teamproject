@@ -81,15 +81,15 @@ void OGLRenderer::EndFrame()		{
 void OGLRenderer::GenerateIrradianceMap(TextureBase* skybox, TextureBase* irradianceMap, ShaderBase* convShader, MeshGeometry* cube, void* ConvFBO) {
 	BindShader(convShader);
 
-	Matrix4 captureProjection = Matrix4::Perspective(0.1f, 10.0f, 1.0f, 90.0f);
-	Matrix4 captureViews[] =
+	Mat4 captureProjection = Mat4::Perspective(0.1f, 10.0f, 1.0f, 90.0f);
+	Mat4 captureViews[] =
 	{
-	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f,   0.0f,  0.0f), Vector3(0.0f, -1.0f,  0.0f)),
-	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(-1.0f,  0.0f,  0.0f), Vector3(0.0f, -1.0f,  0.0f)),
-	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   1.0f,  0.0f), Vector3(0.0f,  0.0f,  1.0f)),
-	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,  -1.0f,  0.0f), Vector3(0.0f,  0.0f, -1.0f)),
-	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   0.0f,  1.0f), Vector3(0.0f, -1.0f,  0.0f)),
-	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   0.0f, -1.0f), Vector3(0.0f, -1.0f,  0.0f))
+	   Mat4::BuildViewMatrix(Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f,   0.0f,  0.0f), Vec3(0.0f, -1.0f,  0.0f)),
+	   Mat4::BuildViewMatrix(Vec3(0.0f, 0.0f, 0.0f), Vec3(-1.0f,  0.0f,  0.0f), Vec3(0.0f, -1.0f,  0.0f)),
+	   Mat4::BuildViewMatrix(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f,   1.0f,  0.0f), Vec3(0.0f,  0.0f,  1.0f)),
+	   Mat4::BuildViewMatrix(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f,  -1.0f,  0.0f), Vec3(0.0f,  0.0f, -1.0f)),
+	   Mat4::BuildViewMatrix(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f,   0.0f,  1.0f), Vec3(0.0f, -1.0f,  0.0f)),
+	   Mat4::BuildViewMatrix(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f,   0.0f, -1.0f), Vec3(0.0f, -1.0f,  0.0f))
 	};
 
 	BindMatrix4ToShader(captureProjection, "projMatrix");
@@ -267,7 +267,7 @@ void OGLRenderer::BindFloatToShader(const float val, const std::string& uniform)
 	glUniform1f(slot, val);
 }
 
-void OGLRenderer::BindVector2ToShader(const Vector2& val, const std::string& uniform) const {
+void OGLRenderer::BindVector2ToShader(const Vec2& val, const std::string& uniform) const {
 	if (!boundShader) {
 		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
 		return;//Debug message time!
@@ -282,7 +282,7 @@ void OGLRenderer::BindVector2ToShader(const Vector2& val, const std::string& uni
 	glUniform2fv(slot, 1, (float*)&val);
 }
 
-void OGLRenderer::BindVector3ToShader(const Vector3& val, const std::string& uniform) const {
+void OGLRenderer::BindVector3ToShader(const Vec3& val, const std::string& uniform) const {
 	if (!boundShader) {
 		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
 		return;//Debug message time!
@@ -297,7 +297,7 @@ void OGLRenderer::BindVector3ToShader(const Vector3& val, const std::string& uni
 	glUniform3fv(slot, 1, (float*)&val);
 }
 
-void OGLRenderer::BindVector4ToShader(const Vector4& val, const std::string& uniform) const {
+void OGLRenderer::BindVector4ToShader(const Vec4& val, const std::string& uniform) const {
 	if (!boundShader) {
 		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
 		return;//Debug message time!
@@ -312,7 +312,7 @@ void OGLRenderer::BindVector4ToShader(const Vector4& val, const std::string& uni
 	glUniform4fv(slot, 1, (float*)&val);
 }
 
-void OGLRenderer::BindMatrix4ToShader(const Matrix4& val, const std::string& uniform) const {
+void OGLRenderer::BindMatrix4ToShader(const Mat4& val, const std::string& uniform) const {
 	if (!boundShader) {
 		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
 		return;//Debug message time!
@@ -383,10 +383,10 @@ void OGLRenderer::SetViewport(int x, int y, int width, int height) const {
 	glViewport(x, y, width, height);
 }
 
-//void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const Vector4& colour) {
+//void OGLRenderer::DrawString(const std::string& text, const Vec2&pos, const Vec4& colour) {
 //	DebugString s;
 //	s.colour = colour;
-//	s.ndcPos = (pos / Vector2((float)currentWidth, (float)currentHeight));
+//	s.ndcPos = (pos / Vec2((float)currentWidth, (float)currentHeight));
 //	
 //	s.ndcPos.x = (s.ndcPos.x * 2.0f) - 1.0f;
 //	s.ndcPos.y = (s.ndcPos.y * 2.0f) - 1.0f;
@@ -395,10 +395,10 @@ void OGLRenderer::SetViewport(int x, int y, int width, int height) const {
 //	debugStrings.emplace_back(s);
 //}
 
-void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const Vector4& colour, const float& size) {
+void OGLRenderer::DrawString(const std::string& text, const Vec2&pos, const Vec4& colour, const float& size) {
 	DebugString s;
 	s.colour = colour;
-	s.ndcPos = (pos / Vector2((float)currentWidth, (float)currentHeight));
+	s.ndcPos = (pos / Vec2((float)currentWidth, (float)currentHeight));
 
 	s.ndcPos.x = (s.ndcPos.x * 2.0f) - 1.0f;
 	s.ndcPos.y = (s.ndcPos.y * 2.0f) - 1.0f;
@@ -407,7 +407,7 @@ void OGLRenderer::DrawString(const std::string& text, const Vector2&pos, const V
 	debugStrings.emplace_back(s);
 }
 
-void OGLRenderer::DrawLine(const Vector3& start, const Vector3& end, const Vector4& colour) {
+void OGLRenderer::DrawLine(const Vec3& start, const Vec3& end, const Vec4& colour) {
 	DebugLine l;
 	l.start		= start;
 	l.end		= end;
@@ -435,9 +435,9 @@ void OGLRenderer::DrawDebugData() {
 }
 
 void OGLRenderer::DrawDebugStrings() {
-	vector<Vector3> vertPos;
-	vector<Vector2> vertTex;
-	vector<Vector4> vertColours;
+	vector<Vec3> vertPos;
+	vector<Vec2> vertTex;
+	vector<Vec4> vertColours;
 
 	for (DebugString&s : debugStrings) {
 		font->BuildVerticesForString(s.text, s.ndcPos, s.colour, vertPos, vertTex, vertColours, s.size);
@@ -459,8 +459,8 @@ void OGLRenderer::DrawDebugStrings() {
 }
 
 void OGLRenderer::DrawDebugLines() {
-	vector<Vector3> vertPos;
-	vector<Vector4> vertCol;
+	vector<Vec3> vertPos;
+	vector<Vec4> vertCol;
 
 	for (DebugLine&s : debugLines) {
 		vertPos.emplace_back(s.start);

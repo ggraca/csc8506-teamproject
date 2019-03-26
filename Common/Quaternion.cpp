@@ -21,7 +21,7 @@ Quaternion::Quaternion(float x, float y, float z, float w)
 	this->w = w;
 }
 
-Quaternion::Quaternion(const Vector3& vector, float w) {
+Quaternion::Quaternion(const Vec3& vector, float w) {
 	this->x = vector.x;
 	this->y = vector.y;
 	this->z = vector.z;
@@ -49,8 +49,8 @@ void Quaternion::Normalise(){
 	}
 }
 
-Matrix4 Quaternion::ToMatrix4() const{
-	return Matrix4(ToMatrix3());
+Mat4 Quaternion::ToMatrix4() const{
+	return Mat4(ToMatrix3());
 }
 
 Matrix3 Quaternion::ToMatrix3() const {
@@ -102,7 +102,7 @@ Quaternion Quaternion::EulerAnglesToQuaternion(float roll, float yaw, float pitc
 	return q;
 };
 
-Quaternion Quaternion::AxisAngleToQuaternion(const Vector3& vector, float degrees)	{
+Quaternion Quaternion::AxisAngleToQuaternion(const Vec3& vector, float degrees)	{
 	float theta = (float)Maths::DegreesToRadians(degrees);
 	float result = (float)sin( theta / 2.0f );
 
@@ -124,7 +124,7 @@ Quaternion Quaternion::Conjugate() const
 	return Quaternion(-x,-y,-z,w);
 }
 
-Quaternion Quaternion::FromMatrix(const Matrix4 &m) {
+Quaternion Quaternion::FromMatrix(const Mat4 &m) {
 	Quaternion q;
 
 	q.w = sqrt(std::max(0.0f, (1.0f + m.values[0] + m.values[5] + m.values[10])))  * 0.5f;
@@ -165,7 +165,7 @@ Quaternion Quaternion::FromMatrix(const Matrix3 &m) {
 	return q;
 }
 
-void Quaternion::RotateByWorldAngles(const Vector3 angles) {
+void Quaternion::RotateByWorldAngles(const Vec3 angles) {
 
 	//	orientation = orientation + (Quaternion(angVel * dt * 0.5f, 0.0f) * orientation);
 }
@@ -196,8 +196,8 @@ Quaternion Quaternion::Slerp(const Quaternion &from, const Quaternion &to, float
 
 //http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 //Verified! Different values to above, due to difference between x/z being 'forward'
-Vector3 Quaternion::ToEuler() const {
-	Vector3 euler;
+Vec3 Quaternion::ToEuler() const {
+	Vec3 euler;
 
 	float t = x*y + z*w;
 

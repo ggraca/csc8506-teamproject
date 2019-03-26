@@ -6,7 +6,7 @@ using namespace NCL;
 using namespace NCL::Rendering;
 using namespace NCL::PS4;
 
-RenderObject::RenderObject()
+RenderObjectPS4::RenderObjectPS4()
 {
 	mesh	= nullptr;
 	shader	= nullptr;
@@ -16,21 +16,21 @@ RenderObject::RenderObject()
 	}
 }
 
-RenderObject::~RenderObject()
+RenderObjectPS4::~RenderObjectPS4()
 {
 
 }
 
-RenderObject::RenderObject(MeshGeometry* m, NCL::Rendering::ShaderBase* s, NCL::Rendering::TextureBase* t) {
+RenderObjectPS4::RenderObjectPS4(MeshGeometry* m, NCL::Rendering::ShaderBase* s, NCL::Rendering::TextureBase* t) {
 	mesh		= m;
 	shader		= s;
 	textures[0] = t;
 }
 
-const Maths::Matrix4& RenderObject::GetLocalTransform() const {
+const Maths::Mat4& RenderObjectPS4::GetLocalTransform() const {
 	return localTransform;
 }
 
-void	RenderObject::SetLocalTransform(const Maths::Matrix4& mat) {
+void	RenderObjectPS4::SetLocalTransform(const Maths::Mat4& mat) {
 	localTransform = mat;
 }

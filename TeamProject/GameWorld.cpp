@@ -16,7 +16,7 @@ GameWorld::GameWorld()	{
 
 void GameWorld::InitCamera()
 {
-	cameraOffset = Vector3(0, 70, -150);
+	cameraOffset = Vec3(0, 70, -150);
 
 	mainCamera = new GameObject();
 	mainCamera->AddComponent<CameraControl*>((Component*)new CameraControl(mainCamera));
@@ -31,7 +31,7 @@ void GameWorld::InitCamera()
 
 void GameWorld::SwitchToFPS()
 {
-	cameraOffset = Vector3(0, 0, 10);
+	cameraOffset = Vec3(0, 0, 10);
 	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
 
 	if (child)
@@ -43,7 +43,7 @@ void GameWorld::SwitchToFPS()
 
 void GameWorld::SwitchToTPS()
 {
-	cameraOffset = Vector3(0, 70, -150);
+	cameraOffset = Vec3(0, 70, -150);
 	Transform * child = mainCamera->GetTransform().GetChildrenList()[0];
 
 	if (child)
@@ -207,12 +207,12 @@ void GameWorld::CallInitialObjectFunctions(NCL::CSC8503::GameObject * o)
 	o->SetUpInitialScripts();	
 }
 
-const btCollisionObject* GameWorld::Raycast(const Vector3 & start, const Vector3& end, Vector3& newEnd)
+const btCollisionObject* GameWorld::Raycast(const Vec3 & start, const Vec3& end, Vec3& newEnd)
 {
 	return physics->Raycast(start, end, newEnd);
 }
 
-const btCollisionObject* GameWorld::Raycast(const Vector3 & start, const Vector3& dir, float magnitude, Vector3& newEnd)
+const btCollisionObject* GameWorld::Raycast(const Vec3 & start, const Vec3& dir, float magnitude, Vec3& newEnd)
 {
 	return physics->RaycastPosDir(start, dir, magnitude,newEnd);
 }

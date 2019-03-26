@@ -4,10 +4,10 @@ using namespace NCL::CSC8503;
 
 Transform::Transform()	{
 	parent		= nullptr;
-	localScale	= Vector3(1, 1, 1);
+	localScale	= Vec3(1, 1, 1);
 }
 
-Transform::Transform(const Vector3& position, Transform* p) {
+Transform::Transform(const Vec3& position, Transform* p) {
 	parent = p;
 	SetWorldPosition(position);
 }
@@ -17,9 +17,9 @@ Transform::~Transform(){
 
 void Transform::UpdateMatrices() {
 	localMatrix =
-		Matrix4::Translation(localPosition) *
+		Mat4::Translation(localPosition) *
 		localOrientation.ToMatrix4() *
-		Matrix4::Scale(localScale);
+		Mat4::Scale(localScale);
 
 	if (parent) {
 		worldMatrix			= parent->GetWorldMatrix() * localMatrix;
@@ -36,10 +36,10 @@ vector<Transform*> Transform::GetChildrenList()
 	return children;
 }
 
-void Transform::SetWorldPosition(const Vector3& worldPos) {
+void Transform::SetWorldPosition(const Vec3& worldPos) {
 	if (parent) {
-		Vector3 parentPos = parent->GetWorldMatrix().GetPositionVector();
-		Vector3 posDiff = parentPos - worldPos;
+		Vec3 parentPos = parent->GetWorldMatrix().GetPositionVector();
+		Vec3 posDiff = parentPos - worldPos;
 
 		localPosition = posDiff;
 		localMatrix.SetPositionVector(posDiff);
@@ -50,11 +50,11 @@ void Transform::SetWorldPosition(const Vector3& worldPos) {
 	}
 }
 
-void Transform::SetLocalPosition(const Vector3& localPos) {
+void Transform::SetLocalPosition(const Vec3& localPos) {
 	localPosition = localPos;
 }
 
-void Transform::SetWorldScale(const Vector3& worldScale) {
+void Transform::SetWorldScale(const Vec3& worldScale) {
 	if (parent) {
 
 	}
@@ -63,7 +63,7 @@ void Transform::SetWorldScale(const Vector3& worldScale) {
 	}
 }
 
-void Transform::SetLocalScale(const Vector3& newScale) {
+void Transform::SetLocalScale(const Vec3& newScale) {
 	localScale = newScale;
 }
 
@@ -81,7 +81,7 @@ void Transform::ForceUpdateBulletWorldTransform(btTransform &temp)
 	body->setWorldTransform(temp);
 }
 
-void Transform::ForceUpdateWorldPosition(Vector3 pos)
+void Transform::ForceUpdateWorldPosition(Vec3 pos)
 {
 	PhysicsObject * phy = gameObject->GetComponent<PhysicsObject*>();
 
@@ -97,13 +97,13 @@ void Transform::ForceUpdateWorldPosition(Vector3 pos)
 	ForceUpdateBulletWorldTransform(temp);
 }
 
-void Transform::ForceUpdateWorldPositionWithTransform(Vector3 pos)
+void Transform::ForceUpdateWorldPositionWithTransform(Vec3 pos)
 {
 	SetWorldPosition(pos);
 	ForceUpdateWorldPosition(pos);
 }
 
-void Transform::ForceUpdateLocalPositionWithTransform(Vector3 pos)
+void Transform::ForceUpdateLocalPositionWithTransform(Vec3 pos)
 {
 	SetLocalPosition(pos);
 	UpdateMatrices();
@@ -143,7 +143,7 @@ GameObject * Transform::GetGameObject()
 	return gameObject;
 }
 
-void Transform::ForceUpdateScale(Vector3 scale)
+void Transform::ForceUpdateScale(Vec3 scale)
 {
 	PhysicsObject * phy = gameObject->GetComponent<PhysicsObject*>();
 
@@ -171,7 +171,7 @@ void Transform::ForceUpdateScale(Vector3 scale)
 	}
 }
 
-void Transform::ForceUpdateScaleWithTransform(Vector3 scale)
+void Transform::ForceUpdateScaleWithTransform(Vec3 scale)
 {
 	SetLocalScale(scale);
 	UpdateMatrices();

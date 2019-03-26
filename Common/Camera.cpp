@@ -31,17 +31,17 @@ void Camera::UpdateCamera(float dt) {
 	float frameSpeed = 100 * dt;
 
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_W)) {
-		position += NCL::Maths::Matrix4::Rotation(yaw, NCL::Maths::Vector3(0, 1, 0)) * NCL::Maths::Matrix4::Rotation(pitch, NCL::Maths::Vector3(1, 0, 0)) *  NCL::Maths::Vector3(0, 0, -1) * frameSpeed * speedz;
+		position += NCL::Maths::Mat4::Rotation(yaw, NCL::Maths::Vec3(0, 1, 0)) * NCL::Maths::Mat4::Rotation(pitch, NCL::Maths::Vec3(1, 0, 0)) *  NCL::Maths::Vec3(0, 0, -1) * frameSpeed * speedz;
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_S)) {
-		position -= NCL::Maths::Matrix4::Rotation(yaw, NCL::Maths::Vector3(0, 1, 0)) *  NCL::Maths::Matrix4::Rotation(pitch, NCL::Maths::Vector3(1, 0, 0)) *  NCL::Maths::Vector3(0, 0, -1) * frameSpeed * speedz;
+		position -= NCL::Maths::Mat4::Rotation(yaw, NCL::Maths::Vec3(0, 1, 0)) *  NCL::Maths::Mat4::Rotation(pitch, NCL::Maths::Vec3(1, 0, 0)) *  NCL::Maths::Vec3(0, 0, -1) * frameSpeed * speedz;
 	}
 
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_A)) {
-		position += NCL::Maths::Matrix4::Rotation(yaw, NCL::Maths::Vector3(0, 1, 0)) *   NCL::Maths::Vector3(-1, 0, 0) * frameSpeed * speedx;
+		position += NCL::Maths::Mat4::Rotation(yaw, NCL::Maths::Vec3(0, 1, 0)) *   NCL::Maths::Vec3(-1, 0, 0) * frameSpeed * speedx;
 	}
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_D)) {
-		position -= NCL::Maths::Matrix4::Rotation(yaw, NCL::Maths::Vector3(0, 1, 0)) *  NCL::Maths::Vector3(-1, 0, 0) * frameSpeed * speedx;
+		position -= NCL::Maths::Mat4::Rotation(yaw, NCL::Maths::Vec3(0, 1, 0)) *  NCL::Maths::Vec3(-1, 0, 0) * frameSpeed * speedx;
 	}
 
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_SHIFT)) {
@@ -57,24 +57,24 @@ void Camera::UpdateCamera(float dt) {
 Generates a view matrix for the camera's viewpoint. This matrix can be sent
 straight to the shader...it's already an 'inverse camera' matrix.
 */
-NCL::Maths::Matrix4 Camera::BuildViewMatrix() const {
+NCL::Maths::Mat4 Camera::BuildViewMatrix() const {
 	//Why do a complicated matrix inversion, when we can just generate the matrix
 	//using the negative values ;). The matrix multiplication order is important!
-	return	 NCL::Maths::Matrix4::Rotation(-pitch, NCL::Maths::Vector3(1, 0, 0)) *
-		NCL::Maths::Matrix4::Rotation(-yaw, NCL::Maths::Vector3(0, 1, 0)) *
-		NCL::Maths::Matrix4::Translation(-position);
+	return	 NCL::Maths::Mat4::Rotation(-pitch, NCL::Maths::Vec3(1, 0, 0)) *
+		NCL::Maths::Mat4::Rotation(-yaw, NCL::Maths::Vec3(0, 1, 0)) *
+		NCL::Maths::Mat4::Translation(-position);
 };
 
-NCL::Maths::Matrix4 Camera::BuildProjectionMatrix(float currentAspect) const {
+NCL::Maths::Mat4 Camera::BuildProjectionMatrix(float currentAspect) const {
 	if (camType == CameraType::Orthographic) {
-		return  NCL::Maths::Matrix4::Orthographic(nearPlane, farPlane, right, left, top, bottom);
+		return  NCL::Maths::Mat4::Orthographic(nearPlane, farPlane, right, left, top, bottom);
 	}
 	//else if (camType == CameraType::Perspective) {
-		return  NCL::Maths::Matrix4::Perspective(nearPlane, farPlane, currentAspect, fov);
+		return  NCL::Maths::Mat4::Perspective(nearPlane, farPlane, currentAspect, fov);
 	//}
 }
 
-Camera Camera::BuildPerspectiveCamera(const  NCL::Maths::Vector3& pos, float pitch, float yaw, float fov, float nearPlane, float farPlane) {
+Camera Camera::BuildPerspectiveCamera(const  NCL::Maths::Vec3& pos, float pitch, float yaw, float fov, float nearPlane, float farPlane) {
 	Camera c;
 	c.camType	= CameraType::Perspective;
 	c.position	= pos;
@@ -87,7 +87,7 @@ Camera Camera::BuildPerspectiveCamera(const  NCL::Maths::Vector3& pos, float pit
 
 	return c;
 }
-Camera Camera::BuildOrthoCamera(const  NCL::Maths::Vector3& pos, float pitch, float yaw, float left, float right, float top, float bottom, float nearPlane, float farPlane) {
+Camera Camera::BuildOrthoCamera(const  NCL::Maths::Vec3& pos, float pitch, float yaw, float left, float right, float top, float bottom, float nearPlane, float farPlane) {
 	Camera c;
 	c.camType	= CameraType::Orthographic;
 	c.position	= pos;
