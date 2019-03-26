@@ -18,7 +18,7 @@ using namespace Rendering;
 Window*		Window::window		= nullptr;
 Keyboard*	Window::keyboard	= nullptr;
 Mouse*		Window::mouse		= nullptr;
-InputBase*   Window::gamepad	= nullptr;
+PS4::InputBase*   Window::gamepad	= nullptr;
 GameTimer*	Window::timer		= nullptr;
 
 Window::Window()	{

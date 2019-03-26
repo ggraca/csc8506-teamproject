@@ -1,4 +1,5 @@
 #include "InputBase.h"
+#include <string>
 
 using namespace NCL::PS4;
 
@@ -41,4 +42,18 @@ bool	InputBase::GetButtonDown(unsigned int i) {
 		return false;
 	}
 	return buttons[i] > 0.5f ? true : false;
+}
+
+void InputBase::UpdateFrameState(float msec) {
+	memcpy(holdStates, keyStates, MAX_BUTTONS * sizeof(bool));
+}
+
+void InputBase::Sleep() {
+	isAwake = false;
+	memset(keyStates, 0, MAX_BUTTONS * sizeof(bool));
+	memset(holdStates, 0, MAX_BUTTONS * sizeof(bool));
+}
+
+void InputBase::Wake() {
+	isAwake = true;
 }

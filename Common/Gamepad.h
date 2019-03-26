@@ -1,5 +1,6 @@
 #pragma once
 #include "pad.h"
+#include "../Plugins/PlayStation4/InputBase.h"
 
 namespace NCL
 {
@@ -27,14 +28,14 @@ namespace NCL
 		Gamepad();
 		virtual ~Gamepad() {}
 
-		void UpdateFrameState(float msec);
+		//void UpdateFrameState(float msec);
 
 		void Sleep();
 		void Wake();
 
 		bool isAwake;
-		bool keyStates[GAMEPAD_MAX];		//Is the key down?
-		bool holdStates[GAMEPAD_MAX];		//Has the key been down for multiple updates?
+		bool keyStates[MAX_BUTTONS];		//Is the key down?
+		bool holdStates[MAX_BUTTONS];		//Has the key been down for multiple updates?
 	};
 
 }

@@ -114,9 +114,6 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Others</Filter>
     </ClCompile>
-    <ClCompile Include="Gamepad.cpp">
-      <Filter>Windowing and Input</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -223,9 +220,6 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Others</Filter>
-    </ClInclude>
-    <ClInclude Include="Gamepad.h">
-      <Filter>Windowing and Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

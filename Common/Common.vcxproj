@@ -204,7 +204,6 @@
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameClient.cpp" />
-    <ClCompile Include="Gamepad.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Keyboard.cpp" />
@@ -237,7 +236,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="GameClient.h" />
-    <ClInclude Include="Gamepad.h" />
     <ClInclude Include="GameServer.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Keyboard.h" />
