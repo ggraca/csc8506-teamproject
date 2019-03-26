@@ -85,8 +85,7 @@ enet_address_set_host_ip (ENetAddress * address, const char * name)
     return 0;
 }
 
-int
-enet_address_set_host (ENetAddress * address, const char * name)
+int enet_address_set_host (ENetAddress * address, const char * name)
 {
     struct hostent * hostEntry;
 
@@ -100,8 +99,7 @@ enet_address_set_host (ENetAddress * address, const char * name)
     return 0;
 }
 
-int
-enet_address_get_host_ip (const ENetAddress * address, char * name, size_t nameLength)
+int enet_address_get_host_ip (const ENetAddress * address, char * name, size_t nameLength)
 {
     char * addr = inet_ntoa (* (struct in_addr *) & address -> host);
     if (addr == NULL)

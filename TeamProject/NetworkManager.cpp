@@ -52,9 +52,10 @@ void NetworkManager::CreateClient()
 	
 	int address[20];
 
-	bool canConnect = false;
+	bool canConnect = client->Connect(10, 70, 33, 141, port);
+	if (canConnect) std::cout << "Connected to Server" << std::endl;
 
-	file.open(Assets::DATADIR + "ip.txt");
+	/*file.open(Assets::DATADIR + "ip.txt");
 
 	if (file.is_open())
 	{
@@ -75,12 +76,12 @@ void NetworkManager::CreateClient()
 		canConnect = client->Connect(address[i], address[i+1], address[i+2], address[i+3], port);
 		if (canConnect)
 		{
-			std::cout << "Conneced to: " << "Address:  " << address[i] << ", " << address[i + 1] << ", " << address[i + 2] << ", " << address[i + 3] << ", " << port << " succeeded. " << std::endl;
-			break;
+			std::cout << "Connected to: " << address[i] << ", " << address[i + 1] << ", " << address[i + 2] << ", " << address[i + 3] << ", " << port << " succeeded. " << std::endl;
+		
 		}
 		else
 		{
 			std::cout << "Address:  " << address[i] << ", " << address[i + 1] << ", " << address[i + 2] << ", " << address[i + 3] << ", " << port << " failed. " << std::endl;
 		}
-	}
+	}*/
 }

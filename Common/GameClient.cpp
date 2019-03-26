@@ -7,6 +7,11 @@ using namespace NCL::Networking;
 
 GameClient::GameClient()	{
 	netHandle = enet_host_create(nullptr, 1, 1, 0, 0);
+	ENetAddress address2;
+	address2.host = (141 << 24) | (33 << 16) | (70 << 8) | 10;
+	address2.port = 1234;
+	
+	netHandle->address = address2;
 }
 
 GameClient::~GameClient()	{
@@ -16,11 +21,12 @@ GameClient::~GameClient()	{
 }
 
 bool GameClient::Connect(uint8_t a, uint8_t b, uint8_t c, uint8_t d, int portNum) {
-	ENetAddress address;
-	address.port = portNum;
-	address.host = (d << 24) | (c << 16) | (b << 8) | a;
+	ENetAddress* address = new ENetAddress();
+	address->port = portNum;
+	address->host = (d << 24) | (c << 16) | (b << 8) | a;
 
-	netPeer = enet_host_connect(netHandle, &address, 2, 0);
+	netPeer = enet_host_connect(netHandle, address, 2, 0);
+	//enet_address_set_host(address, "server");
 	return netPeer != nullptr;
 }
 

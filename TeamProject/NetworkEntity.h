@@ -11,7 +11,7 @@ struct PlayerState {
 		resources = res;
 	}
 	
-	int health;
+	int health = 100;
 	int resources;
 };
 
