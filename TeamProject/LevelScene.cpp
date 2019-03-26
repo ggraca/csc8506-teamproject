@@ -74,20 +74,20 @@ void LevelScene::ResetWorld() {
 	des->GetComponent<HealthManager*>()->SetHealth(0);
 	world->Instantiate(des);
 	
-	world->Instantiate(resource1);
-	world->Instantiate(resource2);
-	world->Instantiate(resource3);
-	world->Instantiate(resource4);
-	world->Instantiate(resource5);
-	world->Instantiate(resource6);
-	world->Instantiate(floor);
-	world->InstantiateRecursively(player);
+	world->LateInstantiate(resource1);
+	world->LateInstantiate(resource2);
+	world->LateInstantiate(resource3);
+	world->LateInstantiate(resource4);
+	world->LateInstantiate(resource5);
+	world->LateInstantiate(resource6);
+	world->LateInstantiate(floor);
+	world->LateInstantiateRecursively(player);
 
 	//This 2
 	//world->Instantiate(player);
 
 	//This 3
-	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+	//world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
 	LoadWorld();
 	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();
@@ -142,7 +142,7 @@ void LevelScene::LoadWorld() {
 				case 'b' :new CastlePrefab(Vector3(0.03f, 0.03f, 0.03f), Vector3(size*i, -30.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
 					break;
 				case '1' :new TowerPrefab(Vector3(50.0f, 100.0f, 50.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-						 //new CannonPrefab(Vector3(2.0f, 2.0f, 2.0f), Vector3(size*i, 300.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(1.0f, 0.0f, 0.0f), 0.0f));
+						 new CannonPrefab(Vector3(2.0f, 2.0f, 2.0f), Vector3(size*i, 300.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(1.0f, 0.0f, 0.0f), 0.0f));
 					break;
 				case '2' :new DWallPrefab(Vector3(1.4f, 1.0f, 1.4f), Vector3(size*i, 0.0f, size*j + 37.5f), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), -90.0f));
 					break;
@@ -159,9 +159,6 @@ void LevelScene::LoadWorld() {
 				case '8' :new DWallPrefab(Vector3(1.6f, 1.0f, 1.6f), Vector3(size*i + 37.5f, 0.0f, size*j - 37.5f), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 225.0f));
 					break;
 				case '9' :new DWallPrefab(Vector3(1.6f, 1.0f, 1.6f), Vector3(size*i - 37.5f, 0.0f, size*j + 37.5f), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 45.0f));
-					break;
-				case 'r':new TowerPrefab(Vector3(50.0f, 100.0f, 50.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-					new CannonPrefab(Vector3(2.0f, 2.0f, 2.0f), Vector3(size*i, 300.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(1.0f, 0.0f, 0.0f), 0.0f));
 					break;
 			}
 		}
