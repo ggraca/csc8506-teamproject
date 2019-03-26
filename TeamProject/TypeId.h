@@ -1,5 +1,5 @@
 #pragma once
-
+#include <typeinfo>
 class TypeId
 {
 public:

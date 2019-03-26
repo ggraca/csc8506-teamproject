@@ -11,6 +11,6 @@ using namespace NCL::CSC8503;
 class CartPrefab : public GameObject
 {
 public:
-	CartPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient);
+	CartPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient);
 	virtual ~CartPrefab();
 };

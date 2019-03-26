@@ -1,4 +1,5 @@
 #include "SimpleFont.h"
+#ifdef _WIN32
 #include "TextureLoader.h"
 #include "Assets.h"
 #include <fstream>
@@ -6,6 +7,7 @@
 #include "../Common/Vector2.h"
 #include "../Common/Vector3.h"
 #include "../Common/Vector4.h"
+
 
 using namespace NCL;
 using namespace Rendering;
@@ -47,7 +49,7 @@ SimpleFont::~SimpleFont()
 	delete		texture;
 }
 
-int SimpleFont::BuildVerticesForString(std::string &text, Vector2&startPos, Vector4&colour, std::vector<Vector3>&positions, std::vector<Vector2>&texCoords, std::vector<Vector4>&colours, float size) {
+int SimpleFont::BuildVerticesForString(std::string &text, Vec2&startPos, Vec4&colour, std::vector<Vec3>&positions, std::vector<Vec2>&texCoords, std::vector<Vec4>&colours, float size) {
 	int vertsWritten = 0;
 
 	int endChar = startChar + numChars;
@@ -76,32 +78,33 @@ int SimpleFont::BuildVerticesForString(std::string &text, Vector2&startPos, Vect
 		float yHeight	= (charHeight / texWidth) * scale;
 		float yOff		= -((charHeight + charData.yOff) / texWidth) * scale;
 
-		positions.emplace_back(Vector3(startPos.x + xStart, yOff + yStart, 0));
-		positions.emplace_back(Vector3(startPos.x + xStart, yOff + yStart + yHeight, 0));
-		positions.emplace_back(Vector3(startPos.x + xStart + charWidth, yOff + yStart + yHeight, 0));
+		positions.emplace_back(Vec3(startPos.x + xStart, yOff + yStart, 0));
+		positions.emplace_back(Vec3(startPos.x + xStart, yOff + yStart + yHeight, 0));
+		positions.emplace_back(Vec3(startPos.x + xStart + charWidth, yOff + yStart + yHeight, 0));
 
-		positions.emplace_back(Vector3(startPos.x + xStart + charWidth, yOff + yStart + yHeight, 0));
-		positions.emplace_back(Vector3(startPos.x + xStart + charWidth, yOff + yStart, 0));
-		positions.emplace_back(Vector3(startPos.x + xStart, yOff + yStart, 0));
-
-		colours.emplace_back(colour);
-		colours.emplace_back(colour);
-		colours.emplace_back(colour);
+		positions.emplace_back(Vec3(startPos.x + xStart + charWidth, yOff + yStart + yHeight, 0));
+		positions.emplace_back(Vec3(startPos.x + xStart + charWidth, yOff + yStart, 0));
+		positions.emplace_back(Vec3(startPos.x + xStart, yOff + yStart, 0));
 
 		colours.emplace_back(colour);
 		colours.emplace_back(colour);
 		colours.emplace_back(colour);
 
-		texCoords.emplace_back(Vector2(charData.x0 / texWidth, charData.y1 / texHeight));
-		texCoords.emplace_back(Vector2(charData.x0 / texWidth, charData.y0 / texHeight));
-		texCoords.emplace_back(Vector2(charData.x1 / texWidth, charData.y0 / texHeight));
+		colours.emplace_back(colour);
+		colours.emplace_back(colour);
+		colours.emplace_back(colour);
 
-		texCoords.emplace_back(Vector2(charData.x1 / texWidth, charData.y0 / texHeight));
-		texCoords.emplace_back(Vector2(charData.x1 / texWidth, charData.y1 / texHeight));
-		texCoords.emplace_back(Vector2(charData.x0 / texWidth, charData.y1 / texHeight));
+		texCoords.emplace_back(Vec2(charData.x0 / texWidth, charData.y1 / texHeight));
+		texCoords.emplace_back(Vec2(charData.x0 / texWidth, charData.y0 / texHeight));
+		texCoords.emplace_back(Vec2(charData.x1 / texWidth, charData.y0 / texHeight));
+
+		texCoords.emplace_back(Vec2(charData.x1 / texWidth, charData.y0 / texHeight));
+		texCoords.emplace_back(Vec2(charData.x1 / texWidth, charData.y1 / texHeight));
+		texCoords.emplace_back(Vec2(charData.x0 / texWidth, charData.y1 / texHeight));
 
 		currentX += charData.xAdvance;
 	}
 
 	return vertsWritten;
 }
+#endif

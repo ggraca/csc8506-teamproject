@@ -18,7 +18,7 @@
 
 using namespace std;
 
-int TypeId::GetTypeId(const type_info &info)
+int TypeId::GetTypeId(const std::type_info &info)
 {
 	if (info.hash_code() == typeid(PhysicsObject*).hash_code()) { return 0; }
 	if (info.hash_code() == typeid(RenderObject*).hash_code())  { return 1; }

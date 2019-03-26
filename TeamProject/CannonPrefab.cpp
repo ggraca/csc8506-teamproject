@@ -1,6 +1,6 @@
 #include "CannonPrefab.h"
 
-CannonPrefab::CannonPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient)
+CannonPrefab::CannonPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient)
 {
 	//OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("14054_Pirate_Ship_Cannon_on_Cart_v1_l3.obj");
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("cannon.obj");

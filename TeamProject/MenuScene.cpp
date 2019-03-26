@@ -149,10 +149,10 @@ void MenuScene::ShowMenu()
 	float offset = 50.0f;
 	for (MenuEntry me : MenuEntries(menuPathIndex))
 	{
-		Vector4 colour;
-		if (me.selected) colour = Vector4(1, 0, 0, 1);
-		else colour = Vector4(0, 0, 1, 1);
-		renderer->DrawString(me.menuTitle, Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + offset), colour);
+		Vec4 colour;
+		if (me.selected) colour = Vec4(1, 0, 0, 1);
+		else colour = Vec4(0, 0, 1, 1);
+		renderer->DrawString(me.menuTitle, Vec2(50, Window::GetWindow()->GetScreenSize().y / 2 + offset), colour);
 		offset -= 50.0f;
 	}
 }

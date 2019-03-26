@@ -61,18 +61,18 @@ void* ReadVertexData(GeometryChunkData dataType, GeometryChunkTypes chunkType, i
 	return data;
 }
 
-void ReadTextFloats(std::ifstream& file, vector<Vector2>& element, int numVertices) {
+void ReadTextFloats(std::ifstream& file, vector<Vec2>& element, int numVertices) {
 	for (int i = 0; i < numVertices; ++i) {
-		Vector2 temp;
+		Vec2 temp;
 		file >> temp.x;
 		file >> temp.y;
 		element.emplace_back(temp);
 	}
 }
 
-void ReadTextFloats(std::ifstream& file, vector<Vector3>& element, int numVertices) {
+void ReadTextFloats(std::ifstream& file, vector<Vec3>& element, int numVertices) {
 	for (int i = 0; i < numVertices; ++i) {
-		Vector3 temp;
+		Vec3 temp;
 		file >> temp.x;
 		file >> temp.y;
 		file >> temp.z;
@@ -80,9 +80,9 @@ void ReadTextFloats(std::ifstream& file, vector<Vector3>& element, int numVertic
 	}
 }
 
-void ReadTextFloats(std::ifstream& file, vector<Vector4>& element, int numVertices) {
+void ReadTextFloats(std::ifstream& file, vector<Vec4>& element, int numVertices) {
 	for (int i = 0; i < numVertices; ++i) {
-		Vector4 temp;
+		Vec4 temp;
 		file >> temp.x;
 		file >> temp.y;
 		file >> temp.z;
@@ -153,7 +153,7 @@ MeshGeometry::~MeshGeometry()
 {
 }
 
-void	MeshGeometry::TransformVertices(const Matrix4& byMatrix) {
+void	MeshGeometry::TransformVertices(const Mat4& byMatrix) {
 
 }
 
@@ -165,23 +165,23 @@ void	MeshGeometry::RecalculateTangents() {
 
 }
 
-void MeshGeometry::SetVertexPositions(const vector<Vector3>& newVerts) {
+void MeshGeometry::SetVertexPositions(const vector<Vec3>& newVerts) {
 	positions = newVerts;
 }
 
-void MeshGeometry::SetVertexTextureCoords(const vector<Vector2>& newTex) {
+void MeshGeometry::SetVertexTextureCoords(const vector<Vec2>& newTex) {
 	texCoords = newTex;
 }
 
-void MeshGeometry::SetVertexColours(const vector<Vector4>& newColours) {
+void MeshGeometry::SetVertexColours(const vector<Vec4>& newColours) {
 	colours = newColours;
 }
 
-void MeshGeometry::SetVertexNormals(const vector<Vector3>& newNorms) {
+void MeshGeometry::SetVertexNormals(const vector<Vec3>& newNorms) {
 	normals = newNorms;
 }
 
-void MeshGeometry::SetVertexTangents(const vector<Vector3>& newTans) {
+void MeshGeometry::SetVertexTangents(const vector<Vec3>& newTans) {
 	tangents = newTans;
 }
 

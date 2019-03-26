@@ -8,9 +8,9 @@ bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	std::ifstream f(filename.c_str(), std::ios::in);
 	if (!f) return false;
 
-	std::vector<Vector2> inputTexCoords;
-	std::vector<Vector3> inputVertices;
-	std::vector<Vector3> inputNormals;
+	std::vector<Vec2> inputTexCoords;
+	std::vector<Vec3> inputVertices;
+	std::vector<Vec3> inputNormals;
 	std::vector<OBJSubMesh*> inputSubMeshes;
 
 	OBJSubMesh* currentMesh = new OBJSubMesh();
@@ -29,17 +29,17 @@ bool OBJGeometry::LoadOBJMesh(std::string filename) {
 			continue;
 		}
 		else if (lineHeader == OBJVERT) {
-			Vector3 vertex;
+			Vec3 vertex;
 			f >> vertex.x; f >> vertex.y; f >> vertex.z;
 			inputVertices.push_back(vertex);
 		}
 		else if (lineHeader == OBJTEX) {
-			Vector2 texCoord;
+			Vec2 texCoord;
 			f >> texCoord.x; f >> texCoord.y;
 			inputTexCoords.push_back(texCoord);
 		}
 		else if (lineHeader == OBJNORM) {
-			Vector3 normal;
+			Vec3 normal;
 			f >> normal.x; f >> normal.y; f >> normal.z;
 			inputNormals.push_back(normal);
 		}
@@ -88,7 +88,7 @@ bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	return true;
 }
 
-OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals) {
+OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vec3>& inputVertices, vector<Vec2>& inputTexCoords, vector<Vec3>& inputNormals) {
 	if (sm->vertIndices.empty()) return nullptr;
 
 	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
@@ -115,7 +115,7 @@ OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, ve
 	}
 
 	for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
-		m->colours.push_back(Vector4(0, 0, 1, 1));
+		m->colours.push_back(Vec4(0, 0, 1, 1));
 	}
 
 	// TODO: Tangents
@@ -202,8 +202,8 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 			float r, g, b;
 			f >> r >> g >> b;
 			if (material) {
-				Vector4 currentColour = material->GetColour();
-				material->SetColour(Vector4(r, g, b, currentColour.w));
+				Vec4 currentColour = material->GetColour();
+				material->SetColour(Vec4(r, g, b, currentColour.w));
 			}
 		}
 		else if (lineHeader == MTLDIFFUSEMAP) {
@@ -223,8 +223,8 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 			float alpha;
 			f >> alpha >> alpha >> alpha;
 			if (material) {
-				Vector4 currentColour = material->GetColour();
-				material->SetColour(Vector4(currentColour.x, currentColour.y, currentColour.z, alpha));
+				Vec4 currentColour = material->GetColour();
+				material->SetColour(Vec4(currentColour.x, currentColour.y, currentColour.z, alpha));
 			}
 		}
 	}

@@ -17,12 +17,12 @@ namespace NCL {
 			ShaderBase* GetShader() const { return shader; }
 			void SetShader(ShaderBase* s) { shader = s; }
 
-			NCL::Maths::Matrix4 GetTextureMatrix() const { return textureMatrix; }
-			void SetTextureMatrix(NCL::Maths::Matrix4 t) { textureMatrix = t; }
+			NCL::Maths::Mat4 GetTextureMatrix() const { return textureMatrix; }
+			void SetTextureMatrix(NCL::Maths::Mat4 t) { textureMatrix = t; }
 
-			void SetColour(const  NCL::Maths::Vector4& c) { colour = c; }
+			void SetColour(const  NCL::Maths::Vec4& c) { colour = c; }
 
-			NCL::Maths::Vector4 GetColour() const { return colour; }
+			NCL::Maths::Vec4 GetColour() const { return colour; }
 
 			void AddTextureParameter(std::string parameter, TextureBase* texture) {
 				textureParameters.push_back(std::make_pair(parameter, texture));
@@ -35,8 +35,8 @@ namespace NCL {
 			std::vector<std::pair<std::string, TextureBase*>> textureParameters;
 
 			//Think of better way to hold shader parameters
-			NCL::Maths::Matrix4 textureMatrix;
-			NCL::Maths::Vector4 colour;
+			NCL::Maths::Mat4 textureMatrix;
+			NCL::Maths::Vec4 colour;
 		};
 	}
 }

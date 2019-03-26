@@ -37,9 +37,9 @@ namespace NCL {
 
 			void OnWindowResize(int w, int h)	override;
 
-			void DrawString(const std::string& text, const Vector2&pos, const Vector4& colour = Vector4(0.75f, 0.75f, 0.75f, 1), const float& size = 1.0f);
+			void DrawString(const std::string& text, const Vec2&pos, const Vec4& colour = Vec4(0.75f, 0.75f, 0.75f, 1), const float& size = 1.0f);
 
-			void DrawLine(const Vector3& start, const Vector3& end, const Vector4& colour);
+			void DrawLine(const Vec3& start, const Vec3& end, const Vec4& colour);
 
 		protected:			
 			void BeginFrame()	override;
@@ -64,10 +64,10 @@ namespace NCL {
 			void BindBoolToShader(const bool val, const std::string& uniform) const;
 			void BindIntToShader(const int val, const std::string& uniform) const;
 			void BindFloatToShader(const float val, const std::string& uniform) const;
-			void BindVector2ToShader(const Vector2& val, const std::string& uniform) const;
-			void BindVector3ToShader(const Vector3& val, const std::string& uniform) const;
-			void BindVector4ToShader(const Vector4& val, const std::string& uniform) const;
-			void BindMatrix4ToShader(const Matrix4& val, const std::string& uniform) const;
+			void BindVector2ToShader(const Vec2& val, const std::string& uniform) const;
+			void BindVector3ToShader(const Vec3& val, const std::string& uniform) const;
+			void BindVector4ToShader(const Vec4& val, const std::string& uniform) const;
+			void BindMatrix4ToShader(const Mat4& val, const std::string& uniform) const;
 			void BindMesh(MeshGeometry*m);
 			void DrawBoundMesh(int subLayer = 0, int numInstances = 1);
 
@@ -83,16 +83,16 @@ namespace NCL {
 #endif
 		private:
 			struct DebugString {
-				Maths::Vector4 colour;
-				Maths::Vector2	ndcPos;
+				Maths::Vec4 colour;
+				Maths::Vec2	ndcPos;
 				float			size;
 				std::string		text;
 			};
 
 			struct DebugLine {
-				Maths::Vector3 start;
-				Maths::Vector3 end;
-				Maths::Vector4 colour;
+				Maths::Vec3 start;
+				Maths::Vec3 end;
+				Maths::Vec4 colour;
 			};
 
 			OGLMesh*	boundMesh;

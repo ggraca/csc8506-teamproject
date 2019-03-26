@@ -56,7 +56,7 @@ void BulletPhysics::Update(float dt) {
 	dTOffset -= iterationDt * iterationCount;
 }
 
-void BulletPhysics::SetGravity(Vector3 gravity)
+void BulletPhysics::SetGravity(Vec3 gravity)
 {
 	dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y, gravity.z));
 }
@@ -87,7 +87,7 @@ void BulletPhysics::UpdateObjectTransform(GameObject* go, btRigidBody* body) {
 	else trans = body->getWorldTransform();
 
 	btQuaternion orientation = trans.getRotation();
-	Vector3 position = Vector3((float)(trans.getOrigin().getX()), (float)(trans.getOrigin().getY()), (float)(trans.getOrigin().getZ()));
+	Vec3 position = Vec3((float)(trans.getOrigin().getX()), (float)(trans.getOrigin().getY()), (float)(trans.getOrigin().getZ()));
 	transform.SetWorldPosition(position);
 	Quaternion orient = Quaternion((float)orientation.x(), (float)orientation.y(), (float)orientation.z(), (float)orientation.w());
 	transform.SetLocalOrientation(orient);
@@ -145,21 +145,21 @@ void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBod
 	}
 }
 
-const btCollisionObject* BulletPhysics::Raycast(const Vector3& Start, const Vector3& End, Vector3& NewEnd) {
+const btCollisionObject* BulletPhysics::Raycast(const Vec3& Start, const Vec3& End, Vec3& NewEnd) {
 	btVector3 btStart = btVector3(Start.x, Start.y, Start.z);
 	btVector3 btEnd = btVector3(End.x, End.y, End.z);
 	btCollisionWorld::ClosestRayResultCallback RayCallback(btStart, btEnd);
 	dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
 	if (RayCallback.hasHit()) {
 		btVector3 btNewEnd = RayCallback.m_hitPointWorld;
-		NewEnd = Vector3((const float)btNewEnd.getX(), (const float)btNewEnd.getY(), (const float)btNewEnd.getZ());
+		NewEnd = Vec3((const float)btNewEnd.getX(), (const float)btNewEnd.getY(), (const float)btNewEnd.getZ());
 		return RayCallback.m_collisionObject;
 	}
 	return nullptr;
 }
 
-const btCollisionObject* BulletPhysics::RaycastPosDir(const Vector3& Pos, const Vector3& Dir, float t, Vector3& NewEnd) {
-	Vector3 End = Pos + Vector3(t * Dir.x, t * Dir.y, t * Dir.z);
+const btCollisionObject* BulletPhysics::RaycastPosDir(const Vec3& Pos, const Vec3& Dir, float t, Vec3& NewEnd) {
+	Vec3 End = Pos + Vec3(t * Dir.x, t * Dir.y, t * Dir.z);
 	return Raycast(Pos, End, NewEnd);
 }
 

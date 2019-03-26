@@ -23,13 +23,13 @@ namespace NCL {
 				return type;
 			}
 
-			void SetPosition(Vector3 position) {
+			void SetPosition(Vec3 position) {
 				body->activate();
 				body->getWorldTransform().setOrigin(btVector3(position.x, position.y, position.z));
 				this->position = position;
 			}
 
-			Vector3 GetPosition() const {
+			Vec3 GetPosition() const {
 				return position;
 			}
 
@@ -44,11 +44,11 @@ namespace NCL {
 				return orientation;
 			}
 
-			void SetDimensions(Vector3 dimensions) {
+			void SetDimensions(Vec3 dimensions) {
 				this->dimensions = dimensions;
 			}
 
-			Vector3 GetDimensions() const {
+			Vec3 GetDimensions() const {
 				return dimensions;
 			}
 
@@ -84,25 +84,25 @@ namespace NCL {
 				return transform;
 			}
 
-			void SetLinearVelocity(const Vector3& v) {
+			void SetLinearVelocity(const Vec3& v) {
 				body->activate();
 				body->setLinearVelocity(btVector3(v.x, v.y, v.z));
 				linearVelocity = v;
 			}
 
-			void SetAngularVelocity(const Vector3& v) {
+			void SetAngularVelocity(const Vec3& v) {
 				body->activate();
 				body->setAngularVelocity(btVector3(v.x, v.y, v.z));
 				angularVelocity = v;
 			}
 
-			void ApplyForce(const Vector3& f, const Vector3& p) {
+			void ApplyForce(const Vec3& f, const Vec3& p) {
 				body->activate();
 				body->applyForce(btVector3(f.x, f.y, f.z), btVector3(p.x, p.y, p.z));
 				force = f;
 			}
 
-			void ApplyTorque(const Vector3& t) {
+			void ApplyTorque(const Vec3& t) {
 				body->activate();
 				body->applyTorque(btVector3(t.x, t.y, t.z));
 				torque = t;
@@ -123,18 +123,18 @@ namespace NCL {
 			Transform*		transform;
 
 			ShapeType type;
-			Vector3 position;
+			Vec3 position;
 			Quaternion orientation;
-			Vector3 dimensions;
+			Vec3 dimensions;
 			float mass;
 			float restitution;
 			float friction;
 			
-			Vector3 linearVelocity; //TODO Remove if not needed
-			Vector3 force;          //TODO Remove if not needed
+			Vec3 linearVelocity; //TODO Remove if not needed
+			Vec3 force;          //TODO Remove if not needed
 
-			Vector3 angularVelocity;//TODO Remove if not needed
-			Vector3 torque;         //TODO Remove if not needed
+			Vec3 angularVelocity;//TODO Remove if not needed
+			Vec3 torque;         //TODO Remove if not needed
 
 			btCollisionShape* shape;
 			btRigidBody* body;

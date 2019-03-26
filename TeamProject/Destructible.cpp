@@ -3,7 +3,7 @@
 
 Destructible::Destructible(GameObject * gameObject):ScriptObject(gameObject)
 {
-	resourceDimensions = Vector3(5, 5, 5);
+	resourceDimensions = Vec3(5, 5, 5);
 }
 
 Destructible::~Destructible()
@@ -56,8 +56,8 @@ void Destructible::OnCollisionEnd(GameObject * otherObject)
 void Destructible::GenerateResource()
 {
 
-	Vector3 destPosition = gameObject->GetTransform().GetWorldPosition();
-	Vector3 destScale = gameObject->GetTransform().GetLocalScale();
+	Vec3 destPosition = gameObject->GetTransform().GetWorldPosition();
+	Vec3 destScale = gameObject->GetTransform().GetLocalScale();
 
 	float minX = destPosition.x - ((destScale.x/2) - (resourceDimensions.x / 2));
 	float maxX = destPosition.x + ((destScale.x / 2) - (resourceDimensions.x / 2));
@@ -72,7 +72,7 @@ void Destructible::GenerateResource()
 	float resourceY = (rand() % (int)(maxY - minY)) + minY;
 	float resourceZ = (rand() % (int)(maxZ - minZ)) + minZ;
 
-	ResourcePrefab * resource = new ResourcePrefab(Vector3(resourceX, resourceY, resourceZ),Quaternion::AxisAngleToQuaternion(Vector3(0,0,0),0),Vector3(5,5,5),1000,0.8f,0.4f);
-	resource->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, -100, 0));
+	ResourcePrefab * resource = new ResourcePrefab(Vec3(resourceX, resourceY, resourceZ),Quaternion::AxisAngleToQuaternion(Vec3(0,0,0),0),Vec3(5,5,5),1000,0.8f,0.4f);
+	resource->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vec3(0, -100, 0));
 	GameObject::gameWorld->LateInstantiate(resource);
 }

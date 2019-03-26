@@ -10,15 +10,15 @@ namespace NCL {
 		class TextureBase;
 	}
 	namespace PS4 {
-		class RenderObject	{
+		class RenderObjectPS4	{
 		public:
-			RenderObject();
-			~RenderObject();
+			RenderObjectPS4();
+			~RenderObjectPS4();
 
-			RenderObject(MeshGeometry* m, Rendering::ShaderBase* shader, Rendering::TextureBase* tex);
+			RenderObjectPS4(MeshGeometry* m, Rendering::ShaderBase* shader, Rendering::TextureBase* tex);
 
-			const Maths::Matrix4& GetLocalTransform() const;
-			void	SetLocalTransform(const Maths::Matrix4& mat);
+			const Maths::Mat4& GetLocalTransform() const;
+			void	SetLocalTransform(const Maths::Mat4& mat);
 
 			Rendering::ShaderBase* GetShader() const {
 				return shader;
@@ -32,7 +32,7 @@ namespace NCL {
 			static const int TEXTURE_COUNT = 4;
 			Rendering::TextureBase* textures[TEXTURE_COUNT];
 
-			Maths::Matrix4		localTransform;
+			Maths::Mat4		localTransform;
 		};
 	}
 }

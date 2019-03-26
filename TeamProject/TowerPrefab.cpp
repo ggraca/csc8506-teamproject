@@ -1,6 +1,6 @@
 #include "TowerPrefab.h"
 
-TowerPrefab::TowerPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient)
+TowerPrefab::TowerPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient)
 {
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("War_Tower.obj");
 	GameObject* go = GameObject::FromOBJ(objGeometry);

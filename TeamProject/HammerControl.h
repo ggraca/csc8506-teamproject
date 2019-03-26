@@ -8,7 +8,7 @@ public:
 	HammerControl(GameObject * gameObject);
 	~HammerControl();
 	void SetHandle(GameObject * h);
-	Vector3 CalculateDirection();
+	Vec3 CalculateDirection();
 	void ActivateHammer();
 	void FormHammer();
 	void DeformHammer();
@@ -30,6 +30,6 @@ protected:
 	float maxY;
 	float maxZ;
 
-	Vector3 GenerateRandomPositionInHammer();
+	Vec3 GenerateRandomPositionInHammer();
 };
 

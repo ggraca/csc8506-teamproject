@@ -11,7 +11,7 @@ using namespace NCL::CSC8503;
 class TowerPrefab : public GameObject
 {
 public:
-	TowerPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient);
+	TowerPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient);
 	virtual ~TowerPrefab();
 };
 

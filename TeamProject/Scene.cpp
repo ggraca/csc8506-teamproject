@@ -6,7 +6,7 @@ Scene::Scene() {
 	GameObject::SetGameWorld(world);
 
 	physics = new BulletPhysics(*world);
-	physics->SetGravity(Vector3(0, -100, 0));
+	physics->SetGravity(Vec3(0, -100, 0));
 	world->SetPhysics(physics);
 
 	audio = new CAudioEngine();

@@ -7,8 +7,8 @@ namespace NCL {
 	class Debug
 	{
 	public:
-		static void Print(const std::string& text, const Vector2&pos, const Vector4& colour = Vector4(1, 1, 1, 1));
-		static void DrawLine(const Vector3& startpoint, const Vector3& endpoint, const Vector4& colour = Vector4(1, 1, 1, 1));
+		static void Print(const std::string& text, const Vec2&pos, const Vec4& colour = Vec4(1, 1, 1, 1));
+		static void DrawLine(const Vec3& startpoint, const Vec3& endpoint, const Vec4& colour = Vec4(1, 1, 1, 1));
 		static void AddStringToDebugMenu(const std::string& text);
 		//static void DrawPoint();
 
@@ -21,15 +21,15 @@ namespace NCL {
 	protected:
 		struct DebugStringEntry {
 			std::string	data;
-			Vector2 position;
-			Vector4 colour;
+			Vec2 position;
+			Vec4 colour;
 			float size;
 		};
 
 		struct DebugLineEntry {
-			Vector3 start;
-			Vector3 end;
-			Vector4 colour;
+			Vec3 start;
+			Vec3 end;
+			Vec4 colour;
 		};
 
 		Debug() {}

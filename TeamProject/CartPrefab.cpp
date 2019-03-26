@@ -1,6 +1,6 @@
 #include "CartPrefab.h"
 
-CartPrefab::CartPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient)
+CartPrefab::CartPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient)
 {
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("WV Cart 01.obj");
 	GameObject* go = GameObject::FromOBJ(objGeometry);

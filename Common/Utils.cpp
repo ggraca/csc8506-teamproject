@@ -12,7 +12,7 @@ vector<string> split_string(const string &s, char delimiter) {
 	return words;
 }
 
-string ToString(NCL::Maths::Vector3 v) {
+string ToString(NCL::Maths::Vec3 v) {
 	float data[] = { v.x, v.y, v.z };
 	return string((char*)data, sizeof(data));
 }

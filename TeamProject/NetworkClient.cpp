@@ -19,33 +19,33 @@
 GameObject* NetworkClient::GetGameObjectFromPacket(InstantiatePacket* packet) {
 	switch (packet->prefabId) {
 	case NetworkObject::Resource:
-		return new ResourcePrefab(packet->position, packet->rotation, Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+		return new ResourcePrefab(packet->position, packet->rotation, Vec3(5, 5, 5), 1000, 0.2f, 0.4f);
 	case NetworkObject::Player: {
-		GameObject* player = new PlayerPrefab(packet->position, packet->rotation, Vector3(10, 10, 10), 100, 0.2f, 0.4f);
+		GameObject* player = new PlayerPrefab(packet->position, packet->rotation, Vec3(10, 10, 10), 100, 0.2f, 0.4f);
 		// player->AddComponent<PlayerMovement*>(new PlayerMovement());
 		world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 		return player;
 	}
 	case NetworkObject::Wall:
-		return new WallPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new WallPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Stall:
-		return new StallPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new StallPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Tent:
-		return new TentPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new TentPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Market:
-		return new MarketPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new MarketPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Well:
-		return new WellPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new WellPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Castle:
-		return new CastlePrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new CastlePrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Tower:
-		return new TowerPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new TowerPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Cannon:
-		return new CannonPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new CannonPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::DWall:
-		return new DWallPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new DWallPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	case NetworkObject::Cart:
-		return new CartPrefab(Vector3(1, 1, 1), packet->position, packet->rotation);
+		return new CartPrefab(Vec3(1, 1, 1), packet->position, packet->rotation);
 	}
 	return nullptr;
 }

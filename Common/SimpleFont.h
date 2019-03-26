@@ -1,13 +1,14 @@
 #pragma once
+#ifdef _WIN32
 #include <string>
 #include <vector>
 #include "TextureBase.h"
 
 namespace NCL {
 	namespace Maths {
-		class Vector2;
-		class Vector3;
-		class Vector4;
+		class Vec2;
+		class Vec3;
+		class Vec4;
 	}
 	namespace Rendering {
 		class SimpleFont
@@ -16,7 +17,7 @@ namespace NCL {
 			SimpleFont(const std::string&fontName, const std::string&texName);
 			~SimpleFont();
 
-			int BuildVerticesForString(std::string &text, Maths::Vector2&startPos, Maths::Vector4&colour, std::vector<Maths::Vector3>&positions, std::vector<Maths::Vector2>&texCoords, std::vector<Maths::Vector4>&colours, float size = 1.0f);
+			int BuildVerticesForString(std::string &text, Maths::Vec2&startPos, Maths::Vec4&colour, std::vector<Maths::Vec3>&positions, std::vector<Maths::Vec2>&texCoords, std::vector<Maths::Vec4>&colours, float size = 1.0f);
 
 			const TextureBase* GetTexture() const {
 				return texture;
@@ -45,3 +46,4 @@ namespace NCL {
 		};
 	}
 }
+#endif

@@ -89,7 +89,7 @@ class OBJMesh : public OGLMesh {
 public:
 	OBJMesh(NCL::Rendering::Material* mat) : material(mat) {}
 	NCL::Rendering::Material* material = nullptr; // TODO: fix this naming
-	static OBJMesh* FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals);
+	static OBJMesh* FromSubMesh(OBJSubMesh* sm, vector<Vec3>& inputVertices, vector<Vec2>& inputTexCoords, vector<Vec3>& inputNormals);
 };
 #endif
 
@@ -99,7 +99,7 @@ public:
 	OBJGeometry(std::string filename) { LoadOBJMesh(filename); }
 	~OBJGeometry(void) {}
 	bool	LoadOBJMesh(std::string filename);
-	NCL::Maths::Vector4 colour;
+	NCL::Maths::Vec4 colour;
 
 protected:
 	void LoadFaceFromFile(std::ifstream &f, OBJSubMesh* &currentMesh, std::vector<OBJSubMesh*> &inputSubMeshes);

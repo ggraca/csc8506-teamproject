@@ -13,7 +13,7 @@ enum LightType {
 
 class Light : public Component {
 public:
-	Light(LightType type, NCL::Maths::Vector4 colour, float radius, float brightness) {
+	Light(LightType type, NCL::Maths::Vec4 colour, float radius, float brightness) {
 		this->type = type;
 		this->colour = colour;
 		this->radius = radius;
@@ -28,15 +28,15 @@ public:
 	float GetRadius() const { return radius; }
 	void SetRadius(float val) { radius = val; }
 
-	NCL::Maths::Vector4 GetColour() const { return colour; }
-	void SetColour(NCL::Maths::Vector4 val) { colour = val; }
+	NCL::Maths::Vec4 GetColour() const { return colour; }
+	void SetColour(NCL::Maths::Vec4 val) { colour = val; }
 
 	float GetBrightness() const { return brightness; }
 	void SetBrightness(float val) { brightness = val; }
 
 protected:
 	LightType type;
-	NCL::Maths::Vector4 colour;
+	NCL::Maths::Vec4 colour;
 	float radius;
 	float brightness;
 };

@@ -4,15 +4,15 @@
 
 using namespace NCL;
 using namespace NCL::Maths;
-Matrix4::Matrix4(void)	{
+Mat4::Mat4(void)	{
 	ToIdentity();
 }
 
-Matrix4::Matrix4( float elements[16] )	{
+Mat4::Mat4( float elements[16] )	{
 	memcpy(this->values,elements,16*sizeof(float));
 }
 
-Matrix4::Matrix4(const Matrix3& m3) {
+Mat4::Mat4(const Matrix3& m3) {
 	ToZero();
 	values[0] = m3.values[0];
 	values[1] = m3.values[1];
@@ -29,11 +29,11 @@ Matrix4::Matrix4(const Matrix3& m3) {
 	values[15] = 1.0f;
 }
 
-Matrix4::~Matrix4(void)	{
+Mat4::~Mat4(void)	{
 	ToIdentity();
 }
 
-void Matrix4::ToIdentity() {
+void Mat4::ToIdentity() {
 	ToZero();
 	values[0]  = 1.0f;
 	values[5]  = 1.0f;
@@ -41,34 +41,34 @@ void Matrix4::ToIdentity() {
 	values[15] = 1.0f;
 }
 
-void Matrix4::ToZero()	{
+void Mat4::ToZero()	{
 	for(int i = 0; i < 16; i++)	{
 		values[i] = 0.0f;
 	}
 }
 
-Vector3 Matrix4::GetPositionVector() const{
-	return Vector3(values[12],values[13],values[14]);
+Vec3 Mat4::GetPositionVector() const{
+	return Vec3(values[12],values[13],values[14]);
 }
 
-void	Matrix4::SetPositionVector(const Vector3& in) {
+void	Mat4::SetPositionVector(const Vec3& in) {
 	values[12] = in.x;
 	values[13] = in.y;
 	values[14] = in.z;		
 }
 
-Vector3 Matrix4::GetScalingVector() const{
-	return Vector3(values[0],values[5],values[10]);
+Vec3 Mat4::GetScalingVector() const{
+	return Vec3(values[0],values[5],values[10]);
 }
 
-void	Matrix4::SetScalingVector(const Vector3 &in) {
+void	Mat4::SetScalingVector(const Vec3 &in) {
 	values[0]  = in.x;
 	values[5]  = in.y;
 	values[10] = in.z;		
 }
 
-Matrix4 Matrix4::Perspective(float znear, float zfar, float aspect, float fov) {
-	Matrix4 m;
+Mat4 Mat4::Perspective(float znear, float zfar, float aspect, float fov) {
+	Mat4 m;
 
 	const float h = 1.0f / tan(fov*Maths::PI_OVER_360);
 	float neg_depth = znear-zfar;
@@ -84,8 +84,8 @@ Matrix4 Matrix4::Perspective(float znear, float zfar, float aspect, float fov) {
 }
 
 //http://www.opengl.org/sdk/docs/man/xhtml/glOrtho.xml
-Matrix4 Matrix4::Orthographic(float znear, float zfar,float right, float left, float top, float bottom)	{
-	Matrix4 m;
+Mat4 Mat4::Orthographic(float znear, float zfar,float right, float left, float top, float bottom)	{
+	Mat4 m;
 
 	m.values[0]	= 2.0f / (right-left);
 	m.values[5]	= 2.0f / (top-bottom);
@@ -99,17 +99,17 @@ Matrix4 Matrix4::Orthographic(float znear, float zfar,float right, float left, f
 	return m;
 }
 
-Matrix4 Matrix4::BuildViewMatrix(const Vector3 &from, const Vector3 &lookingAt, const Vector3 up /*= Vector3(1,0,0)*/ )	{
-	Matrix4 r;
-	r.SetPositionVector(Vector3(-from.x,-from.y,-from.z));
+Mat4 Mat4::BuildViewMatrix(const Vec3 &from, const Vec3 &lookingAt, const Vec3 up /*= Vec3(1,0,0)*/ )	{
+	Mat4 r;
+	r.SetPositionVector(Vec3(-from.x,-from.y,-from.z));
 
-	Matrix4 m;
+	Mat4 m;
 
-	Vector3 f = (lookingAt - from);
+	Vec3 f = (lookingAt - from);
 	f.Normalise();
 
-	Vector3 s = Vector3::Cross(f,up).Normalised();
-	Vector3 u = Vector3::Cross(s,f).Normalised();
+	Vec3 s = Vec3::Cross(f,up).Normalised();
+	Vec3 u = Vec3::Cross(s,f).Normalised();
 
 	m.values[0] = s.x;
 	m.values[4] = s.y;
@@ -126,10 +126,10 @@ Matrix4 Matrix4::BuildViewMatrix(const Vector3 &from, const Vector3 &lookingAt, 
 	return m*r;
 }
 
-Matrix4 Matrix4::Rotation(float degrees, const Vector3 &inaxis)	 {
-	Matrix4 m;
+Mat4 Mat4::Rotation(float degrees, const Vec3 &inaxis)	 {
+	Mat4 m;
 
-	Vector3 axis = inaxis;
+	Vec3 axis = inaxis;
 
 	axis.Normalise();
 
@@ -151,8 +151,8 @@ Matrix4 Matrix4::Rotation(float degrees, const Vector3 &inaxis)	 {
 	return m;
 }
 
-Matrix4 Matrix4::Scale( const Vector3 &scale )	{
-	Matrix4 m;
+Mat4 Mat4::Scale( const Vec3 &scale )	{
+	Mat4 m;
 
 	m.values[0]  = scale.x;
 	m.values[5]  = scale.y;
@@ -161,8 +161,8 @@ Matrix4 Matrix4::Scale( const Vector3 &scale )	{
 	return m;
 }
 
-Matrix4 Matrix4::Translation( const Vector3 &translation )	{
-	Matrix4 m;
+Mat4 Mat4::Translation( const Vec3 &translation )	{
+	Mat4 m;
 
 	m.values[12] = translation.x;
 	m.values[13] = translation.y;
@@ -172,10 +172,10 @@ Matrix4 Matrix4::Translation( const Vector3 &translation )	{
 }
 
 //Yoinked from the Open Source Doom 3 release - all credit goes to id software!
-Matrix4 Matrix4::Inverse()	const {
+Mat4 Mat4::Inverse()	const {
 	float det, invDet;
 
-	Matrix4 mat = *this;
+	Mat4 mat = *this;
 
 	mat.values[0];
 

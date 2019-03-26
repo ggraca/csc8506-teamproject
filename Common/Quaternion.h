@@ -24,7 +24,7 @@ _-_-_-_-_-_-_-""  ""
 
 namespace NCL {
 	namespace Maths {
-		class Matrix4;
+		class Mat4;
 
 		class Quaternion {
 		public:
@@ -40,28 +40,28 @@ namespace NCL {
 		public:
 			Quaternion(void);
 			Quaternion(float x, float y, float z, float w);
-			Quaternion(const Vector3& vector, float w);
+			Quaternion(const Vec3& vector, float w);
 
 			~Quaternion(void);
 
 			void	Normalise();
-			Matrix4 ToMatrix4() const;
+			Mat4 ToMatrix4() const;
 			Matrix3 ToMatrix3() const;
 
 			Quaternion	Conjugate() const;
 			void		CalculateW();	//builds 4th component when loading in shortened, 3 component quaternions
 
 
-			void RotateByWorldAngles(const Vector3 angles);
+			void RotateByWorldAngles(const Vec3 angles);
 
 			static Quaternion EulerAnglesToQuaternion(float pitch, float yaw, float roll);
-			static Quaternion AxisAngleToQuaternion(const Vector3& vector, float degrees);
+			static Quaternion AxisAngleToQuaternion(const Vec3& vector, float degrees);
 
-			Vector3 ToEuler() const;
+			Vec3 ToEuler() const;
 
-			static void RotatePointByQuaternion(const Quaternion &q, Vector3 &point);
+			static void RotatePointByQuaternion(const Quaternion &q, Vec3 &point);
 
-			static Quaternion FromMatrix(const Matrix4 &m);
+			static Quaternion FromMatrix(const Mat4 &m);
 			static Quaternion FromMatrix(const Matrix3 &m);
 
 			static float Dot(const Quaternion &a, const Quaternion &b);
@@ -93,11 +93,11 @@ namespace NCL {
 				);
 			}
 
-			inline Vector3		operator *(const Vector3 &a)	const {
-				Vector3 uv, uuv;
-				Vector3 qvec(x, y, z);
-				uv = -Vector3::Cross(qvec, a);
-				uuv = -Vector3::Cross(qvec, uv);
+			inline Vec3		operator *(const Vec3 &a)	const {
+				Vec3 uv, uuv;
+				Vec3 qvec(x, y, z);
+				uv = -Vec3::Cross(qvec, a);
+				uuv = -Vec3::Cross(qvec, uv);
 				uv *= (2.0f * w);
 				uuv *= 2.0f;
 
@@ -113,7 +113,7 @@ namespace NCL {
 				//float yz2 = y*z*2.0f;
 				//float zw2 = z*w*2.0f;
 
-				//return Vector3(
+				//return Vec3(
 				//	(xxzz + wwyy)*a.x		+ (xy2 + zw2)*a.y		+ (xz2 - yw2)*a.z,
 				//	(xy2 - zw2)*a.x			+ (y*y+w*w-x*x-z*z)*a.y	+ (yz2 + xw2)*a.z,
 				//	(xz2 + yw2)*a.x			+ (yz2 - xw2)*a.y		+ (wwyy - xxzz)*a.z

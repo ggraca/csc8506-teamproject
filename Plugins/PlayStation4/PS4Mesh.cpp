@@ -24,15 +24,15 @@ PS4Mesh* PS4Mesh::GenerateQuad() {
 	mesh->indexType		= sce::Gnm::IndexSize::kIndexSize32;
 	mesh->primitiveType = sce::Gnm::PrimitiveType::kPrimitiveTypeTriStrip;
 
-	mesh->SetVertexPositions({ Vector3(-1.0f, -1.0f, 0.0f), Vector3(-1.0f,  1.0f, 0.0f),Vector3(1.0f, -1.0f, 0.0f), Vector3(1.0f,  1.0f, 0.0f) });
+	mesh->SetVertexPositions({ Vec3(-1.0f, -1.0f, 0.0f), Vec3(-1.0f,  1.0f, 0.0f),Vec3(1.0f, -1.0f, 0.0f), Vec3(1.0f,  1.0f, 0.0f) });
 
-	std::vector<Vector3> normals;
-	std::vector<Vector3> tangents;
+	std::vector<Vec3> normals;
+	std::vector<Vec3> tangents;
 	std::vector<unsigned int> indices;
 
 	for (int i = 0; i < 4; ++i) {
-		normals.emplace_back(Vector3(0, 0, 1));
-		tangents.emplace_back(Vector3(1, 0, 0));
+		normals.emplace_back(Vec3(0, 0, 1));
+		tangents.emplace_back(Vec3(1, 0, 0));
 
 		indices.emplace_back(i);
 	}
@@ -53,18 +53,18 @@ PS4Mesh* PS4Mesh::GenerateQuad(float minX, float maxX, float minY, float maxY, i
 	float width = (float)currentWidth;
 	float height = (float)currentHeight;
 	mesh->SetVertexPositions({ 
-		Vector3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f), 
-		Vector3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f),
-		Vector3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f), 
-		Vector3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f)});
+		Vec3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f), 
+		Vec3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f),
+		Vec3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f), 
+		Vec3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f)});
 
-	std::vector<Vector3> normals;
-	std::vector<Vector3> tangents;
+	std::vector<Vec3> normals;
+	std::vector<Vec3> tangents;
 	std::vector<unsigned int> indices;
 
 	for (int i = 0; i < 4; ++i) {
-		normals.emplace_back(Vector3(0, 0, 1));
-		tangents.emplace_back(Vector3(1, 0, 0));
+		normals.emplace_back(Vec3(0, 0, 1));
+		tangents.emplace_back(Vec3(1, 0, 0));
 
 		indices.emplace_back(i);
 	}
@@ -83,9 +83,9 @@ PS4Mesh* PS4Mesh::GenerateSinglePoint() {
 	mesh->indexType		= sce::Gnm::IndexSize::kIndexSize32;
 	mesh->primitiveType = sce::Gnm::PrimitiveType::kPrimitiveTypePointList;
 
-	mesh->SetVertexPositions({ Vector3(0.0f, 0.0f, 0.0f) });
-	mesh->SetVertexNormals({ Vector3(0, 0, 1) });
-	mesh->SetVertexTangents({ Vector3(1, 0, 0) });
+	mesh->SetVertexPositions({ Vec3(0.0f, 0.0f, 0.0f) });
+	mesh->SetVertexNormals({ Vec3(0, 0, 1) });
+	mesh->SetVertexTangents({ Vec3(1, 0, 0) });
 	mesh->SetVertexIndices({ 0 });
 
 	mesh->UploadToGPU();
@@ -98,10 +98,10 @@ PS4Mesh* PS4Mesh::GenerateTriangle() {
 	mesh->indexType		= sce::Gnm::IndexSize::kIndexSize32;
 	mesh->primitiveType = sce::Gnm::PrimitiveType::kPrimitiveTypeTriList;
 
-	mesh->SetVertexPositions({ Vector3(0.0f, 0.5f, 0.0f), Vector3(0.5f, -0.5f, 0.0f), Vector3(-0.5f, -0.5f, 0.0f) });
-	mesh->SetVertexTextureCoords({ Vector2(0.5f, 0.0f) , Vector2(1.0f, 1.0f), Vector2(0.0f, 1.0f) });
-	mesh->SetVertexNormals({ Vector3(0, 0, 1),Vector3(0, 0, 1), Vector3(0, 0, 1) });
-	mesh->SetVertexTangents({ Vector3(1, 0, 0), Vector3(1, 0, 0), Vector3(1, 0, 0) });
+	mesh->SetVertexPositions({ Vec3(0.0f, 0.5f, 0.0f), Vec3(0.5f, -0.5f, 0.0f), Vec3(-0.5f, -0.5f, 0.0f) });
+	mesh->SetVertexTextureCoords({ Vec2(0.5f, 0.0f) , Vec2(1.0f, 1.0f), Vec2(0.0f, 1.0f) });
+	mesh->SetVertexNormals({ Vec3(0, 0, 1),Vec3(0, 0, 1), Vec3(0, 0, 1) });
+	mesh->SetVertexTangents({ Vec3(1, 0, 0), Vec3(1, 0, 0), Vec3(1, 0, 0) });
 	mesh->SetVertexIndices({ 0, 1, 2 });
 
 	mesh->UploadToGPU();

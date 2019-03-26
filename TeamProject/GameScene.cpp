@@ -9,10 +9,10 @@ GameScene::GameScene(bool& qG) : Scene(), quitGame(qG) {
 	GameObject* light = new GameObject("Directional Light");
 	//Directional
 	light->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(30.0f, 60.0f, 0.0f));
-	light->AddComponent<Light*>(new Light(LightType::Directional, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f, 1.0f));
+	light->AddComponent<Light*>(new Light(LightType::Directional, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f, 1.0f));
 	//Point
-	//light->GetTransform().SetWorldPosition(Vector3(0.0f, 100.0f, 0.0f));
-	//light->AddComponent<Light*>(new Light(LightType::Point, Vector4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f, 1.0f));
+	//light->GetTransform().SetWorldPosition(Vec3(0.0f, 100.0f, 0.0f));
+	//light->AddComponent<Light*>(new Light(LightType::Point, Vec4(1.0f, 1.0f, 1.0f, 1.0f), 800.0f, 1.0f));
 	world->Instantiate(light);
 }
 
@@ -70,7 +70,7 @@ void CommandSetCameraPosition(vector<string> commandParams, void* data) {
 	float z = stof(commandParams[3]);
 
 	GameWorld* world = (GameWorld*)data;
-	world->GetMainCamera()->GetTransform().SetWorldPosition(Vector3(x, y, z));
+	world->GetMainCamera()->GetTransform().SetWorldPosition(Vec3(x, y, z));
 }
 
 //Console needs to be static first

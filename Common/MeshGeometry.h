@@ -5,10 +5,10 @@ using std::vector;
 
 namespace NCL {
 	namespace Maths {
-		class Vector2;
-		class Vector3;
-		class Vector4;
-		class Matrix4;
+		class Vec2;
+		class Vec3;
+		class Vec4;
+		class Mat4;
 	}
 	using namespace Maths;
 
@@ -42,23 +42,23 @@ namespace NCL {
 			return (unsigned int) indices.size();
 		}
 
-		const vector<Vector3>&		GetPositionData()		const { return positions; }
-		const vector<Vector2>&		GetTextureCoordData()	const { return texCoords; }
-		const vector<Vector4>&		GetColourData()			const { return colours; }
-		const vector<Vector3>&		GetNormalData()			const { return normals; }
-		const vector<Vector3>&		GetTangentData()		const { return tangents; }
+		const vector<Vec3>&		GetPositionData()		const { return positions; }
+		const vector<Vec2>&		GetTextureCoordData()	const { return texCoords; }
+		const vector<Vec4>&		GetColourData()			const { return colours; }
+		const vector<Vec3>&		GetNormalData()			const { return normals; }
+		const vector<Vec3>&		GetTangentData()		const { return tangents; }
 		const vector<unsigned int>& GetIndexData()			const { return indices; }
 
-		void SetVertexPositions(const vector<Vector3>& newVerts);
-		void SetVertexTextureCoords(const vector<Vector2>& newTex);
+		void SetVertexPositions(const vector<Vec3>& newVerts);
+		void SetVertexTextureCoords(const vector<Vec2>& newTex);
 
-		void SetVertexColours(const vector<Vector4>& newColours);
-		void SetVertexNormals(const vector<Vector3>& newNorms);
-		void SetVertexTangents(const vector<Vector3>& newTans);
+		void SetVertexColours(const vector<Vec4>& newColours);
+		void SetVertexNormals(const vector<Vec3>& newNorms);
+		void SetVertexTangents(const vector<Vec3>& newTans);
 		void SetVertexIndices(const vector<unsigned int>& newIndices);
 
 
-		void TransformVertices(const Matrix4& byMatrix);
+		void TransformVertices(const Mat4& byMatrix);
 
 		void RecalculateNormals();
 		void RecalculateTangents();
@@ -70,12 +70,12 @@ namespace NCL {
 		MeshGeometry(const std::string&filename);
 
 		GeometryPrimitive	primType;
-		vector<Vector3>		positions;
+		vector<Vec3>		positions;
 
-		vector<Vector2>		texCoords;
-		vector<Vector4>		colours;
-		vector<Vector3>		normals;
-		vector<Vector3>		tangents;
+		vector<Vec2>		texCoords;
+		vector<Vec4>		colours;
+		vector<Vec3>		normals;
+		vector<Vec3>		tangents;
 		vector<unsigned int>	indices;
 	};
 }

@@ -12,7 +12,7 @@ class SpherePrefab : public GameObject
 {
 public:
 	SpherePrefab();
-	SpherePrefab(const Vector3& position, float radius, float mass, float restitution, float friction);
+	SpherePrefab(const Vec3& position, float radius, float mass, float restitution, float friction);
 	virtual ~SpherePrefab();
 };
 

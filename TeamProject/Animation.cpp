@@ -92,9 +92,9 @@ void Animation::CalculateInterpolation()
 	float frameTimeDifference = nextFrame->time - currentFrame->time;
 	float frameCountDifference = (targetFPS * frameTimeDifference);
 
-	Vector3 positionDifferencePerFrame = (nextFrame->localPosition - currentFrame->localPosition) / frameCountDifference;
-	Vector3 scaleDifferencePerFrame = (nextFrame->localScale - currentFrame->localScale) / frameCountDifference;
-	Vector3 rotationDifferencePerFrame = (nextFrame->localRotation - currentFrame->localRotation) / frameCountDifference;
+	Vec3 positionDifferencePerFrame = (nextFrame->localPosition - currentFrame->localPosition) / frameCountDifference;
+	Vec3 scaleDifferencePerFrame = (nextFrame->localScale - currentFrame->localScale) / frameCountDifference;
+	Vec3 rotationDifferencePerFrame = (nextFrame->localRotation - currentFrame->localRotation) / frameCountDifference;
 
 
 	interpolation->localPosition = positionDifferencePerFrame;

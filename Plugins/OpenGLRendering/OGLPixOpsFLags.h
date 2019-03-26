@@ -20,7 +20,7 @@ namespace NCL {
 				SetStencilComparison(COMPARISON::NOCOMPARE, nullptr, nullptr);
 				SetStencilMask(false);
 
-				SetClearColor(Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+				SetClearColor(Vec4(0.2f, 0.2f, 0.2f, 1.0f));
 				SetColourMask(std::make_tuple(true, true, true, true));
 
 				SetSourceFactor(BLEND::SRC_ALPHA);
@@ -157,7 +157,7 @@ namespace NCL {
 				stencilMask = mask;
 			}
 
-			void SetClearColor(NCL::Maths::Vector4 color) override {
+			void SetClearColor(NCL::Maths::Vec4 color) override {
 				glClearColor(color.x, color.y, color.z, color.w);
 				clearColor = color;
 			}

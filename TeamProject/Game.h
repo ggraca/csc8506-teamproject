@@ -22,5 +22,7 @@ private:
 	Scene* currentScene;
 	GameTechRenderer* renderer;
 	bool quitGame = false;
+#ifdef _WIN32
 	NetworkManager* network;
+#endif
 };

@@ -50,7 +50,7 @@ namespace NCL {
 			float health = 1; //(100%);
 			//void UpdateHealthQuad();
 
-			Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
+			Mat4 biasMatrix = Mat4::Translation(Vec3(0.5, 0.5, 0.5)) * Mat4::Scale(Vec3(0.5, 0.5, 0.5));
 
 		protected:
 			void RenderFrame()	override;
@@ -74,7 +74,7 @@ namespace NCL {
 
 			//void SetupDebugMatrix(OGLShader*s) override;
 
-			vector<const RenderObject*> activeObjects;
+			vector<const RenderObjectPS4*> activeObjects;
 			vector<const Light*> activeLights;
 			vector<ParticleSystem*> activeParticleSystems;
 			vector<ShaderBase*> postProcessShaders;
@@ -83,7 +83,7 @@ namespace NCL {
 			ShaderBase*	shadowShader;
 			TextureBase* shadowTex;
 			GLuint		shadowFBO;
-			Matrix4     shadowMatrix;
+			Mat4     shadowMatrix;
 
 			ShaderBase* skyBoxShader;
 			ShaderBase* convolutionShader;
@@ -121,7 +121,7 @@ namespace NCL {
 			GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 			
-			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
+			Vec4 ambientColour = Vec4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
@@ -150,7 +150,7 @@ namespace NCL {
 			float health = 1; //(100%);
 			//void UpdateHealthQuad();
 
-			Matrix4 biasMatrix = Matrix4::Translation(Vector3(0.5, 0.5, 0.5)) * Matrix4::Scale(Vector3(0.5, 0.5, 0.5));
+			Mat4 biasMatrix = Mat4::Translation(Vec3(0.5, 0.5, 0.5)) * Mat4::Scale(Vec3(0.5, 0.5, 0.5));
 
 		protected:
 			void RenderFrame()	override;
@@ -177,7 +177,7 @@ namespace NCL {
 			PS4Shader*	shadowShader;
 			PS4Texture*		shadowTex;
 			sce::Gnm::RenderTarget		shadowFBO; //rendertargets are used instead of FBOs
-			Matrix4     shadowMatrix;
+			Mat4     shadowMatrix;
 
 			PS4Shader* skyBoxShader;
 
@@ -202,7 +202,7 @@ namespace NCL {
 			//GLuint hudTex;
 			vector<HUDObject*> hudObjects;
 
-			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
+			Vec4 ambientColour = Vec4(0.2f, 0.2f, 0.2f, 1.0f);
 
 			NCL::Maths::Matrix4*	projMatrix;
 			NCL::Maths::Matrix4*	viewMatrix;

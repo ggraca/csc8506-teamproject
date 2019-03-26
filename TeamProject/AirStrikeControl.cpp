@@ -25,10 +25,10 @@ void AirStrikeControl::Update(float dt)
 
 void AirStrikeControl::LaunchAirStrike()
 {
-	Vector3 forward = CalculateDirection();
-	Vector3 start = GetCameraPosition();
-	Vector3 end = start + ( forward * airStrikeDistance);
-	Vector3 hit;
+	Vec3 forward = CalculateDirection();
+	Vec3 start = GetCameraPosition();
+	Vec3 end = start + ( forward * airStrikeDistance);
+	Vec3 hit;
 	auto res = GameObject::gameWorld->Raycast(start, end, hit);
 
 	auto children = GameObject::FindGameObjectsWithTag(gameObject->GetComponent<Player*>()->GetResourceTag());
@@ -40,8 +40,8 @@ void AirStrikeControl::LaunchAirStrike()
 		for (int i = 0; i < 5; i++)
 		{
 			children[i]->GetComponent<Resource*>()->Reset();
-			children[i]->GetTransform().SetWorldPosition(hit + Vector3(0, 500, 0) + (forward  * 30));
-			children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, -400.0f, 0));
+			children[i]->GetTransform().SetWorldPosition(hit + Vec3(0, 500, 0) + (forward  * 30));
+			children[i]->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vec3(0, -400.0f, 0));
 			children[i]->GetComponent<DamageControl*>()->SetDamage(1);
 			gameObject->GetComponent<Player*>()->UpdateResourceCount(-1);
 			
@@ -49,10 +49,10 @@ void AirStrikeControl::LaunchAirStrike()
 	}
 }
 
-Vector3 AirStrikeControl::CalculateDirection()
+Vec3 AirStrikeControl::CalculateDirection()
 {
-	Vector3 forward;
-	Vector3 ctransform = GetCameraRotation().ToEuler();
+	Vec3 forward;
+	Vec3 ctransform = GetCameraRotation().ToEuler();
 	ctransform.y *= -1;
 
 	forward.x = sin(ctransform.y* (PI / 180)) * cos(ctransform.x * (PI / 180));

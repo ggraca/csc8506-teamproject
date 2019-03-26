@@ -9,7 +9,7 @@ namespace NCL {
 		public:
 			Matrix3(void);
 			Matrix3(float elements[16]);
-			Matrix3(const Matrix4 &m4);
+			Matrix3(const Mat4 &m4);
 
 			~Matrix3(void);
 
@@ -18,7 +18,7 @@ namespace NCL {
 			//Sets matrix to identity matrix (1.0 down the diagonal)
 			void	ToIdentity();
 
-			void SetRow(unsigned int row, const Vector3 &val) {
+			void SetRow(unsigned int row, const Vec3 &val) {
 				assert(row < 3);
 
 				int start = 3 * row;
@@ -28,15 +28,15 @@ namespace NCL {
 				values[start += 3] = val.z;
 			}
 
-			void SetColumn(unsigned int column, const Vector3 &val) {
+			void SetColumn(unsigned int column, const Vec3 &val) {
 				assert(column < 3);
 
 				memcpy(&values[3 * column], &val, sizeof(float) * 3);
 			}
 
-			Vector3 GetRow(unsigned int row) const {
+			Vec3 GetRow(unsigned int row) const {
 				assert(row < 3);
-				Vector3 out(0, 0, 0);
+				Vec3 out(0, 0, 0);
 
 				int start = row;
 
@@ -47,29 +47,29 @@ namespace NCL {
 				return out;
 			}
 
-			Vector3 GetColumn(unsigned int column) const {
+			Vec3 GetColumn(unsigned int column) const {
 				assert(column < 3);
-				Vector3 out(0, 0, 0);
+				Vec3 out(0, 0, 0);
 
 				memcpy(&out, &values[3 * column], sizeof(float) * 3);
 
 				return out;
 			}
 
-			Vector3 GetDiagonal() const {
-				return Vector3(values[0], values[4], values[8]);
+			Vec3 GetDiagonal() const {
+				return Vec3(values[0], values[4], values[8]);
 			}
 
-			void	SetDiagonal(const Vector3 &in) {
+			void	SetDiagonal(const Vec3 &in) {
 				values[0] = in.x;
 				values[4] = in.y;
 				values[8] = in.z;
 			}
 
-			Vector3 ToEuler() const;
+			Vec3 ToEuler() const;
 
-			inline Vector3 operator*(const Vector3 &v) const {
-				Vector3 vec;
+			inline Vec3 operator*(const Vec3 &v) const {
+				Vec3 vec;
 
 				vec.x = v.x*values[0] + v.y*values[3] + v.z*values[6];
 				vec.y = v.x*values[1] + v.y*values[4] + v.z*values[7];
@@ -95,7 +95,7 @@ namespace NCL {
 			}
 
 			inline void Transpose() {
-				Vector3 tempValues;
+				Vec3 tempValues;
 
 				tempValues.x = values[3];
 				tempValues.y = values[6];
@@ -128,13 +128,13 @@ namespace NCL {
 
 			//Creates a rotation matrix that rotates by 'degrees' around the 'axis'
 			//Analogous to glRotatef
-			static Matrix3 Rotation(float degrees, const Vector3 &axis);
+			static Matrix3 Rotation(float degrees, const Vec3 &axis);
 
 			//Creates a scaling matrix (puts the 'scale' vector down the diagonal)
 			//Analogous to glScalef
-			static Matrix3 Scale(const Vector3 &scale);
+			static Matrix3 Scale(const Vec3 &scale);
 
-			static Matrix3 FromEuler(const Vector3 &euler);
+			static Matrix3 FromEuler(const Vec3 &euler);
 
 			//Handy string output for the matrix. Can get a bit messy, but better than nothing!
 			inline friend std::ostream& operator<<(std::ostream& o, const Matrix3& m);

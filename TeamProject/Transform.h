@@ -17,14 +17,14 @@ namespace NCL {
 		{
 		public:
 			Transform();
-			Transform(const  NCL::Maths::Vector3& position, Transform* parent = nullptr);
+			Transform(const  NCL::Maths::Vec3& position, Transform* parent = nullptr);
 			~Transform();
 
-			void SetWorldPosition(const NCL::Maths::Vector3& worldPos);
-			void SetLocalPosition(const  NCL::Maths::Vector3& localPos);
+			void SetWorldPosition(const NCL::Maths::Vec3& worldPos);
+			void SetLocalPosition(const  NCL::Maths::Vec3& localPos);
 
-			void SetWorldScale(const  NCL::Maths::Vector3& worldScale);
-			void SetLocalScale(const  NCL::Maths::Vector3& localScale);
+			void SetWorldScale(const  NCL::Maths::Vec3& worldScale);
+			void SetLocalScale(const  NCL::Maths::Vec3& localScale);
 
 			Transform* GetParent() const {
 				return parent;
@@ -34,23 +34,23 @@ namespace NCL {
 				parent = newParent;
 			}
 
-			NCL::Maths::Matrix4 GetWorldMatrix() const {
+			NCL::Maths::Mat4 GetWorldMatrix() const {
 				return worldMatrix;
 			}
 
-			NCL::Maths::Matrix4 GetLocalMatrix() const {
+			NCL::Maths::Mat4 GetLocalMatrix() const {
 				return localMatrix;
 			}
 
-			NCL::Maths::Vector3 GetWorldPosition() const {
+			NCL::Maths::Vec3 GetWorldPosition() const {
 				return worldMatrix.GetPositionVector();
 			}
 
-			NCL::Maths::Vector3 GetLocalPosition() const {
+			NCL::Maths::Vec3 GetLocalPosition() const {
 				return localPosition;
 			}
 
-			NCL::Maths::Vector3 GetLocalScale() const {
+			NCL::Maths::Vec3 GetLocalScale() const {
 				return localScale;
 			}
 
@@ -98,27 +98,27 @@ namespace NCL {
 			void UpdateMatrices();
 			vector<Transform*> GetChildrenList();
 
-			void ForceUpdateWorldPosition(NCL::Maths::Vector3 pos);
+			void ForceUpdateWorldPosition(NCL::Maths::Vec3 pos);
 			void ForceUpdateBulletWorldTransform(btTransform &temp);
 			void ForceUpdateLocalRotation(NCL::Maths::Quaternion qt);
 
-			void ForceUpdateWorldPositionWithTransform(NCL::Maths::Vector3 pos);
-			void ForceUpdateLocalPositionWithTransform(NCL::Maths::Vector3 pos);
+			void ForceUpdateWorldPositionWithTransform(NCL::Maths::Vec3 pos);
+			void ForceUpdateLocalPositionWithTransform(NCL::Maths::Vec3 pos);
 			void ForceUpdateLocalRotationWithTransform(NCL::Maths::Quaternion qt);
 
-			void ForceUpdateScale(NCL::Maths::Vector3 scale);
-			void ForceUpdateScaleWithTransform(NCL::Maths::Vector3 scale);
+			void ForceUpdateScale(NCL::Maths::Vec3 scale);
+			void ForceUpdateScaleWithTransform(NCL::Maths::Vec3 scale);
 
 			void SetGameObject(GameObject * obj);
 			GameObject* GetGameObject();
 
 
 		protected:
-			NCL::Maths::Matrix4		localMatrix;
-			NCL::Maths::Matrix4		worldMatrix;
+			NCL::Maths::Mat4		localMatrix;
+			NCL::Maths::Mat4		worldMatrix;
 
-			NCL::Maths::Vector3		localPosition;
-			NCL::Maths::Vector3		localScale;
+			NCL::Maths::Vec3		localPosition;
+			NCL::Maths::Vec3		localScale;
 			NCL::Maths::Quaternion	localOrientation;
 			NCL::Maths::Quaternion  worldOrientation;
 

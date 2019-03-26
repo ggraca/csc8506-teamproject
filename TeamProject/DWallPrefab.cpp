@@ -1,6 +1,6 @@
 #include "DWallPrefab.h"
 
-DWallPrefab::DWallPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient)
+DWallPrefab::DWallPrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient)
 {
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("full_wall.obj");
 	GameObject* go = GameObject::FromOBJ(objGeometry);

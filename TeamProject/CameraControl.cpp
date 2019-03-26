@@ -17,7 +17,7 @@ CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)
 	this->farPlane = 4200.0f;
 	this->pitch = 0;
 	this->yaw = 0;
-	gameObject->GetTransform().SetWorldPosition(Vector3(0, 10,0));
+	gameObject->GetTransform().SetWorldPosition(Vec3(0, 10,0));
 }
 
 CameraControl::~CameraControl()
@@ -85,35 +85,35 @@ void CameraControl::OnCollisionEnd(GameObject * otherObject)
 {
 }
 
-Matrix4 CameraControl::BuildViewMatrix() const
+Mat4 CameraControl::BuildViewMatrix() const
 {
 	vector<Transform*> children = gameObject->GetTransform().GetChildrenList();
 	
 	if (children.size() == 0)
 	{
 		cout << "No camera child has been found" << endl;
-		return	Matrix4::Rotation(-pitch, Vector3(1, 0, 0)) *
-			Matrix4::Rotation(-yaw, Vector3(0, 1, 0)) *
-			Matrix4::Translation(-gameObject->GetTransform().GetWorldPosition());
+		return	Mat4::Rotation(-pitch, Vec3(1, 0, 0)) *
+			Mat4::Rotation(-yaw, Vec3(0, 1, 0)) *
+			Mat4::Translation(-gameObject->GetTransform().GetWorldPosition());
 	}
 	else
 	{
 		children[0]->UpdateMatrices();
-		Vector3 childRot = children[0]->GetWorldOrientation().ToEuler();
+		Vec3 childRot = children[0]->GetWorldOrientation().ToEuler();
 		
-		return	Matrix4::Rotation(-childRot.x, Vector3(1, 0, 0)) *
-			Matrix4::Rotation(-childRot.y, Vector3(0, 1, 0)) *
-			Matrix4::Translation(-children[0]->GetWorldPosition());
+		return	Mat4::Rotation(-childRot.x, Vec3(1, 0, 0)) *
+			Mat4::Rotation(-childRot.y, Vec3(0, 1, 0)) *
+			Mat4::Translation(-children[0]->GetWorldPosition());
 	}
 };
 
-Matrix4 CameraControl::BuildProjectionMatrix(float currentAspect) const
+Mat4 CameraControl::BuildProjectionMatrix(float currentAspect) const
 {
 	//if (camType == CameraType::Orthographic) {
-	//	return Matrix4::Orthographic(nearPlane, farPlane, right, left, top, bottom);
+	//	return Mat4::Orthographic(nearPlane, farPlane, right, left, top, bottom);
 	//}
 	//else if (camType == CameraType::Perspective) {
-	return Matrix4::Perspective(nearPlane, farPlane, currentAspect, fov);
+	return Mat4::Perspective(nearPlane, farPlane, currentAspect, fov);
 	//}
 }
 

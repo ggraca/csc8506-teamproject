@@ -53,27 +53,27 @@ void OGLMesh::UploadToGPU() {
 
 	//Buffer vertex data
 	if (!GetPositionData().empty()) {
-		CreateVertexBuffer(buffers[VERTEX_BUFFER], numVertices * sizeof(Vector3), (char*)GetPositionData().data());
-		BindVertexAttribute(VERTEX_BUFFER, buffers[VERTEX_BUFFER], VERTEX_BUFFER, 3, sizeof(Vector3), 0);
+		CreateVertexBuffer(buffers[VERTEX_BUFFER], numVertices * sizeof(Vec3), (char*)GetPositionData().data());
+		BindVertexAttribute(VERTEX_BUFFER, buffers[VERTEX_BUFFER], VERTEX_BUFFER, 3, sizeof(Vec3), 0);
 	}
 
 	if (!GetColourData().empty()) {	//buffer colour data
-		CreateVertexBuffer(buffers[COLOUR_BUFFER], numVertices * sizeof(Vector4), (char*)GetColourData().data());
-		BindVertexAttribute(COLOUR_BUFFER, buffers[COLOUR_BUFFER], COLOUR_BUFFER, 4, sizeof(Vector4), 0);
+		CreateVertexBuffer(buffers[COLOUR_BUFFER], numVertices * sizeof(Vec4), (char*)GetColourData().data());
+		BindVertexAttribute(COLOUR_BUFFER, buffers[COLOUR_BUFFER], COLOUR_BUFFER, 4, sizeof(Vec4), 0);
 	}
 	if (!GetTextureCoordData().empty()) {	//Buffer texture data
-		CreateVertexBuffer(buffers[TEXTURE_BUFFER], numVertices * sizeof(Vector2), (char*)GetTextureCoordData().data());
-		BindVertexAttribute(TEXTURE_BUFFER, buffers[TEXTURE_BUFFER], TEXTURE_BUFFER, 2, sizeof(Vector2), 0);
+		CreateVertexBuffer(buffers[TEXTURE_BUFFER], numVertices * sizeof(Vec2), (char*)GetTextureCoordData().data());
+		BindVertexAttribute(TEXTURE_BUFFER, buffers[TEXTURE_BUFFER], TEXTURE_BUFFER, 2, sizeof(Vec2), 0);
 	}
 
 	if (!GetNormalData().empty()) {	//Buffer normal data
-		CreateVertexBuffer(buffers[NORMAL_BUFFER], numVertices * sizeof(Vector3), (char*)GetNormalData().data());
-		BindVertexAttribute(NORMAL_BUFFER, buffers[NORMAL_BUFFER], NORMAL_BUFFER, 3, sizeof(Vector3), 0);
+		CreateVertexBuffer(buffers[NORMAL_BUFFER], numVertices * sizeof(Vec3), (char*)GetNormalData().data());
+		BindVertexAttribute(NORMAL_BUFFER, buffers[NORMAL_BUFFER], NORMAL_BUFFER, 3, sizeof(Vec3), 0);
 	}
 
 	if (!GetTangentData().empty()) {	//Buffer tangent data
-		CreateVertexBuffer(buffers[TANGENT_BUFFER], numVertices * sizeof(Vector3), (char*)GetTangentData().data());
-		BindVertexAttribute(TANGENT_BUFFER, buffers[TANGENT_BUFFER], TANGENT_BUFFER, 3, sizeof(Vector3), 0);
+		CreateVertexBuffer(buffers[TANGENT_BUFFER], numVertices * sizeof(Vec3), (char*)GetTangentData().data());
+		BindVertexAttribute(TANGENT_BUFFER, buffers[TANGENT_BUFFER], TANGENT_BUFFER, 3, sizeof(Vec3), 0);
 	}
 
 	if (!GetIndexData().empty()) {		//buffer index data
@@ -88,39 +88,39 @@ void OGLMesh::UploadToGPU() {
 OGLMesh* OGLMesh::GenerateQuad() {
 	OGLMesh* newMesh = new OGLMesh();
 
-	vector<Vector3> vertices;
-	vertices.push_back(Vector3(-1.0f, -1.0f, 0.0f));
-	vertices.push_back(Vector3(-1.0f, 1.0f, 0.0f));
-	vertices.push_back(Vector3(1.0f, -1.0f, 0.0f));
-	vertices.push_back(Vector3(1.0f, 1.0f, 0.0f));
+	vector<Vec3> vertices;
+	vertices.push_back(Vec3(-1.0f, -1.0f, 0.0f));
+	vertices.push_back(Vec3(-1.0f, 1.0f, 0.0f));
+	vertices.push_back(Vec3(1.0f, -1.0f, 0.0f));
+	vertices.push_back(Vec3(1.0f, 1.0f, 0.0f));
 	newMesh->SetVertexPositions(vertices);
 
-	vector<Vector2> textureCoords;
-	textureCoords.push_back(Vector2(0.0f, 1.0f));
-	textureCoords.push_back(Vector2(0.0f, 0.0f));
-	textureCoords.push_back(Vector2(1.0f, 1.0f));
-	textureCoords.push_back(Vector2(1.0f, 0.0f));
+	vector<Vec2> textureCoords;
+	textureCoords.push_back(Vec2(0.0f, 1.0f));
+	textureCoords.push_back(Vec2(0.0f, 0.0f));
+	textureCoords.push_back(Vec2(1.0f, 1.0f));
+	textureCoords.push_back(Vec2(1.0f, 0.0f));
 	newMesh->SetVertexTextureCoords(textureCoords);
 
-	vector<Vector4> colours;
-	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	vector<Vec4> colours;
+	colours.push_back(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	newMesh->SetVertexColours(colours);
 
-	vector<Vector3> normals;
-	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
-	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
-	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
-	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
+	vector<Vec3> normals;
+	normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
 	newMesh->SetVertexNormals(normals);
 
-	vector<Vector3> tangents;
-	tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
-	tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
-	tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
-	tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
+	vector<Vec3> tangents;
+	tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+	tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+	tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+	tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
 	newMesh->SetVertexTangents(tangents);
 
 	return newMesh;
@@ -130,39 +130,39 @@ OGLMesh* OGLMesh::GenerateQuad(float minX, float maxX, float minY, float maxY, i
 	OGLMesh* newMesh = new OGLMesh();
 	float width = (float)currentWidth;
 	float height = (float)currentHeight;
-	vector<Vector3> vertices;
-	vertices.push_back(Vector3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
-	vertices.push_back(Vector3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
-	vertices.push_back(Vector3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
-	vertices.push_back(Vector3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
+	vector<Vec3> vertices;
+	vertices.push_back(Vec3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vec3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vec3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vec3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
 	newMesh->SetVertexPositions(vertices);
 
-	vector<Vector2> textureCoords;
-	textureCoords.push_back(Vector2(0.0f, 1.0f));
-	textureCoords.push_back(Vector2(0.0f, 0.0f));
-	textureCoords.push_back(Vector2(1.0f, 1.0f));
-	textureCoords.push_back(Vector2(1.0f, 0.0f));
+	vector<Vec2> textureCoords;
+	textureCoords.push_back(Vec2(0.0f, 1.0f));
+	textureCoords.push_back(Vec2(0.0f, 0.0f));
+	textureCoords.push_back(Vec2(1.0f, 1.0f));
+	textureCoords.push_back(Vec2(1.0f, 0.0f));
 	newMesh->SetVertexTextureCoords(textureCoords);
 
-	vector<Vector4> colours;
-	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-	colours.push_back(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	vector<Vec4> colours;
+	colours.push_back(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	colours.push_back(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	newMesh->SetVertexColours(colours);
 
-	vector<Vector3> normals;
-	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
-	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
-	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
-	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
+	vector<Vec3> normals;
+	normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
 	newMesh->SetVertexNormals(normals);
 
-	//vector<Vector3> tangents;
-	//tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
-	//tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
-	//tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
-	//tangents.push_back(Vector3(1.0f, 0.0f, 0.0f));
+	//vector<Vec3> tangents;
+	//tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+	//tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+	//tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+	//tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
 	//newMesh->SetVertexTangents(tangents);
 
 	return newMesh;
@@ -172,11 +172,11 @@ void OGLMesh::ChangeQuad(OGLMesh* quad, float minX, float maxX, float minY, floa
 
 	float width = 1280;
 	float height = 720;
-	vector<Vector3> vertices;
-	vertices.push_back(Vector3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
-	vertices.push_back(Vector3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
-	vertices.push_back(Vector3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
-	vertices.push_back(Vector3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
+	vector<Vec3> vertices;
+	vertices.push_back(Vec3((minX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vec3((minX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vec3((maxX / width) * 2 - 1, (minY / height) * 2 - 1, 0.0f));
+	vertices.push_back(Vec3((maxX / width) * 2 - 1, (maxY / height) * 2 - 1, 0.0f));
 	quad->SetVertexPositions(vertices);
 }
 
@@ -185,15 +185,15 @@ void OGLMesh::RecalculateNormals() {
 
 	if (indices.size() > 0) {
 		for (size_t i = 0; i < positions.size(); i++) {
-			normals.emplace_back(Vector3());
+			normals.emplace_back(Vec3());
 		}
 
 		for (size_t i = 0; i < indices.size(); i += 3) {
-			Vector3& a = positions[indices[i+0]];
-			Vector3& b = positions[indices[i+1]];
-			Vector3& c = positions[indices[i+2]];
+			Vec3& a = positions[indices[i+0]];
+			Vec3& b = positions[indices[i+1]];
+			Vec3& c = positions[indices[i+2]];
 
-			Vector3 normal = Vector3::Cross(b - a, c - a);
+			Vec3 normal = Vec3::Cross(b - a, c - a);
 			normal.Normalise();
 
 			normals[indices[i + 0]] += normal;

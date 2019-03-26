@@ -14,7 +14,7 @@ Win32Window::Win32Window(const std::string& title, int sizeX, int sizeY, bool fu
 
 	this->fullScreen = fullScreen;
 
-	size = NCL::Maths::Vector2((float)sizeX, (float)sizeY);
+	size = NCL::Maths::Vec2((float)sizeX, (float)sizeY);
 
 	defaultSize = size;
 
@@ -105,7 +105,7 @@ bool	Win32Window::InternalUpdate() {
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(windowHandle, &pt);
-	winMouse->SetAbsolutePosition(NCL::Maths::Vector2((float)pt.x, (float)pt.y));
+	winMouse->SetAbsolutePosition(NCL::Maths::Vec2((float)pt.x, (float)pt.y));
 
 	while(PeekMessage(&msg,windowHandle,0,0,PM_REMOVE)) {
 		CheckMessages(msg); 
@@ -245,7 +245,7 @@ LRESULT CALLBACK Win32Window::WindowProc(HWND hWnd, UINT message, WPARAM wParam,
 			if (mouse) {
 				Win32Mouse*realMouse = (Win32Mouse*)mouse;
 				realMouse->UpdateWindowPosition(
-					NCL::Maths::Vector2((float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam))
+					NCL::Maths::Vec2((float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam))
 				);
 			}
 

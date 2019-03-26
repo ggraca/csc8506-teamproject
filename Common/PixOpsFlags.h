@@ -62,8 +62,8 @@ namespace NCL {
 			virtual void SetStencilMask(bool mask) = 0;
 			bool GetStencilMask() { return stencilMask; }
 
-			virtual void SetClearColor(NCL::Maths::Vector4 color) = 0;
-			NCL::Maths::Vector4 GetClearColor() { return clearColor; }
+			virtual void SetClearColor(NCL::Maths::Vec4 color) = 0;
+			NCL::Maths::Vec4 GetClearColor() { return clearColor; }
 
 			virtual void SetColourMask(ColorMask mask) = 0;
 			ColorMask GetColourMask() { return colorMask; }
@@ -91,7 +91,7 @@ namespace NCL {
 			COMPARISON stencilComparison;
 			bool stencilMask;
 
-			NCL::Maths::Vector4 clearColor;
+			NCL::Maths::Vec4 clearColor;
 			ColorMask colorMask;
 
 			COMPARISON alphaComparison;

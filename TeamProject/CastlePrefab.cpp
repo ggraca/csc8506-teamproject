@@ -1,6 +1,6 @@
 #include "CastlePrefab.h"
 
-CastlePrefab::CastlePrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient)
+CastlePrefab::CastlePrefab(const Vec3& Scale, const Vec3& Position, const Quaternion& orient)
 {
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("bau.obj");
 	GameObject* go = GameObject::FromOBJ(objGeometry);
