@@ -15,7 +15,7 @@
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
 	ResetPlayer();
-	gameObject->GetComponent<PhysicsObject*>()->SetDamping(0.5, 0);
+	gameObject->GetComponent<PhysicsObject*>()->SetDamping(0.5, 0); //TODO Is there a better place to set this? Only needs to be executed once, not every time player moves...
 }
 
 void Player::Awake()
@@ -213,7 +213,8 @@ void Player::PlayerMovement(float dt)
 
 	if (!isJumping && keysPressed.inputs[InputManager::ActionButton::JUMP])
 	{
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 200, 0));
+		gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, 200, 0));
+	//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 200, 0));
 		isJumping = true;
 	}
 }
