@@ -1,6 +1,7 @@
 #pragma once
 #include "../Common/Vector3.h"
 #include "../Common/Matrix3.h"
+#include "../Common/Maths.h"
 #include "../Common/Quaternion.h"
 #include "../Plugins/Bullet/src/btBulletDynamicsCommon.h"
 #include "Component.h"

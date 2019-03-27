@@ -4,8 +4,11 @@
 #ifdef _WIN32
 #include "NetworkServer.h"
 #endif
+#include "../Common/Quaternion.h"
+#include "../Common/Vector3.h"
 
 using namespace NCL;
+using namespace NCL::Maths;
 using namespace CSC8503;
 
 namespace NCL

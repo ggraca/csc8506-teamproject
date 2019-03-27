@@ -10,13 +10,15 @@ using namespace std;
 
 class BulletPhysics;
 class CAudioEngine;
+class btCollisionObject;
 
 namespace NCL {
 		class Camera;
 	namespace CSC8503 {
 		class GameObject;
 		class Constraint;
-
+		class PhysicsObject;
+		
 		class GameWorld	{
 		public:
 			GameWorld();

@@ -179,22 +179,23 @@ GameObject * GameObject::GetMainCamera()
 }
 
 GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
-	if (!gameWorld) { return nullptr; }
+	//if (!gameWorld) { return nullptr; }
 
-	GameObject* root = new GameObject();
-	gameWorld->Instantiate(root);
+	//GameObject* root = new GameObject();
+	//gameWorld->Instantiate(root);
 
-	for (auto& mesh : obj->GetChildren()) {
-		GameObject* go = new GameObject();
+	//for (auto& mesh : obj->GetChildren()) {
+	//	GameObject* go = new GameObject();
 
-		go->AddComponent<RenderObject*>(new RenderObject(
-			&go->GetTransform(),
-			mesh,
-			((OBJMesh*)mesh)->material
-		));
+	//	go->AddComponent<RenderObject*>(new RenderObject(
+	//		&go->GetTransform(),
+	//		mesh,
+	//		((OBJMesh*)mesh)->material
+	//	));
 
-		gameWorld->Instantiate(go);
-		root->AddChild(go);
-	}
-	return root;
+	//	gameWorld->Instantiate(go);
+	//	root->AddChild(go);
+	//}
+	//return root;
+	return nullptr;
 }

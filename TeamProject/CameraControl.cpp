@@ -1,7 +1,8 @@
 #include "CameraControl.h"
 #include "InputManager.h"
 #include "../Common/Window.h"
-
+#include <algorithm>
+#include "GameObject.h"
 
 CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)
 {
@@ -45,18 +46,18 @@ void CameraControl::UpdateCamera()
 	pitch += (Window::GetMouse()->GetRelativePosition().y);
 	yaw -= (Window::GetMouse()->GetRelativePosition().x);
 
-	roll = min(roll, 90.0f);
-	roll = max(roll, -90.0f);
+	roll = std::min(roll, 90.0f);
+	roll = std::max(roll, -90.0f);
 
 	if (isTPS)
 	{
-		pitch = min(pitch, 50.0f);
-		pitch = max(pitch, -25.0f);
+		pitch = std::min(pitch, 50.0f);
+		pitch = std::max(pitch, -25.0f);
 	}
 	else
 	{
-		pitch = min(pitch, 10.0f);
-		pitch = max(pitch, -90.0f);
+		pitch = std::min(pitch, 10.0f);
+		pitch = std::max(pitch, -90.0f);
 	}
 	
 
@@ -87,7 +88,7 @@ void CameraControl::OnCollisionEnd(GameObject * otherObject)
 
 Mat4 CameraControl::BuildViewMatrix() const
 {
-	vector<Transform*> children = gameObject->GetTransform().GetChildrenList();
+	std::vector<Transform*> children = gameObject->GetTransform().GetChildrenList();
 	
 	if (children.size() == 0)
 	{

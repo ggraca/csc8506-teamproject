@@ -130,17 +130,19 @@ namespace NCL {
 		#endif
 
 		#ifdef __ORBIS__
+		using namespace PS4;
 		class GameTechRenderer : public PS4::PS4RendererBase {
 		public:
 			GameTechRenderer();
 			~GameTechRenderer();
 
+			void SetGameWorld(GameWorld* gw) { gameWorld = gw; }
 			int GetRendererWidth() const { return currentWidth; }
 			int GetRendererHeight() const { return currentHeight; }
 			int GetVertsDrawn() const { return vertsDrawn; }
 			int GetShadowCasters() const { return shadowCasters; }
 
-			void SetLightMesh(PS4Mesh* mesh) { lightSphere = mesh; }
+			void SetLightMesh(PS4::PS4Mesh* mesh) { lightSphere = mesh; }
 
 			PS4Texture* skybox;
 

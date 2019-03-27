@@ -46,7 +46,7 @@ namespace NCL {
 			~PS4RendererBase();
 
 		protected:
-			virtual void RenderActiveScene() = 0;
+			virtual void RenderActiveScene() {};
 
 			void	OnWindowResize(int w, int h) override;
 			void	BeginFrame()    override;
@@ -56,7 +56,7 @@ namespace NCL {
 			void	SwapScreenBuffer();
 			void	SwapCommandBuffer();
 			
-			void	DrawMesh(PS4Mesh& mesh);
+			void	DrawMesh(const PS4Mesh& mesh);
 			void	BindFBO(void*buffer);
 			void	ClearBuffer(bool colour, bool depth, bool stencil);
 

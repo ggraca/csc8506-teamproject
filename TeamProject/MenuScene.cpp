@@ -152,7 +152,7 @@ void MenuScene::ShowMenu()
 		Vec4 colour;
 		if (me.selected) colour = Vec4(1, 0, 0, 1);
 		else colour = Vec4(0, 0, 1, 1);
-		renderer->DrawString(me.menuTitle, Vec2(50, Window::GetWindow()->GetScreenSize().y / 2 + offset), colour);
+		//renderer->DrawString(me.menuTitle, Vec2(50, Window::GetWindow()->GetScreenSize().y / 2 + offset), colour);
 		offset -= 50.0f;
 	}
 }

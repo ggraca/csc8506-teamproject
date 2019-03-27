@@ -6,6 +6,7 @@
 #include "TypeId.h"
 
 #include "../Common/OBJGeometry.h"
+#include "ScriptObject.h"
 
 using std::vector;
 
@@ -170,7 +171,7 @@ namespace NCL {
 				}
 			}
 		};
-
+//#ifdef _WIN32
 		template<class T>
 		void GameObject::AddComponent(Component * obj)
 		{
@@ -191,5 +192,6 @@ namespace NCL {
 			obj->SetGameObject(this);
 			components[index] = obj;
 		}
+//#endif
 	}
 }

@@ -147,19 +147,19 @@ void GameWorld::LateInstantiateRecursively(GameObject * obj)
 
 void GameWorld::HandleObjectsToInstantiate()
 {
-	for (auto& i : objectsToInstantiate)
-	{
-		if (i->GetComponent<NetworkObject*>()) {
-			network->Instantiate(i);
+	//for (auto& i : objectsToInstantiate)
+	//{
+	//	if (i->GetComponent<NetworkObject*>()) {
+	//		network->Instantiate(i);
 
-			if (dynamic_cast<NetworkClient*>(network))
-				continue;
-		}
+	//		if (dynamic_cast<NetworkClient*>(network))
+	//			continue;
+	//	}
 
-		Instantiate(i);
-	}
+	//	Instantiate(i);
+	//}
 
-	objectsToInstantiate.clear();
+	//objectsToInstantiate.clear();
 }
 
 void GameWorld::UpdateGameObjects(float dt)
