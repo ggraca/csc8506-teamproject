@@ -76,7 +76,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 					vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
 					vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
 
-					cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl; //TODO Delete this once fully tested!
+//					cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl; //TODO Delete this once fully tested!
 
 					vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
 					vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
