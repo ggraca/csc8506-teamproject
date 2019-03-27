@@ -42,6 +42,7 @@ void DamageControl::ResolveDamage(GameObject * obj)
 			obj->GetComponent<Player*>()->TakeDamage(damage);
 			
 			if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
+			gameObject->SetTag(LayerAndTag::Resources);
 		}
 	}
 
@@ -50,11 +51,13 @@ void DamageControl::ResolveDamage(GameObject * obj)
 		obj->GetComponent<Player*>()->TakeDamage(damage);
 
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
+		gameObject->SetTag(LayerAndTag::Resources);
 	}
 
 	else if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile)) 
 	{
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
+		gameObject->SetTag(LayerAndTag::Resources);
 	}
 
 	else if ((IsTagOccupied(gameObject->GetTag()) || gameObject->CompareTag(LayerAndTag::Tags::Resources)) && !IsTagOccupied(obj->GetTag()) &&  !obj->CompareTag(LayerAndTag::Tags::Resources))
@@ -65,6 +68,7 @@ void DamageControl::ResolveDamage(GameObject * obj)
 		}
 
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
+		gameObject->SetTag(LayerAndTag::Resources);
 	}
 }
 
