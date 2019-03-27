@@ -282,10 +282,6 @@ void GameTechRenderer::RenderCamera() {
 		OGLShader* shader = (OGLShader*)currentMaterial->GetShader();
 		BindShader(shader);
 
-		if (i->GetGameObject()->GetName() == "Wall") {
-			int k = 42;
-		}
-
 		for (unsigned int j = 0; j < currentMaterial->GetTextureParameters()->size(); j++)
 		{
 			//Gets texture, then gets texture shader param name, and binds it to texture slot = iteration

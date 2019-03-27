@@ -40,6 +40,8 @@ namespace NCL {
 				}
 			}
 
+			void InitBasicTextureParams();
+
 			const std::vector<std::pair<std::string, TextureBase*>>* GetTextureParameters() const { return &textureParameters; }
 
 		protected:
