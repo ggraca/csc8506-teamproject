@@ -122,6 +122,18 @@ void NetworkServer::Instantiate(GameObject* go) {
 	server->SendGlobalPacket(InstantiatePacket(no->GetPrefabId(), no->GetId(), go->GetTransform().GetWorldPosition(), go->GetTransform().GetLocalOrientation(), go->GetTransform().GetLocalScale()));
 }
 
+void NetworkServer::Destroy(GameObject * go)
+{
+	for (auto childTransform : go->GetTransform().GetChildrenList()) {
+		Destroy(childTransform->GetGameObject());
+	}
+
+	if (go->GetComponent<NetworkObject*>()) {
+		objects.erase(remove(objects.begin(), objects.end(), go->GetComponent<NetworkObject*>()), objects.end());
+	}
+	world->LateDestroy(go);
+}
+
 void NetworkServer::AddPlayer(int peerId, GameObject* go) {
 	players.push_back(new PlayerInput(peerId, go));
 }
@@ -130,18 +142,8 @@ void NetworkServer::RemovePlayer(int peerId) {
 	PlayerInput* ps = FindPlayer(peerId);
 	if (!ps) return;
 
-	GameObject* go = ps->gameObject;
-	for (auto childTransform : go->GetTransform().GetChildrenList()) {
-		GameObject* childGameObject = childTransform->GetGameObject();
-		NetworkObject* no = childGameObject->GetComponent<NetworkObject*>();
-		if (!no) continue;
-
-		objects.erase(remove(objects.begin(), objects.end(), no), objects.end());
-	}
-
-	objects.erase(remove(objects.begin(), objects.end(), go->GetComponent<NetworkObject*>()), objects.end());
+	Destroy(ps->gameObject);
 	players.erase(remove(players.begin(), players.end(), ps), players.end());
-	world->LateDestroy(go);
 }
 
 PlayerInput* NetworkServer::FindPlayer(int peerId) {

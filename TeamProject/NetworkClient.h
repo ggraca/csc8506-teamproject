@@ -27,7 +27,7 @@ public:
 	}
 	
 	void Instantiate(GameObject* go) override {}
-	void Destroy() override {};
+	void Destroy(GameObject* go) override {};
 
 private:
 	void ReceivePacket(int type, GamePacket* payload, int source) override;
