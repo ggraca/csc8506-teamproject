@@ -86,9 +86,7 @@ void CannonScript::Aim() {
 	if (!closest) { return; }
 
 	Vector3 Diff = closest->GetTransform().GetWorldPosition() - posCannon;
-	cout << posCannon << endl;
-	cout << Diff << endl;
-
+	
 	float x, y;
 
 	//x = -asin(Diff.y)/** (180/M_PI)*/;

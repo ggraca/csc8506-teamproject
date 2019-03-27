@@ -17,6 +17,7 @@ namespace NCL {
 		public:
 			LevelScene(bool& quitGame);
 			~LevelScene();
+			void GenerateResources();
 			void LoadWorld();
 			
 		protected:
