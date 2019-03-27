@@ -42,8 +42,8 @@ CAudioEngine::CAudioEngine() {
 	setMinMaxDistance(10.0f, 10000.0f);
 	
 	LoadSound(Assets::SOUNDSDIR + "Awaken.wav", false, true, false);
-	LoadBank(Assets::SOUNDSDIR + "Final\Build\Master/ Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
-	LoadBank(Assets::SOUNDSDIR + "Final\Build\Master/ Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+	LoadBank(Assets::SOUNDSDIR + "Final\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+	LoadBank(Assets::SOUNDSDIR + "Final\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
 }
 
 void CAudioEngine::Init() {

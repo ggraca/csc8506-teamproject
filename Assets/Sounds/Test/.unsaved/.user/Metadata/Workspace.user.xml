@@ -8,7 +8,7 @@
 			<destination>{cab91fb9-25a7-424c-9508-0e05b1f73b91}</destination>
 		</relationship>
 		<relationship name="profilerSessionFolder">
-			<destination>{42e1773c-a75b-4a7e-830e-55512eed0535}</destination>
+			<destination>{b664c956-903e-48f6-a324-e03da3983e16}</destination>
 		</relationship>
 	</object>
 	<object class="ProjectSettings" id="{294d8c60-6bc0-4075-b6a8-d606d406be33}">
