@@ -119,16 +119,16 @@ void CannonScript::Fire()
 	Vector3 Diff = closest->GetTransform().GetWorldPosition() - posCannon;
 	NDiff = Diff.Normalised();
 
-	if (balls.size() == 10)
+	if (balls.size() == 20)
 	{
 		balls[ballIndex]->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0,0,0));
 		balls[ballIndex]->GetTransform().ForceUpdateWorldPositionWithTransform(Vector3(cannon->GetTransform().GetWorldPosition().x, cannon->GetTransform().GetWorldPosition().y + 10.0f, cannon->GetTransform().GetWorldPosition().z));
 		balls[ballIndex]->SetTag(LayerAndTag::EnemyProjectile);
 		balls[ballIndex]->GetComponent<DamageControl*>()->SetDamage(4.0f);
-		Vector3 projMov = (cannon->GetTransform().GetWorldPosition() + (NDiff * 5000)) - Vector3(0, 10, 0);
+		Vector3 projMov = (cannon->GetTransform().GetWorldPosition() + (NDiff * 5000)) - Vector3(0, 20, 0);
 		balls[ballIndex]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
 
-		ballIndex = (ballIndex + 1) % 10;
+		ballIndex = (ballIndex + 1) % 20;
 	}
 	else
 	{
