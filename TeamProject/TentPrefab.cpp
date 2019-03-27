@@ -12,7 +12,7 @@ TentPrefab::TentPrefab(const Vector3& Scale, const Vector3& Position, const Quat
 	SetTransformDetails(Vector3(80.0f, 80.0f, 80.0f), Position, orient);
 	go->AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, 0.0f, 1.0f, 1.0f));
 	GameObject::gameWorld->AddObjectPhysicsToWorld(go->GetComponent<PhysicsObject*>());
-	go->AddComponent<HealthManager*>(new HealthManager(go, 150));
+	go->AddComponent<HealthManager*>(new HealthManager(go, 30));
 	go->AddComponent<Destructible*>(new Destructible(go));
 }
 

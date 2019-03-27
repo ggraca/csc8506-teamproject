@@ -12,7 +12,7 @@ DWallPrefab::DWallPrefab(const Vector3& Scale, const Vector3& Position, const Qu
 	SetTransformDetails(Vector3(400.0f, 150.0f, 45.0f), Position, orient);
 	go->AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, 0.0f, 1.0f, 1.0f));
 	GameObject::gameWorld->AddObjectPhysicsToWorld(go->GetComponent<PhysicsObject*>());
-	go->AddComponent<HealthManager*>(new HealthManager(go, 250));
+	go->AddComponent<HealthManager*>(new HealthManager(go, 30));
 	go->AddComponent<Destructible*>(new Destructible(go));
 }
 

@@ -12,7 +12,7 @@ CastlePrefab::CastlePrefab(const Vector3& Scale, const Vector3& Position, const 
 	SetTransformDetails(Vector3(400.0f, 450.0f, 200.0f), Vector3(Position.x, Position.y, Position.z), orient);
 	go->AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, 0.0f, 1.0f, 1.0f));
 	GameObject::gameWorld->AddObjectPhysicsToWorld(go->GetComponent<PhysicsObject*>());
-	go->AddComponent<HealthManager*>(new HealthManager(go, 1000));
+	go->AddComponent<HealthManager*>(new HealthManager(go, 200));
 	go->AddComponent<Destructible*>(new Destructible(go));
 }
 

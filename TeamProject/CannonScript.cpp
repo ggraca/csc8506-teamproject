@@ -122,20 +122,20 @@ void CannonScript::Fire()
 	if (balls.size() == 20)
 	{
 		balls[ballIndex]->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0,0,0));
-		balls[ballIndex]->GetTransform().ForceUpdateWorldPositionWithTransform(Vector3(cannon->GetTransform().GetWorldPosition().x, cannon->GetTransform().GetWorldPosition().y + 10.0f, cannon->GetTransform().GetWorldPosition().z));
+		balls[ballIndex]->GetTransform().ForceUpdateWorldPositionWithTransform(Vector3(cannon->GetTransform().GetWorldPosition().x, cannon->GetTransform().GetWorldPosition().y + 50.0f, cannon->GetTransform().GetWorldPosition().z));
 		balls[ballIndex]->SetTag(LayerAndTag::EnemyProjectile);
 		balls[ballIndex]->GetComponent<DamageControl*>()->SetDamage(4.0f);
-		Vector3 projMov = (cannon->GetTransform().GetWorldPosition() + (NDiff * 5000)) - Vector3(0, 20, 0);
+		Vector3 projMov = (cannon->GetTransform().GetWorldPosition() + (NDiff * 5000)) - Vector3(0, 50, 0);
 		balls[ballIndex]->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
 
 		ballIndex = (ballIndex + 1) % 20;
 	}
 	else
 	{
-		auto cBall = new ResourcePrefab(Vector3(cannon->GetTransform().GetWorldPosition().x, cannon->GetTransform().GetWorldPosition().y + 10.0f, cannon->GetTransform().GetWorldPosition().z), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
+		auto cBall = new ResourcePrefab(Vector3(cannon->GetTransform().GetWorldPosition().x, cannon->GetTransform().GetWorldPosition().y + 50.0f, cannon->GetTransform().GetWorldPosition().z), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 		cBall->SetTag(LayerAndTag::EnemyProjectile);
 		cBall->GetComponent<DamageControl*>()->SetDamage(4.0f);
-		Vector3 projMov = (cannon->GetTransform().GetWorldPosition() + (NDiff * 5000)) - Vector3(0,10,0);
+		Vector3 projMov = (cannon->GetTransform().GetWorldPosition() - Vector3(0, 50, 0) + (NDiff * 5000)) ;
 		cBall->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
 		GameObject::gameWorld->LateInstantiate(cBall);
 		balls.push_back(cBall);

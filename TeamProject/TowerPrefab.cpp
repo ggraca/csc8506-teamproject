@@ -12,7 +12,7 @@ TowerPrefab::TowerPrefab(const Vector3& Scale, const Vector3& Position, const Qu
 	SetTransformDetails(Vector3(60.0f, 300.0f, 60.0f), Position, orient);
 	go->AddComponent<PhysicsObject*>((Component *)new PhysicsObject(&GetTransform(), ShapeType::cube, 0.0f, 1.0f, 1.0f));
 	GameObject::gameWorld->AddObjectPhysicsToWorld(go->GetComponent<PhysicsObject*>());
-	go->AddComponent<HealthManager*>(new HealthManager(go, 400));
+	go->AddComponent<HealthManager*>(new HealthManager(go, 30));
 	go->AddComponent<Destructible*>(new Destructible(go));
 }
 
