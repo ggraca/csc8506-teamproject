@@ -20,12 +20,8 @@ GameObject* NetworkClient::GetGameObjectFromPacket(InstantiatePacket* packet) {
 	switch (packet->prefabId) {
 	case NetworkObject::Resource:
 		return new ResourcePrefab(packet->position, packet->rotation, packet->scale, 1000, 0.2f, 0.4f);
-	case NetworkObject::Player: {
-		GameObject* player = new PlayerPrefab(packet->position, packet->rotation, packet->scale, 100, 0.2f, 0.4f);
-		// player->AddComponent<PlayerMovement*>(new PlayerMovement());
-		world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-		return player;
-	}
+	case NetworkObject::Player:
+		return new PlayerPrefab(packet->position, packet->rotation, packet->scale, 100, 0.2f, 0.4f);
 	case NetworkObject::Cube: {
 		GameObject* cube = new CubePrefab(packet->position, packet->rotation, packet->scale);
 		cube->SetActiveStatus(packet->isActive);
@@ -90,6 +86,7 @@ void NetworkClient::ReceivePacket(int type, GamePacket* payload, int source) {
 		no->GetGameObject()->GetTransform().SetLocalOrientation(packet->rotation);
 		no->GetGameObject()->GetTransform().SetWorldScale(packet->scale);
 		no->GetGameObject()->SetActiveStatus(packet->isActive);
+		no->GetGameObject()->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(packet->colour.x, packet->colour.y, packet->colour.z, 1));
 	}
 	else if (type == PlayerStateMessage) {
 		PlayerStatePacket* packet = (PlayerStatePacket*)payload;

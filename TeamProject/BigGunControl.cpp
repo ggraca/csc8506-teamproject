@@ -39,7 +39,7 @@ void BigGunControl::Fire(float time)
 
 	for (int i = 0; i < projectileAmount; i++)
 	{
-		children[i]->GetTransform().ForceUpdateLocalPositionWithTransform(bigGun->GetTransform().GetWorldPosition() + CalculateDirection() *200.0f);
+		children[i]->GetTransform().ForceUpdateLocalPositionWithTransform(bigGun->GetTransform().GetWorldPosition() + CalculateDirection() *80.0f);
 		FireObjectAndRemoveFromResources(children,i);
 	}
 }
@@ -47,4 +47,9 @@ void BigGunControl::Fire(float time)
 void BigGunControl::SetBigGun(GameObject * gun)
 {
 	bigGun = gun;
+}
+
+GameObject * BigGunControl::GetBigGun()
+{
+	return bigGun;
 }

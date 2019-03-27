@@ -153,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Scripts</Filter>
+      </ClCompile>
+    <ClCompile Include="CannonScript.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="AirStrikeControl.cpp">
       <Filter>Scripts</Filter>
@@ -169,6 +172,12 @@
     </ClCompile>
     <ClCompile Include="CylinderPrefab.cpp">
       <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAnimation.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -398,6 +407,12 @@
     <ClInclude Include="NetworkPackets.h">
       <Filter>Networking</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Renderer</Filter>
+       </ClInclude>
+    <ClInclude Include="CannonScript.h">
+      <Filter>Gameplay</Filter>
+    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -425,6 +440,12 @@
     </ClInclude>
     <ClInclude Include="CylinderPrefab.h">
       <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAnimation.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

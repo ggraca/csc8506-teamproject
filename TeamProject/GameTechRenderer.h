@@ -34,6 +34,7 @@ namespace NCL {
 			void SetSkyBox(TextureBase* Skybox) { skybox = Skybox; RegenerateIrradianceMap = true; }
 
 			//HUD
+			void HUDState(bool active) { activeHUD = active; }
 			void AddHUDObjects();
 			void WeaponState(int index, bool state);
 			float health = 1; //(100%);
@@ -108,6 +109,7 @@ namespace NCL {
 
 			GLuint hudTex;
 			vector<HUDObject*> hudObjects;
+			bool activeHUD = false;
 			
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 

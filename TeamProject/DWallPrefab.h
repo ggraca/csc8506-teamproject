@@ -13,6 +13,4 @@ class DWallPrefab : public GameObject
 public:
 	DWallPrefab(const Vector3& dimensions, const Vector3& position, const Quaternion& orient);
 	virtual ~DWallPrefab();
-protected:
-	/*Material* mat;*/
 };

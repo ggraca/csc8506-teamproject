@@ -34,27 +34,40 @@ void Implementation::Update() {   // if channel stops playing this will delete i
 
 	// Currently we can only have one running executable with sound. After the error this should disable the sound system;
 	disabled = CAudioEngine::ErrorCheck(mpStudioSystem->update());
-	
 }
 
 CAudioEngine::CAudioEngine() {
 	Init();
 	setNumList(1);
-	setMinMaxDistance(100.0f, 10000.0f);
-	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, false, false);
+	setMinMaxDistance(10.0f, 10000.0f);
+	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, true, false);
+	LoadSound(Assets::SOUNDSDIR + "bat.wav", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "swords.mp3", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "1.mp3", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "2.mp3", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "ole.wav", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "thud.wav", true, false, false);
+	LoadSound(Assets::SOUNDSDIR + "jump.wav", true, false, false);
+	LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+	LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
 }
 
 void CAudioEngine::Init() {
 	sgpImplementation = new Implementation();
-	sgpImplementation->mpSystem->set3DSettings(NULL, DISTANCEFACTOR, 1.0f);
+	sgpImplementation->mpSystem->set3DSettings(NULL, DISTANCEFACTOR, 0.1f);
 	listenerpos = { 0.0f, 0.0f, 0.0f };
-	//FMOD::System_Create(&system);
 }
 
 void CAudioEngine::Update() {
 	SetOrientation();
 	SetCameraPos();
 	sgpImplementation->mpSystem->set3DListenerAttributes(0, &cPos, NULL,&forward, &up);
+	FMOD_3D_ATTRIBUTES lisPos;
+	lisPos.position = cPos;
+	lisPos.forward = forward;
+	lisPos.up = up;
+	lisPos.velocity = Vel;
+	sgpImplementation->mpStudioSystem->setListenerAttributes(0,&lisPos);
 	sgpImplementation->Update();
 }
 
@@ -74,7 +87,6 @@ void CAudioEngine::LoadSound(const string &strSoundName, bool b3d, bool bLooping
 	if (pSound) {
 		sgpImplementation->mSounds[strSoundName] = pSound;
 		pSound->set3DMinMaxDistance(min * DISTANCEFACTOR, max*DISTANCEFACTOR);
-		//sgpImplementation->mpSystem->set3DListenerAttributes(0, &listenerpos, NULL, &forward, &up);
 	}
 }
 
@@ -109,8 +121,7 @@ int CAudioEngine::PlaySounds(const string& strSoundName, const Vector3& vPositio
 		tFoundIt->second->getMode(&currMode);
 		if (currMode & FMOD_3D) {
 			FMOD_VECTOR position = VectorToFmod(vPosition);
-			CAudioEngine::ErrorCheck(pChannel->set3DAttributes(&position, nullptr));
-						
+			CAudioEngine::ErrorCheck(pChannel->set3DAttributes(&position, nullptr));					
 		}
 		CAudioEngine::ErrorCheck(pChannel->setVolume(dbToVolume(fVolumedB)));
 		CAudioEngine::ErrorCheck(pChannel->setPaused(false));
@@ -121,7 +132,7 @@ int CAudioEngine::PlaySounds(const string& strSoundName, const Vector3& vPositio
 }
 
 
-void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition) // sets position of sound use as well as prevoius function
+void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition) // sets position of sound use as well as previous function
 {
 	auto tFoundIt = sgpImplementation->mChannels.find(nChannelId);
 	if (tFoundIt == sgpImplementation->mChannels.end())
@@ -131,7 +142,7 @@ void CAudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition
 	CAudioEngine::ErrorCheck(tFoundIt->second->set3DAttributes(&position, NULL));
 }
 
-void CAudioEngine::SetChannelVolume(int nChannelId, float fVolumedB) // sets volume of sound use as well as prevoius function
+void CAudioEngine::SetChannelVolume(int nChannelId, float fVolumedB) // sets volume of sound use as well as previous function
 {
 	auto tFoundIt = sgpImplementation->mChannels.find(nChannelId);
 	if (tFoundIt == sgpImplementation->mChannels.end())
@@ -141,7 +152,7 @@ void CAudioEngine::SetChannelVolume(int nChannelId, float fVolumedB) // sets vol
 }
 
 
-void CAudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags) { // loads banks, banks stoe information  and sounds for events
+void CAudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags) { // loads banks, banks store information and sounds for events
 	auto tFoundIt = sgpImplementation->mBanks.find(strBankName);
 	if (tFoundIt != sgpImplementation->mBanks.end())
 		return;
@@ -152,29 +163,73 @@ void CAudioEngine::LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BAN
 	}
 }
 
-void CAudioEngine::LoadEvent(const std::string& strEventName) { // load events, each event loaded seperately to save memory 
+void CAudioEngine::LoadEvent(const string& strEventName, const Vector3& vPosition) { // load events, each event loaded separately to save memory 
 	auto tFoundit = sgpImplementation->mEvents.find(strEventName);
 	if (tFoundit != sgpImplementation->mEvents.end())
 		return;
 	FMOD::Studio::EventDescription* pEventDescription = NULL;
 	CAudioEngine::ErrorCheck(sgpImplementation->mpStudioSystem->getEvent(strEventName.c_str(), &pEventDescription));
+	FMOD::Studio::EventInstance* pEventInstance = NULL;
 	if (pEventDescription) {
-		FMOD::Studio::EventInstance* pEventInstance = NULL;
+		
 		CAudioEngine::ErrorCheck(pEventDescription->createInstance(&pEventInstance));
 		if (pEventInstance) {
 			sgpImplementation->mEvents[strEventName] = pEventInstance;
 		}
 	}
+	/*pEventInstance->setReverbLevel(10, 100);*/
+	//pEventInstance->
+		//set3DMinMaxDistance(min * DISTANCEFACTOR, max*DISTANCEFACTOR);
+
+	FMOD_3D_ATTRIBUTES test;
+	test.position = VectorToFmod(vPosition);
+	test.forward = VectorToFmod(Vector3(1.0,1.0,1.0));
+	test.up = up;
+	test.velocity = Vel;
+	
+
+	/*if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) { test.position = VectorToFmod(Vector3(-19, 0, 0)); }
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_X)) { test.position = VectorToFmod(Vector3(-10, 0, 0)); }
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_N)) { test.position = VectorToFmod(Vector3(10, 0, 0)); }
+	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) { test.position = VectorToFmod(Vector3(19, 0, 0)); }*/
+
+//	cout << "New event 1";
+
+	pEventInstance->set3DAttributes(&test);
+//	CAudioEngine::ErrorCheck(tFoundit->second->set3DAttributes(&position, NULL));
 }
 
-void CAudioEngine::PlayEvent(const string &strEventName) { // play event, if not loaded this will load it
+void CAudioEngine::PlayEvent(const string& strEventName, const Vector3& vPosition) { // play event, if not loaded this will load it
 	auto tFoundit = sgpImplementation->mEvents.find(strEventName);
 	if (tFoundit == sgpImplementation->mEvents.end()) {
-		LoadEvent(strEventName);
+		LoadEvent(strEventName, vPosition);
 		tFoundit = sgpImplementation->mEvents.find(strEventName);
 		if (tFoundit == sgpImplementation->mEvents.end())
 			return;
 	}
+//	cout << "New event 2";
+
+
+	FMOD::Studio::EventDescription* pEventDescription = NULL;
+	CAudioEngine::ErrorCheck(sgpImplementation->mpStudioSystem->getEvent(strEventName.c_str(), &pEventDescription));
+	FMOD::Studio::EventInstance* pEventInstance = NULL;
+	if (pEventDescription) {
+
+		CAudioEngine::ErrorCheck(pEventDescription->createInstance(&pEventInstance));
+		if (pEventInstance) {
+			sgpImplementation->mEvents[strEventName] = pEventInstance;
+		}
+	}
+	/*pEventInstance->setReverbLevel(10, 100);*/
+
+	FMOD_3D_ATTRIBUTES test;
+	test.position = VectorToFmod(vPosition);
+	test.forward = VectorToFmod(Vector3(1.0, 1.0, 1.0));
+	test.up = up;
+	test.velocity = Vel;
+
+	pEventInstance->set3DAttributes(&test);
+
 	tFoundit->second->start();
 }
 
@@ -200,7 +255,7 @@ bool CAudioEngine::IsEventPlaying(const string &strEventName) const { // will te
 	return false;
 }
 
-void CAudioEngine::GetEventParameter(const string &strEventName, const string &strParameterName, float* parameter) { //allows to get events dyamically, allows sound scapes
+void CAudioEngine::GetEventParameter(const string &strEventName, const string &strParameterName, float* parameter) { //allows to get events dynamically, allows sound scapes
 	auto tFoundIt = sgpImplementation->mEvents.find(strEventName);
 	if (tFoundIt == sgpImplementation->mEvents.end())
 		return;
@@ -210,7 +265,7 @@ void CAudioEngine::GetEventParameter(const string &strEventName, const string &s
 	CAudioEngine::ErrorCheck(pParameter->getValue(parameter));
 }
 
-void CAudioEngine::SetEventParameter(const string &strEventName, const string &strParameterName, float fValue) { //allows to set events dyamically
+void CAudioEngine::SetEventParameter(const string &strEventName, const string &strParameterName, float fValue) { //allows to set events dynamically
 	auto tFoundIt = sgpImplementation->mEvents.find(strEventName);
 	if (tFoundIt == sgpImplementation->mEvents.end())
 		return;
@@ -220,7 +275,7 @@ void CAudioEngine::SetEventParameter(const string &strEventName, const string &s
 	CAudioEngine::ErrorCheck(pParameter->setValue(fValue));
 }
 
-FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world sapce to fmod co ord
+FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world space to fmod co ord
 	FMOD_VECTOR fVec;
 	fVec.x = vPosition.x;
 	fVec.y = vPosition.y;
@@ -228,14 +283,14 @@ FMOD_VECTOR CAudioEngine::VectorToFmod(const Vector3& vPosition) { // sets world
 	return fVec;
 }
 
-void CAudioEngine::SetCamera(GameObject* cam) { // sets world sapce to fmod co ord
+void CAudioEngine::SetCamera(GameObject* cam) { // sets world space to fmod coord
 	camera = cam;
 	player = cam;
 }
 
 void CAudioEngine::SetCameraPos() {
 	Vector3 vPosition = camera->GetTransform().GetWorldPosition();
-	cPos.x = vPosition.x;
+	cPos.x =  vPosition.x;
 	cPos.y = vPosition.y;
 	cPos.z = vPosition.z;
 }
@@ -270,6 +325,7 @@ void CAudioEngine::setMinMaxDistance(float x, float y) {
 
 void CAudioEngine::setNumList(int num) {
 	sgpImplementation->mpSystem->set3DNumListeners(num);
+	sgpImplementation->mpStudioSystem->setNumListeners(num);
 }
 
 void CAudioEngine::SetPlayer(GameObject* player1) {
@@ -279,9 +335,9 @@ void CAudioEngine::SetPlayer(GameObject* player1) {
 
 void CAudioEngine::SetOrientation() {
 
-	forward.x = sin(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
+	forward.x = sin((player->GetTransform().GetLocalOrientation().ToEuler().y +180) * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
 	forward.y = sin(-player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180));
-	forward.z = cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180)) * cos(player->GetTransform().GetLocalOrientation().ToEuler().y * (M_PI / 180));
+	forward.z = cos(player->GetTransform().GetLocalOrientation().ToEuler().x * (M_PI / 180)) * cos((player->GetTransform().GetLocalOrientation().ToEuler().y +180) * (M_PI / 180));
 }
 
 // code tutorial from https://codyclaborn.me/tutorials/making-a-basic-fmod-audio-engine-in-c/
