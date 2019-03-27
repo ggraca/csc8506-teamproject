@@ -202,14 +202,14 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 void GameObject::AddRenderObject(string filename, GameObject* root, const Vector3& dim, const Vector3& pos, const Quaternion& orient, Material* mat) {
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ(filename);
 	if (!gameWorld) { return; }
-	gameWorld->LateInstantiate(this);
+	gameWorld->Instantiate(this);
 	for (auto& mesh : objGeometry->GetChildren()) {
 		GameObject* go = new GameObject();
 		if (mat == nullptr) {
 			mat = ((OBJMesh*)mesh)->material;
 		}
 		go->AddComponent<RenderObject*>(new RenderObject(&go->GetTransform(), mesh, mat));
-		gameWorld->LateInstantiate(go);
+		gameWorld->Instantiate(go);
 		root->AddChild(go);
 	}
 	GetTransform().SetWorldScale(dim);
