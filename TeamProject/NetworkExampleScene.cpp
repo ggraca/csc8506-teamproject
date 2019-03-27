@@ -4,7 +4,7 @@
 #include "WellPrefab.h"
 
 
-NetworkExampleScene::NetworkExampleScene(bool& qG) : GameScene(qG) {
+NetworkExampleScene::NetworkExampleScene(Game* g, bool& qG) : GameScene(g, qG) {
 	ResetWorld();
 }
 
@@ -17,7 +17,7 @@ void NetworkExampleScene::ResetWorld() {
 
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-	audio->SetPlayer(player);
+	game->GetAudio()->SetPlayer(player);
 
 	int size = 3;
 	for (int i = -size; i <= size; i++) {

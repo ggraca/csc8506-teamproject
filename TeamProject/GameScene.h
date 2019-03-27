@@ -10,12 +10,11 @@
 
 class GameScene : public Scene {
 public:
-	GameScene(bool& quitGame);
+	GameScene(Game* g, bool& quitGame);
 	virtual ~GameScene();
 
 protected:
 	void LateUpdate(float dt) override;
-	void RegisterConsoleCommands();
 	void InitStateMachine();
 	void ShowMenu();
 

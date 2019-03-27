@@ -2,7 +2,7 @@
 #include "Light.h"
 
 
-GameScene::GameScene(bool& qG) : Scene(), quitGame(qG) {
+GameScene::GameScene(Game* g, bool& qG) : Scene(g), quitGame(qG) {
 	InitStateMachine();
 	//RegisterConsoleCommands();
 
@@ -59,7 +59,7 @@ void GameScene::LateUpdate(float dt) {
 	//HUD TESTING ENDS
 
 
-	pauseMenu.Update(quitGame, showPauseMenu, audio, currentMenuPath, dt, renderer);
+	pauseMenu.Update(quitGame, showPauseMenu, game->GetAudio(), currentMenuPath, dt, renderer);
 	objectStateMachine->Update();
 	hud.Update(dt, renderer, world->GetNetwork());
 }

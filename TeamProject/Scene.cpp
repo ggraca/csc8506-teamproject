@@ -1,7 +1,7 @@
 #include "Scene.h"
 
 
-Scene::Scene() {
+Scene::Scene(Game* g) : game(g){
 	world = new GameWorld();
 	GameObject::SetGameWorld(world);
 
@@ -9,13 +9,11 @@ Scene::Scene() {
 	physics->SetGravity(Vector3(0, -100, 0));
 	world->SetPhysics(physics);
 
-	audio = new CAudioEngine();
-	audio->SetCamera(world->GetMainCamera());
-	world->SetAudio(audio);
+	game->GetAudio()->SetCamera(world->GetMainCamera());
+	world->SetAudio(game->GetAudio());
 }
 
 Scene::~Scene() {
-	delete audio;
 	delete physics;
 	delete world;
 }
@@ -25,7 +23,6 @@ void Scene::Update(float dt) {
 
 	world->UpdateWorld(dt);
 	physics->Update(dt);
-	audio->Update();
 
 	LateUpdate(dt);
 }

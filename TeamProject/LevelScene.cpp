@@ -31,7 +31,7 @@
 using namespace NCL;
 using namespace CSC8503;
 
-LevelScene::LevelScene(bool& quitGame) : GameScene(quitGame) {
+LevelScene::LevelScene(Game* g, bool& quitGame) : GameScene(g, quitGame) {
 	ResetWorld();
 }
 
@@ -46,8 +46,8 @@ void LevelScene::ResetWorld() {
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
 
 	//This 1
-	audio->SetPlayer(player);
-	audio->SetCamera(world->GetMainCamera());
+	game->GetAudio()->SetPlayer(player);
+	game->GetAudio()->SetCamera(world->GetMainCamera());
 	
 
 	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
