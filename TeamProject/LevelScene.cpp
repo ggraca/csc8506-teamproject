@@ -151,34 +151,50 @@ void LevelScene::LoadWorld() {
 
 			if (a == '2') {
 				auto DWall = new DWallPrefab(Vector3(1.4, 1, 1.4), Vector3(size*i, 0, size*j+37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -90));
+				world->LateInstantiate(DWall);
+				DWall->SetTag(LayerAndTag::Tags::Ground);
 			}
 
 			if (a == '3') {
 				auto DWall = new DWallPrefab(Vector3(1.4, 1, 1.4), Vector3(size*i, 0, size*j + 93.75), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
+				world->LateInstantiate(DWall);
+				DWall->SetTag(LayerAndTag::Tags::Ground);
 			}
 
 			if (a == '4') {
 				auto DWall = new DWallPrefab(Vector3(1.4, 1, 1.4), Vector3(size*i + 37.5, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 0));
+				world->LateInstantiate(DWall);
+				DWall->SetTag(LayerAndTag::Tags::Ground);
 			}
 
 			if (a == '5') {
 				auto DWall = new DWallPrefab(Vector3(1.4, 1, 1.4), Vector3(size*i + 93.75, 0, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 180));
+				world->LateInstantiate(DWall);
+				DWall->SetTag(LayerAndTag::Tags::Ground);
 			}
 
 			if (a == '6') {
 				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i - 37.5, 0, size*j - 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -45));
+				world->LateInstantiate(DWall);
+				DWall->SetTag(LayerAndTag::Tags::Ground);
 			}
 
 			if (a == '7') {
 				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i + 37.5, 0, size*j + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), -225));
+				world->LateInstantiate(DWall);
+				DWall->SetTag(LayerAndTag::Tags::Ground);
 			}
 
 			if (a == '8') {
 				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i + 37.5, 0, size*j - 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 225));
+				world->LateInstantiate(DWall);
+				DWall->SetTag(LayerAndTag::Tags::Ground);
 			}
 
 			if (a == '9') {
 				auto DWall = new DWallPrefab(Vector3(1.6, 1, 1.6), Vector3(size*i - 37.5, 0, size*j + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 45));
+				world->LateInstantiate(DWall);
+				DWall->SetTag(LayerAndTag::Tags::Ground);
 			}
 		}
 	}

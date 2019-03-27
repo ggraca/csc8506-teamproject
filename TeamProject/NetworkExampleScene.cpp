@@ -40,7 +40,7 @@ void NetworkExampleScene::ResetWorld() {
 		}
 	}
 
-	auto DWall = new DWallPrefab(Vector3(2, 1, 1), Vector3(19 + 37.5, 0, 20 + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 180));
+	auto DWall = new DWallPrefab(Vector3(37, 40, 37), Vector3(19 + 37.5, 0, 20 + 37.5), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 180));
 	DWall->SetTag(LayerAndTag::Tags::Ground);
 
 	for (int i = -size; i <= size; i++) {

@@ -81,7 +81,8 @@ void MenuScene::MenuUpdate(float dt)
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
-			Scene* newScene = new NetworkExampleScene(game->QuittingGame());
+			Scene* newScene = new LevelScene(game->QuittingGame());
+			//Scene* newScene = new NetworkExampleScene(game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);			
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
