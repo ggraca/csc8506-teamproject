@@ -4,6 +4,10 @@
 #include "HammerControl.h"
 #include "ParticleSystem.h"
 #include "WallPrefab.h"
+#include "DWallPrefab.h"
+#include "CannonPrefab.h"
+#include "CartPrefab.h"
+#include "CastlePrefab.h"
 
 
 PhysicsScene::PhysicsScene(Game* g, bool& qG) : GameScene(g, qG) {
@@ -37,14 +41,14 @@ void PhysicsScene::ResetWorld() {
 	//des2->GetComponent<HealthManager*>()->SetHealth(8);
 	//des2->SetName("Destructible");
 
-	auto wall = new WallPrefab(Vector3(37.0f, 40.0f, 37.0f), Vector3(0, -30, 0), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+	auto wall = new CastlePrefab(Vector3(0.01f, 0.01f, 0.01f), Vector3(0, -5, 0), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
 
 	/*world->Instantiate(des);
 	world->Instantiate(des2);*/
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
 	world->Instantiate(floor);
-	world->Instantiate(wall);
+//	world->Instantiate(wall);
 	world->InstantiateRecursively(player);
 
 }

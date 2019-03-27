@@ -12,6 +12,8 @@ public:
 		Cannon,
 		Cart,
 		Castle,
+		Cone,
+		Cylinder,
 		DWall,
 		Market,
 		Stall,

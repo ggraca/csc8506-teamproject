@@ -64,7 +64,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			shape = compound;
 		}
 		else {
-			btTriangleMesh* triangleMesh = new btTriangleMesh(); //TODO How to delete this properly?
+			btTriangleMesh* triangleMesh = new btTriangleMesh();
 			OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(objFile);
 			if (mesh->GetChildren().size() == 1) {
 				Vector3 vert1, vert2, vert3;
@@ -76,8 +76,6 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 					vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
 					vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
 
-//					cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl; //TODO Delete this once fully tested!
-
 					vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
 					vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
 					vertex3 = btVector3(vert3.x * dimensions.x, vert3.y * dimensions.y, vert3.z * dimensions.z);
@@ -85,10 +83,9 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 					triangleMesh->addTriangle(vertex1, vertex2, vertex3);
 					i += 6; //obj file reader repeats every triplet of vertices
 				}
-				cout << "Triangles: " << triangleMesh->getNumTriangles() << endl; //TODO Delete this once fully tested!
 				if (boxCollider) { //If true, create a box collision shape from minimum and maximum extents of mesh
 					cout << "yes" << endl;
-					meshShape = new btBvhTriangleMeshShape(triangleMesh, true); //TODO How to delete this properly?
+					meshShape = new btBvhTriangleMeshShape(triangleMesh, true);
 					btVector3 min, max;
 					btTransform t1;
 					t1.setIdentity();
