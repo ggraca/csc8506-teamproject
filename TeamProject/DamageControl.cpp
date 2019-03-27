@@ -40,7 +40,7 @@ void DamageControl::ResolveDamage(GameObject * obj)
 		if (!gameObject->CompareTag(obj->GetComponent<Player*>()->GetResourceTag()))
 		{
 			obj->GetComponent<Player*>()->TakeDamage(damage);
-
+			
 			if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 		}
 	}

@@ -28,8 +28,9 @@ void Player::Start()
 
 void Player::Update(float dt)
 {
+	//std::cout << hp << std::endl;
 	if (isDead) { return; }
-
+	
 	int objectId = GameObject::gameWorld->GetNetwork()->GetPlayerState().objectId;
 	if (gameObject->GetComponent<NetworkObject*>() && gameObject->GetComponent<NetworkObject*>()->GetId() == objectId)
 	{

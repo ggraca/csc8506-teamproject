@@ -52,7 +52,6 @@ void HammerControl::ActivateHammer()
 
 void HammerControl::FormHammer()
 {
-	//Will be changed later on
 	auto children = gameObject->GetComponent<Player*>()->GetResources();
 
 	for (auto&i : children)
@@ -68,7 +67,6 @@ void HammerControl::FormHammer()
 
 void HammerControl::DeformHammer()
 {
-	//Will be changed later on
 	auto children = handle->GetTransform().GetChildrenList();
 	
 	for (auto&i : children)
@@ -99,7 +97,6 @@ void HammerControl::HammerHit()
 {
 	if (!handle) { return; }
 
-	//auto camera = GameObject::gameWorld->GetMainCamera();
 	Vector3 end;
 	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(gameObject->GetTransform().GetWorldPosition(), gameObject->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), end));
 	if (colliding)
@@ -107,6 +104,10 @@ void HammerControl::HammerHit()
 		if (colliding->GetComponent<HealthManager*>())
 		{
 			colliding->GetComponent<HealthManager*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());
+		}
+		else if (colliding->GetComponent<Player*>())
+		{
+			colliding->GetComponent<Player*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());
 		}
 	}
 }
