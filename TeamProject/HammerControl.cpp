@@ -98,7 +98,7 @@ void HammerControl::HammerHit()
 	if (!handle) { return; }
 
 	Vector3 end;
-	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(gameObject->GetTransform().GetWorldPosition(), gameObject->GetTransform().GetWorldPosition() + (CalculateDirection() * 100), end));
+	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(gameObject->GetTransform().GetWorldPosition(), gameObject->GetTransform().GetWorldPosition() + (CalculateDirection() * 150), end));
 	if (colliding)
 	{		
 		if (colliding->GetComponent<HealthManager*>())
@@ -107,7 +107,7 @@ void HammerControl::HammerHit()
 		}
 		else if (colliding->GetComponent<Player*>())
 		{
-			colliding->GetComponent<Player*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());
+			colliding->GetComponent<Player*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size()/4);
 		}
 	}
 }

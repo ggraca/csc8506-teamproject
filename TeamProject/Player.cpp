@@ -20,6 +20,7 @@ Player::Player(GameObject* obj) : ScriptObject(obj)
 void Player::Awake()
 {
 	floor = GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Ground);
+	RespawnPlayer();
 }
 
 void Player::Start()
@@ -309,19 +310,12 @@ void Player::LoseResource(GameObject * resource)
 
 void Player::TakeDamage(int amount)
 {
-	if (GetResourceCount() == 0)
-	{
-		hp -= amount;
+	hp -= amount;
 
-		if (hp <= 0)
-		{
-			hp = 0;
-			isDead = true;
-		}
-	}
-	else
+	if (hp <= 0)
 	{
-		LoseResource(-amount);
+		hp = 0;
+		isDead = true;
 	}
 }
 
@@ -331,9 +325,21 @@ void Player::HandleDistanceToFloor()
 
 	float floorPosY = floor->GetTransform().GetWorldPosition().y;
 
-	if (gameObject->GetTransform().GetWorldPosition().y - floorPosY < -2000)
+	if (gameObject->GetTransform().GetWorldPosition().y - floorPosY < -1500)
 	{
-		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->clearForces();
-		gameObject->GetTransform().SetWorldPosition(Vector3(120, 260, 50)/*GetStartPosition()*/);
+		RespawnPlayer();
 	}
+}
+
+void Player::RespawnPlayer()
+{
+	Vector3 floorPos = Vector3(2900, -5, 2900);
+	Vector3 floorDimensions = Vector3(2900, 10, 2900);
+
+	float x = (int)((rand() % (int)(2 * floorDimensions.x)) + (floorPos.x - floorDimensions.x));
+	float z = (int)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
+	float y = 1000;
+
+	if (gameObject->GetComponent<PhysicsObject*>()) { gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, 0, 0)); }
+	gameObject->GetTransform().SetWorldPosition(Vector3(x, y, z));
 }

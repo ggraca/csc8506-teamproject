@@ -30,6 +30,7 @@ public:
 	void LoseResource(GameObject * resource);
 	void TakeDamage(int amount);
 	void HandleDistanceToFloor();
+	void RespawnPlayer();
 	int GetResourceCount() const;
 	int GetHP() const;
 	LayerAndTag::Tags GetResourceTag() ;
