@@ -53,8 +53,6 @@ void LevelScene::ResetWorld() {
 	
 	world->LateInstantiate(floor);
 	world->LateInstantiateRecursively(player);
-	
-
 
 	LoadWorld();
 	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();
@@ -67,7 +65,7 @@ LevelScene::~LevelScene() {
 void LevelScene::GenerateResources()
 {
 	Vector3 floorPos = Vector3(2900, -5, 2900);
-	Vector3 floorDimensions = Vector3(3000, 10, 3000);
+	Vector3 floorDimensions = Vector3(2900, 10, 2900);
 	int amountOfInitialResources = 200;
 
 	for (int i = 0; i < amountOfInitialResources; ++i)
@@ -76,7 +74,7 @@ void LevelScene::GenerateResources()
 		float z = (int)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
 		float y = 1000;
 
-		auto resource = new ResourcePrefab(Vector3(x, y, z), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 100, 0.2f, 0.4f);
+		auto resource = new ResourcePrefab(Vector3(x, y, z), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.8f);
 		world->LateInstantiate(resource);
 	}
 }
