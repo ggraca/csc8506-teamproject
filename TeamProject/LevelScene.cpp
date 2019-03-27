@@ -32,7 +32,6 @@ using namespace NCL;
 using namespace CSC8503;
 
 LevelScene::LevelScene(Game* g, bool& quitGame) : GameScene(g, quitGame) {
-	ResetWorld();
 }
 
 void LevelScene::ResetWorld() {
@@ -42,6 +41,9 @@ void LevelScene::ResetWorld() {
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 	floor->SetTag(LayerAndTag::Tags::Ground);
+	world->LateInstantiate(floor);
+
+	if (dynamic_cast<NetworkClient*>(world->GetNetwork())) return;
 
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
@@ -76,12 +78,9 @@ void LevelScene::ResetWorld() {
 	world->LateInstantiate(resource4);
 	world->LateInstantiate(resource5);
 	world->LateInstantiate(resource6);
-	world->LateInstantiate(floor);
 	world->LateInstantiateRecursively(player);
 
 	LoadWorld();
-	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();
-	
 }
 
 LevelScene::~LevelScene() {
@@ -103,37 +102,37 @@ void LevelScene::LoadWorld() {
 			infile >> a;
 			switch (a)
 			{
-				case 'w' :new WallPrefab(Vector3(37.0f, 40.0f, 37.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-					break;
-				case 's' :new WallPrefab(Vector3(37.0f, 40.0f, 37.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 0.0f, 0.0f), 90.0f));
-					break;
-				case 'c' :new StallPrefab(Vector3(0.7f, 0.7f, 0.7f), Vector3(size*i, 42.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-					break;
-				case 'C' :new StallPrefab(Vector3(0.7f, 0.7f, 0.7f), Vector3(size*i, 42.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), -90.0f));
-					break;
-				case 'v' :new StallPrefab(Vector3(0.7f, 0.7f, 0.7f), Vector3(size*i, 42.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 0.0f));
-					break;
-				case 'V' :new StallPrefab(Vector3(0.7f, 0.7f, 0.7f), Vector3(size*i, 42.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 180.0f));
-					break;
-				case 't' :new TentPrefab(Vector3(10.0f, 10.0f, 10.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-					break;
-				case 'm' :new MarketPrefab(Vector3(40.0f, 40.0f, 40.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-					break;
-				case 'M' :new MarketPrefab(Vector3(40.0f, 40.0f, 40.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), -90.0f));
-					break;
-				case 'n' :new MarketPrefab(Vector3(40.0f, 40.0f, 40.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 0.0f));
-					break;
-				case 'N' :new MarketPrefab(Vector3(40.0f, 40.0f, 40.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 180.0f));
-					break;
-				case 'W' :new WellPrefab(Vector3(2.0f, 2.0f, 2.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-					break;
-				case 'k' :new CartPrefab(Vector3(3.0f, 3.0f, 3.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-					break;
-				case 'b' :new CastlePrefab(Vector3(0.03f, 0.03f, 0.03f), Vector3(size*i, -30.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-					break;
-				case '1' :new TowerPrefab(Vector3(50.0f, 100.0f, 50.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
-						 new CannonPrefab(Vector3(2.0f, 2.0f, 2.0f), Vector3(size*i, 300.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(1.0f, 0.0f, 0.0f), 0.0f));
-					break;
+				//case 'w' :new WallPrefab(Vector3(37.0f, 40.0f, 37.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+				//	break;
+				//case 's' :new WallPrefab(Vector3(37.0f, 40.0f, 37.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 0.0f, 0.0f), 90.0f));
+				//	break;
+				//case 'c' :new StallPrefab(Vector3(0.7f, 0.7f, 0.7f), Vector3(size*i, 42.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+				//	break;
+				//case 'C' :new StallPrefab(Vector3(0.7f, 0.7f, 0.7f), Vector3(size*i, 42.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), -90.0f));
+				//	break;
+				//case 'v' :new StallPrefab(Vector3(0.7f, 0.7f, 0.7f), Vector3(size*i, 42.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 0.0f));
+				//	break;
+				//case 'V' :new StallPrefab(Vector3(0.7f, 0.7f, 0.7f), Vector3(size*i, 42.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 180.0f));
+				//	break;
+				//case 't' :new TentPrefab(Vector3(10.0f, 10.0f, 10.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+				//	break;
+				//case 'm' :new MarketPrefab(Vector3(40.0f, 40.0f, 40.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+				//	break;
+				//case 'M' :new MarketPrefab(Vector3(40.0f, 40.0f, 40.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), -90.0f));
+				//	break;
+				//case 'n' :new MarketPrefab(Vector3(40.0f, 40.0f, 40.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 0.0f));
+				//	break;
+				//case 'N' :new MarketPrefab(Vector3(40.0f, 40.0f, 40.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 180.0f));
+				//	break;
+				//case 'W' :new WellPrefab(Vector3(2.0f, 2.0f, 2.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+				//	break;
+				//case 'k' :new CartPrefab(Vector3(3.0f, 3.0f, 3.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+				//	break;
+				//case 'b' :new CastlePrefab(Vector3(0.03f, 0.03f, 0.03f), Vector3(size*i, -30.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+				//	break;
+				//case '1' :new TowerPrefab(Vector3(50.0f, 100.0f, 50.0f), Vector3(size*i, 0.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+				//		 new CannonPrefab(Vector3(2.0f, 2.0f, 2.0f), Vector3(size*i, 300.0f, size*j), Quaternion::AxisAngleToQuaternion(Vector3(1.0f, 0.0f, 0.0f), 0.0f));
+				//	break;
 				case '2' :new DWallPrefab(Vector3(1.4f, 1.0f, 1.4f), Vector3(size*i, 0.0f, size*j + 37.5f), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), -90.0f));
 					break;
 				case '3' :new DWallPrefab(Vector3(1.4f, 1.0f, 1.4f), Vector3(size*i, 0.0f, size*j + 93.75f), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));

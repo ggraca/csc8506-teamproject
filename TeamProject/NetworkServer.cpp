@@ -70,11 +70,12 @@ void NetworkServer::Update() {
 }
 
 void NetworkServer::OnClientConnect(int source) {
+
 	for (auto o : objects) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetWorldOrientation();
-		Vector3 sca = t.GetWorldScale();
+		Vector3 sca = t.GetLocalScale();
 		bool ia = o->GetGameObject()->IsActive();
 
 		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot, sca, ia);
@@ -128,8 +129,10 @@ void NetworkServer::Destroy(GameObject * go)
 		Destroy(childTransform->GetGameObject());
 	}
 
-	if (go->GetComponent<NetworkObject*>()) {
-		objects.erase(remove(objects.begin(), objects.end(), go->GetComponent<NetworkObject*>()), objects.end());
+	NetworkObject* no = go->GetComponent<NetworkObject*>();
+	if (no) {
+		server->SendGlobalPacket(DestroyPacket(no->GetId()));
+		objects.erase(remove(objects.begin(), objects.end(), no), objects.end());
 	}
 	world->LateDestroy(go);
 }

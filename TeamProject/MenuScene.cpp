@@ -82,14 +82,16 @@ void MenuScene::MenuUpdate(float dt)
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
-			Scene* newScene = new LevelScene(game, game->QuittingGame());
+			LevelScene* newScene = new LevelScene(game, game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);			
+			newScene->ResetWorld();
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
 			//Join Game
-			Scene* newScene = new LevelScene(game, game->QuittingGame());
+			LevelScene* newScene = new LevelScene(game, game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), false);
+			newScene->ResetWorld();
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
 		{

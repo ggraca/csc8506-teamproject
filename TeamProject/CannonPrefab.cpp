@@ -19,6 +19,7 @@ CannonPrefab::CannonPrefab(const Vector3& Scale, const Vector3& Position, const 
 	go->AddComponent<CannonScript*>(new CannonScript(go));
 }
 
+
 CannonPrefab::~CannonPrefab()
 {
 }
