@@ -14,6 +14,7 @@ public:
 	void Awake() override;
 	void Start() override;
 	void Update(float dt) override;
+	void DestroyBalls();
 	void LateUpdate(float dt) override;
 	GameObject* SortPlayers();
 	void Aim();
@@ -25,8 +26,10 @@ private:
 	float angleiny;
 	float M_PI = 3.14159265358979323846f;
 	vector<GameObject*> players;
+	vector<GameObject*> balls;
 	Vector3 NDiff;
-	int count=0;
+	float timer = 0;
+	int ballIndex = 0;
 
 };
 
