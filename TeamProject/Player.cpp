@@ -19,6 +19,7 @@ Player::Player(GameObject* obj) : ScriptObject(obj)
 
 void Player::Awake()
 {
+	floor = GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Ground);
 }
 
 void Player::Start()
@@ -49,6 +50,7 @@ void Player::Update(float dt)
 	CheckShieldControls();
 	CheckAirStrikeControls();
 	CheckBigGunControls(dt);
+	HandleDistanceToFloor();
 }
 
 void Player::CheckAirStrikeControls()
@@ -319,5 +321,17 @@ void Player::TakeDamage(int amount)
 	else
 	{
 		LoseResource(-amount);
+	}
+}
+
+void Player::HandleDistanceToFloor()
+{
+	if (!floor) { return; }
+
+	float floorPosY = floor->GetTransform().GetWorldPosition().y;
+
+	if (gameObject->GetTransform().GetWorldPosition().y - floorPosY < -2000)
+	{
+		//gameObject->GetTransform().SetWorldPosition(GetStartPosition());
 	}
 }

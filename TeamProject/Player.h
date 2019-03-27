@@ -29,6 +29,7 @@ public:
 	void LoseResource(int amount);
 	void LoseResource(GameObject * resource);
 	void TakeDamage(int amount);
+	void HandleDistanceToFloor();
 	int GetResourceCount() const;
 	int GetHP() const;
 	LayerAndTag::Tags GetResourceTag() ;
@@ -57,6 +58,8 @@ protected:
 	InputContainer keysPressed;
 	Quaternion cameraRotation;
 	Vector3 cameraPosition;
+
+	GameObject * floor = nullptr;
 
 	vector<GameObject*> resources;
 };
