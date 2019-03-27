@@ -194,6 +194,10 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 		if (lineHeader == MTLNEW) {
 			f >> data;
 			material = Assets::AssetManager::LoadMaterial(data, pbrShader);
+			material->AddTextureParameter("diffuseTex", (OGLTexture*)Assets::AssetManager::LoadTexture("white.jpg"));
+			material->AddTextureParameter("bumpTex", (OGLTexture*)Assets::AssetManager::LoadTexture("blue.jpg"));
+			material->AddTextureParameter("roughnessTex", (OGLTexture*)Assets::AssetManager::LoadTexture("white.jpg"));
+			material->AddTextureParameter("metalnessTex", (OGLTexture*)Assets::AssetManager::LoadTexture("black.jpg"));
 		}
 		else if (lineHeader == MTLDIFFUSE) {
 			float r, g, b;
@@ -214,7 +218,7 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 		}
 		else if (lineHeader == MTLSPECMAP) {
 			f >> data;
-			material->AddTextureParameter("specularTex", (OGLTexture*)Assets::AssetManager::LoadTexture(NormalisePath(data)));
+			material->AddTextureParameter("roughnessTex", (OGLTexture*)Assets::AssetManager::LoadTexture(NormalisePath(data)));
 		}
 		else if (lineHeader == MTLTRANS2) {
 			float alpha;

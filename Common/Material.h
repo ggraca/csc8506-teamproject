@@ -27,7 +27,17 @@ namespace NCL {
 			Vector4 GetColour() const { return colour; }
 
 			void AddTextureParameter(std::string parameter, TextureBase* texture) {
-				textureParameters.push_back(std::make_pair(parameter, texture));
+				bool contains = false;
+				for (size_t i = 0; i < textureParameters.size(); i++)
+				{
+					if (textureParameters[i].first == parameter) {
+						textureParameters[i].second = texture;
+						contains = true;
+					}
+				}
+				if (!contains) {
+					textureParameters.push_back(std::make_pair(parameter, texture));
+				}
 			}
 
 			const std::vector<std::pair<std::string, TextureBase*>>* GetTextureParameters() const { return &textureParameters; }
