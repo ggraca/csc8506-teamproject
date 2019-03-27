@@ -2,6 +2,8 @@
 #include "PhysicsObject.h"
 #include "GameWorld.h"
 #include "Player.h"
+#include "AudioEngine.h"
+
 
 ShieldControl::ShieldControl(GameObject * obj) : ScriptObject(obj)
 {
@@ -37,6 +39,8 @@ void ShieldControl::ActivateShield()
 	GameObject::gameWorld->AddObjectPhysicsToWorld(shield->GetComponent<PhysicsObject*>());
 
 	FormShield();
+
+	GameObject::gameWorld->GetAudio()->PlayEvent("event:/Holy", shield->GetTransform().GetWorldPosition());
 }
 
 void ShieldControl::DeactivateShield()

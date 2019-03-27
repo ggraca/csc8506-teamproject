@@ -40,16 +40,10 @@ CAudioEngine::CAudioEngine() {
 	Init();
 	setNumList(1);
 	setMinMaxDistance(10.0f, 10000.0f);
-	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, true, false);
-	LoadSound(Assets::SOUNDSDIR + "bat.wav", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "swords.mp3", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "1.mp3", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "2.mp3", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "ole.wav", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "thud.wav", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "jump.wav", true, false, false);
-	LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
-	LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+	
+	LoadSound(Assets::SOUNDSDIR + "Awaken.wav", false, true, false);
+	LoadBank(Assets::SOUNDSDIR + "Final\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+	LoadBank(Assets::SOUNDSDIR + "Final\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
 }
 
 void CAudioEngine::Init() {
@@ -71,7 +65,7 @@ void CAudioEngine::Update() {
 	sgpImplementation->Update();
 }
 
-void CAudioEngine::LoadSound(const string &strSoundName, bool b3d, bool bLooping, bool bStream) // loads sounds (filename, streaming (Y/N), looping (Y/N), 3D sound (Y/N)) this will store it in the sound cloud
+void CAudioEngine::LoadSound(const string &strSoundName, bool b3d, bool bLooping, bool bStream) // loads sounds (filename, 3D sound (Y/N), looping (Y/N), streaming (Y/N)) this will store it in the sound cloud
 {
 	auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
 	if (tFoundIt != sgpImplementation->mSounds.end())

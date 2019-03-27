@@ -82,6 +82,9 @@ void LevelScene::ResetWorld() {
 	LoadWorld();
 	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();
 	
+	//int x;
+	//x = GameObject::gameWorld->GetAudio()->PlaySounds(Assets::SOUNDSDIR + "Awaken.wav", Vector3(0,0,0), 0.02f);
+	//GameObject::gameWorld->GetAudio()->SetChannelVolume(x, 0.0002f);
 }
 
 LevelScene::~LevelScene() {

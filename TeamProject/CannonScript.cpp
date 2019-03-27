@@ -1,5 +1,7 @@
 #include "CannonScript.h"
 #include "FunctionTimer.h"
+#include "GameWorld.h"
+#include "AudioEngine.h"
 
 
 
@@ -141,4 +143,5 @@ void CannonScript::Fire()
 		balls.push_back(cBall);
 	}
 	
+	GameObject::gameWorld->GetAudio()->PlayEvent("event:/gun", cannon->GetTransform().GetWorldPosition());
 }

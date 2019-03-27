@@ -207,6 +207,7 @@ void Player::PlayerMovement(float dt)
 	{
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 200, 0));
 		isJumping = true;
+		GameObject::gameWorld->GetAudio()->PlayEvent("event:/jump", gameObject->GetTransform().GetWorldPosition());
 	}
 }
 
@@ -221,7 +222,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
-		GameObject::gameWorld->GetAudio()->PlayEvent("event:/Swords", otherObject->GetTransform().GetWorldPosition());
+		GameObject::gameWorld->GetAudio()->PlayEvent("event:/swords", otherObject->GetTransform().GetWorldPosition());
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
 		resources.push_back(otherObject);
 	}
