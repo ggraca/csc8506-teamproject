@@ -34,7 +34,6 @@ void Implementation::Update() {   // if channel stops playing this will delete i
 
 	// Currently we can only have one running executable with sound. After the error this should disable the sound system;
 	disabled = CAudioEngine::ErrorCheck(mpStudioSystem->update());
-	
 }
 
 CAudioEngine::CAudioEngine() {

@@ -4,7 +4,7 @@
 #include "Destructible.h"
 
 
-ExampleScene::ExampleScene(bool& qG) : GameScene(qG) {
+ExampleScene::ExampleScene(Game* g, bool& qG) : GameScene(g, qG) {
 	ResetWorld();
 }
 void ExampleScene::InitPlayer()
@@ -25,8 +25,9 @@ void ExampleScene::InitPlayer()
 	world->Instantiate(player);
 	world->Instantiate(playerLeft);
 	world->Instantiate(playerRight);
-	audio->SetPlayer(player);
+	game->GetAudio()->SetPlayer(player);
 }
+
 void ExampleScene::ResetWorld() {
 	auto floor = new CubePrefab(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
