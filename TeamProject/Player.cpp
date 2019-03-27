@@ -333,6 +333,7 @@ void Player::HandleDistanceToFloor()
 
 	if (gameObject->GetTransform().GetWorldPosition().y - floorPosY < -2000)
 	{
+		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->clearForces();
 		gameObject->GetTransform().SetWorldPosition(Vector3(120, 260, 50)/*GetStartPosition()*/);
 	}
 }
