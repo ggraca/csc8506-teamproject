@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Scene.h"
 #include "NetworkExampleScene.h"
 #include "MenuScene.h"
 #include "ExampleScene.h"
@@ -14,22 +15,19 @@
 Game::Game() {
 	console = Console();
 	renderer = new GameTechRenderer();
+	audio = new CAudioEngine();
 	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
 
 	currentScene = new MenuScene(this);
 	currentScene->SetRenderer(renderer);
 	renderer->SetGameWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
-	
-	//currentScene = new NetworkExampleScene();	
-	//currentScene->SetRenderer(renderer);
-	//currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
-	//network->GetEntity()->SetWorld(currentScene->GetGameWorld());
 
 	InputManager::InitializeButtonRelations();
 }
 
 Game::~Game() {
+	delete audio;
 	delete renderer;
 	delete currentScene;
 
@@ -47,13 +45,12 @@ void Game::Update(float dt) {
 	if (network) network->Update();
 	currentScene->Update(dt);
 	renderer->Render();
+	audio->Update();
 	Debug::FlushRenderables();
 }
 
 void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server)
 { 
-	currentScene = nullptr;
-	delete currentScene;
 	currentScene = newScene;
 	renderer->HUDState(true);
 	currentScene->SetRenderer(renderer);

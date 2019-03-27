@@ -15,16 +15,12 @@ namespace NCL {
 
 		class LevelScene : public GameScene {
 		public:
-			LevelScene(bool& quitGame);
+			LevelScene(Game* g, bool& quitGame);
 			~LevelScene();
 			void GenerateResources();
 			void LoadWorld();
 			
 		protected:
-			void InitializeGuns(GameObject * player);
-			void InitializeShield(GameObject * player);
-			void InitPlayer();
-			void InitializeHammer(GameObject * player);
 			void ResetWorld();
 
 		};

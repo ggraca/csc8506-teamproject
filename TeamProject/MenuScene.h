@@ -18,6 +18,5 @@ public:
 protected:
 	map<int, std::vector<MenuEntry>> menuEntries;
 	int menuPathIndex;
-	Game* game;
 };
 
