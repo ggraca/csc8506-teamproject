@@ -16,6 +16,7 @@
 Player::Player(GameObject* obj) : ScriptObject(obj)
 {
 	ResetPlayer();
+	gameObject->GetComponent<PhysicsObject*>()->SetDamping(0.5, 0);
 }
 
 void Player::Awake()
@@ -148,13 +149,15 @@ void Player::PlayerMovement(float dt)
 	{
 		if (keysPressed.inputs[InputManager::ActionButton::DODGE])
 		{
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity( btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
+			gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(forward.x, forward.y, forward.z) * dodgeAmount);
+		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity( btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		else
 		{
 			playerPos += forward * movementSpeed * dt;
-			gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
+		//	gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
 
 	}
@@ -163,13 +166,15 @@ void Player::PlayerMovement(float dt)
 	{
 		if (keysPressed.inputs[InputManager::ActionButton::DODGE])
 		{
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1 * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+			gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(- Vector3(forward.x, forward.y, forward.z) * dodgeAmount);
+		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1 * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		else
 		{
 			playerPos -= forward * movementSpeed * dt;
-			gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
+		//	gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
 
 	}
@@ -178,13 +183,15 @@ void Player::PlayerMovement(float dt)
 	{
 		if (keysDown.inputs[InputManager::ActionButton::DODGE])
 		{
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(left.x, left.y, left.z)*dodgeAmount);
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
+			gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(left.x, left.y, left.z) * dodgeAmount);
+		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(left.x, left.y, left.z)*dodgeAmount);
+		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		else
 		{
 			playerPos += left * movementSpeed * dt;
-			gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
+		//	gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
 
 	}
@@ -193,13 +200,15 @@ void Player::PlayerMovement(float dt)
 	{
 		if (keysDown.inputs[InputManager::ActionButton::DODGE])
 		{
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1* btVector3(left.x, left.y, left.z)*dodgeAmount);
-			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
+			gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(- Vector3(left.x, left.y, left.z) * dodgeAmount);
+		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1* btVector3(left.x, left.y, left.z)*dodgeAmount);
+		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		else
 		{
 			playerPos -= left * movementSpeed * dt;
-			gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
+		//	gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
 	}
 

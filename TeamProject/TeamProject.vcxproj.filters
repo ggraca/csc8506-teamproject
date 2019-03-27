@@ -166,6 +166,13 @@
     <ClCompile Include="FunctionTimer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="ConePrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="CylinderPrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerAnimation.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
@@ -426,6 +433,13 @@
     </ClInclude>
     <ClInclude Include="FunctionTimer.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="ConePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="CylinderPrefab.h">
+      <Filter>Prefabs</Filter>
     </ClInclude>
     <ClInclude Include="PlayerAnimation.h">
       <Filter>Scripts</Filter>

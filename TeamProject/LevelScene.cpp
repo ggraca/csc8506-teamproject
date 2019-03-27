@@ -32,7 +32,6 @@ using namespace NCL;
 using namespace CSC8503;
 
 LevelScene::LevelScene(Game* g, bool& quitGame) : GameScene(g, quitGame) {
-	ResetWorld();
 }
 
 void LevelScene::ResetWorld() {
@@ -42,6 +41,9 @@ void LevelScene::ResetWorld() {
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 	floor->SetTag(LayerAndTag::Tags::Ground);
+	world->LateInstantiate(floor);
+
+	if (dynamic_cast<NetworkClient*>(world->GetNetwork())) return;
 
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
@@ -76,12 +78,10 @@ void LevelScene::ResetWorld() {
 	world->LateInstantiate(resource4);
 	world->LateInstantiate(resource5);
 	world->LateInstantiate(resource6);
-	world->LateInstantiate(floor);
 	world->LateInstantiateRecursively(player);
 
 	LoadWorld();
-	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();
-	
+
 	//int x;
 	//x = GameObject::gameWorld->GetAudio()->PlaySounds(Assets::SOUNDSDIR + "Awaken.wav", Vector3(0,0,0), 0.02f);
 	//GameObject::gameWorld->GetAudio()->SetChannelVolume(x, 0.0002f);
