@@ -5,17 +5,17 @@
 #include <map>
 #include "TypeId.h"
 
-using std::vector;
+#include "../Common/OBJGeometry.h"
 
+using std::vector;
 
 namespace NCL {
 	namespace CSC8503 {
 		class Component;
 		class ScriptObject;
 		class GameWorld;
-		
 
-		class GameObject	{
+		class GameObject {
 		public:
 			GameObject(std::string name = "");
 			virtual ~GameObject();
@@ -24,6 +24,10 @@ namespace NCL {
 
 			bool IsActive() const {
 				return isActive;
+			}
+
+			void SetActiveStatus(bool status){
+				isActive = status;
 			}
 
 			const Transform& GetConstTransform() const {
@@ -76,30 +80,25 @@ namespace NCL {
 				return (this->tag == other.tag);
 			}
 
-			virtual void OnCollisionBegin(GameObject* otherObject);
-
-
-			virtual void OnCollisionEnd(GameObject* otherObject);
-
-
 			void SetParent(GameObject * parent);
-			
-
 			bool IsParent(const Transform* transform);
-			
-
 			void AddChild(GameObject * child);
-			
+
 			template<class T>
 			void AddComponent(Component * obj);
-
+			
 			template<class T>
 			void RemoveComponent()
 			{
 				int index = TypeId::GetTypeId(typeid(T));
 
-				if (dynamic_cast<ScriptObject*>(T)) { RemoveScript<T>(); }
-				delete components[index];
+				if (index == -1) { return; }
+				auto it = components.find(index);
+
+				if (it == components.end()) { return; }
+
+				if (dynamic_cast<ScriptObject*>(it->second)) { RemoveScript<T>(); }
+				delete it->second;
 				components.erase(index);
 			}
 
@@ -107,7 +106,13 @@ namespace NCL {
 			T GetComponent()
 			{
 				int index = TypeId::GetTypeId(typeid(T));
-				return dynamic_cast<T>(components[index]);
+
+				if (index == -1) { return nullptr; }
+				auto it = components.find(index);
+
+				if (it == components.end()) { return nullptr; }
+
+				return dynamic_cast<T>(it->second);
 			}
 
 			void SetUpInitialScripts();
@@ -127,11 +132,13 @@ namespace NCL {
 			static vector<GameObject*> GetChildrenOfObject(GameObject* obj, LayerAndTag::Tags tag);
 			static  void Destroy(GameObject * obj);
 			static void AddObjectToWorld(GameObject * obj);
-			static void AddObjectToWorld(GameObject * obj,GameObject * parent);
+			static void AddObjectToWorld(GameObject * obj, GameObject * parent);
 			static GameObject * GetMainCamera();
+			static GameObject* FromOBJ(OBJGeometry* obj);
 
 			vector<GameObject*> collidingObjects;
-			static GameWorld *gameWorld;
+			static GameWorld* gameWorld;
+
 
 		protected:
 			Transform			transform;
@@ -152,11 +159,10 @@ namespace NCL {
 			void RemoveScript()
 			{
 
-				for (int i = 0; i < scripts.size();i++)
+				for (int i = 0; i < (int)scripts.size(); i++)
 				{
 					if (dynamic_cast<T>(scripts[i]))
 					{
-						delete scripts[i];
 						scripts.erase(scripts.begin() + i);
 
 						return;
@@ -170,17 +176,20 @@ namespace NCL {
 		{
 			if (!obj) { return; }
 
-			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
-
 			int index = TypeId::GetTypeId(typeid(T));
 
-			if (components[index])
+			if (index == -1) { return; }
+			auto it = components.find(index);
+
+			if (it != components.end())
 			{
-				delete components[index];
+				if (dynamic_cast<ScriptObject*>(obj)) { RemoveScript<T>(); }
+				delete it->second;
 			}
 
+			if (dynamic_cast<ScriptObject*>(obj)) { AddScript(dynamic_cast<ScriptObject*>(obj)); }
+			obj->SetGameObject(this);
 			components[index] = obj;
 		}
-
-}
+	}
 }

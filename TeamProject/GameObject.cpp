@@ -16,6 +16,7 @@ GameObject::GameObject(std::string objectName)
 	isAddedToWorld  = false;
 	layer			= LayerAndTag::ObjectLayer::Default;
 	tag				= LayerAndTag::Tags::Untagged;
+	transform.SetGameObject(this);
 }
 
 GameObject::~GameObject()	
@@ -36,18 +37,17 @@ void GameObject::ClearComponents()
 
 void GameObject::SetParent(GameObject * parent)
 {
+	if (GetTransform().GetParent() != nullptr)
+	{
+		GetTransform().GetParent()->RemoveChild(&GetTransform());
+	}
 	if (parent)
 	{
 		GetTransform().SetParent(&parent->GetTransform());
-		GetTransform().AddChild(&parent->GetTransform());
+		parent->GetTransform().AddChild(&GetTransform());
 	}
 	else
 	{
-		if (GetTransform().GetParent() != nullptr)
-		{
-			GetTransform().GetParent()->RemoveChild(&parent->GetTransform());
-		}
-
 		GetTransform().SetParent(nullptr);
 	}
 }
@@ -60,27 +60,6 @@ bool GameObject::IsParent(const Transform* transform)
 void GameObject::AddChild(GameObject * child)
 {
 	child->SetParent(this);
-}
-
-void GameObject::OnCollisionBegin(GameObject * otherObject)
-{
-	if (!HasOtherScriptsAttached()) { return; }
-	
-	for (auto&i : scripts)
-	{
-		i->OnCollisionBegin(otherObject);
-	}
-}
-
-void GameObject::OnCollisionEnd(GameObject * otherObject)
-{
-	if (!HasOtherScriptsAttached()) { return; }
-
-	for (auto&i : scripts)
-	{
-		i->OnCollisionEnd(otherObject);
-	}
-	
 }
 
 void GameObject::AddScript(ScriptObject * obj)
@@ -119,8 +98,6 @@ void GameObject::LateUpdateAttachedScripts(float dt)
 
 void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
 {
-	OnCollisionBegin(otherObject);
-
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)
@@ -131,8 +108,6 @@ void GameObject::CallOnCollisionEnterForScripts(GameObject * otherObject)
 
 void GameObject::CallOnCollisionEndForScripts(GameObject * otherObject)
 {
-	OnCollisionEnd(otherObject);
-
 	if (!HasOtherScriptsAttached()) { return; }
 
 	for (auto&i : scripts)
@@ -145,7 +120,7 @@ void GameObject::UpdateComponents(float dt)
 {
 	for (auto&i : components)
 	{
-		i.second->Update(dt);
+		if (components[i.first]) { i.second->Update(dt); }
 	}
 }
 
@@ -193,21 +168,7 @@ void GameObject::Destroy(GameObject * obj)
 {
 	if (!gameWorld) { return; }
 
-	return gameWorld->Destroy(obj);
-}
-
-void GameObject::AddObjectToWorld(GameObject * obj)
-{
-	if (!gameWorld) { return; }
-	
-	gameWorld->AddGameObject(obj);
-}
-
-void GameObject::AddObjectToWorld(GameObject * obj, GameObject * parent)
-{
-	if (!gameWorld) { return; }
-
-	gameWorld->AddGameObject(obj, parent);
+	return gameWorld->LateDestroy(obj);
 }
 
 GameObject * GameObject::GetMainCamera()
@@ -217,6 +178,23 @@ GameObject * GameObject::GetMainCamera()
 	return gameWorld->GetMainCamera();
 }
 
+GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
+	if (!gameWorld) { return nullptr; }
 
+	GameObject* root = new GameObject();
+	gameWorld->Instantiate(root);
 
+	for (auto& mesh : obj->GetChildren()) {
+		GameObject* go = new GameObject();
 
+		go->AddComponent<RenderObject*>(new RenderObject(
+			&go->GetTransform(),
+			mesh,
+			((OBJMesh*)mesh)->material
+		));
+
+		gameWorld->Instantiate(go);
+		root->AddChild(go);
+	}
+	return root;
+}

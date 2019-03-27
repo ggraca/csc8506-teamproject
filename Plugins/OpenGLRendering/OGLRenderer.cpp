@@ -4,7 +4,6 @@
 #include "OGLTexture.h"
 
 #include "../../Common/SimpleFont.h"
-#include "../../Common/TextureLoader.h"
 
 #include "../../Common/MeshGeometry.h"
 
@@ -33,6 +32,7 @@ OGLRenderer::OGLRenderer(Window& w) : RendererBase(w)	{
 
 	TextureLoader::RegisterAPILoadFunction(OGLTexture::RGBATextureFromFilename);
 	TextureLoader::RegisterAPILoadCubeFunction(OGLTexture::CubeTextureFromFilename);
+	ShaderLoader::RegisterAPILoadFunction(OGLShader::LoadShader);
 
 	font		= new SimpleFont("PressStart2P.fnt", "PressStart2P.png");
 
@@ -46,12 +46,11 @@ OGLRenderer::OGLRenderer(Window& w) : RendererBase(w)	{
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-	debugShader = new OGLShader("debugVert.glsl", "debugFrag.glsl");
+	debugShader = (OGLShader*)Assets::AssetManager::LoadShader("DebugShader", "debugVert.glsl", "debugFrag.glsl");
 }
 
 OGLRenderer::~OGLRenderer()	{
 	delete font;
-	delete debugShader;
 
 #ifdef _WIN32
 	DestroyWithWin32();
@@ -77,6 +76,41 @@ void OGLRenderer::RenderFrame()		{
 void OGLRenderer::EndFrame()		{
 	DrawDebugData();
 	::SwapBuffers(deviceContext);
+}
+
+void OGLRenderer::GenerateIrradianceMap(TextureBase* skybox, TextureBase* irradianceMap, ShaderBase* convShader, MeshGeometry* cube, void* ConvFBO) {
+	BindShader(convShader);
+
+	Matrix4 captureProjection = Matrix4::Perspective(0.1f, 10.0f, 1.0f, 90.0f);
+	Matrix4 captureViews[] =
+	{
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(1.0f,   0.0f,  0.0f), Vector3(0.0f, -1.0f,  0.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(-1.0f,  0.0f,  0.0f), Vector3(0.0f, -1.0f,  0.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   1.0f,  0.0f), Vector3(0.0f,  0.0f,  1.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,  -1.0f,  0.0f), Vector3(0.0f,  0.0f, -1.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   0.0f,  1.0f), Vector3(0.0f, -1.0f,  0.0f)),
+	   Matrix4::BuildViewMatrix(Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f,   0.0f, -1.0f), Vector3(0.0f, -1.0f,  0.0f))
+	};
+
+	BindMatrix4ToShader(captureProjection, "projMatrix");
+	BindTextureCubeToShader(skybox, "cubeTex", 0);
+
+	SetViewport(0, 0, 32, 32);
+	BindFBO(ConvFBO);
+	BindMesh(cube);
+
+	for (unsigned int i = 0; i < 6; ++i)
+	{
+		BindMatrix4ToShader(captureViews[i], "viewMatrix");
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, ((OGLTexture*)irradianceMap)->GetObjectID(), 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		DrawBoundMesh();
+	}
+
+	SetViewport(0, 0, currentWidth, currentHeight);
+	BindFBO(nullptr);
 }
 
 void OGLRenderer::BindShader(ShaderBase*s) {
@@ -233,6 +267,21 @@ void OGLRenderer::BindFloatToShader(const float val, const std::string& uniform)
 	glUniform1f(slot, val);
 }
 
+void OGLRenderer::BindVector2ToShader(const Vector2& val, const std::string& uniform) const {
+	if (!boundShader) {
+		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
+		return;//Debug message time!
+	}
+
+	GLuint slot = glGetUniformLocation(boundShader->programID, uniform.c_str());
+
+	if (slot < 0) {
+		return;
+	}
+
+	glUniform2fv(slot, 1, (float*)&val);
+}
+
 void OGLRenderer::BindVector3ToShader(const Vector3& val, const std::string& uniform) const {
 	if (!boundShader) {
 		std::cout << __FUNCTION__ << " has been called without a bound shader!" << std::endl;
@@ -289,13 +338,13 @@ void OGLRenderer::GenerateFrameBuffer(void* buffer, std::vector<TextureBase*>& b
 
 	if (bufferTexs.size() != 0) {
 		GLenum* drawBuffer = new GLenum[bufferTexs.size()];
-		for (int i = 0; i < bufferTexs.size(); i++)
+		for (unsigned int i = 0; i < bufferTexs.size(); i++)
 		{
 			drawBuffer[i] = GL_COLOR_ATTACHMENT0 + i;
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i,
 				GL_TEXTURE_2D, ((OGLTexture*)bufferTexs[i])->GetObjectID(), 0);
 		}
-		glDrawBuffers(bufferTexs.size(), drawBuffer);
+		glDrawBuffers((GLsizei) bufferTexs.size(), drawBuffer);
 		delete[] drawBuffer;
 	}
 	else {
@@ -328,10 +377,6 @@ void OGLRenderer::ClearBuffer(bool depth, bool color, bool stencil) const {
 		bit = bit | GL_STENCIL_BUFFER_BIT;
 	}
 	glClear(bit);
-}
-
-void OGLRenderer::ClearColor(const Vector4& color) const {
-	glClearColor(color.x, color.y, color.z, color.w);
 }
 
 void OGLRenderer::SetViewport(int x, int y, int width, int height) const {

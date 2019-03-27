@@ -12,7 +12,7 @@ public:
 	DamageControl(GameObject * obj);
 	~DamageControl();
 
-	static enum DamageType 
+	enum DamageType 
 	{
 		SingleShot,
 		Continuous
@@ -22,11 +22,12 @@ public:
 	DamageType GetTypeOfDamage(DamageType typeOfDamage);
 	void OnCollisionBegin(GameObject * otherObject);
 	void ResolveDamage(GameObject * obj);
+	bool IsTagOccupied(LayerAndTag::Tags t);
 	void ResetDamageControl();
+	void SetDamage(int d);
 
-private:
+protected:
 	int damage = 0;
 	DamageType typeOfDamage = DamageType::SingleShot;
-	
 };
 

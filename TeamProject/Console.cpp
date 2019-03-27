@@ -1,12 +1,12 @@
 #include "Console.h"
-#include "utils.h"
+#include "../Common/Utils.h"
 
 using namespace NCL;
 
 void TestCommand(vector<string> commandparams, void* data) {
 	cout << "Command found with name: " + commandparams[0] << endl;
 	cout << "Parameters are: " << endl;;
-	for (int i = 1; i < commandparams.size(); i++)
+	for (unsigned int i = 1; i < commandparams.size(); i++)
 	{
 		cout << commandparams[i] << endl;
 	}
@@ -34,7 +34,7 @@ void Console::HandleCommand() {
 
 	auto foundCommand = commands.find(parsedCommand[0]);
 	AddToPreviousCommandList();
-	previousCommandIndex = previousCommands.size();
+	previousCommandIndex = (int) previousCommands.size();
 	currentCommand = "";
 
 	if (foundCommand == commands.end()) {
@@ -192,7 +192,7 @@ void Console::Update() {
 			  previousCommandIndex--;
 
         if (previousCommandIndex < 0) {
-          previousCommandIndex = previousCommands.size() - 1;
+          previousCommandIndex = (int) previousCommands.size() - 1;
         }
 
         if (!empty(previousCommands)) {
@@ -202,7 +202,7 @@ void Console::Update() {
       if (Window::GetKeyboard()->KeyPressed(KEYBOARD_DOWN)) {
         previousCommandIndex++;
 
-        if (previousCommandIndex > previousCommands.size() - 1) {
+        if (previousCommandIndex > (int)previousCommands.size() - 1) {
           previousCommandIndex = 0;
         }
 
@@ -211,7 +211,7 @@ void Console::Update() {
         }
       }
       
-      for (int i = 0; i < previousCommands.size(); i++)
+      for (unsigned int i = 0; i < previousCommands.size(); i++)
       {
         Debug::AddStringToDebugMenu(previousCommands[i]);
       }

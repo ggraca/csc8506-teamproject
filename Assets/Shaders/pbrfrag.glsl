@@ -2,10 +2,10 @@
 
 uniform sampler2D diffuseTex; // Diffuse texture map
 uniform sampler2D bumpTex; // Bump map
-uniform sampler2D specularTex;
+uniform sampler2D roughnessTex;
 uniform sampler2D metalnessTex;
+uniform sampler2D aoTex;
 
-uniform samplerCube cubeTex;
 uniform vec3 cameraPos;
 uniform vec4 objectColour;
 
@@ -22,14 +22,13 @@ out vec4 fragColour [3]; // Our final outputted colours !
 
 void main (void) {
 	mat3 TBN = mat3(IN.tangent, IN.binormal, IN.normal);
-	vec3 normal = normalize(TBN * normalize((texture2D(bumpTex, IN.texCoord ).rgb ) * 2.0 - 1.0));
-	vec4 metalness = texture(metalnessTex, IN.texCoord);
-
-	vec3 incident = normalize(IN.worldPos - cameraPos);
-	vec4 reflection = texture(cubeTex, reflect(incident, normalize(IN.normal).xyz));
-
+	vec3 normal = normalize(TBN * normalize((texture2D(bumpTex, vec2(IN.texCoord.x, 1 - IN.texCoord.y)).rgb ) * 2.0 - 1.0));
 	
-	fragColour [0] = mix(texture2D(diffuseTex , IN.texCoord), vec4((reflection.xyz * metalness.xyz), 1.0), metalness.r) * objectColour;
+	float roughness = texture(roughnessTex, vec2(IN.texCoord.x, 1 - IN.texCoord.y)).r;
+	float metalness = texture(metalnessTex, vec2(IN.texCoord.x, 1 - IN.texCoord.y)).r;
+	float ao = texture(aoTex, vec2(IN.texCoord.x, 1 - IN.texCoord.y)).r;
+
+	fragColour [0] = texture2D(diffuseTex, vec2(IN.texCoord.x, 1 - IN.texCoord.y)) * objectColour;
 	fragColour [1] = vec4(normal.xyz * 0.5 + 0.5, 1.0);
-	fragColour [2] = texture2D(specularTex , IN.texCoord);
+	fragColour [2] = vec4(roughness, metalness, ao, 1.0);
 }

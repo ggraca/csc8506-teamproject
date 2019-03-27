@@ -26,9 +26,18 @@ _-_-_-_-_-_-_-""  ""
 #define HID_USAGE_GENERIC_KEYBOARD		((USHORT) 0x06)
 #endif
 
-#define WIN32_LEAN_AND_MEAN
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN 1
+#endif
+
+#ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN
-#define NOMINMAX
+#endif
+
+#ifndef NOMINMAX
+#define NOMINMAX 1
+#endif
+
 #include <windows.h>
 #include <io.h>
 #include <stdio.h>

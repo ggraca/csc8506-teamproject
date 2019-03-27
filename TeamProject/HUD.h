@@ -16,7 +16,7 @@ class HUD
 			
 		~HUD() {}
 
-		void Update(const float dt, GameTechRenderer* renderer);
+		void Update(const float dt, GameTechRenderer* renderer, NetworkEntity* network);
 		
 		int resources = 0;
 		int hp = 100;

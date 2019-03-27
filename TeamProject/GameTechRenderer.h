@@ -8,6 +8,7 @@
 #include "GameWorld.h"
 #include "HUDObject.h"
 #include "CameraControl.h"
+#include "RenderObject.h"
 
 class Light;
 class HUDObject;
@@ -15,21 +16,25 @@ class HUDObject;
 namespace NCL {
 	namespace CSC8503 {
 		class RenderObject;
+		class ParticleSystem;
+		class PixOpsFlags;
 		class GameTechRenderer : public OGLRenderer	{
 		public:
-			GameTechRenderer(GameWorld& world);
+			GameTechRenderer();
 			~GameTechRenderer();
 
+			void SetGameWorld(GameWorld* gw) { gameWorld = gw; }
 			int GetRendererWidth() const { return currentWidth; }
 			int GetRendererHeight() const { return currentHeight; }
 			int GetVertsDrawn() const { return vertsDrawn; }
 			int GetShadowCasters() const { return shadowCasters; }
 
-			void SetLightMesh(OGLMesh* mesh) { lightSphere = mesh; }
+			void SetLightMesh(MeshGeometry* mesh) { lightSphere = mesh; }
 			
-			TextureBase* skybox;
+			void SetSkyBox(TextureBase* Skybox) { skybox = Skybox; RegenerateIrradianceMap = true; }
 
 			//HUD
+			void HUDState(bool active) { activeHUD = active; }
 			void AddHUDObjects();
 			void WeaponState(int index, bool state);
 			float health = 1; //(100%);
@@ -43,7 +48,7 @@ namespace NCL {
 
 			OGLShader*		defaultShader;
 
-			GameWorld&	gameWorld;
+			GameWorld*	gameWorld;
 
 			void BuildObjectList();
 			void SortObjectList();
@@ -52,39 +57,59 @@ namespace NCL {
 			void RenderCamera();
 			void RenderLights();
 			void CombineBuffers();
+			void RenderParticleSystems();
+			void RenderPostProcess();
+			void PresentScene();
 
 			void SetupDebugMatrix(OGLShader*s) override;
 
 			vector<const RenderObject*> activeObjects;
+			vector<const Light*> activeLights;
+			vector<ParticleSystem*> activeParticleSystems;
+			vector<ShaderBase*> postProcessShaders;
 
 			//shadow mapping things
-			OGLShader*	shadowShader;
-			GLuint		shadowTex;
+			ShaderBase*	shadowShader;
+			TextureBase* shadowTex;
 			GLuint		shadowFBO;
 			Matrix4     shadowMatrix;
 
-			OGLShader* skyBoxShader;
+			ShaderBase* skyBoxShader;
+			ShaderBase* convolutionShader;
+			GLuint convFBO;
+			TextureBase* skybox;
+			TextureBase* irradianceMap;
+			MeshGeometry* cube;
+			bool RegenerateIrradianceMap = false;
 
 			GLuint gBufferFBO; // FBO for our G- Buffer pass
 			TextureBase* gBufferDepthTex; // Depth goes here
 			TextureBase* gBufferColourTex; // Albedo goes here
 			TextureBase* gBufferNormalTex; // Normals go here
-			TextureBase* gBufferSpecularTex; // Specular goes here
+			TextureBase* gBufferMaterialTex; // Specular goes here
 
 			GLuint lightFBO; // FBO for our lighting pass
 			TextureBase* lightEmissiveTex; // emissive lighting
 			TextureBase* lightSpecularTex; // specular lighting
+			TextureBase* lightKDTex;
 
-			OGLShader* combineShader;
-			OGLShader* lightShader;
-			OGLShader* hudShader;
-			OGLMesh* lightSphere;
+			GLuint postFBO; // FBO for our post process pass
+			TextureBase* postTexture[2]; // post process texture [0] and [1]
+			int lastRendererdPostTex = 0;
+			bool DoPostProcess = true;
+
+			ShaderBase* combineShader;
+			ShaderBase* presentShader;
+			ShaderBase* pointLightShader;
+			ShaderBase* directionalLightShader;
+			ShaderBase* particleShader;
+			ShaderBase* hudShader;
+			MeshGeometry* lightSphere;
 			OGLMesh* screenQuad;
 
-			Light* directionalLight;
-			
 			GLuint hudTex;
 			vector<HUDObject*> hudObjects;
+			bool activeHUD = false;
 			
 			Vector4 ambientColour = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
 

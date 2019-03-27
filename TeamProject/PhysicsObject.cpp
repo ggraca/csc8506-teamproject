@@ -5,25 +5,6 @@
 using namespace NCL;
 using namespace CSC8503;
 
-PhysicsObject::PhysicsObject() {
-	dimensions = Vector3(1, 1, 1); //TODO Make transform from these parameters, or delete constructor
-	orientation = Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0);
-	position = Vector3(0, 0, 0);
-	mass = 1.0f;
-	restitution = 0.3f;
-	friction = 0.3f;
-}
-
-PhysicsObject::PhysicsObject(ShapeType type, Vector3 position, Quaternion orientation, Vector3 dimensions, float mass, float restitution, float friction) {
-	this->type = type;
-	this->dimensions = dimensions; //TODO Make transform from these parameters, or delete constructor
-	this->orientation = orientation;
-	this->position = position;
-	this->mass = mass;
-	this->restitution = restitution;
-	this->friction = friction;
-}
-
 PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction)	{
 	transform = parentTransform;
 	this->type = type;
@@ -54,7 +35,18 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 }
 
 PhysicsObject::~PhysicsObject()	{
+	BulletPhysics* physics = gameObject->gameWorld->GetPhysics();
 
+	delete body->getMotionState();
+	physics->dynamicsWorld->removeCollisionObject(body);
+	delete body;
+
+	for (int i = 0; i < physics->collisionShapes.size(); i++) {
+		if (physics->collisionShapes[i] == shape) {
+			physics->collisionShapes[i] = 0;
+			delete shape;
+		}
+	}
 }
 
 void PhysicsObject::SetBulletPhysicsParameters()
@@ -75,14 +67,16 @@ void PhysicsObject::SetBulletPhysicsParameters()
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(btMass, myMotionState, shape, localInertia);
 
 	body = new btRigidBody(rbInfo);
-
-	//body->setLinearVelocity(btVector3(10, 100, 0));
-	//body->setAngularVelocity(btVector3(0, 10, 0));
-
-	body->applyImpulse(btVector3(-1000, 1000, 0), btVector3(0, -5, 0));
-
+	
 	body->setFriction(friction);
 	body->setRestitution(restitution);
 	body->setRollingFriction(0.9);
 	body->setSpinningFriction(0.3);
+
+	/*if (!isDynamic)
+	{
+		body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+		body->setActivationState(DISABLE_DEACTIVATION);
+	}*/
+	
 }

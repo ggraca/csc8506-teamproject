@@ -1,4 +1,4 @@
-#version 150 core
+#version 400 core
 
 uniform samplerCube cubeTex;
 uniform vec3 cameraPos;
@@ -7,9 +7,10 @@ in Vertex {
 	vec3 normal;
 } IN;
 
-out vec4 fragColour[2];
+out vec4 fragColour[3];
 
 void main (void) {
-	fragColour [0] = texture(cubeTex, normalize(IN.normal));
-	fragColour [1] = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	fragColour[0] = texture(cubeTex, normalize(IN.normal));
+	fragColour[1] = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	fragColour[2] = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }

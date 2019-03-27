@@ -1,5 +1,7 @@
 #include "CameraControl.h"
 #include "InputManager.h"
+#include "GameWorld.h"
+#include "../Common/Window.h"
 
 
 CameraControl::CameraControl(GameObject * obj) : ScriptObject(obj)
@@ -36,13 +38,12 @@ void CameraControl::Update(float dt)
 {
 	FollowPlayer();
 	UpdateCamera();
-	RotatePlayer();
 }
 
 void CameraControl::UpdateCamera()
 {
 	roll -= 5.0f * (Window::GetMouse()->GetWheelMovement());
-	pitch -= (Window::GetMouse()->GetRelativePosition().y);
+	pitch += (Window::GetMouse()->GetRelativePosition().y);
 	yaw -= (Window::GetMouse()->GetRelativePosition().x);
 
 	roll = min(roll, 90.0f);
@@ -50,8 +51,8 @@ void CameraControl::UpdateCamera()
 
 	if (isTPS)
 	{
-		pitch = min(pitch, 90.0f);
-		pitch = max(pitch, -10.0f);
+		pitch = min(pitch, 50.0f);
+		pitch = max(pitch, -25.0f);
 	}
 	else
 	{
@@ -71,9 +72,6 @@ void CameraControl::UpdateCamera()
 
 	gameObject->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(pitch, yaw, roll));
 	gameObject->GetTransform().UpdateMatrices();
-
-	//GameObject::Find("Cube")->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, yaw, 0));
-	//GameObject::Find("Cube")->GetTransform().UpdateMatrices();
 }
 
 void CameraControl::LateUpdate(float dt)
@@ -130,17 +128,6 @@ void CameraControl::FollowPlayer()
 	if (!player) { return; }
 
 	gameObject->GetTransform().SetWorldPosition(player->GetTransform().GetWorldPosition());
-}
-
-void CameraControl::RotatePlayer()
-{
-	if (!player) { return; }
-
-	Vector3 playerRot = player->GetTransform().GetLocalOrientation().ToEuler();
-	playerRot.y = gameObject->GetTransform().GetLocalOrientation().ToEuler().y;
-	player->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, playerRot.y, 0));
-	player->GetComponent<PhysicsObject*>()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0, playerRot.y, 0));
-	player->GetTransform().UpdateMatrices();
 }
 
 void CameraControl::SetCameraType(bool isTPSType)

@@ -1,4 +1,5 @@
 #include "HUDObject.h"
+#include "../Common/Assets.h"
 
 HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform objTransform, bool activeTex)
 {
@@ -8,13 +9,13 @@ HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform
 	texture = objTexture;
 	transform = objTransform;
 	activeTexture = activeTex;
-	//shader = objShader;
+	shader = (OGLShader*)Assets::AssetManager::LoadShader("BasicShader", "BasicVert.glsl", "BasicFrag.glsl");
 }
 
 HUDObject::~HUDObject()
 {
 	delete objectMesh;
-	for (int i = 0; i < texture.size(); i++)
+	for (unsigned int i = 0; i < texture.size(); i++)
 	{
 		delete texture[i];
 	}

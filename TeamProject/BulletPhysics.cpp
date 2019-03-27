@@ -1,5 +1,7 @@
 #include "BulletPhysics.h"
 
+#include "FunctionTimer.h"
+
 using namespace NCL;
 using namespace CSC8503;
 
@@ -29,8 +31,10 @@ BulletPhysics::~BulletPhysics()
 	for (int j = 0; j < collisionShapes.size(); j++)
 	{
 		btCollisionShape* shape = collisionShapes[j];
-		collisionShapes[j] = 0;
-		delete shape;
+		if (shape) {
+			collisionShapes[j] = 0;
+			delete shape;
+		}
 	}
 
 	delete dynamicsWorld;
@@ -42,6 +46,8 @@ BulletPhysics::~BulletPhysics()
 }
 
 void BulletPhysics::Update(float dt) {
+	FunctionTimer timer("Physics Update");
+
 	const float iterationDt = 1.0f / 120.0f; 
 	dTOffset += dt;
 	int iterationCount = (int)(dTOffset / iterationDt);
@@ -71,17 +77,39 @@ map<btRigidBody*, vector<btRigidBody*>> BulletPhysics::GenerateCollisionPairs() 
 }
 
 void BulletPhysics::UpdateObjectTransform(GameObject* go, btRigidBody* body) {
+
 	Transform& transform = go->GetTransform();
+
 
 	btTransform trans;
 	if (body && body->getMotionState()) body->getMotionState()->getWorldTransform(trans);
 	else trans = body->getWorldTransform();
 
 	btQuaternion orientation = trans.getRotation();
-	Vector3 position = Vector3(float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
-	transform.SetLocalPosition(position);
-	Quaternion orient = Quaternion(orientation.x(), orientation.y(), orientation.z(), orientation.w());
+	Vector3 position = Vector3((float)(trans.getOrigin().getX()), (float)(trans.getOrigin().getY()), (float)(trans.getOrigin().getZ()));
+	transform.SetWorldPosition(position);
+	Quaternion orient = Quaternion((float)orientation.x(), (float)orientation.y(), (float)orientation.z(), (float)orientation.w());
 	transform.SetLocalOrientation(orient);
+}
+
+void BulletPhysics::UpdateObjectPhysics(GameObject* go) {
+
+	Transform& transform = go->GetTransform();
+	transform.UpdateMatrices();
+
+	if (!go->GetComponent<PhysicsObject*>()) { return; }
+	auto body = go->GetComponent<PhysicsObject*>()->GetRigidbody();
+	if (!body) { return; }
+
+	btTransform trans;
+	if (body && body->getMotionState()) body->getMotionState()->getWorldTransform(trans);
+	else trans = body->getWorldTransform();
+
+	trans.setRotation(btQuaternion(transform.GetLocalOrientation().x, transform.GetLocalOrientation().y, transform.GetLocalOrientation().z, transform.GetLocalOrientation().w));
+	trans.setOrigin(btVector3(transform.GetWorldPosition().x, transform.GetWorldPosition().y, transform.GetWorldPosition().z));
+	
+	
+	body->setWorldTransform(trans);
 }
 
 void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair) {
@@ -91,12 +119,13 @@ void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidB
 		for (auto val : key.second) {
 			GameObject* go2 = (GameObject*)collisionObjectGameObjectPair[val];
 
-			if (!count(go1->collidingObjects.begin(), go1->collidingObjects.end(), go2)) {
+			if (!go1 || !go2) continue;
+			if (!count(go1->collidingObjects.begin(), go1->collidingObjects.end(), go2) && 
+				!count(go2->collidingObjects.begin(), go2->collidingObjects.end(), go1)) {
+
 				go1->CallOnCollisionEnterForScripts(go2);
-				go1->collidingObjects.push_back(go2);
-			}
-			if (!count(go2->collidingObjects.begin(), go2->collidingObjects.end(), go1)) {
 				go2->CallOnCollisionEnterForScripts(go1);
+				go1->collidingObjects.push_back(go2);
 				go2->collidingObjects.push_back(go1);
 			}
 		}
@@ -106,6 +135,8 @@ void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidB
 void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, btRigidBody* body, GameObject*& go) {
 	vector<btRigidBody*> pairs = collisionPairs[body];
 	for (auto collidingGo : go->collidingObjects) {
+		if (!collidingGo->GetComponent<PhysicsObject*>()) continue;
+		if (!collidingGo->GetComponent<PhysicsObject*>()->GetRigidbody()) continue;
 		if (find(pairs.begin(), pairs.end(), collidingGo->GetComponent<PhysicsObject*>()->GetRigidbody()) != pairs.end()) continue;
 
 		go->CallOnCollisionEndForScripts(collidingGo);
@@ -113,13 +144,38 @@ void BulletPhysics::EmitOnCollisionEndEvents(map<btRigidBody*, vector<btRigidBod
 	}
 }
 
+const btCollisionObject* BulletPhysics::Raycast(const Vector3& Start, const Vector3& End, Vector3& NewEnd) {
+	btVector3 btStart = btVector3(Start.x, Start.y, Start.z);
+	btVector3 btEnd = btVector3(End.x, End.y, End.z);
+	btCollisionWorld::ClosestRayResultCallback RayCallback(btStart, btEnd);
+	dynamicsWorld->rayTest(btStart, btEnd, RayCallback);
+	if (RayCallback.hasHit()) {
+		btVector3 btNewEnd = RayCallback.m_hitPointWorld;
+		NewEnd = Vector3((const float)btNewEnd.getX(), (const float)btNewEnd.getY(), (const float)btNewEnd.getZ());
+		return RayCallback.m_collisionObject;
+	}
+	return nullptr;
+}
+
+const btCollisionObject* BulletPhysics::RaycastPosDir(const Vector3& Pos, const Vector3& Dir, float t, Vector3& NewEnd) {
+	Vector3 End = Pos + Vector3(t * Dir.x, t * Dir.y, t * Dir.z);
+	return Raycast(Pos, End, NewEnd);
+}
+
 void BulletPhysics::UpdateBullet(float dt, int iterations) {
+
+	for (auto&i : gameWorld.GetGameObjectList())
+	{
+		UpdateObjectPhysics(i);
+	}
+
 	dynamicsWorld->stepSimulation(dt, iterations);
 
 	map<btRigidBody*, vector<btRigidBody*>> collisionPairs = GenerateCollisionPairs();
 	map<btRigidBody*, GameObject*> collisionObjectGameObjectPair;
 
 	for (auto& go : gameWorld.GetGameObjectList()) {
+
 		PhysicsObject* object = go->GetComponent<PhysicsObject*>();
 		if (object == nullptr) continue;
 

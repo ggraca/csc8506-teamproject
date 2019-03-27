@@ -23,7 +23,10 @@ bld/
 [Oo]bj/
 [Ll]og/
 
-!/Plugins/Bullet/lib/**
+# Current Build Folders
+/Win32*/
+/x64*/
+/ORBIS*/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -115,3 +118,7 @@ __pycache__/
 
 # Local History for Visual Studio
 .localhistory/
+
+# File Exceptions ---------------------------------------
+!/Plugins/Bullet/lib/**
+!/Assets/**

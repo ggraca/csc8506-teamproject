@@ -1,80 +1,48 @@
 #include "PhysicsScene.h"
-#include "GameWorld.h"
-#include "../Plugins/OpenGLRendering/OGLMesh.h"
-#include "../Plugins/OpenGLRendering/OGLShader.h"
-#include "../Plugins/OpenGLRendering/OGLTexture.h"
+#include "PlayerPrefab.h"
+#include "ResourcePrefab.h"
+#include "HammerControl.h"
+#include "ParticleSystem.h"
 
 
-#include "../Common/Assets.h"
-#include <fstream>
-
-
-
-using namespace NCL;
-using namespace CSC8503;
-
-PhysicsScene::PhysicsScene() : Scene() {
-  Window::GetWindow()->ShowOSPointer(false);
-  Window::GetWindow()->LockMouseToWindow(true);
-
-  ResetWorld();
-  debugMenu = DebugMenu();
-  console = Console();
-
-  GameObject::SetGameWorld(world);
-
+PhysicsScene::PhysicsScene(Game* g, bool& qG) : GameScene(g, qG) {
+	ResetWorld();
 }
 
 void PhysicsScene::ResetWorld() {
-  world->ClearAndErase();
+	auto floor = new CubePrefab(Vector3(200, -40, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f);
 
-  audio->LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
-  audio->LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
- /* audio->LoadEvent("event:/Music");
-  audio->LoadEvent("event:/Jump");
-  audio->LoadEvent("event:/Land");*/
+	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
 
- audio->PlayEvent("event:/Music", Vector3(0, 0, 0));
+	world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
+	game->GetAudio()->SetPlayer(player);
+	game->GetAudio()->SetCamera(world->GetMainCamera());
 
-  //audio->  getEvent("event:/UI/Cancel", &cancelDescription);
-  //cancelDescription->createInstance(&cancelInstance);
+	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f,0.4f);
+	resource1->SetName("Resource 1");
 
-  //cancelInstance->start();
-  //cancelInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
-  //audio->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", Vector3(0, 0, 0), 1.0);
+	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f, 0.4f);
+	resource2->SetName("Resource 2");
+  
+	auto des = new CubePrefab(Vector3(500, 100, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
+	des->AddComponent<Destructible*>(new Destructible(des));
+	des->AddComponent<HealthManager*>(new HealthManager(des));
+	des->GetComponent<HealthManager*>()->SetHealth(8);
+	des->SetName("Destructible");
 
- // int x = audio->PlaySounds(Assets::SOUNDSDIR + "1.mp3");
+	auto des2 = new CubePrefab(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
+	des2->AddComponent<Destructible*>(new Destructible(des2));
+	des2->AddComponent<HealthManager*>(new HealthManager(des2));
+	des2->GetComponent<HealthManager*>()->SetHealth(8);
+	des2->SetName("Destructible");
 
-  auto floor = AddCubeToWorld(Vector3(200, -10, 200), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(700, 10, 1000), 0, 1.0f, 1.0f); //TODO Do these need to be deleted in destructor?!?!?!
-  floor->SetName("Floor");
-  floor->SetTag(LayerAndTag::Tags::Occupied);
+	world->Instantiate(des);
+	world->Instantiate(des2);
+	world->Instantiate(resource1);
+	world->Instantiate(resource2);
+	world->Instantiate(floor);
+	world->InstantiateRecursively(player);
 
-   //Player
-  auto player = AddCubeToWorld(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 100, 0.2f, 0.4f);
-  player->AddComponent<Player*>((Component*)new Player(player));
-  player->SetTag(LayerAndTag::Tags::Player);
-  player->GetComponent<PhysicsObject*>()->GetRigidbody()->setActivationState(DISABLE_DEACTIVATION);
-  player->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(1, 0, 0, 1));
-  world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
-
-  audio->SetPlayer(player);
-  audio->SetCamera(world->GetMainCamera());
-
-  auto resource1 = AddCubeToWorld(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
-  resource1->SetName("Resource 1");
-  resource1->SetTag(LayerAndTag::Tags::Resources);
-  resource1->AddComponent<Resource*>((Component*)new Resource(resource1));
-
-  auto resource2 = AddCubeToWorld(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f);
-  resource2->SetName("Resource 2");
-  resource2->SetTag(LayerAndTag::Tags::Destructable);
-  resource2->AddComponent<Resource*>((Component*)new Resource(resource2));
-
-  AddSphereToWorld(Vector3(40, 10, 20), 5, 1);
-}
-
-PhysicsScene::~PhysicsScene() {
-	delete tempTex;
 }
 
 void PhysicsScene::UpdateKeys() {
@@ -99,7 +67,7 @@ void PhysicsScene::UpdateKeys() {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->setLinearVelocity(btVector3(0, 0, -10));
 	}
 
-	//HUD TESTING BEGINS
+	////HUD TESTING BEGINS
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
 		renderer->WeaponState(2, true); //Hammer
 		renderer->WeaponState(3, true); //Gun
@@ -121,37 +89,10 @@ void PhysicsScene::UpdateKeys() {
 		renderer->health = 1.0f;
 	}
 	//HUD TESTING ENDS
+
 }
 
-void PhysicsScene::UpdateGame(float dt) {
-//  world->GetMainCamera()->UpdateCamera(dt);
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
-		world->SwitchToFPS();
-	}
-	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
-		world->SwitchToTPS();
-	}
-  world->UpdateWorld(dt);
-
-  UpdateKeys();
-  renderer->Update(dt);
-  physics->Update(dt);
-  
-  //bestcube->GetPhysicsObject()->GetRigidbody()->applyImpulse(btVector3(-1, 10000, 10), btVector3(0, -10, 0));
-  //bestcube->GetPhysicsObject()->SetLinearVelocity(Vector3(100, 0, 0));
-  //bestcube->GetPhysicsObject()->SetAngularVelocity(Vector3(0, 10, 0));
-  //bestcube->GetPhysicsObject()->ApplyForce(Vector3(100000, 0, 10), Vector3(0, -10, 0));
-  //bestcube->GetPhysicsObject()->ApplyTorque(Vector3(0, 10000000, 0));
-
-  Debug::FlushRenderables();
-  debugMenu.Update(dt, renderer);
-  console.Update();
-  hud.Update(dt, renderer);
-
-  renderer->Render();
-
-  audio->Update();
-}
-
-void PhysicsScene::DebugScene(float dt) {
+void PhysicsScene::LateUpdate(float dt) {
+	GameScene::LateUpdate(dt);
+	UpdateKeys();
 }
