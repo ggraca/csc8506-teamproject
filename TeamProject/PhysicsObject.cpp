@@ -63,44 +63,41 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			}
 			shape = compound;
 		}
-		//else {
-		//	btTriangleMesh* triangleMesh = new btTriangleMesh(); //TODO How to delete this properly?
-		//	OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(objFile);
-		//	if (mesh->GetChildren().size() == 1) {
-		//		Vector3 vert1, vert2, vert3;
-		//		btVector3 vertex1, vertex2, vertex3;
-		//		cout << mesh->GetChildren().size() << endl;  
-		//		cout << mesh->GetChildren()[0]->GetPositionData().size() << endl;
-		//		for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
-		//			vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
-		//			vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
-		//			vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
+		else {
+			btTriangleMesh* triangleMesh = new btTriangleMesh();
+			OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(objFile);
+			if (mesh->GetChildren().size() == 1) {
+				Vector3 vert1, vert2, vert3;
+				btVector3 vertex1, vertex2, vertex3;
+				cout << mesh->GetChildren().size() << endl;  
+				cout << mesh->GetChildren()[0]->GetPositionData().size() << endl;
+				for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
+					vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
+					vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
+					vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
 
-		//			cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl; //TODO Delete this once fully tested!
+					vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
+					vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
+					vertex3 = btVector3(vert3.x * dimensions.x, vert3.y * dimensions.y, vert3.z * dimensions.z);
 
-		//			vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
-		//			vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
-		//			vertex3 = btVector3(vert3.x * dimensions.x, vert3.y * dimensions.y, vert3.z * dimensions.z);
-
-		//			triangleMesh->addTriangle(vertex1, vertex2, vertex3);
-		//			i += 6; //obj file reader repeats every triplet of vertices
-		//		}
-		//		cout << "Triangles: " << triangleMesh->getNumTriangles() << endl; //TODO Delete this once fully tested!
-		//		if (boxCollider) { //If true, create a box collision shape from minimum and maximum extents of mesh
-		//			cout << "yes" << endl;
-		//			meshShape = new btBvhTriangleMeshShape(triangleMesh, true); //TODO How to delete this properly?
-		//			btVector3 min, max;
-		//			btTransform t1;
-		//			t1.setIdentity();
-		//			meshShape->getAabb(t1, min, max);
-		//			shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ()))); //y-component of collision volume should really be halved, then translated up by half its height, but for static geometry this makes no difference!
-		//		}
-		//		else
-		//		{
-		//			shape = new btBvhTriangleMeshShape(triangleMesh, true);
-		//		}
-		//	}
-		//}
+					triangleMesh->addTriangle(vertex1, vertex2, vertex3);
+					i += 6; //obj file reader repeats every triplet of vertices
+				}
+				if (boxCollider) { //If true, create a box collision shape from minimum and maximum extents of mesh
+					cout << "yes" << endl;
+					meshShape = new btBvhTriangleMeshShape(triangleMesh, true);
+					btVector3 min, max;
+					btTransform t1;
+					t1.setIdentity();
+					meshShape->getAabb(t1, min, max);
+					shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ()))); //y-component of collision volume should really be halved, then translated up by half its height, but for static geometry this makes no difference!
+				}
+				else
+				{
+					shape = new btBvhTriangleMeshShape(triangleMesh, true);
+				}
+			}
+		}
 	}
 	SetBulletPhysicsParameters();
 }

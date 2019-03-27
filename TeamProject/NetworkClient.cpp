@@ -86,7 +86,11 @@ void NetworkClient::ReceivePacket(int type, GamePacket* payload, int source) {
 		no->GetGameObject()->GetTransform().SetLocalOrientation(packet->rotation);
 		no->GetGameObject()->GetTransform().SetWorldScale(packet->scale);
 		no->GetGameObject()->SetActiveStatus(packet->isActive);
-		no->GetGameObject()->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(packet->colour.x, packet->colour.y, packet->colour.z, 1));
+
+		RenderObject* ro = no->GetGameObject()->GetComponent<RenderObject*>();
+		if (!ro) return;
+
+		ro->GetMaterial()->SetColour(Vector4(packet->colour.x, packet->colour.y, packet->colour.z, 1));
 	}
 	else if (type == PlayerStateMessage) {
 		PlayerStatePacket* packet = (PlayerStatePacket*)payload;
