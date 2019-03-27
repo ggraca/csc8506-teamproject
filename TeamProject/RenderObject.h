@@ -36,10 +36,15 @@ namespace NCL {
 				materialInstanced = true;
 			}
 
+			float GetBoundingRadius() const { return boundingRadius; }
+			void SetBoundingRadius(float radius) { boundingRadius = radius; }
+
 		protected:
 			MeshGeometry*	mesh;
 			Material* material;
 			Transform*		transform;
+
+			float boundingRadius = 100.0f;
 
 			bool materialInstanced = false;
 		};

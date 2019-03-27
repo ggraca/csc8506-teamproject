@@ -156,6 +156,7 @@ void GameTechRenderer::RenderFrame() {
 }
 
 void GameTechRenderer::BuildObjectList() {
+	FunctionTimer timer("Render Build Objects");
 	activeObjects.clear();
 	activeLights.clear();
 	activeParticleSystems.clear();
@@ -184,8 +185,22 @@ void GameTechRenderer::BuildObjectList() {
 void GameTechRenderer::SortObjectList() {
 
 }
+vector<const RenderObject*>* GameTechRenderer::FrustumCull(Frustum& frustum) {
+	FunctionTimer timer("Render Frustum Cull");
+	vector<const RenderObject*>* VisibleObjects = new vector<const RenderObject*>();
+
+	for (size_t i = 0; i < activeObjects.size(); i++)
+	{
+		if (frustum.InsideFrustum(activeObjects[i]->GetTransform()->GetWorldPosition(), activeObjects[i]->GetBoundingRadius())) {
+			VisibleObjects->push_back(activeObjects[i]);
+		}
+	}
+
+	return VisibleObjects;
+}
 
 void GameTechRenderer::RenderShadowMap() {
+	FunctionTimer timer("Render Shadow Map");
 	BindFBO((void*)&shadowFBO);
 	ClearBuffer(true, false, false);
 	SetViewport(0, 0, SHADOWSIZE, SHADOWSIZE);
@@ -207,25 +222,27 @@ void GameTechRenderer::RenderShadowMap() {
 	Vector3 newlightPos = (lightRot * Vector3(0, 0, 1)) * 1000.0f;
 	Vector3 newlightPosUp = (lightRot * Vector3(0, 1, 0));
 
-	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(20, 0, 0), Vector4(1, 0, 0, 1));
-	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 20, 0), Vector4(0, 1, 0, 1));
-	Debug::DrawLine(Vector3(0, 0, 0), lightRot * Vector3(0, 0, -20), Vector4(0, 0, 1, 1));
-
 	Matrix4 shadowViewMatrix = Matrix4::BuildViewMatrix(cameraPosition + newlightPos, cameraPosition, newlightPosUp);
 	Matrix4 shadowProjMatrix = Matrix4::Orthographic(10, 10000, 1000, -1000, 1000, -1000);
 	Matrix4 mvMatrix = shadowProjMatrix * shadowViewMatrix;
 	shadowMatrix = biasMatrix * mvMatrix; //we'll use this one later on
 
-	for (const auto&i : activeObjects) {
+	Frustum shadowFrustum;
+	shadowFrustum.FromMatrix(mvMatrix);
+
+	vector<const RenderObject*>* visibleObjects = FrustumCull(shadowFrustum);
+
+	for (const auto&i : *visibleObjects) {
 		Matrix4 modelMatrix = (*i).GetTransform()->GetWorldMatrix();
 		Matrix4 mvpMatrix	= mvMatrix * modelMatrix;
 		BindMatrix4ToShader(mvpMatrix, "mvpMatrix");
 		BindMesh((*i).GetMesh());
 		DrawBoundMesh();
-	}
 
-	// Calculates how many shadow casting lights are currently being renderered
-	shadowCasters++;
+		// Calculates how many shadow casting lights are currently being renderered
+		shadowCasters++;
+	}
+	delete visibleObjects;
 
 	SetViewport(0, 0, currentWidth, currentHeight);
 	BindFBO(nullptr);
@@ -267,6 +284,7 @@ void GameTechRenderer::RenderSkybox() {
 }
 
 void GameTechRenderer::RenderCamera() {
+	FunctionTimer timer("Render Camera");
 	BindFBO((void*)&gBufferFBO);
 	ClearBuffer(true, false, false);
 
@@ -277,7 +295,12 @@ void GameTechRenderer::RenderCamera() {
 	shadowCasters = 0;
 	vertsDrawn = 0;
 
-	for (const auto&i : activeObjects) {
+	Frustum cameraFrustum;
+	cameraFrustum.FromMatrix(projMatrix * viewMatrix);
+
+	vector<const RenderObject*>* visibleObjects = FrustumCull(cameraFrustum);
+
+	for (const auto&i : *visibleObjects) {
 		Material* currentMaterial = (*i).GetMaterial();
 		OGLShader* shader = (OGLShader*)currentMaterial->GetShader();
 		BindShader(shader);
@@ -300,11 +323,13 @@ void GameTechRenderer::RenderCamera() {
 		vertsDrawn += (*i).GetMesh()->GetVertexCount();
 		DrawBoundMesh();
 	}
+	delete visibleObjects;
 
 	BindFBO(nullptr);
 }
 
 void GameTechRenderer::RenderLights() {
+	FunctionTimer timer("Render Lights");
 	BindFBO((void*)&lightFBO);
 	pixOps.SetClearColor(Vector4(0, 0, 0, 1));
 	ClearBuffer(false, true, false);
@@ -459,6 +484,7 @@ void GameTechRenderer::CombineBuffers() {
 }
 
 void GameTechRenderer::RenderParticleSystems() {
+	FunctionTimer timer("Render Particles");
 	BindFBO((void*)&postFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 		GL_TEXTURE_2D, ((OGLTexture*)postTexture[0])->GetObjectID(), 0);
@@ -513,6 +539,7 @@ void GameTechRenderer::RenderParticleSystems() {
 }
 
 void GameTechRenderer::RenderPostProcess() {
+	FunctionTimer timer("Render Post Process");
 	BindFBO((void*)&postFBO);
 
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
