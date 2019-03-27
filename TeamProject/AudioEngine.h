@@ -11,6 +11,9 @@
 #include "../../Common/Assets.h"
 #include "GameObject.h"
 
+
+#include "../Common/Window.h" //TODO Remove this
+
 using namespace std;
 using namespace NCL;
 using namespace NCL::Maths;
@@ -47,11 +50,11 @@ public:
 	static int ErrorCheck(FMOD_RESULT result);
 		
 	void LoadBank(const std::string& strBankName, FMOD_STUDIO_LOAD_BANK_FLAGS flags);
-	void LoadEvent(const std::string& strEventName);
+	void LoadEvent(const std::string& strEventName, const Vector3& vPosition);
 	void LoadSound(const string &strSoundName, bool b3d = true, bool bLooping = false, bool bStream = false);
 	void UnLoadSound(const string &strSoundName);
 	int PlaySounds(const string &strSoundName, const Vector3& vPos = Vector3{ 0, 0, 0 }, float fVolumedB = 0.0f);
-	void PlayEvent(const string &strEventName);
+	void PlayEvent(const string &strEventName, const Vector3& vPosition = Vector3(0, 0, 0));
 	void StopEvent(const string &strEventName, bool bImmediate = false);
 	void GetEventParameter(const string &strEventName, const string &strEventParameter, float* parameter);
 	void SetEventParameter(const string &strEventName, const string &strParameterName, float fValue);
@@ -77,6 +80,7 @@ private:
 	FMOD_VECTOR cPos;
 	FMOD_VECTOR forward;
 	FMOD_VECTOR up = { 0.0f,1.0f,0.0f };
+	FMOD_VECTOR Vel = { 0.0f, 0.0f, 0.0f };
 	float M_PI = 3.14159265358979323846f;
 	GameObject* camera;
 	GameObject* player;

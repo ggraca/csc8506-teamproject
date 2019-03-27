@@ -221,7 +221,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
-		//GameObject::gameWorld->GetAudio()->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", otherObject->GetTransform().GetWorldPosition(), 1.0f);
+		GameObject::gameWorld->GetAudio()->PlayEvent("event:/Swords", otherObject->GetTransform().GetWorldPosition());
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
 		resources.push_back(otherObject);
 	}

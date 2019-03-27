@@ -45,9 +45,6 @@ void PhysicsScene::ResetWorld() {
 
 }
 
-
-
-
 void PhysicsScene::UpdateKeys() {
 	if (Window::GetKeyboard()->KeyDown(KEYBOARD_O)) {
 		btRigidBody::upcast(physics->dynamicsWorld->getCollisionObjectArray()[2])->activate();
