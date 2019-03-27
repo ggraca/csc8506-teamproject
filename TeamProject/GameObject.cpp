@@ -198,3 +198,18 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 	}
 	return root;
 }
+
+void GameObject::AddRenderObject(string filename, GameObject* root, Material* mat, const Vector3& dim, const Vector3& pos, const Quaternion& orient) {
+	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ(filename);
+	if (!gameWorld) { return; }
+	gameWorld->Instantiate(this);
+	for (auto& mesh : objGeometry->GetChildren()) {
+		GameObject* go = new GameObject();
+		go->AddComponent<RenderObject*>(new RenderObject(&go->GetTransform(), mesh, mat));
+		gameWorld->Instantiate(go);
+		root->AddChild(go);
+	}
+	GetTransform().SetWorldScale(dim);
+	GetTransform().SetWorldPosition(pos);
+	GetTransform().SetLocalOrientation(orient);
+}

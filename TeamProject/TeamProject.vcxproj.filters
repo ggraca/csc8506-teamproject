@@ -167,6 +167,9 @@
     <ClCompile Include="ConePrefab.cpp">
       <Filter>Prefabs</Filter>
     </ClCompile>
+    <ClCompile Include="CylinderPrefab.cpp">
+      <Filter>Prefabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -418,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ConePrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="CylinderPrefab.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
   </ItemGroup>

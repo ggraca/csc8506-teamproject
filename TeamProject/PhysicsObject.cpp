@@ -8,7 +8,7 @@
 using namespace NCL;
 using namespace CSC8503;
 
-PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, string objFile, OBJGeometry* mesh, bool boxCollider) {
+PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution, float friction, string objFile, bool boxCollider) {
 	transform = parentTransform;
 	this->type = type;
 	this->mass = mass;
@@ -47,7 +47,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			for (int i = 0; i < numBoxes * 6; i++) {
 				boxData >> a;
 				a.erase(remove(a.begin(), a.end(), ','), a.end());
-				float elem = strtof(a.c_str(), NULL);
+				float elem = (float)strtof(a.c_str(), NULL);
 				cout << elem << endl;
 				data.push_back(elem);
 			}
@@ -65,15 +65,18 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		}
 		else {
 			btTriangleMesh* triangleMesh = new btTriangleMesh(); //TODO How to delete this properly?
+			OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(objFile);
 			if (mesh->GetChildren().size() == 1) {
 				Vector3 vert1, vert2, vert3;
 				btVector3 vertex1, vertex2, vertex3;
+				cout << mesh->GetChildren().size() << endl;  
+				cout << mesh->GetChildren()[0]->GetPositionData().size() << endl;
 				for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
 					vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
 					vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
 					vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
 
-					//cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl; //TODO Delete this once fully tested!
+					cout << vert1 << ' ' << vert2 << ' ' << vert3 << endl; //TODO Delete this once fully tested!
 
 					vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
 					vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
@@ -82,8 +85,9 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 					triangleMesh->addTriangle(vertex1, vertex2, vertex3);
 					i += 6; //obj file reader repeats every triplet of vertices
 				}
-				//	cout << "Triangles: " << triangleMesh->getNumTriangles() << endl; //TODO Delete this once fully tested!
-				if (boxCollider) {
+				cout << "Triangles: " << triangleMesh->getNumTriangles() << endl; //TODO Delete this once fully tested!
+				if (boxCollider) { //If true, create a box collision shape from minimum and maximum extents of mesh
+					cout << "yes" << endl;
 					meshShape = new btBvhTriangleMeshShape(triangleMesh, true); //TODO How to delete this properly?
 					btVector3 min, max;
 					btTransform t1;

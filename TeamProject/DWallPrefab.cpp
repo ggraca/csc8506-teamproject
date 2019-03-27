@@ -1,13 +1,13 @@
 #include "DWallPrefab.h"
 
-DWallPrefab::DWallPrefab(const Vector3& Scale, const Vector3& Position, const Quaternion& orient)
+DWallPrefab::DWallPrefab(const Vector3& dimensions, const Vector3& position, const Quaternion& orient)
 {
-	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("full_wall.obj");
-	GameObject* go = GameObject::FromOBJ(objGeometry);
-	go->GetTransform().SetLocalScale(Scale);
-	go->GetTransform().SetWorldPosition(Position);
-	go->GetTransform().SetLocalOrientation(orient);
-	go->AddComponent<NetworkObject*>(new NetworkObject(go, NetworkObject::DWall));
+	string filename = "full_wall.obj";	
+	Material* mat = Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("basicShader", "pbrvert.glsl", "pbrfrag.glsl"));
+
+	AddRenderObject(filename, this, mat, dimensions, position, orient);
+	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::complexMesh, 0, 0, 0, filename));
+	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::DWall));
 }
 
 DWallPrefab::~DWallPrefab()
