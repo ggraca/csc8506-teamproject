@@ -4,6 +4,7 @@
 #include "NetworkServer.h"
 #include "NetworkPackets.h"
 #include "PlayerPrefab.h"
+#include "AudioEngine.h"
 
 
 void NetworkServer::Update() {
@@ -18,6 +19,8 @@ void NetworkServer::Update() {
 		for (auto go : world->GetGameObjectList()) {
 			if (go->CompareTag(LayerAndTag::Tags::Player)) {
 				AddPlayer(-1, go);
+				world->GetAudio()->SetCamera(world->GetMainCamera());
+				world->GetAudio()->SetPlayer(go);
 				break;
 			}
 		}
@@ -97,7 +100,6 @@ void NetworkServer::ReceivePacket(int type, GamePacket* payload, int source) {
 	{
 		StringPacket* realPacket = (StringPacket*)payload;
 		string msg = realPacket->GetStringFromData();
-		//std::cout << "received message: " << msg << std::endl;
 	}
 	else if (type == PlayerInputMessage)
 	{

@@ -187,8 +187,6 @@ void CAudioEngine::LoadEvent(const string& strEventName, const Vector3& vPositio
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_N)) { test.position = VectorToFmod(Vector3(10, 0, 0)); }
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) { test.position = VectorToFmod(Vector3(19, 0, 0)); }*/
 
-//	cout << "New event 1";
-
 	pEventInstance->set3DAttributes(&test);
 //	CAudioEngine::ErrorCheck(tFoundit->second->set3DAttributes(&position, NULL));
 }
@@ -201,8 +199,6 @@ void CAudioEngine::PlayEvent(const string& strEventName, const Vector3& vPositio
 		if (tFoundit == sgpImplementation->mEvents.end())
 			return;
 	}
-//	cout << "New event 2";
-
 
 	FMOD::Studio::EventDescription* pEventDescription = NULL;
 	CAudioEngine::ErrorCheck(sgpImplementation->mpStudioSystem->getEvent(strEventName.c_str(), &pEventDescription));
@@ -304,7 +300,6 @@ int CAudioEngine::ErrorCheck(FMOD_RESULT result) { //error checks
 		cout << "FMOD ERROR " << result << endl;
 		return 1;
 	}
-	// cout << "FMOD all good" << endl;
 	return 0;
 }
 

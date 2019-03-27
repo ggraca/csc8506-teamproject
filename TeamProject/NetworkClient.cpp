@@ -55,7 +55,6 @@ void NetworkClient::ReceivePacket(int type, GamePacket* payload, int source) {
 	if (type == StringMessage) {
 		StringPacket* realPacket = (StringPacket*)payload;
 		string msg = realPacket->GetStringFromData();
-		std::cout << "received message: " << msg << std::endl;
 	}
 	else if (type == InstantiateMessage) {
 		InstantiatePacket* packet = (InstantiatePacket*) payload;

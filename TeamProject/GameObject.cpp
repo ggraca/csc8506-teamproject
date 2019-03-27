@@ -22,7 +22,6 @@ GameObject::GameObject(std::string objectName)
 GameObject::~GameObject()	
 {
 	ClearComponents();
-	std::cout << name << " Destroyed" << std::endl;
 }
 
 void GameObject::ClearComponents()

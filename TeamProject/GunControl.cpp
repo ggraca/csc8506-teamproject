@@ -105,7 +105,7 @@ void GunControl::FireObjectAndRemoveFromResources(GameObject * child)
 void GunControl::Fire()
 {
 	GameObject::gameWorld->GetAudio()->PlayEvent("event:/small-gun", gameObject->GetTransform().GetWorldPosition());
-	if (!leftGun || !rightGun) {return; }
+	if (!leftGun || !rightGun) { return; }
 
 	auto child = gameObject->GetComponent<Player*>()->GetResources()[0];
 

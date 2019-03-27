@@ -48,7 +48,6 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 				boxData >> a;
 				a.erase(remove(a.begin(), a.end(), ','), a.end());
 				float elem = (float)strtof(a.c_str(), NULL);
-				cout << elem << endl;
 				data.push_back(elem);
 			}
 			boxData.close();
@@ -69,8 +68,6 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			if (mesh->GetChildren().size() == 1) {
 				Vector3 vert1, vert2, vert3;
 				btVector3 vertex1, vertex2, vertex3;
-				cout << mesh->GetChildren().size() << endl;  
-				cout << mesh->GetChildren()[0]->GetPositionData().size() << endl;
 				for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
 					vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
 					vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
@@ -84,7 +81,6 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 					i += 6; //obj file reader repeats every triplet of vertices
 				}
 				if (boxCollider) { //If true, create a box collision shape from minimum and maximum extents of mesh
-					cout << "yes" << endl;
 					meshShape = new btBvhTriangleMeshShape(triangleMesh, true);
 					btVector3 min, max;
 					btTransform t1;
