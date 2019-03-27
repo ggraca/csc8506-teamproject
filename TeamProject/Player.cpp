@@ -27,6 +27,8 @@ void Player::Start()
 
 void Player::Update(float dt)
 {
+	if (isDead) { return; }
+
 	int objectId = GameObject::gameWorld->GetNetwork()->GetPlayerState().objectId;
 	if (gameObject->GetComponent<NetworkObject*>() && gameObject->GetComponent<NetworkObject*>()->GetId() == objectId)
 	{
@@ -299,5 +301,23 @@ void Player::LoseResource(GameObject * resource)
 	{
 		if (i == resource) { resources.erase(resources.begin() + index); return; }
 		index++;
+	}
+}
+
+void Player::TakeDamage(int amount)
+{
+	if (GetResourceCount() == 0)
+	{
+		hp -= amount;
+
+		if (hp <= 0)
+		{
+			hp = 0;
+			isDead = true;
+		}
+	}
+	else
+	{
+		LoseResource(-amount);
 	}
 }

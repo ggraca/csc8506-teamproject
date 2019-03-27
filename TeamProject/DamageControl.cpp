@@ -35,10 +35,20 @@ void DamageControl::ResolveDamage(GameObject * obj)
 {
 	if (damage == 0) { return; }
 
- 	if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile) && obj->CompareTag(LayerAndTag::Tags::Player)) 
+ 	if (IsTagOccupied(gameObject->GetTag()) && obj->CompareTag(LayerAndTag::Tags::Player)) 
 	{
-		obj->GetComponent<Player*>()->LoseResource(-damage);
-		
+		if (!gameObject->CompareTag(obj->GetComponent<Player*>()->GetResourceTag()))
+		{
+			obj->GetComponent<Player*>()->TakeDamage(damage);
+
+			if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
+		}
+	}
+
+	else if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile) && obj->CompareTag(LayerAndTag::Tags::Player))
+	{
+		obj->GetComponent<Player*>()->TakeDamage(damage);
+
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
 	}
 

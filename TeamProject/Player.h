@@ -28,6 +28,7 @@ public:
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void LoseResource(int amount);
 	void LoseResource(GameObject * resource);
+	void TakeDamage(int amount);
 	int GetResourceCount() const;
 	int GetHP() const;
 	LayerAndTag::Tags GetResourceTag() ;
@@ -50,6 +51,7 @@ protected:
 	bool isBigGunActive = false;
 	bool isJumping = false;
 	float timeCounter = -1;
+	bool isDead = false;
 
 	InputContainer keysDown;
 	InputContainer keysPressed;
