@@ -48,6 +48,24 @@ void NetworkManager::CreateClient()
 	client->RegisterPacketHandler(ObjectUpdateMessage, networkEntity);
 	client->RegisterPacketHandler(PlayerStateMessage, networkEntity);
 
-	bool canConnect = client->Connect(127, 0, 0, 1, port);
-	if (canConnect) std::cout << "Conneced to Server" << std::endl;
+	ifstream file;
+	file.open("../Assets/Data/ip.txt");
+	int connectingIP[4];
+
+	if (file.is_open())
+	{
+		string line;
+		int lineNumber = 0;
+		while (getline(file, line))
+		{
+			connectingIP[lineNumber] = stoi(line);
+			lineNumber += 1;
+		}
+	}
+	file.close();
+
+
+	bool canConnect = client->Connect(connectingIP[0], connectingIP[1], connectingIP[2], connectingIP[3], port);
+	if (canConnect) std::cout << "Connected to Server" << std::endl;
+
 }

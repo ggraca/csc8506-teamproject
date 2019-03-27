@@ -1,4 +1,5 @@
 #include "DWallPrefab.h"
+#include "Destructible.h"
 
 DWallPrefab::DWallPrefab(const Vector3& dimensions, const Vector3& position, const Quaternion& orient)
 {
@@ -12,4 +13,11 @@ DWallPrefab::DWallPrefab(const Vector3& dimensions, const Vector3& position, con
 
 DWallPrefab::~DWallPrefab()
 {
+}
+
+void DWallPrefab::SetTransformDetails(NCL::Maths::Vector3 &dimensions, const NCL::Maths::Vector3 & position, const NCL::Maths::Quaternion & orient)
+{
+	GetTransform().SetWorldScale(dimensions);
+	GetTransform().SetWorldPosition(position);
+	GetTransform().SetLocalOrientation(orient);
 }

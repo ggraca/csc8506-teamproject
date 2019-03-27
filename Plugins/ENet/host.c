@@ -170,8 +170,7 @@ enet_host_destroy (ENetHost * host)
     @remarks The peer returned will have not completed the connection until enet_host_service()
     notifies of an ENET_EVENT_TYPE_CONNECT event for the peer.
 */
-ENetPeer *
-enet_host_connect (ENetHost * host, const ENetAddress * address, size_t channelCount, enet_uint32 data)
+ENetPeer *enet_host_connect (ENetHost * host, const ENetAddress * address, size_t channelCount, enet_uint32 data)
 {
     ENetPeer * currentPeer;
     ENetChannel * channel;
@@ -191,12 +190,12 @@ enet_host_connect (ENetHost * host, const ENetAddress * address, size_t channelC
          break;
     }
 
-    if (currentPeer >= & host -> peers [host -> peerCount])
-      return NULL;
+    if (currentPeer >= & host -> peers [host -> peerCount]) return NULL;
 
     currentPeer -> channels = (ENetChannel *) enet_malloc (channelCount * sizeof (ENetChannel));
-    if (currentPeer -> channels == NULL)
-      return NULL;
+
+    if (currentPeer -> channels == NULL) return NULL;
+
     currentPeer -> channelCount = channelCount;
     currentPeer -> state = ENET_PEER_STATE_CONNECTING;
     currentPeer -> address = * address;

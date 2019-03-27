@@ -8,6 +8,8 @@
 #include "PhysicsObject.h"
 #include "BigGunControl.h"
 #include "GameWorld.h"
+#include "Animator.h"
+#include "CameraControl.h"
 
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
@@ -26,6 +28,12 @@ void Player::Start()
 
 void Player::Update(float dt)
 {
+	int objectId = GameObject::gameWorld->GetNetwork()->GetPlayerState().objectId;
+	if (gameObject->GetComponent<NetworkObject*>() && gameObject->GetComponent<NetworkObject*>()->GetId() == objectId)
+	{
+		GameObject::gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(gameObject);
+	}
+
 	if (!dynamic_cast<NetworkServer*>(GameObject::gameWorld->GetNetwork())) return;
 
 	keysDown = GetKeysDown();
@@ -97,12 +105,12 @@ void Player::CheckHammerControls()
 		isHammerActive = !isHammerActive;
 
 		if (isHammerActive) { gameObject->GetComponent<HammerControl*>()->ActivateHammer(); }
-		else { gameObject->GetComponent<HammerControl*>()->DeactivateHammer(); }
-	}
-
-	if (isHammerActive && keysPressed.inputs[InputManager::ActionButton::HIT])
-	{
-		if (GetResourceCount() > 0) { gameObject->GetComponent<HammerControl*>()->HammerHit(); }
+		else 
+		{ 
+			gameObject->GetComponent<HammerControl*>()->DeactivateHammer();
+			gameObject->GetComponent<HammerControl*>()->ResetHammerHit();
+			gameObject->GetComponent<Animator*>()->ResetAnimator();
+		}
 	}
 }
 
@@ -213,7 +221,6 @@ void Player::PlayerMovement(float dt)
 
 void Player::LateUpdate(float dt)
 {
-
 }
 
 void Player::OnCollisionBegin(GameObject * otherObject)
@@ -241,6 +248,11 @@ int Player::GetResourceCount() const
 	return (int)resources.size();
 }
 
+int Player::GetHP() const
+{
+	return hp;
+}
+
 LayerAndTag::Tags Player::GetResourceTag() 
 {
 	int networkID = GetNetworkId();
@@ -252,6 +264,21 @@ LayerAndTag::Tags Player::GetResourceTag()
 vector<GameObject*> Player::GetResources() const
 {
 	return resources;
+}
+
+bool Player::IsHammerActive()
+{
+	return isHammerActive;
+}
+
+bool Player::IsGunActive()
+{
+	return isGunActive;
+}
+
+bool Player::IsBugGunActive()
+{
+	return isBigGunActive;
 }
 
 void Player::ResetPlayer()

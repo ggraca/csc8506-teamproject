@@ -115,10 +115,12 @@ void ShieldControl::DeformShield()
 	{
 		if (i->GetGameObject()->GetTag() == LayerAndTag::Tags::HammerHead) { continue; }
 
+		Vector3 currentPos = i->GetWorldPosition();
 		i->GetGameObject()->GetComponent<Resource*>()->SetTarget(gameObject);
-		i->GetGameObject()->SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
+		i->GetGameObject()->SetParent(nullptr);
 		i->GetGameObject()->AddComponent<PhysicsObject*>(new PhysicsObject(i, ShapeType::cube, 10));
 		i->GetGameObject()->GetTransform().ForceUpdateScaleWithTransform(Vector3(5, 5, 5));
+		i->SetWorldPosition(currentPos);
 
 		GameObject::gameWorld->AddObjectPhysicsToWorld(i->GetGameObject()->GetComponent<PhysicsObject*>());
 	}

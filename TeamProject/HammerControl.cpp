@@ -23,6 +23,11 @@ void HammerControl::SetHandle(GameObject * h)
 	handle = h;
 }
 
+GameObject * HammerControl::GetHandle()
+{
+	return handle;
+}
+
 Vector3 HammerControl::CalculateDirection()
 {
 	Vector3 forward;
@@ -55,7 +60,7 @@ void HammerControl::FormHammer()
 		i->GetComponent<Resource*>()->SetTarget(nullptr);
 		GameObject::gameWorld->RemoveCollisionsFromGameObject(i);
 		i->RemoveComponent<PhysicsObject*>();
-		i->GetTransform().SetWorldScale(Vector3(2.5,2.5/12.5,2.5));
+		i->GetTransform().ForceUpdateScaleWithTransform(Vector3(2.5,2.5/12.5,2.5));
 		i->GetTransform().SetLocalPosition(GenerateRandomPositionInHammer());
 		i->SetParent(handle);
 	}
@@ -70,10 +75,12 @@ void HammerControl::DeformHammer()
 	{
 		if (i->GetGameObject()->GetTag() == LayerAndTag::Tags::HammerHead) { continue; }
 
+		Vector3 currentPos = i->GetWorldPosition();
 		i->GetGameObject()->GetComponent<Resource*>()->SetTarget(gameObject);
-		i->GetGameObject()->SetParent(GameObject::FindGameObjectWithTag(LayerAndTag::Tags::CaptureParent));
-		i->GetGameObject()->GetTransform().SetLocalScale(Vector3(5,5,5));
+		i->GetGameObject()->SetParent(nullptr);
+		i->SetLocalScale(Vector3(5,5,5));
 		i->GetGameObject()->AddComponent<PhysicsObject*>(new PhysicsObject(i, ShapeType::cube, 10));
+		i->SetWorldPosition(currentPos);
 
 		GameObject::gameWorld->AddObjectPhysicsToWorld(i->GetGameObject()->GetComponent<PhysicsObject*>());
 	}
@@ -102,13 +109,13 @@ void HammerControl::HammerHit()
 			colliding->GetComponent<HealthManager*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());
 		}
 	}
-
-	hitCounter = (hitCounter + 1) % 3;
 }
 
-int HammerControl::GetHitCounter() const
+void HammerControl::ResetHammerHit()
 {
-	return hitCounter;
+	
+	handle->GetTransform().SetLocalPosition(Vector3(-1, 0, 2));
+	handle->GetTransform().SetLocalOrientation(Quaternion::EulerAnglesToQuaternion(0, 0, 45));
 }
 
 void HammerControl::SetHammerSize(float minx, float maxx, float miny, float maxy, float minz, float maxz)

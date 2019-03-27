@@ -30,6 +30,7 @@ MenuScene::MenuScene(Game* g) : game(g)
 	menuEntries[3].push_back(MenuEntry(4, "D        - Right", false));
 	menuEntries[3].push_back(MenuEntry(5, "Space    - Jump", false));
 	menuEntries[3].push_back(MenuEntry(6, "Mouse 1  - Fire", false));
+
 }
 
 
@@ -81,13 +82,13 @@ void MenuScene::MenuUpdate(float dt)
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
-			Scene* newScene = new NetworkExampleScene(game->QuittingGame());
+			Scene* newScene = new LevelScene(game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);			
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
 			//Join Game
-			Scene* newScene = new NetworkExampleScene(game->QuittingGame());
+			Scene* newScene = new LevelScene(game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), false);
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
@@ -156,4 +157,5 @@ void MenuScene::ShowMenu()
 		renderer->DrawString(me.menuTitle, Vector2(50, Window::GetWindow()->GetScreenSize().y / 2 + offset), colour);
 		offset -= 50.0f;
 	}
+	renderer->DrawString("Destroy & Collect", Vector2(100.0f, Window::GetWindow()->GetScreenSize().y / 2 + 200.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2.0f);
 }
