@@ -5,6 +5,11 @@ WallPrefab::WallPrefab(const Vector3& Scale, const Vector3& Position, const Quat
 {
 	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ("oldWall.obj");
 	GameObject* go = GameObject::FromOBJ(objGeometry);
+
+	for(auto children : go->GetTransform().GetChildrenList()) {
+		children->GetGameObject()->SetName("Wall");
+	}
+
 	go->GetTransform().SetLocalScale(Scale);
 	go->GetTransform().SetWorldPosition(Position);
 	go->GetTransform().SetLocalOrientation(orient);
