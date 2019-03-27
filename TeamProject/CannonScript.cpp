@@ -109,7 +109,6 @@ void CannonScript::Aim() {
 		cannon->GetTransform().ForceUpdateLocalRotationWithTransform(/*Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), -a) **/ Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), angleiny + 90));
 	}
 
-	cout << NDiff.y << endl;
 }
 
 void CannonScript::Fire()
@@ -122,6 +121,7 @@ void CannonScript::Fire()
 
 	if (balls.size() == 10)
 	{
+		balls[ballIndex]->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0,0,0));
 		balls[ballIndex]->GetTransform().ForceUpdateWorldPositionWithTransform(Vector3(cannon->GetTransform().GetWorldPosition().x, cannon->GetTransform().GetWorldPosition().y + 10.0f, cannon->GetTransform().GetWorldPosition().z));
 		balls[ballIndex]->SetTag(LayerAndTag::EnemyProjectile);
 		balls[ballIndex]->GetComponent<DamageControl*>()->SetDamage(4.0f);
