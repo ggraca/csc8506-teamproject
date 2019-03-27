@@ -3,6 +3,7 @@
 #include "ResourcePrefab.h"
 #include "HammerControl.h"
 #include "ParticleSystem.h"
+#include "WallPrefab.h"
 
 
 PhysicsScene::PhysicsScene(Game* g, bool& qG) : GameScene(g, qG) {
@@ -24,25 +25,26 @@ void PhysicsScene::ResetWorld() {
 	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
   
-	auto des = new CubePrefab(Vector3(500, 100, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
-	des->AddComponent<Destructible*>(new Destructible(des));
-	des->AddComponent<HealthManager*>(new HealthManager(des));
-	des->GetComponent<HealthManager*>()->SetHealth(8);
-	des->SetName("Destructible");
+	//auto des = new CubePrefab(Vector3(500, 100, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
+	//des->AddComponent<Destructible*>(new Destructible(des));
+	//des->AddComponent<HealthManager*>(new HealthManager(des));
+	//des->GetComponent<HealthManager*>()->SetHealth(8);
+	//des->SetName("Destructible");
 
-	auto des2 = new CubePrefab(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
-	des2->AddComponent<Destructible*>(new Destructible(des2));
-	des2->AddComponent<HealthManager*>(new HealthManager(des2));
-	des2->GetComponent<HealthManager*>()->SetHealth(8);
-	des2->SetName("Destructible");
+	//auto des2 = new CubePrefab(Vector3(0, 100, 0), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 0.0f, 1.0f);
+	//des2->AddComponent<Destructible*>(new Destructible(des2));
+	//des2->AddComponent<HealthManager*>(new HealthManager(des2));
+	//des2->GetComponent<HealthManager*>()->SetHealth(8);
+	//des2->SetName("Destructible");
 
-	auto wall = new DWallPrefab(Vector3(1.4f, 1.0f, 1.4f), Vector3(10, 0.0f, 10 + 93.75f), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+	auto wall = new WallPrefab(Vector3(37.0f, 40.0f, 37.0f), Vector3(0, -30, 0), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
 
-	world->Instantiate(des);
-	world->Instantiate(des2);
+	/*world->Instantiate(des);
+	world->Instantiate(des2);*/
 	world->Instantiate(resource1);
 	world->Instantiate(resource2);
 	world->Instantiate(floor);
+	world->Instantiate(wall);
 	world->InstantiateRecursively(player);
 
 }
