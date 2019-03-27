@@ -48,6 +48,8 @@ CAudioEngine::CAudioEngine() {
 	LoadSound(Assets::SOUNDSDIR + "ole.wav", true, false, false);
 	LoadSound(Assets::SOUNDSDIR + "thud.wav", true, false, false);
 	LoadSound(Assets::SOUNDSDIR + "jump.wav", true, false, false);
+	LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+	LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
 }
 
 void CAudioEngine::Init() {

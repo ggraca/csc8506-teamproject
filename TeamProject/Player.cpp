@@ -221,7 +221,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
-		//GameObject::gameWorld->GetAudio()->PlaySounds(Assets::SOUNDSDIR + "jaguar.wav", otherObject->GetTransform().GetWorldPosition(), 1.0f);
+		GameObject::gameWorld->GetAudio()->PlayEvent("event:/Swords", otherObject->GetTransform().GetWorldPosition());
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
 		resources.push_back(otherObject);
 	}
@@ -230,21 +230,6 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 	{
 		isJumping = false;
 	}
-
-	if (otherObject->CompareTag(LayerAndTag::Tags::Occupied)) {
-		CAudioEngine* audio = gameObject->gameWorld->GetAudio();
-
-	/*	FMOD_3D_ATTRIBUTES attr;
-		attr.position = audio->VectorToFmod(gameObject->GetTransform().GetWorldPosition());*/
-	//	attr.forward = audio->VectorToFmod(gameObject->);
-	//	audio->SetEventParameter("event:/Land", "Volume", 10);
-		Vector3 pos = gameObject->GetTransform().GetWorldPosition();
-		audio->PlayEvent("event:/Land", pos);
-		
-		//int x = audio->PlaySounds(Assets::SOUNDSDIR + "clang.wav", pos, 100.0f);
-//		audio->SetChannel3dPosition(x, pos);
-	}
-
 }
 
 void Player::OnCollisionEnd(GameObject * otherObject)
