@@ -36,6 +36,8 @@ void PhysicsScene::ResetWorld() {
 	des2->GetComponent<HealthManager*>()->SetHealth(8);
 	des2->SetName("Destructible");
 
+	auto wall = new DWallPrefab(Vector3(1.4f, 1.0f, 1.4f), Vector3(10, 0.0f, 10 + 93.75f), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 0.0f), 90.0f));
+
 	world->Instantiate(des);
 	world->Instantiate(des2);
 	world->Instantiate(resource1);
