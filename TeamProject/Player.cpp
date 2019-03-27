@@ -10,6 +10,7 @@
 #include "GameWorld.h"
 #include "Animator.h"
 #include "CameraControl.h"
+#include "AudioEngine.h"
 
 
 Player::Player(GameObject* obj) : ScriptObject(obj)
@@ -220,6 +221,7 @@ void Player::OnCollisionBegin(GameObject * otherObject)
 
 	if (otherObject->CompareTag(LayerAndTag::Tags::Resources))
 	{
+		GameObject::gameWorld->GetAudio()->PlayEvent("event:/Swords", otherObject->GetTransform().GetWorldPosition());
 		otherObject->GetComponent<Resource*>()->Aquire(gameObject);
 		resources.push_back(otherObject);
 	}

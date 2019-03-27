@@ -3,12 +3,12 @@
 #include "AudioEngine.h"
 #include "BulletPhysics.h"
 #include "GameTechRenderer.h"
-
+#include "Game.h"
 
 
 class Scene {
 public:
-	Scene();
+	Scene(Game* g);
 	virtual ~Scene();
 
 	virtual void Update(float dt);
@@ -26,6 +26,5 @@ protected:
 	
 	GameTechRenderer* renderer;
 	GameWorld* world;
-	CAudioEngine* audio;
-	
+	Game* game;
 };

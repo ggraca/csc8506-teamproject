@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Scene.h"
 #include "GameTechRenderer.h"
 #include "NetworkManager.h"
 #include "Console.h"
 #include "DebugMenu.h"
+#include "AudioEngine.h"
 
-
+class Scene;
 class Game {
 public:
 	Game();
@@ -16,6 +16,7 @@ public:
 	void QuitGame() { quitGame = true; }
 	bool& QuittingGame() { return quitGame; }
 	void ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server);
+	CAudioEngine* GetAudio() const { return audio; }
 
 private:
 	Console console;
@@ -23,4 +24,5 @@ private:
 	GameTechRenderer* renderer;
 	bool quitGame = false;
 	NetworkManager* network;
+	CAudioEngine* audio;
 };

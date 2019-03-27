@@ -5,8 +5,7 @@
 
 class ExampleScene : public GameScene {
 public:
-	ExampleScene(bool& quitGame);
-	ExampleScene();
+	ExampleScene(Game* g, bool& quitGame);
 	void InitPlayer();
 
 protected:

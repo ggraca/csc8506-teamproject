@@ -2,7 +2,7 @@
 #include "LevelScene.h"
 #include "NetworkExampleScene.h"
 
-MenuScene::MenuScene(Game* g) : game(g)
+MenuScene::MenuScene(Game* g) : Scene(g)
 {
 	//Main Menu
 	menuEntries[0].push_back(MenuEntry(0, "Create Game", true));
@@ -82,13 +82,13 @@ void MenuScene::MenuUpdate(float dt)
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
-			Scene* newScene = new LevelScene(game->QuittingGame());
+			Scene* newScene = new LevelScene(game, game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);			
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
 			//Join Game
-			Scene* newScene = new LevelScene(game->QuittingGame());
+			Scene* newScene = new LevelScene(game, game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), false);
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
