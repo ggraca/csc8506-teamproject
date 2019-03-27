@@ -41,6 +41,7 @@ void LevelScene::ResetWorld() {
 		Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
+	floor->SetTag(LayerAndTag::Tags::Ground);
 
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
@@ -68,11 +69,6 @@ void LevelScene::ResetWorld() {
 	auto resource6 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
 
-	auto des = new CubePrefab(Vector3(500, -10, 500), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(200, 200, 200), 0, 1.0f, 1.0f);
-	des->AddComponent<Destructible*>(new Destructible(des));
-	des->AddComponent<HealthManager*>(new HealthManager(des));
-	des->GetComponent<HealthManager*>()->SetHealth(0);
-	world->Instantiate(des);
 	
 	world->LateInstantiate(resource1);
 	world->LateInstantiate(resource2);
@@ -82,12 +78,6 @@ void LevelScene::ResetWorld() {
 	world->LateInstantiate(resource6);
 	world->LateInstantiate(floor);
 	world->LateInstantiateRecursively(player);
-
-	//This 2
-	//world->Instantiate(player);
-
-	//This 3
-	//world->GetMainCamera()->GetComponent<CameraControl*>()->SetPlayer(player);
 
 	LoadWorld();
 	std::map<std::string, OBJGeometry*>* objs = Assets::AssetManager::GetOBJMeshes();
