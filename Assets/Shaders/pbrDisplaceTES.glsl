@@ -1,6 +1,6 @@
 #version 400
 
-layout(quads, cw) in;
+layout(triangles, cw) in;
 
 uniform sampler2D heightMap;
 
@@ -47,46 +47,68 @@ vec2	QuadMixVec2(vec2 a, vec2 b, vec2 c, vec2 d) {
 	return mix(p0,p1,gl_TessCoord.y);
 }
 
-void main()	{			 		
-	vec3 combinedPos = QuadMixVec3(	gl_in[0].gl_Position.xyz ,
-												gl_in[1].gl_Position.xyz ,
-												gl_in[2].gl_Position.xyz ,
-												gl_in[3].gl_Position.xyz	);
-												
-	OUT.colour = QuadMixVec4(IN[0].colour, 
-										IN[1].colour,
-										IN[2].colour,
-										IN[3].colour	);
+vec4 TriangleMixVec4(vec4 a, vec4 b, vec4 c){
+	vec4 accum = vec4(0.0f);
+	
+	accum += a * gl_TessCoord[0];
+	accum += b * gl_TessCoord[1];
+	accum += c * gl_TessCoord[2];
+	
+	return accum;
+}
 
-	OUT.texCoord = QuadMixVec2(IN[0].texCoord, 
+vec3 TriangleMixVec3(vec3 a, vec3 b, vec3 c){
+	vec3 accum = vec3(0.0f);
+	
+	accum += a * gl_TessCoord[0];
+	accum += b * gl_TessCoord[1];
+	accum += c * gl_TessCoord[2];
+	
+	return accum;
+}
+
+vec2 TriangleMixVec2(vec2 a, vec2 b, vec2 c){
+	vec2 accum = vec2(0.0f);
+	
+	accum += a * gl_TessCoord[0];
+	accum += b * gl_TessCoord[1];
+	accum += c * gl_TessCoord[2];
+	
+	return accum;
+}
+
+void main()	{			 		
+	vec3 combinedPos = TriangleMixVec3(	gl_in[0].gl_Position.xyz ,
+												gl_in[1].gl_Position.xyz ,
+												gl_in[2].gl_Position.xyz);
+												
+	OUT.colour = TriangleMixVec4(IN[0].colour, 
+										IN[1].colour,
+										IN[2].colour);
+
+	vec2 texCoord = TriangleMixVec2(IN[0].texCoord, 
 										IN[1].texCoord,
-										IN[2].texCoord,
-										IN[3].texCoord	);
+										IN[2].texCoord);
 	
-	OUT.normal = QuadMixVec3(IN[0].normal, 
+	vec3 normal = TriangleMixVec3(IN[0].normal, 
 										IN[1].normal,
-										IN[2].normal,
-										IN[3].normal	);
+										IN[2].normal);
 										
-	OUT.tangent = QuadMixVec3(IN[0].tangent, 
+	OUT.tangent = TriangleMixVec3(IN[0].tangent, 
 										IN[1].tangent,
-										IN[2].tangent,
-										IN[3].tangent	);
+										IN[2].tangent);
 										
-	OUT.binormal = QuadMixVec3(IN[0].binormal, 
+	OUT.binormal = TriangleMixVec3(IN[0].binormal, 
 										IN[1].binormal,
-										IN[2].binormal,
-										IN[3].binormal	);
+										IN[2].binormal);
 										
-	OUT.worldPos = QuadMixVec3(IN[0].worldPos, 
-										IN[1].worldPos,
-										IN[2].worldPos,
-										IN[3].worldPos	);
 	
-	float height = texture(heightMap, OUT.texCoord  ).x;
+	float height = texture(heightMap, vec2(texCoord.x, (1 - texCoord.y))).x;
 	
-	combinedPos.y += height * 500;
-	OUT.worldPos.y += height * 500;
+	combinedPos += normal * height;
+	OUT.texCoord = texCoord;
+	OUT.normal = normal;
+	OUT.worldPos = combinedPos;
 		
-	gl_Position = vec4(combinedPos, 1.0f);
+	gl_Position = (projMatrix * viewMatrix) * vec4(combinedPos, 1.0f);
 }

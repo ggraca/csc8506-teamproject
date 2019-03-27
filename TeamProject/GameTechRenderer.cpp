@@ -277,6 +277,8 @@ void GameTechRenderer::RenderCamera() {
 	shadowCasters = 0;
 	vertsDrawn = 0;
 
+	pixOps.SetFaceCulling(CULLFACE::NOCULL);
+
 	for (const auto&i : activeObjects) {
 		Material* currentMaterial = (*i).GetMaterial();
 		OGLShader* shader = (OGLShader*)currentMaterial->GetShader();

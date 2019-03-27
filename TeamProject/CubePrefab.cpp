@@ -17,7 +17,7 @@ CubePrefab::CubePrefab(const Vector3& position, const Quaternion& orient, Vector
 		//Assets::AssetManager::LoadMaterial("Basic Material", Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl"))));
 
 	AddComponent<RenderObject*>(new RenderObject(&GetTransform(), Assets::AssetManager::LoadMesh("Cube.msh", true),
-		Assets::AssetManager::LoadMaterial("PBRD Material", Assets::AssetManager::LoadShader("PBRDShader", "pbrvert.glsl", "pbrfrag.glsl", "", "pbrDisplaceTCS.glsl", "pbrDisplaceTES.glsl"))));
+		Assets::AssetManager::LoadMaterial("PBRD Material", Assets::AssetManager::LoadShader("PBRDShader", "pbrDisplacevert.glsl", "pbrfrag.glsl", "", "pbrDisplaceTCS.glsl", "pbrDisplaceTES.glsl"))));
 
 	GetComponent<RenderObject*>()->SetMaterialInstanced();
 }

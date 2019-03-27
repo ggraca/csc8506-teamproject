@@ -1,5 +1,5 @@
 #version 400 core
-layout(vertices =4) out;	//num vertices in output patch
+layout(vertices = 3) out;	//num vertices in output patch
  
 in Vertex	{
 	vec4 colour;
@@ -20,12 +20,12 @@ out Vertex	{
 } OUT[];				//Equal to the size of the layout vertex count
 
 void main()	{
-	gl_TessLevelInner[0] = 32;
-	gl_TessLevelInner[1] = 32;
-	gl_TessLevelOuter[0] = 32;
-	gl_TessLevelOuter[1] = 32;
-	gl_TessLevelOuter[2] = 32;
-	gl_TessLevelOuter[3] = 32;
+	gl_TessLevelInner[0] = 4096;
+	gl_TessLevelInner[1] = 4096;
+	gl_TessLevelOuter[0] = 4096;
+	gl_TessLevelOuter[1] = 4096;
+	gl_TessLevelOuter[2] = 4096;
+	gl_TessLevelOuter[3] = 4096;
 
 	OUT[gl_InvocationID].colour   = IN[gl_InvocationID].colour;
 	OUT[gl_InvocationID].texCoord = IN[gl_InvocationID].texCoord;

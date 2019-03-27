@@ -81,12 +81,12 @@ void Game::InitialiseAssets() {
 	TextureBase* pbrWoodBump = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_normal.png");
 	TextureBase* pbrWoodRough = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_roughness.png");
 	TextureBase* pbrWoodMet = Assets::AssetManager::LoadTexture("black.jpg");
-	TextureBase* pbrWoodAO = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_roughness.png"); // Doesn't load ao tex??
+	TextureBase* pbrWoodAO = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_ao.png"); // Doesn't load ao tex??
 	TextureBase* pbrWoodDisp = Assets::AssetManager::LoadTexture("Oak Floor/oakfloor_Height.png");
 
 
 	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
-	ShaderBase* pbrdShader = Assets::AssetManager::LoadShader("PBRDShader", "pbrvert.glsl", "pbrfrag.glsl", "", "pbrDisplaceTCS.glsl", "pbrDisplaceTES.glsl");
+	ShaderBase* pbrdShader = Assets::AssetManager::LoadShader("PBRDShader", "pbrDisplacevert.glsl", "pbrfrag.glsl", "", "pbrDisplaceTCS.glsl", "pbrDisplaceTES.glsl");
 
 	using NCL::Material;
 	Material* basicMaterial = Assets::AssetManager::LoadMaterial("Basic Material", pbrShader);

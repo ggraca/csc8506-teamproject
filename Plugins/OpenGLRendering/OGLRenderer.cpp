@@ -167,7 +167,7 @@ void OGLRenderer::DrawBoundMesh(int subLayer, int numInstances) {
 	}
 
 	if (mode == GL_PATCHES) {
-		glPatchParameteri(GL_PATCH_VERTICES, 4);
+		glPatchParameteri(GL_PATCH_VERTICES, 3);
 	}
 
 	if (boundMesh->GetIndexCount() > 0) {
