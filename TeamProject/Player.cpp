@@ -343,5 +343,5 @@ void Player::RespawnPlayer()
 	float y = 1000;
 
 	if (gameObject->GetComponent<PhysicsObject*>()) { gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, 0, 0)); }
-	gameObject->GetTransform().SetWorldPosition(Vector3(x, y, z));
+	gameObject->GetComponent<PhysicsObject*>()->SetPosition(Vector3(x, y, z));
 }
