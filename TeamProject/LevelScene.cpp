@@ -55,9 +55,9 @@ void LevelScene::ResetWorld() {
 
 	LoadWorld();
 
-	//int x;
-	//x = GameObject::gameWorld->GetAudio()->PlaySounds(Assets::SOUNDSDIR + "Awaken.wav", Vector3(0,0,0), 0.02f);
-	//GameObject::gameWorld->GetAudio()->SetChannelVolume(x, 0.0002f);
+	/*int x;
+	x = GameObject::gameWorld->GetAudio()->PlaySounds(Assets::SOUNDSDIR + "Awaken.wav", Vector3(0,0,0), 0.02f);
+	GameObject::gameWorld->GetAudio()->SetChannelVolume(x, 0.0002f);*/
 }
 
 LevelScene::~LevelScene() {
@@ -71,8 +71,8 @@ void LevelScene::GenerateResources()
 
 	for (int i = 0; i < amountOfInitialResources; ++i)
 	{
-		float x = (int)((rand() % (int)(2 * floorDimensions.x)) + (floorPos.x - floorDimensions.x));
-		float z = (int)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
+		float x = (float)((rand() % (int)(2 * floorDimensions.x)) + (floorPos.x - floorDimensions.x));
+		float z = (float)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
 		float y = 1000;
 
 		auto resource = new ResourcePrefab(Vector3(x, y, z), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.8f);
