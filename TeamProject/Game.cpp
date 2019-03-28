@@ -97,7 +97,7 @@ void Game::InitialiseAssets() {
 	//                                                          |||||||||||||||
 	//                                                          |||||||||||||||
 	//These textures aren't actually real - just an example
-	TextureBase* pbrCartDiff = Assets::AssetManager::LoadTexture("Cart/cart_basecolor.png");
+	/*TextureBase* pbrCartDiff = Assets::AssetManager::LoadTexture("Cart/cart_basecolor.png");
 	TextureBase* pbrCartBump = Assets::AssetManager::LoadTexture("Cart/cart_normal.png");
 	TextureBase* pbrCartRough = Assets::AssetManager::LoadTexture("Cart/cart_roughness.png");
 	TextureBase* pbrCartMet = Assets::AssetManager::LoadTexture("Cart/cart_metalness.jpg");
@@ -106,7 +106,7 @@ void Game::InitialiseAssets() {
 	cartMaterial->AddTextureParameter("bumpTex", pbrCartBump);
 	cartMaterial->AddTextureParameter("roughnessTex", pbrCartRough);
 	cartMaterial->AddTextureParameter("metalnessTex", pbrCartMet);
-	cartMaterial->AddTextureParameter("aoTex", pbrCartAO);
+	cartMaterial->AddTextureParameter("aoTex", pbrCartAO);*/
 	//If you don't have all of the textures just call this - it will fill in all the blank textures
 	cartMaterial->InitBasicTextureParams();
 
