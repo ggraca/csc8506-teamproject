@@ -1,4 +1,5 @@
-#version 450 //Written by Ed Williams
+//Written by Ed Williams
+#version 450 core
 
 uniform sampler2D diffuseTex;
 uniform vec2 pixelSize;

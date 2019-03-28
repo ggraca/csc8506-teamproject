@@ -38,8 +38,7 @@ LevelScene::LevelScene(Game* g, bool& quitGame) : GameScene(g, quitGame) {
 
 void LevelScene::ResetWorld() {
 
-	auto floor = new CubePrefab(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0),
-		Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
+	auto floor = new CubePrefab(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 	floor->SetTag(LayerAndTag::Tags::Ground);
@@ -50,30 +49,8 @@ void LevelScene::ResetWorld() {
 	//Player
 	auto player = new PlayerPrefab(Vector3(120, 260, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(10, 10, 10), 10, 0.2f, 0.4f);
 
-	auto resource1 = new ResourcePrefab(Vector3(50, 190, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
-	resource1->SetName("Resource 1");
+	GenerateResources();
 
-	auto resource2 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 10, 0.2f, 0.4f);
-	resource2->SetName("Resource 2");
-
-	auto resource3 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
-	resource2->SetName("Resource 2");
-
-	auto resource4 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
-	resource2->SetName("Resource 2");
-
-	auto resource5 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
-	resource2->SetName("Resource 2");
-
-	auto resource6 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
-	resource2->SetName("Resource 2");
-	
-	world->LateInstantiate(resource1);
-	world->LateInstantiate(resource2);
-	world->LateInstantiate(resource3);
-	world->LateInstantiate(resource4);
-	world->LateInstantiate(resource5);
-	world->LateInstantiate(resource6);
 	world->LateInstantiateRecursively(player);
 
 	LoadWorld();
@@ -84,6 +61,24 @@ void LevelScene::ResetWorld() {
 }
 
 LevelScene::~LevelScene() {
+}
+
+void LevelScene::GenerateResources()
+{
+	Vector3 floorPos = Vector3(2900, -5, 2900);
+	Vector3 floorDimensions = Vector3(2900, 10, 2900);
+	int amountOfInitialResources = 200;
+
+	for (int i = 0; i < amountOfInitialResources; ++i)
+	{
+		float x = (int)((rand() % (int)(2 * floorDimensions.x)) + (floorPos.x - floorDimensions.x));
+		float z = (int)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
+		float y = 1000;
+
+		auto resource = new ResourcePrefab(Vector3(x, y, z), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.8f);
+
+		world->LateInstantiate(resource);
+	}
 }
 
 void LevelScene::LoadWorld() {

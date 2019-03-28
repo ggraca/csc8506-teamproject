@@ -1,4 +1,5 @@
-#version 150 //Written by Ed Williams
+//Written by Ed Williams
+#version 450 core
 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;

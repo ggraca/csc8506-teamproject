@@ -1,4 +1,5 @@
-#version 450 core //Written by Ed Williams
+//Written by Ed Williams
+#version 450 core
 
 uniform sampler2D diffuseTex;
 uniform sampler2D diffuseTex1;
