@@ -206,6 +206,7 @@ void Player::PlayerMovement(float dt)
 
 	if (!isJumping && keysPressed.inputs[InputManager::ActionButton::JUMP])
 	{
+		GameObject::gameWorld->GetAudio()->PlayEvent("event:/jump", gameObject->GetTransform().GetWorldPosition());
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 200, 0));
 		isJumping = true;
 	}
