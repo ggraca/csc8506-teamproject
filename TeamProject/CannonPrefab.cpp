@@ -13,6 +13,7 @@ CannonPrefab::CannonPrefab(const Vector3& dimensions, const Vector3& position, c
 	AddComponent<HealthManager*>(new HealthManager(this, 20));
 	AddComponent<Destructible*>(new Destructible(this));
 	AddComponent<CannonScript*>(new CannonScript(this));
+	GameObject::gameWorld->AddObjectPhysicsToWorld(GetComponent<PhysicsObject*>());
 }
 
 CannonPrefab::~CannonPrefab()

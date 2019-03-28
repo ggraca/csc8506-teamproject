@@ -9,6 +9,7 @@ ConePrefab::ConePrefab(const Vector3 dimensions, const Vector3& position, const 
 	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::cone, mass, restitution, friction, filename));
 	gameWorld->AddObjectPhysicsToWorld(this->GetComponent<PhysicsObject*>());
 	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::Cone));
+	GameObject::gameWorld->AddObjectPhysicsToWorld(GetComponent<PhysicsObject*>());
 }
 
 ConePrefab::~ConePrefab()

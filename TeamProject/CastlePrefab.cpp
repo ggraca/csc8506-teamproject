@@ -11,6 +11,7 @@ CastlePrefab::CastlePrefab(const Vector3& dimensions, const Vector3& position, c
 	SetTag(LayerAndTag::Tags::Ground);
 	AddComponent<HealthManager*>(new HealthManager(this, 200));
 	AddComponent<Destructible*>(new Destructible(this));
+	GameObject::gameWorld->AddObjectPhysicsToWorld(GetComponent<PhysicsObject*>());
 }
 
 CastlePrefab::~CastlePrefab()
