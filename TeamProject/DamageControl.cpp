@@ -35,19 +35,32 @@ void DamageControl::ResolveDamage(GameObject * obj)
 {
 	if (damage == 0) { return; }
 
- 	if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile) && obj->CompareTag(LayerAndTag::Tags::Player)) 
+	if (IsTagOccupied(gameObject->GetTag()) && obj->CompareTag(LayerAndTag::Tags::Player))
 	{
-		obj->GetComponent<Player*>()->LoseResource(-damage);
-		
-		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
-	}
+		if (!gameObject->CompareTag(obj->GetComponent<Player*>()->GetResourceTag()))
+		{
+			obj->GetComponent<Player*>()->TakeDamage(damage);
 
-	else if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile)) 
+			if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
+
+			gameObject->SetTag(LayerAndTag::Resources);
+		}
+	}
+	else if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile) && obj->CompareTag(LayerAndTag::Tags::Player))
+	{
+		obj->GetComponent<Player*>()->TakeDamage(damage);
+
+		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
+
+		gameObject->SetTag(LayerAndTag::Resources);
+	}
+	else if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile))
 	{
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
-	}
 
-	else if ((IsTagOccupied(gameObject->GetTag()) || gameObject->CompareTag(LayerAndTag::Tags::Resources)) && !IsTagOccupied(obj->GetTag()) &&  !obj->CompareTag(LayerAndTag::Tags::Resources))
+		gameObject->SetTag(LayerAndTag::Resources);
+	}
+	else if ((IsTagOccupied(gameObject->GetTag()) || gameObject->CompareTag(LayerAndTag::Tags::Resources)) && !IsTagOccupied(obj->GetTag()) && !obj->CompareTag(LayerAndTag::Tags::Resources))
 	{
 		if (obj->GetComponent<HealthManager*>())
 		{
@@ -55,6 +68,8 @@ void DamageControl::ResolveDamage(GameObject * obj)
 		}
 
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
+
+		gameObject->SetTag(LayerAndTag::Resources);
 	}
 }
 

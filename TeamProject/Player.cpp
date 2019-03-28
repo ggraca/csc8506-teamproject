@@ -21,6 +21,8 @@ Player::Player(GameObject* obj) : ScriptObject(obj)
 
 void Player::Awake()
 {
+	floor = GameObject::FindGameObjectWithTag(LayerAndTag::Tags::Ground);
+	RespawnPlayer();
 }
 
 void Player::Start()
@@ -49,6 +51,7 @@ void Player::Update(float dt)
 	CheckShieldControls();
 	CheckAirStrikeControls();
 	CheckBigGunControls(dt);
+	HandleDistanceToFloor();
 }
 
 void Player::CheckAirStrikeControls()
@@ -149,66 +152,53 @@ void Player::PlayerMovement(float dt)
 	{
 		if (keysPressed.inputs[InputManager::ActionButton::DODGE])
 		{
-			gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(forward.x, forward.y, forward.z) * dodgeAmount);
-		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity( btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
-		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		else
 		{
 			playerPos += forward * movementSpeed * dt;
-			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
-		//	gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
-
 	}
 
 	if (keysDown.inputs[InputManager::ActionButton::BACKWARD])
 	{
 		if (keysPressed.inputs[InputManager::ActionButton::DODGE])
 		{
-			gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(- Vector3(forward.x, forward.y, forward.z) * dodgeAmount);
-		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1 * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1 * btVector3(forward.x, forward.y, forward.z)*dodgeAmount);
 			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		else
 		{
 			playerPos -= forward * movementSpeed * dt;
-			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
-		//	gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
-
 	}
-
 	if (keysDown.inputs[InputManager::ActionButton::LEFT])
 	{
 		if (keysDown.inputs[InputManager::ActionButton::DODGE])
 		{
-			gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(left.x, left.y, left.z) * dodgeAmount);
-		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(left.x, left.y, left.z)*dodgeAmount);
-		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(left.x, left.y, left.z)*dodgeAmount);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		else
 		{
 			playerPos += left * movementSpeed * dt;
-			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
-		//	gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
-
 	}
-
 	if (keysDown.inputs[InputManager::ActionButton::RIGHT])
 	{
 		if (keysDown.inputs[InputManager::ActionButton::DODGE])
 		{
-			gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(- Vector3(left.x, left.y, left.z) * dodgeAmount);
-		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1* btVector3(left.x, left.y, left.z)*dodgeAmount);
-		//	gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(-1 * btVector3(left.x, left.y, left.z)*dodgeAmount);
+			gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setDamping(0.5, 0);
 		}
 		else
 		{
 			playerPos -= left * movementSpeed * dt;
-			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
-		//	gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetTransform().SetWorldPosition(playerPos);
 		}
 	}
 
@@ -216,7 +206,6 @@ void Player::PlayerMovement(float dt)
 	{
 		gameObject->GetComponent<PhysicsObject*>()->GetRigidbody()->setLinearVelocity(btVector3(0, 200, 0));
 		isJumping = true;
-		GameObject::gameWorld->GetAudio()->PlayEvent("event:/jump", gameObject->GetTransform().GetWorldPosition());
 	}
 }
 
@@ -312,4 +301,45 @@ void Player::LoseResource(GameObject * resource)
 		if (i == resource) { resources.erase(resources.begin() + index); return; }
 		index++;
 	}
+}
+
+
+void Player::TakeDamage(int amount)
+{
+	hp -= amount;
+
+	if (hp <= 0)
+	{
+		hp = 0;
+		isDead = true;
+	}
+}
+
+
+
+void Player::HandleDistanceToFloor()
+{
+	if (!floor) { return; }
+
+	float floorPosY = floor->GetTransform().GetWorldPosition().y;
+
+	if (gameObject->GetTransform().GetWorldPosition().y - floorPosY < -1500)
+	{
+		RespawnPlayer();
+	}
+}
+
+
+
+void Player::RespawnPlayer()
+{
+	Vector3 floorPos = Vector3(2900, -5, 2900);
+	Vector3 floorDimensions = Vector3(2900, 10, 2900);
+
+	float x = (int)((rand() % (int)(2 * floorDimensions.x)) + (floorPos.x - floorDimensions.x));
+	float z = (int)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
+	float y = 1000;
+
+	if (gameObject->GetComponent<PhysicsObject*>()) { gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, 0, 0)); }
+	gameObject->GetTransform().SetWorldPosition(Vector3(x, y, z));
 }

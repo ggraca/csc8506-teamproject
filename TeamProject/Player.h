@@ -28,9 +28,12 @@ public:
 	void OnCollisionEnd(GameObject* otherObject)override;
 	void LoseResource(int amount);
 	void LoseResource(GameObject * resource);
+	void TakeDamage(int amount);
+	void HandleDistanceToFloor();
+	void RespawnPlayer();
 	int GetResourceCount() const;
 	int GetHP() const;
-	LayerAndTag::Tags GetResourceTag() ;
+	LayerAndTag::Tags GetResourceTag();
 	vector<GameObject*> GetResources() const;
 	bool IsHammerActive();
 	bool IsGunActive();
@@ -49,6 +52,7 @@ protected:
 	bool isShieldActive = false;
 	bool isBigGunActive = false;
 	bool isJumping = false;
+	bool isDead = false;
 	float timeCounter = -1;
 
 	InputContainer keysDown;
@@ -57,5 +61,6 @@ protected:
 	Vector3 cameraPosition;
 
 	vector<GameObject*> resources;
+	GameObject * floor = nullptr;
 };
 
