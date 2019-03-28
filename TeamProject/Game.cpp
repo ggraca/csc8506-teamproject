@@ -92,22 +92,51 @@ void Game::InitialiseAssets() {
 
 	//EXAMPLE MATERIAL LOADING
 	Material* cartMaterial = Assets::AssetManager::LoadMaterial("Cart Material", pbrShader);
-	//Use GetMaterial in the prefab class!!! Name must match    ^^^^^^^^^^^^^^^
-	//                                                          |||||||||||||||
-	//                                                          |||||||||||||||
-	//These textures aren't actually real - just an example
-	/*TextureBase* pbrCartDiff = Assets::AssetManager::LoadTexture("Cart/cart_basecolor.png");
-	TextureBase* pbrCartBump = Assets::AssetManager::LoadTexture("Cart/cart_normal.png");
-	TextureBase* pbrCartRough = Assets::AssetManager::LoadTexture("Cart/cart_roughness.png");
-	TextureBase* pbrCartMet = Assets::AssetManager::LoadTexture("Cart/cart_metalness.jpg");
-	TextureBase* pbrCartAO = Assets::AssetManager::LoadTexture("Cart/cart_ao.png");
+	TextureBase* pbrCartDiff = Assets::AssetManager::LoadTexture("tex_extras_d.jpg");
+	/*	TextureBase* pbrCartBump = Assets::AssetManager::LoadTexture("Cart/cart_normal.png");
+		TextureBase* pbrCartRough = Assets::AssetManager::LoadTexture("Cart/cart_roughness.png");
+		TextureBase* pbrCartMet = Assets::AssetManager::LoadTexture("Cart/cart_metalness.jpg");
+		TextureBase* pbrCartAO = Assets::AssetManager::LoadTexture("Cart/cart_ao.png");*/
 	cartMaterial->AddTextureParameter("diffuseTex", pbrCartDiff);
-	cartMaterial->AddTextureParameter("bumpTex", pbrCartBump);
-	cartMaterial->AddTextureParameter("roughnessTex", pbrCartRough);
-	cartMaterial->AddTextureParameter("metalnessTex", pbrCartMet);
-	cartMaterial->AddTextureParameter("aoTex", pbrCartAO);*/
-	//If you don't have all of the textures just call this - it will fill in all the blank textures
+	/*	cartMaterial->AddTextureParameter("bumpTex", pbrCartBump);
+		cartMaterial->AddTextureParameter("roughnessTex", pbrCartRough);
+		cartMaterial->AddTextureParameter("metalnessTex", pbrCartMet);
+		cartMaterial->AddTextureParameter("aoTex", pbrCartAO);*/
+		//If you don't have all of the textures just call this - it will fill in all the blank textures
 	cartMaterial->InitBasicTextureParams();
+
+	Material* castleMaterial = Assets::AssetManager::LoadMaterial("Castle Material", pbrShader);
+	TextureBase* pbrCastleDiff = Assets::AssetManager::LoadTexture("BauWall_001.jpg");
+	castleMaterial->AddTextureParameter("diffuseTex", pbrCastleDiff);
+	castleMaterial->InitBasicTextureParams();
+
+	Material* marketMaterial = Assets::AssetManager::LoadMaterial("Market Material", pbrShader);
+	TextureBase* pbrMarketDiff = Assets::AssetManager::LoadTexture("TextureAtlas.png");
+	TextureBase* pbrMarketBump = Assets::AssetManager::LoadTexture("Normals.png");
+	TextureBase* pbrMarketRough = Assets::AssetManager::LoadTexture("that.png");
+	marketMaterial->AddTextureParameter("diffuseTex", pbrMarketDiff);
+	marketMaterial->AddTextureParameter("bumpTex", pbrMarketBump);
+	marketMaterial->AddTextureParameter("roughnessTex", pbrMarketRough);
+	marketMaterial->InitBasicTextureParams();
+
+	Material* stallMaterial = Assets::AssetManager::LoadMaterial("Stall Material", pbrShader);
+	TextureBase* pbrStallDiff = Assets::AssetManager::LoadTexture("defuse.tga");
+	TextureBase* pbrStallBump = Assets::AssetManager::LoadTexture("defuse_DISP.tga");
+	stallMaterial->AddTextureParameter("diffuseTex", pbrStallDiff);
+	stallMaterial->AddTextureParameter("bumpTex", pbrStallBump);
+	stallMaterial->InitBasicTextureParams();
+
+	Material* tentMaterial = Assets::AssetManager::LoadMaterial("Tent Material", pbrShader);
+	TextureBase* pbrTentDiff = Assets::AssetManager::LoadTexture("Market_Texture.jpg");
+	tentMaterial->AddTextureParameter("diffuseTex", pbrTentDiff);
+	tentMaterial->InitBasicTextureParams();
+
+	Material* wallMaterial = Assets::AssetManager::LoadMaterial("Wall Material", pbrShader);
+	TextureBase* pbrWallDiff = Assets::AssetManager::LoadTexture("texture.jpg");
+	wallMaterial->AddTextureParameter("diffuseTex", pbrWallDiff);
+	wallMaterial->InitBasicTextureParams();
+
+
 
 	vector<std::string> faces {
 		"hw_alps/alps_ft.png",

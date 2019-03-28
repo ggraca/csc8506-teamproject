@@ -4,7 +4,7 @@
 TentPrefab::TentPrefab(const Vector3& dimensions, const Vector3& position, const Quaternion& orient)
 {
 	string filename = "Market.obj";
-	Material* mat = Assets::AssetManager::GetMaterial("Basic Material");
+	Material* mat = Assets::AssetManager::GetMaterial("Tent Material");
 
 	AddRenderObject(filename, this, dimensions, position, orient, mat);
 	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::complexMesh, 0, 0, 0, filename));
