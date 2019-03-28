@@ -158,7 +158,7 @@ void Player::PlayerMovement(float dt)
 		else
 		{
 			playerPos += forward * movementSpeed * dt;
-			gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
 		}
 	}
 
@@ -172,7 +172,7 @@ void Player::PlayerMovement(float dt)
 		else
 		{
 			playerPos -= forward * movementSpeed * dt;
-			gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
 		}
 	}
 	if (keysDown.inputs[InputManager::ActionButton::LEFT])
@@ -185,7 +185,7 @@ void Player::PlayerMovement(float dt)
 		else
 		{
 			playerPos += left * movementSpeed * dt;
-			gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
 		}
 	}
 	if (keysDown.inputs[InputManager::ActionButton::RIGHT])
@@ -198,7 +198,7 @@ void Player::PlayerMovement(float dt)
 		else
 		{
 			playerPos -= left * movementSpeed * dt;
-			gameObject->GetTransform().SetWorldPosition(playerPos);
+			gameObject->GetComponent<PhysicsObject*>()->SetPosition(playerPos);
 		}
 	}
 

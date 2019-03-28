@@ -23,7 +23,7 @@ BulletPhysics::~BulletPhysics()
 		btRigidBody* body = btRigidBody::upcast(obj);
 		if (body && body->getMotionState())
 		{
-			// delete body->getMotionState();
+			//delete body->getMotionState();
 		}
 		dynamicsWorld->removeCollisionObject(obj);
 		delete obj;
@@ -164,10 +164,10 @@ const btCollisionObject* BulletPhysics::RaycastPosDir(const Vector3& Pos, const 
 
 void BulletPhysics::UpdateBullet(float dt, int iterations) {
 
-	for (auto&i : gameWorld.GetGameObjectList())
+	/*for (auto&i : gameWorld.GetGameObjectList())
 	{
 		UpdateObjectPhysics(i);
-	}
+	}*/
 
 	dynamicsWorld->stepSimulation(dt, iterations);
 
