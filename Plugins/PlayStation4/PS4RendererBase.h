@@ -11,6 +11,7 @@
 #include <..\samples\sample_code\graphics\api_gnm\toolkit\toolkit.h>
 #include "PS4Frame.h"
 #include "PS4Texture.h"
+#include "../../Common/MeshGeometry.h"
 
 using namespace sce;
 using namespace Gnmx;
@@ -56,7 +57,7 @@ namespace NCL {
 			void	SwapScreenBuffer();
 			void	SwapCommandBuffer();
 			
-			void	DrawMesh(PS4Mesh& mesh);
+			void	DrawMesh(MeshGeometry* mesh);
 			void	BindFBO(void*buffer);
 			void	ClearBuffer(bool colour, bool depth, bool stencil);
 

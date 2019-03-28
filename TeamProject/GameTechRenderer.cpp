@@ -878,9 +878,8 @@ void GameTechRenderer::RenderCamera() {
 			//BindTextureToShader((*(currentMaterial->GetTextureParameters()))[j].second, (*(currentMaterial->GetTextureParameters()))[j].first, j);
 		}
 
-		BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
+		//BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
 		
-
 		//BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
 		*cameraPos = gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
 		cameraPos = (Vec3*)onionAllocator->allocate(sizeof(Vec3), Gnm::kEmbeddedDataAlignment4);
@@ -924,7 +923,7 @@ void GameTechRenderer::RenderCamera() {
 		//BindMesh((*i).GetMesh());
 		(*i).GetMesh()->UploadToGPU();
 		vertsDrawn += (*i).GetMesh()->GetVertexCount();
-		DrawMesh((*i).GetMesh());
+		DrawMesh((i)->GetMesh());//
 	}
 
 	BindFBO(nullptr);
