@@ -343,6 +343,9 @@ void Player::RespawnPlayer()
 	float z = (float)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
 	float y = 1000;
 
-	if (gameObject->GetComponent<PhysicsObject*>()) { gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, 0, 0)); }
-	gameObject->GetComponent<PhysicsObject*>()->SetPosition(Vector3(x, y, z));
+	if (gameObject->GetComponent<PhysicsObject*>()) 
+	{ 
+		gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, 0, 0)); 
+		gameObject->GetComponent<PhysicsObject*>()->SetPosition(Vector3(x, y, z));
+	}
 }
