@@ -3,25 +3,6 @@
 
 using namespace NCL;
 
-void TestCommand(vector<string> commandparams, void* data) {
-	cout << "Command found with name: " + commandparams[0] << endl;
-	cout << "Parameters are: " << endl;;
-	for (unsigned int i = 1; i < commandparams.size(); i++)
-	{
-		cout << commandparams[i] << endl;
-	}
-}
-
-Console::Console()
-{
-	RegisterCommand("testcommand", TestCommand, nullptr);
-}
-
-
-Console::~Console()
-{
-}
-
 void Console::HandleCommand() {
 	function<void(vector<string>, void*)> functionCall;
 
@@ -47,7 +28,7 @@ void Console::HandleCommand() {
 }
 
 void Console::RegisterCommand(string identifier, function<void(vector<string>, void*)> command, void* data) {
-	commands.insert(pair<string, pair<function<void(vector<string>, void*)>, void*>>(identifier, make_pair(command, data)));
+	GetInstance().commands.insert(pair<string, pair<function<void(vector<string>, void*)>, void*>>(identifier, make_pair(command, data)));
 }
 
 void Console::AddToPreviousCommandList() {
@@ -58,174 +39,174 @@ void Console::AddToPreviousCommandList() {
 }
 
 void Console::Update() {
-	if (consoleOpen) {
-		if (!acceptingInput) {
+	if (GetInstance().consoleOpen) {
+		if (!GetInstance().acceptingInput) {
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_RETURN)) {
-				acceptingInput = true;
+				GetInstance().acceptingInput = true;
 			}
 		}
 		else {
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_0)) {
-				currentCommand += "0";
+				 GetInstance().currentCommand += "0";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_1)) {
-				currentCommand += "1";
+				 GetInstance().currentCommand += "1";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_2)) {
-				currentCommand += "2";
+				 GetInstance().currentCommand += "2";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_3)) {
-				currentCommand += "3";
+				 GetInstance().currentCommand += "3";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_4)) {
-				currentCommand += "4";
+				 GetInstance().currentCommand += "4";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_5)) {
-				currentCommand += "5";
+				 GetInstance().currentCommand += "5";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_6)) {
-				currentCommand += "6";
+				 GetInstance().currentCommand += "6";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_7)) {
-				currentCommand += "7";
+				 GetInstance().currentCommand += "7";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_8)) {
-				currentCommand += "8";
+				 GetInstance().currentCommand += "8";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_9)) {
-				currentCommand += "9";
+				 GetInstance().currentCommand += "9";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_A)) {
-				currentCommand += "a";
+				 GetInstance().currentCommand += "a";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) {
-				currentCommand += "b";
+				 GetInstance().currentCommand += "b";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_C)) {
-				currentCommand += "c";
+				 GetInstance().currentCommand += "c";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_D)) {
-				currentCommand += "d";
+				 GetInstance().currentCommand += "d";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_E)) {
-				currentCommand += "e";
+				 GetInstance().currentCommand += "e";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_F)) {
-				currentCommand += "f";
+				 GetInstance().currentCommand += "f";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_G)) {
-				currentCommand += "g";
+				 GetInstance().currentCommand += "g";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_H)) {
-				currentCommand += "h";
+				 GetInstance().currentCommand += "h";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_I)) {
-				currentCommand += "i";
+				 GetInstance().currentCommand += "i";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_J)) {
-				currentCommand += "j";
+				 GetInstance().currentCommand += "j";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_K)) {
-				currentCommand += "k";
+				 GetInstance().currentCommand += "k";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_L)) {
-				currentCommand += "l";
+				 GetInstance().currentCommand += "l";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_M)) {
-				currentCommand += "m";
+				 GetInstance().currentCommand += "m";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_N)) {
-				currentCommand += "n";
+				 GetInstance().currentCommand += "n";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_O)) {
-				currentCommand += "o";
+				 GetInstance().currentCommand += "o";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_P)) {
-				currentCommand += "p";
+				 GetInstance().currentCommand += "p";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Q)) {
-				currentCommand += "q";
+				 GetInstance().currentCommand += "q";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_R)) {
-				currentCommand += "r";
+				 GetInstance().currentCommand += "r";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_S)) {
-				currentCommand += "s";
+				 GetInstance().currentCommand += "s";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_T)) {
-				currentCommand += "t";
+				 GetInstance().currentCommand += "t";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_U)) {
-				currentCommand += "u";
+				 GetInstance().currentCommand += "u";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_V)) {
-				currentCommand += "v";
+				 GetInstance().currentCommand += "v";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_W)) {
-				currentCommand += "w";
+				 GetInstance().currentCommand += "w";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_X)) {
-				currentCommand += "x";
+				 GetInstance().currentCommand += "x";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Y)) {
-				currentCommand += "y";
+				 GetInstance().currentCommand += "y";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_Z)) {
-				currentCommand += "z";
+				 GetInstance().currentCommand += "z";
 			}
       if (Window::GetKeyboard()->KeyPressed(KEYBOARD_MINUS)) {
-			  currentCommand += "-";
+			   GetInstance().currentCommand += "-";
 		  }
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_SPACE)) {
-				currentCommand += " ";
+				 GetInstance().currentCommand += " ";
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_RETURN)) {
-				HandleCommand();
-				acceptingInput = false;
+				GetInstance().HandleCommand();
+				GetInstance().acceptingInput = false;
 			}
 			if (Window::GetKeyboard()->KeyPressed(KEYBOARD_BACK)) {
-        if (currentCommand != "") {
-            currentCommand.pop_back();
+        if ( GetInstance().currentCommand != "") {
+             GetInstance().currentCommand.pop_back();
         }
 			}
       if (Window::GetKeyboard()->KeyPressed(KEYBOARD_UP)) {
-			  previousCommandIndex--;
+		  GetInstance().previousCommandIndex--;
 
-        if (previousCommandIndex < 0) {
-          previousCommandIndex = (int) previousCommands.size() - 1;
+        if (GetInstance().previousCommandIndex < 0) {
+			GetInstance().previousCommandIndex = (int)GetInstance().previousCommands.size() - 1;
         }
 
-        if (!empty(previousCommands)) {
-          currentCommand = previousCommands[previousCommandIndex];
+        if (!empty(GetInstance().previousCommands)) {
+           GetInstance().currentCommand = GetInstance().previousCommands[GetInstance().previousCommandIndex];
         }
       }
       if (Window::GetKeyboard()->KeyPressed(KEYBOARD_DOWN)) {
-        previousCommandIndex++;
+		  GetInstance().previousCommandIndex++;
 
-        if (previousCommandIndex > (int)previousCommands.size() - 1) {
-          previousCommandIndex = 0;
+        if (GetInstance().previousCommandIndex > (int)GetInstance().previousCommands.size() - 1) {
+			GetInstance().previousCommandIndex = 0;
         }
 
-        if (!empty(previousCommands)) {
-          currentCommand = previousCommands[previousCommandIndex];
+        if (!empty(GetInstance().previousCommands)) {
+           GetInstance().currentCommand = GetInstance().previousCommands[GetInstance().previousCommandIndex];
         }
       }
       
-      for (unsigned int i = 0; i < previousCommands.size(); i++)
+      for (unsigned int i = 0; i < GetInstance().previousCommands.size(); i++)
       {
-        Debug::AddStringToDebugMenu(previousCommands[i]);
+        Debug::AddStringToDebugMenu(GetInstance().previousCommands[i]);
       }
       
-			if (indicatorTimer <= 30) {
-				Debug::AddStringToDebugMenu(currentCommand + '|');
+			if (GetInstance().indicatorTimer <= 30) {
+				Debug::AddStringToDebugMenu( GetInstance().currentCommand + '|');
 			}
 			else {
-				Debug::AddStringToDebugMenu(currentCommand);
-				if (indicatorTimer >= 60) {
-					indicatorTimer = 0;
+				Debug::AddStringToDebugMenu( GetInstance().currentCommand);
+				if (GetInstance().indicatorTimer >= 60) {
+					GetInstance().indicatorTimer = 0;
 				}
 			}
 		}
-		indicatorTimer++;
+		GetInstance().indicatorTimer++;
 	}
 }

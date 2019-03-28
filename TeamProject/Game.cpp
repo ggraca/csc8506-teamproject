@@ -13,7 +13,6 @@
 
 
 Game::Game() {
-	console = Console();
 	renderer = new GameTechRenderer();
 	audio = new CAudioEngine();
 	InitialiseAssets(); // Should this be done in renderer? Or at least part of it?
@@ -37,11 +36,11 @@ Game::~Game() {
 
 void Game::Update(float dt) {
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_TILDE)) {
-		console.Toggle();
+		Console::Toggle();
 		DebugMenu::Toggle();
 	}
 	DebugMenu::Update(dt, renderer);
-	console.Update();
+	Console::Update();
 	if (network) network->Update();
 	currentScene->Update(dt);
 	renderer->Render();

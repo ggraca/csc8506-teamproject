@@ -7,6 +7,7 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Debug.h"
+#include "Console.h"
 
 #include "FunctionTimer.h"
 
@@ -43,6 +44,7 @@ GameTechRenderer::GameTechRenderer() : OGLRenderer(*Window::GetWindow()) {
 	AddHUDObjects();
 
 	pixOps.Init();
+	RegisterRenderConsoleCommands();
 }
 
 
@@ -576,7 +578,40 @@ void GameTechRenderer::PresentScene() {
 
 	Matrix4 tempProjMatrix = Matrix4::Orthographic(-1, 1, 1, -1, -1, 1);
 
-	BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+	//For debugging purposes - renders selected texture state on screen
+	switch (activeRenderState)
+	{
+	case NCL::CSC8503::DebugRenderState::STANDARD:
+		BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+		break;
+	case NCL::CSC8503::DebugRenderState::DEPTH:
+		BindTextureToShader(gBufferDepthTex, "diffuseTex", 0);
+		BindBoolToShader(true, "isDepth");
+		break;
+	case NCL::CSC8503::DebugRenderState::NORMAL:
+		BindTextureToShader(gBufferNormalTex, "diffuseTex", 0);
+		break;
+	case NCL::CSC8503::DebugRenderState::DIFFUSE:
+		BindTextureToShader(gBufferColourTex, "diffuseTex", 0);
+		break;
+	case NCL::CSC8503::DebugRenderState::MATERIAL:
+		BindTextureToShader(gBufferMaterialTex, "diffuseTex", 0);
+		break;
+	case NCL::CSC8503::DebugRenderState::EMISSIVE:
+		BindTextureToShader(lightEmissiveTex, "diffuseTex", 0);
+		break;
+	case NCL::CSC8503::DebugRenderState::SPECULAR:
+		BindTextureToShader(lightSpecularTex, "diffuseTex", 0);
+		break;
+	case NCL::CSC8503::DebugRenderState::SHADOW:
+		BindTextureToShader(shadowTex, "diffuseTex", 0);
+		BindBoolToShader(true, "isDepth");
+		break;
+	default:
+		BindTextureToShader(postTexture[lastRendererdPostTex], "diffuseTex", 0);
+		break;
+	}
+	
 	BindMatrix4ToShader(tempProjMatrix, "projMatrix");
 
 	BindMesh(screenQuad);
@@ -640,7 +675,40 @@ void GameTechRenderer::SetupDebugMatrix(OGLShader*s) {
 	glUniformMatrix4fv(matLocation, 1, false, (float*)&vp);
 }
 
+void SetRenderState(vector<string> commandParams, void* data) {
+	string param = commandParams[1];
 
+	DebugRenderState* state = (DebugRenderState*)data;
+	if (param == "standard") {
+		*state = DebugRenderState::STANDARD;
+	}
+	else if (param == "depth") {
+		*state = DebugRenderState::DEPTH;
+	}
+	else if (param == "normal") {
+		*state = DebugRenderState::NORMAL;
+	}
+	else if (param == "diffuse") {
+		*state = DebugRenderState::DIFFUSE;
+	}
+	else if (param == "material") {
+		*state = DebugRenderState::MATERIAL;
+	}
+	else if (param == "emissive") {
+		*state = DebugRenderState::EMISSIVE;
+	}
+	else if (param == "specular") {
+		*state = DebugRenderState::SPECULAR;
+	}
+	else if (param == "shadow") {
+		*state = DebugRenderState::SHADOW;
+	}
+}
+
+//Console needs to be static first
+void GameTechRenderer::RegisterRenderConsoleCommands() {
+	Console::RegisterCommand("setrenderstate", SetRenderState, (void*)&activeRenderState);
+}
 
 /*void GameTechRenderer::UpdateHealthQuad()
 {

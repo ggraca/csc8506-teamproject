@@ -40,6 +40,9 @@ void main (void) {
 	vec3 lightOutput = ((kDiffuse * diffuse.xyz) + specular.xyz) * radiance.xyz * NdotL;
 	
 	vec3 irradiance = texture(irradianceMap, normal).rgb;
+	if (radiance == 0.0f){
+		irradiance +=  specular.xyz;
+	}
 	vec3 ambient    = (kDiffuse * irradiance * diffuse.xyz) * ao; 
 	
 	vec3 finalCol = ambient + lightOutput;

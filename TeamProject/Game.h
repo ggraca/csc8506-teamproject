@@ -19,7 +19,6 @@ public:
 	CAudioEngine* GetAudio() const { return audio; }
 
 private:
-	Console console;
 	Scene* currentScene;
 	GameTechRenderer* renderer;
 	bool quitGame = false;
