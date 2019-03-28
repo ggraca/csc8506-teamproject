@@ -80,7 +80,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			if (mesh->GetChildren().size() == 1) {
 				Vector3 vert1, vert2, vert3;
 				btVector3 vertex1, vertex2, vertex3;
-				for (int i = 0; i < mesh->GetChildren()[0]->GetPositionData().size(); ) {
+				for (int i = 0; i < (int)mesh->GetChildren()[0]->GetPositionData().size(); ) {
 					vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
 					vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
 					vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];

@@ -98,8 +98,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Bullet\src;$(SolutionDir)Plugins\FMOD\lowlevel\inc;$(SolutionDir)Plugins\FMOD\studio\inc;%(AdditionalIncludeDirectories);$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link />
     <Link>
@@ -118,6 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Bullet\src;$(SolutionDir)Plugins\FMOD\lowlevel\inc;$(SolutionDir)Plugins\FMOD\studio\inc;%(AdditionalIncludeDirectories);$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Common.lib;OpenGLRendering.lib;ws2_32.lib;Winmm.lib;BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib;fmod64_vc.lib;fmodstudio64_vc.lib;BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib;%(AdditionalDependencies);ENet.lib</AdditionalDependencies>
@@ -136,8 +136,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Bullet\src;$(SolutionDir)Plugins\FMOD\lowlevel\inc;$(SolutionDir)Plugins\FMOD\studio\inc;;$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -158,6 +157,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_WINSOCKAPI_;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\OpenGLRendering;$(SolutionDir)Plugins\Bullet\src;$(SolutionDir)Plugins\FMOD\lowlevel\inc;$(SolutionDir)Plugins\FMOD\studio\inc;;$(SolutionDir)Plugins\ENet\include</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

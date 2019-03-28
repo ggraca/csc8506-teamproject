@@ -286,7 +286,7 @@ void Player::ResetPlayer()
 
 void Player::LoseResource(int amount)
 {
-	if (!GetResourceCount() >= amount) { return; }
+	if (GetResourceCount() < amount) { return; }
 	
 	for (int i = 0; i < amount; i++)
 	{
@@ -339,8 +339,8 @@ void Player::RespawnPlayer()
 	Vector3 floorPos = Vector3(2900, -5, 2900);
 	Vector3 floorDimensions = Vector3(2900, 10, 2900);
 
-	float x = (int)((rand() % (int)(2 * floorDimensions.x)) + (floorPos.x - floorDimensions.x));
-	float z = (int)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
+	float x = (float)((rand() % (int)(2 * floorDimensions.x)) + (floorPos.x - floorDimensions.x));
+	float z = (float)((rand() % (int)(2 * floorDimensions.z)) + (floorPos.z - floorDimensions.z));
 	float y = 1000;
 
 	if (gameObject->GetComponent<PhysicsObject*>()) { gameObject->GetComponent<PhysicsObject*>()->SetLinearVelocity(Vector3(0, 0, 0)); }
