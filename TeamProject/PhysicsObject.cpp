@@ -41,26 +41,38 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 			float elem;
 
 			boxData >> a;
-			istringstream iss(a);
-			iss >> numBoxes;
-			vector<float> data;
-			for (int i = 0; i < numBoxes * 6; i++) {
+			if (a == "cylinder") {
 				boxData >> a;
 				a.erase(remove(a.begin(), a.end(), ','), a.end());
-				float elem = (float)strtof(a.c_str(), NULL);
-				data.push_back(elem);
+				float radius = (float)strtof(a.c_str(), NULL);
+				boxData >> a;			
+				float height = (float)strtof(a.c_str(), NULL);		
+				boxData.close();
+				shape = new btCylinderShape(btVector3(btScalar(dimensions.x * radius), btScalar(dimensions.y * height), btScalar(dimensions.x * radius)));
 			}
-			boxData.close();
+			else
+			{
+				istringstream iss(a);
+				iss >> numBoxes;
+				vector<float> data;
+				for (int i = 0; i < numBoxes * 6; i++) {
+					boxData >> a;
+					a.erase(remove(a.begin(), a.end(), ','), a.end());
+					float elem = (float)strtof(a.c_str(), NULL);
+					data.push_back(elem);
+				}
+				boxData.close();
 
-			btTransform t;
-			t.setIdentity();
-			for (int i = 0; i < numBoxes * 6;) {
-				boxShape = new btBoxShape(btVector3(0.5 * dimensions.x * data[i], 0.5 * dimensions.y * data[i + 1], 0.5 * dimensions.z * data[i + 2])); //TODO Where is this deleted?
-				t.setOrigin(btVector3(dimensions.x * data[i + 3], dimensions.y * data[i + 4], dimensions.z * data[i + 5]));
-				compound->addChildShape(t, boxShape);
-				i += 6;
-			}
-			shape = compound;
+				btTransform t;
+				t.setIdentity();
+				for (int i = 0; i < numBoxes * 6;) {
+					boxShape = new btBoxShape(btVector3(0.5 * dimensions.x * data[i], 0.5 * dimensions.y * data[i + 1], 0.5 * dimensions.z * data[i + 2])); //TODO Where is this deleted?
+					t.setOrigin(btVector3(dimensions.x * data[i + 3], dimensions.y * data[i + 4], dimensions.z * data[i + 5]));
+					compound->addChildShape(t, boxShape);
+					i += 6;
+				}
+				shape = compound;
+			}			
 		}
 		else {
 			btTriangleMesh* triangleMesh = new btTriangleMesh();

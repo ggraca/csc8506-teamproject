@@ -83,6 +83,7 @@ void MenuScene::MenuUpdate(float dt)
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
+		//	PhysicsScene* newScene = new PhysicsScene(game, game->QuittingGame());
 			LevelScene* newScene = new LevelScene(game, game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);
 			newScene->ResetWorld();

@@ -27,6 +27,8 @@
 #include "Destructible.h"
 #include "../Common/OBJGeometry.h"
 #include "CannonScript.h"
+#include "ConePrefab.h"
+#include "CylinderPrefab.h"
 
 using namespace NCL;
 using namespace CSC8503;
@@ -65,7 +67,6 @@ void LevelScene::ResetWorld() {
 
 	auto resource6 = new ResourcePrefab(Vector3(50, 130, 50), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f);
 	resource2->SetName("Resource 2");
-
 	
 	world->LateInstantiate(resource1);
 	world->LateInstantiate(resource2);
