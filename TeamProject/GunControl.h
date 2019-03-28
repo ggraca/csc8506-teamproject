@@ -29,7 +29,7 @@ public:
 
 protected:
 
-	float projectileSpeed = 6000.0f;
+	float projectileSpeed = 5000.0f;
 	int idealProjectileDamage = 4;
 	GameObject * camera = nullptr;
 	GameObject * leftGun = nullptr;

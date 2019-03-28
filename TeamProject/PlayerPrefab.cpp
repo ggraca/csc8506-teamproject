@@ -11,7 +11,6 @@ Vector4 PlayerPrefab::colours[] = {
 
 PlayerPrefab::PlayerPrefab() :CubePrefab()
 {
-	// TODO Set transform values if needed.
 	ResetPlayer();
 }
 

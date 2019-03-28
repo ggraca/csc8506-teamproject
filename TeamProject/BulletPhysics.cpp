@@ -23,7 +23,7 @@ BulletPhysics::~BulletPhysics()
 		btRigidBody* body = btRigidBody::upcast(obj);
 		if (body && body->getMotionState())
 		{
-			// delete body->getMotionState();
+			//delete body->getMotionState();
 		}
 		dynamicsWorld->removeCollisionObject(obj);
 		delete obj;

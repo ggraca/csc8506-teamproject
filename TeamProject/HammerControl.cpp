@@ -110,6 +110,10 @@ void HammerControl::HammerHit()
 		{
 			colliding->GetComponent<HealthManager*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());
 		}
+		else if (colliding->GetComponent<Player*>())
+		{
+			colliding->GetComponent<Player*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size() / 4);
+		}
 	}
 }
 
