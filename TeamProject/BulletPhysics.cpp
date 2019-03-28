@@ -61,6 +61,7 @@ void BulletPhysics::SetGravity(Vector3 gravity)
 }
 
 map<btRigidBody*, vector<btRigidBody*>> BulletPhysics::GenerateCollisionPairs() {
+	FunctionTimer timer("Generate Collision Pairs");
 	map<btRigidBody*, vector<btRigidBody*>> collisionPairs;
 	int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
   

@@ -27,6 +27,8 @@
 #include "Destructible.h"
 #include "../Common/OBJGeometry.h"
 #include "CannonScript.h"
+#include "ConePrefab.h"
+#include "CylinderPrefab.h"
 
 using namespace NCL;
 using namespace CSC8503;
