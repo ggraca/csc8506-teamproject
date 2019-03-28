@@ -12,9 +12,9 @@ Animator::Animator(GameObject * gameObject) : Component(gameObject)
 
 Animator::~Animator()
 {
-	/*if (defaultAnimation) { delete defaultAnimation; defaultAnimation = nullptr;}
+	if (defaultAnimation) { delete defaultAnimation; defaultAnimation = nullptr;}
 	if (currentAnimation) { delete currentAnimation; currentAnimation = nullptr; }
-	ClearAnimations();*/
+	ClearAnimations();
 }
 
 void Animator::SetDefaultAnimationState(AnimationState * anim)

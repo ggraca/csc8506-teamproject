@@ -2,19 +2,7 @@
 #include "PlayerPrefab.h"
 #include "ResourcePrefab.h"
 #include "WellPrefab.h"
-#include "ConePrefab.h"
-#include "WallPrefab.h"
-#include "StallPrefab.h"
-#include "TentPrefab.h"
-#include "MarketPrefab.h"
-#include "CastlePrefab.h"
-#include "TowerPrefab.h"
-#include "CannonPrefab.h"
-#include "DWallPrefab.h"
-#include "CartPrefab.h"
-#include "Destructible.h"
-#include "SpherePrefab.h"
-#include "CylinderPrefab.h"
+
 
 NetworkExampleScene::NetworkExampleScene(Game* g, bool& qG) : GameScene(g, qG) {
 	ResetWorld();
@@ -37,6 +25,8 @@ void NetworkExampleScene::ResetWorld() {
 			world->LateInstantiate(new ResourcePrefab(Vector3(i * 30, 190, j * 30), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(5, 5, 5), 1000, 0.2f, 0.4f));
 		}
 	}
+
+	//auto well = new WellPrefab(Vector3(50, 50, 50), Vector3(-100, 20, -100), Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), 90));
 
 	world->LateInstantiateRecursively(player);
 	world->LateInstantiate(floor);

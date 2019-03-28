@@ -1,7 +1,5 @@
 #include "BigGunControl.h"
 #include "PhysicsObject.h"
-#include "AudioEngine.h"
-#include "GameWorld.h"
 
 
 BigGunControl::BigGunControl(GameObject * obj) : GunControl(obj)
@@ -44,8 +42,6 @@ void BigGunControl::Fire(float time)
 		children[i]->GetTransform().ForceUpdateLocalPositionWithTransform(bigGun->GetTransform().GetWorldPosition() + CalculateDirection() *80.0f);
 		FireObjectAndRemoveFromResources(children,i);
 	}
-
-	GameObject::gameWorld->GetAudio()->PlayEvent("event:/shotgun", bigGun->GetTransform().GetWorldPosition());
 }
 
 void BigGunControl::SetBigGun(GameObject * gun)

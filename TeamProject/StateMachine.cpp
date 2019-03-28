@@ -38,6 +38,8 @@ void StateMachine::Update() {
 			if (i->second->CanTransition()) { // some transition is true !
 				State * newState = i->second->GetDestinationState();
 				activeState = newState;
+				std::cout << "Previous state: " << num << " ";
+				std::cout << "Next state: " << num + 1 << std::endl;
 			}
 		}
 	}

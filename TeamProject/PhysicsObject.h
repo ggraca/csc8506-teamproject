@@ -17,7 +17,7 @@ namespace NCL {
 		
 		class PhysicsObject : virtual public Component {
 		public:
-			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution = 0.9f, float friction = 0.5f, string objFile = "", bool boxCollider = true);
+			PhysicsObject(Transform* parentTransform, ShapeType type, float mass, float restitution = 0.9f, float friction = 0.5f);
 			~PhysicsObject();
 
 			ShapeType GetType() const {
@@ -97,11 +97,6 @@ namespace NCL {
 				angularVelocity = v;
 			}
 
-			void SetDamping(float lin, float ang) {
-				body->activate();
-				body->setDamping(lin, ang);
-			}
-
 			void ApplyForce(const Vector3& f, const Vector3& p) {
 				body->activate();
 				body->applyForce(btVector3(f.x, f.y, f.z), btVector3(p.x, p.y, p.z));
@@ -143,9 +138,6 @@ namespace NCL {
 			Vector3 torque;         //TODO Remove if not needed
 
 			btCollisionShape* shape;
-			btCollisionShape* boxShape;
-			btCollisionShape* meshShape;
-			btCompoundShape* compound;
 			btRigidBody* body;
 		};
 	}

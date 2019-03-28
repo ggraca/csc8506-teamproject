@@ -1,6 +1,5 @@
 #include "MenuScene.h"
 #include "LevelScene.h"
-#include "PhysicsScene.h"
 #include "NetworkExampleScene.h"
 
 MenuScene::MenuScene(Game* g) : Scene(g)
@@ -78,21 +77,19 @@ void MenuScene::MenuUpdate(float dt)
 			}
 		}
 	}
-
+	
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_RETURN)) {
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
-			LevelScene* newScene = new LevelScene(game, game->QuittingGame());
-			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);
-			newScene->ResetWorld();
+			Scene* newScene = new LevelScene(game, game->QuittingGame());
+			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);			
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
 			//Join Game
-			LevelScene* newScene = new LevelScene(game, game->QuittingGame());
+			Scene* newScene = new LevelScene(game, game->QuittingGame());
 			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), false);
-			newScene->ResetWorld();
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
 		{

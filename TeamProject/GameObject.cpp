@@ -22,6 +22,7 @@ GameObject::GameObject(std::string objectName)
 GameObject::~GameObject()	
 {
 	ClearComponents();
+	std::cout << name << " Destroyed" << std::endl;
 }
 
 void GameObject::ClearComponents()
@@ -181,7 +182,7 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 	if (!gameWorld) { return nullptr; }
 
 	GameObject* root = new GameObject();
-	gameWorld->LateInstantiate(root);
+	gameWorld->Instantiate(root);
 
 	for (auto& mesh : obj->GetChildren()) {
 		GameObject* go = new GameObject();
@@ -192,28 +193,8 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 			((OBJMesh*)mesh)->material
 		));
 
-		gameWorld->LateInstantiate(go);
+		gameWorld->Instantiate(go);
 		root->AddChild(go);
 	}
 	return root;
-}
-
-void GameObject::AddRenderObject(string filename, GameObject* root, const Vector3& dim, const Vector3& pos, const Quaternion& orient, Material* mat) {
-	OBJGeometry* objGeometry = Assets::AssetManager::LoadOBJ(filename);
-	if (!gameWorld) { return; }
-	
-	for (auto& mesh : objGeometry->GetChildren()) {
-		GameObject* go = new GameObject();
-		if (mat == nullptr) {
-			mat = ((OBJMesh*)mesh)->material;
-		}
-		go->AddComponent<RenderObject*>(new RenderObject(&go->GetTransform(), mesh, mat));
-		root->AddChild(go);
-	}
-	
-	GetTransform().SetWorldScale(dim);
-	GetTransform().SetWorldPosition(pos);
-	GetTransform().SetLocalOrientation(orient);
-
-	gameWorld->LateInstantiateRecursively(root);
 }

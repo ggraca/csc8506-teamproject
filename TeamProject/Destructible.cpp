@@ -36,13 +36,7 @@ void Destructible::CheckIfDestroyed()
 		{
 			GenerateResource();
 		}
-
-		if (dynamic_cast<NetworkServer*>(GameObject::gameWorld->GetNetwork())) {
-			GameObject::gameWorld->GetNetwork()->Destroy(gameObject);
-		}
-		else {
-			GameObject::gameWorld->LateDestroy(gameObject);
-		}
+		GameObject::gameWorld->LateDestroy(gameObject);
 	}
 }
 

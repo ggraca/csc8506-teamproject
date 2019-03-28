@@ -27,7 +27,7 @@ public:
 
 	void Update();
 	void Instantiate(GameObject* go) override;
-	void Destroy(GameObject* go) override;
+	void Destroy() override {};
 
 	void AddPlayer(int peerId, GameObject* go);
 	void RemovePlayer(int peerId);

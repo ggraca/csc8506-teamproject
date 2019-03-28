@@ -214,7 +214,7 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 		}
 		else if (lineHeader == MTLSPECMAP) {
 			f >> data;
-			material->AddTextureParameter("roughnessTex", (OGLTexture*)Assets::AssetManager::LoadTexture(NormalisePath(data)));
+			material->AddTextureParameter("specularTex", (OGLTexture*)Assets::AssetManager::LoadTexture(NormalisePath(data)));
 		}
 		else if (lineHeader == MTLTRANS2) {
 			float alpha;
@@ -223,9 +223,6 @@ void OBJGeometry::LoadMaterialsFromMTL(string filename) {
 				Vector4 currentColour = material->GetColour();
 				material->SetColour(Vector4(currentColour.x, currentColour.y, currentColour.z, alpha));
 			}
-		}
-		if (material) {
-			material->InitBasicTextureParams();
 		}
 	}
 }

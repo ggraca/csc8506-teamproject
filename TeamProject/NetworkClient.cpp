@@ -55,6 +55,7 @@ void NetworkClient::ReceivePacket(int type, GamePacket* payload, int source) {
 	if (type == StringMessage) {
 		StringPacket* realPacket = (StringPacket*)payload;
 		string msg = realPacket->GetStringFromData();
+		std::cout << "received message: " << msg << std::endl;
 	}
 	else if (type == InstantiateMessage) {
 		InstantiatePacket* packet = (InstantiatePacket*) payload;
@@ -85,11 +86,7 @@ void NetworkClient::ReceivePacket(int type, GamePacket* payload, int source) {
 		no->GetGameObject()->GetTransform().SetLocalOrientation(packet->rotation);
 		no->GetGameObject()->GetTransform().SetWorldScale(packet->scale);
 		no->GetGameObject()->SetActiveStatus(packet->isActive);
-
-		RenderObject* ro = no->GetGameObject()->GetComponent<RenderObject*>();
-		if (!ro) return;
-
-		ro->GetMaterial()->SetColour(Vector4(packet->colour.x, packet->colour.y, packet->colour.z, 1));
+		no->GetGameObject()->GetComponent<RenderObject*>()->GetMaterial()->SetColour(Vector4(packet->colour.x, packet->colour.y, packet->colour.z, 1));
 	}
 	else if (type == PlayerStateMessage) {
 		PlayerStatePacket* packet = (PlayerStatePacket*)payload;

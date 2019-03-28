@@ -131,8 +131,8 @@ namespace NCL {
 			static vector<GameObject*> GetChildrenOfObject(GameObject* obj);
 			static vector<GameObject*> GetChildrenOfObject(GameObject* obj, LayerAndTag::Tags tag);
 			static  void Destroy(GameObject * obj);
-			static void AddObjectToWorld(GameObject * obj); //TODO Delete this?
-			static void AddObjectToWorld(GameObject * obj, GameObject * parent); //TODO Delete this?
+			static void AddObjectToWorld(GameObject * obj);
+			static void AddObjectToWorld(GameObject * obj, GameObject * parent);
 			static GameObject * GetMainCamera();
 			static GameObject* FromOBJ(OBJGeometry* obj);
 
@@ -150,7 +150,6 @@ namespace NCL {
 			bool	isActive;
 			bool	isAddedToWorld;
 			std::string	name;
-			void AddRenderObject(string filename, GameObject* root, const Vector3& dim, const Vector3& pos, const Quaternion& orient, Material* mat = nullptr);
 
 		private:
 
