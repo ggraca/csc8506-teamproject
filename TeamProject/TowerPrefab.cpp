@@ -11,7 +11,6 @@ TowerPrefab::TowerPrefab(const Vector3& dimensions, const Vector3& position, con
 	SetTag(LayerAndTag::Tags::Ground);
 	AddComponent<HealthManager*>(new HealthManager(this, 30));
 	AddComponent<Destructible*>(new Destructible(this));
-	GameObject::gameWorld->AddObjectPhysicsToWorld(GetComponent<PhysicsObject*>());
 }
 
 TowerPrefab::~TowerPrefab()
