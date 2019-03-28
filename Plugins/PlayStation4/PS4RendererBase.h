@@ -47,7 +47,7 @@ namespace NCL {
 			~PS4RendererBase();
 
 		protected:
-			virtual void RenderActiveScene() = 0;
+			virtual void RenderActiveScene() {};
 
 			void	OnWindowResize(int w, int h) override;
 			void	BeginFrame()    override;

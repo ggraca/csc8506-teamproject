@@ -7,7 +7,7 @@ namespace NCL {
 		class Vec3;
 
 		//It's pi(ish)...
-		static const float		PI = 3.14159265358979323846f;
+		static const float		PI = 3.14f;
 
 		//It's pi...divided by 360.0f!
 		static const float		PI_OVER_360 = PI / 360.0f;

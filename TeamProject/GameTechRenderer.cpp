@@ -7,6 +7,9 @@
 #include "Light.h"
 #include "ParticleSystem.h"
 #include "Debug.h"
+#include "CameraControl.h"
+#include "GameWorld.h"
+#include "GameObject.h"
 
 #include "FunctionTimer.h"
 
@@ -635,7 +638,7 @@ void GameTechRenderer::WeaponState(int index, bool state)
 #endif
 
 #ifdef __ORBIS__
-GameTechRenderer::GameTechRenderer(GameWorld& world) : PS4::PS4RendererBase((PS4::PS4Window*)Window::GetWindow()), gameWorld(world) {
+GameTechRenderer::GameTechRenderer() : PS4::PS4RendererBase((PS4::PS4Window*)Window::GetWindow()){
 	shadowShader = PS4Shader::GenerateShader("/app0/gameTechShadowVert.sb", "/app0/gameTechShadowPixel.sb");
 	skyBoxShader = PS4Shader::GenerateShader("/app0/skyboxVertex.sb", "/app0/skyboxPixel.sb");
 	lightShader = PS4Shader::GenerateShader("/app0/pointlightvert.sb", "/app0/pointlightPixel.sb");
@@ -667,36 +670,36 @@ GameTechRenderer::~GameTechRenderer() {
 
 void GameTechRenderer::AddHUDObjects()
 {
-	//Green HealthBar
-	vector<PS4Texture*> textures1;
-	textures1.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/healthBarGreen.gnf"));
-	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad(180.0f, 10.0f, (float)(currentHeight - 60.0f), (float)(currentHeight - 30.0f), currentWidth, currentHeight), textures1, Transform(), false));
-	//Red HealthBar
-	vector<PS4Texture*> textures2;
-	textures2.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/healthBarRed.gnf"));
-	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad(180.0f, 10.0f, (float)(currentHeight - 60.0f), (float)(currentHeight - 30.0f), currentWidth, currentHeight), textures2, Transform(), false));
-	//Hammer
-	vector<PS4Texture*> textures3;
-	textures3.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/hammer_gray.gnf"));
-	textures3.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/hammer.gnf"));
-	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) - 106.0f, (currentWidth / 2) - 42.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures3, Transform(), false));
-	//Gun
-	vector<PS4Texture*> textures4;
-	textures4.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/gun_gray.gnf"));
-	textures4.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/gun.gnf"));
-	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) - 32.0f, (currentWidth / 2) + 32.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures4, Transform(), false));
-	//Bomb
-	vector<PS4Texture*> textures5;
-	textures5.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/bomb_gray.gnf"));
-	textures5.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/bomb.gnf"));
-	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) + 42.0f, (currentWidth / 2) + 106.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures5, Transform(), false));
-	//Crosshair
-	vector<PS4Texture*> textures6;
-	textures6.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/crosshair.gnf"));
-	hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2.0f) - 36.0f, (currentWidth / 2.0f) + 36.0f,
-		(currentHeight / 2) - 36.0f, (currentHeight / 2) + 36.0f, currentWidth, currentHeight), textures6, Transform(), false));
+	////Green HealthBar
+	//vector<PS4Texture*> textures1;
+	//textures1.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/healthBarGreen.gnf"));
+	//hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad(180.0f, 10.0f, (float)(currentHeight - 60.0f), (float)(currentHeight - 30.0f), currentWidth, currentHeight), textures1, Transform(), false));
+	////Red HealthBar
+	//vector<PS4Texture*> textures2;
+	//textures2.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/healthBarRed.gnf"));
+	//hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad(180.0f, 10.0f, (float)(currentHeight - 60.0f), (float)(currentHeight - 30.0f), currentWidth, currentHeight), textures2, Transform(), false));
+	////Hammer
+	//vector<PS4Texture*> textures3;
+	//textures3.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/hammer_gray.gnf"));
+	//textures3.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/hammer.gnf"));
+	//hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) - 106.0f, (currentWidth / 2) - 42.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures3, Transform(), false));
+	////Gun
+	//vector<PS4Texture*> textures4;
+	//textures4.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/gun_gray.gnf"));
+	//textures4.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/gun.gnf"));
+	//hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) - 32.0f, (currentWidth / 2) + 32.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures4, Transform(), false));
+	////Bomb
+	//vector<PS4Texture*> textures5;
+	//textures5.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/bomb_gray.gnf"));
+	//textures5.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/bomb.gnf"));
+	//hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2) + 42.0f, (currentWidth / 2) + 106.0f, 20.0f, 84.0f, currentWidth, currentHeight), textures5, Transform(), false));
+	////Crosshair
+	//vector<PS4Texture*> textures6;
+	//textures6.push_back((PS4Texture*)PS4Texture::LoadTextureFromFile("/app0/crosshair.gnf"));
+	//hudObjects.push_back(new HUDObject(PS4Mesh::GenerateQuad((currentWidth / 2.0f) - 36.0f, (currentWidth / 2.0f) + 36.0f,
+	//	(currentHeight / 2) - 36.0f, (currentHeight / 2) + 36.0f, currentWidth, currentHeight), textures6, Transform(), false));
 
-	//may need to add samplers for each of these
+	////may need to add samplers for each of these
 }
 
 //void GameTechRenderer::GenBuffers() {
@@ -741,34 +744,34 @@ void GameTechRenderer::RenderFrame() {
 	//pixOps.SetFaceCulling(CULLFACE::NOCULL); //Todo - text indices are going the wrong way...
 }
 
-void GameTechRenderer::BuildObjectList() {
-	std::vector<GameObject*>::const_iterator first;
-	std::vector<GameObject*>::const_iterator last;
+//void GameTechRenderer::BuildObjectList() {
+//	activeObjects.clear();
+//	activeLights.clear();
+//	activeParticleSystems.clear();
+//
+//	for (auto go : gameWorld->GetGameObjectList()) {
+//		if (go->IsActive()) {
+//			const RenderObject* ro = go->GetComponent<RenderObject*>();
+//			const Light* l = go->GetComponent<Light*>();
+//			ParticleSystem* p = go->GetComponent<ParticleSystem*>();
+//			if (ro) {
+//				activeObjects.emplace_back(ro);
+//			}
+//
+//			if (l) {
+//				activeLights.emplace_back(l);
+//			}
+//
+//			if (p) {
+//				activeParticleSystems.emplace_back(p);
+//			}
+//		}
+//	}
+//}
 
-	gameWorld.GetObjectIterators(first, last);
-
-	activeObjects.clear();
-	//activeLights.clear();
-
-	for (std::vector<GameObject*>::const_iterator i = first; i != last; ++i) {
-		if ((*i)->IsActive()) {
-			const RenderObject* g = (*i)->GetComponent<RenderObject*>();
-			const Light* l = (*i)->GetComponent<Light*>();
-
-			if (g) {
-				activeObjects.emplace_back(g);
-			}
-
-			if (l) {
-				//activeLights.emplace_back(l);
-			}
-		}
-	}
-}
-
-void GameTechRenderer::SortObjectList() {
-
-}
+//void GameTechRenderer::SortObjectList() {
+//
+//}
 
 //void GameTechRenderer::RenderShadowMap() {
 //	BindFBO((void*)&shadowFBO);
@@ -849,8 +852,8 @@ void GameTechRenderer::RenderCamera() {
 	ClearBuffer(true, false, false);
 
 	float screenAspect = (float)currentWidth / (float)currentHeight;
-	/*Mat4*/ *viewMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
-	/*Mat4*/ *projMatrix = gameWorld.GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
+	/*Mat4*/ *viewMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildViewMatrix();
+	/*Mat4*/ *projMatrix = gameWorld->GetMainCamera()->GetComponent<CameraControl*>()->BuildProjectionMatrix(screenAspect);
 
 	shadowCasters = 0;
 	vertsDrawn = 0;
@@ -881,7 +884,7 @@ void GameTechRenderer::RenderCamera() {
 		//BindTextureCubeToShader((OGLTexture*)skybox, "cubeTex", 8);
 		
 		//BindVector3ToShader(gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition(), "cameraPos");
-		*cameraPos = gameWorld.GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
+		*cameraPos = gameWorld->GetMainCamera()->GetTransform().GetChildrenList()[0]->GetWorldPosition();
 		cameraPos = (Vec3*)onionAllocator->allocate(sizeof(Vec3), Gnm::kEmbeddedDataAlignment4);
 		*cameraPos = Vec3();
 		cameraBuffer.initAsConstantBuffer(cameraPos, sizeof(Vec3));
@@ -921,9 +924,9 @@ void GameTechRenderer::RenderCamera() {
 		cameraBuffer.setResourceMemoryType(Gnm::kResourceMemoryTypeRO);
 
 		//BindMesh((*i).GetMesh());
-		(*i).GetMesh()->UploadToGPU();
+		/*(*i).GetMesh()->UploadToGPU();
 		vertsDrawn += (*i).GetMesh()->GetVertexCount();
-		DrawMesh((i)->GetMesh());//
+		DrawMesh(i->GetMesh());*/
 	}
 
 	BindFBO(nullptr);

@@ -1,6 +1,7 @@
 #pragma once
 #pragma once
 #include "GameTechRenderer.h"
+
 //#include "../Common/TextureLoader.h"
 //#include "../Plugins/OpenGLRendering/OGLTexture.h"
 using namespace NCL;
@@ -34,7 +35,7 @@ using namespace PS4;
 class HUDObject
 {
 public:
-	HUDObject(PS4Mesh* objMesh, vector<PS4Texture*> objTexture, Transform objTransform, bool activeTex);
+	HUDObject(PS4Mesh* objMesh, vector<PS4Texture*> objTexture, Transform* objTransform, bool activeTex);
 
 	~HUDObject();
 
@@ -49,7 +50,7 @@ public:
 protected:
 	PS4Mesh* objectMesh;
 	vector<PS4Texture*> texture;
-	Transform transform;
+	Transform* transform;
 	PS4Shader* shader = PS4Shader::GenerateShader("/app0/BasicVert.sb", "/app0/BasicFrag.sb");
 	bool activeTexture;
 };

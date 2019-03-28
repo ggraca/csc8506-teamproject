@@ -126,16 +126,16 @@ void PauseMenu::Update(bool& quitGame, bool& showPauseMenu, CAudioEngine* audio,
 		}
 	}
 }
-void PauseMenu::ShowMenu(GameTechRenderer* renderer)
-{
-	float offset = 50.0f;
-	for (MenuEntry me : MenuEntries(menuPathIndex))
-	{
-		Vec4 colour;
-		if (me.selected) colour = Vec4(1, 0, 0, 1);
-		else colour = Vec4(0, 0, 1, 1);
-		renderer->DrawString(me.menuTitle, Vec2(50, Window::GetWindow()->GetScreenSize().y / 2 + offset), colour);
-		offset -= 50.0f;
-	}
-}
+//void PauseMenu::ShowMenu(GameTechRenderer* renderer)
+//{
+//	float offset = 50.0f;
+//	for (MenuEntry me : MenuEntries(menuPathIndex))
+//	{
+//		Vec4 colour;
+//		if (me.selected) colour = Vec4(1, 0, 0, 1);
+//		else colour = Vec4(0, 0, 1, 1);
+//		//renderer->DrawString(me.menuTitle, Vec2(50, Window::GetWindow()->GetScreenSize().y / 2 + offset), colour);
+//		offset -= 50.0f;
+//	}
+//}
 

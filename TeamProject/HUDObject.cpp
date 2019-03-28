@@ -15,7 +15,7 @@ HUDObject::HUDObject(OGLMesh* objMesh, vector<OGLTexture*> objTexture, Transform
 #endif
 
 #ifdef __ORBIS__
-HUDObject::HUDObject(PS4Mesh* objMesh, vector<PS4Texture*> objTexture, Transform objTransform, bool activeTex)
+HUDObject::HUDObject(PS4Mesh* objMesh, vector<PS4Texture*> objTexture, Transform* objTransform, bool activeTex)
 {
 	objectMesh = objMesh;
 	objectMesh->SetPrimitiveType(GeometryPrimitive::TriangleStrip);
