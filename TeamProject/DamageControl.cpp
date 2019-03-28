@@ -51,7 +51,6 @@ void DamageControl::ResolveDamage(GameObject * obj)
 		obj->GetComponent<Player*>()->TakeDamage(damage);
 
 		if (typeOfDamage == DamageType::SingleShot) { damage = 0; }
-
 	}
 	else if (gameObject->CompareTag(LayerAndTag::Tags::EnemyProjectile))
 	{
