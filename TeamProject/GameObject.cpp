@@ -189,7 +189,7 @@ GameObject* GameObject::FromOBJ(OBJGeometry* obj) {
 		go->AddComponent<RenderObject*>(new RenderObject(
 			&go->GetTransform(),
 			mesh,
-			((OBJMesh*)mesh)->material
+			Assets::AssetManager::GetMaterial("Basic Material")
 		));
 
 		gameWorld->LateInstantiate(go);
@@ -204,9 +204,6 @@ void GameObject::AddRenderObject(string filename, GameObject* root, const Vector
 	
 	for (auto& mesh : objGeometry->GetChildren()) {
 		GameObject* go = new GameObject();
-		if (mat == nullptr) {
-			mat = ((OBJMesh*)mesh)->material;
-		}
 		go->AddComponent<RenderObject*>(new RenderObject(&go->GetTransform(), mesh, mat));
 		root->AddChild(go);
 	}

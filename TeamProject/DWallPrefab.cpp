@@ -4,7 +4,9 @@
 DWallPrefab::DWallPrefab(const Vector3& dimensions, const Vector3& position, const Quaternion& orient)
 {
 	string filename = "full_wall.obj";
-	AddRenderObject(filename, this, dimensions, position, orient);
+	Material* mat = Assets::AssetManager::GetMaterial("Basic Material");
+
+	AddRenderObject(filename, this, dimensions, position, orient, mat);
 	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::complexMesh, 0, 0, 0, filename));
 	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::DWall));
 	SetTag(LayerAndTag::Tags::Ground);

@@ -91,6 +91,25 @@ void Game::InitialiseAssets() {
 	basicMaterial->AddTextureParameter("metalnessTex", pbrWoodMet);
 	basicMaterial->AddTextureParameter("aoTex", pbrWoodAO);
 
+	//EXAMPLE MATERIAL LOADING
+	Material* cartMaterial = Assets::AssetManager::LoadMaterial("Cart Material", pbrShader);
+	//Use GetMaterial in the prefab class!!! Name must match    ^^^^^^^^^^^^^^^
+	//                                                          |||||||||||||||
+	//                                                          |||||||||||||||
+	//These textures aren't actually real - just an example
+	TextureBase* pbrCartDiff = Assets::AssetManager::LoadTexture("Cart/cart_basecolor.png");
+	TextureBase* pbrCartBump = Assets::AssetManager::LoadTexture("Cart/cart_normal.png");
+	TextureBase* pbrCartRough = Assets::AssetManager::LoadTexture("Cart/cart_roughness.png");
+	TextureBase* pbrCartMet = Assets::AssetManager::LoadTexture("Cart/cart_metalness.jpg");
+	TextureBase* pbrCartAO = Assets::AssetManager::LoadTexture("Cart/cart_ao.png");
+	cartMaterial->AddTextureParameter("diffuseTex", pbrCartDiff);
+	cartMaterial->AddTextureParameter("bumpTex", pbrCartBump);
+	cartMaterial->AddTextureParameter("roughnessTex", pbrCartRough);
+	cartMaterial->AddTextureParameter("metalnessTex", pbrCartMet);
+	cartMaterial->AddTextureParameter("aoTex", pbrCartAO);
+	//If you don't have all of the textures just call this - it will fill in all the blank textures
+	cartMaterial->InitBasicTextureParams();
+
 	vector<std::string> faces {
 		"hw_alps/alps_ft.png",
 		"hw_alps/alps_bk.png",

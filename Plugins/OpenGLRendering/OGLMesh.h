@@ -27,8 +27,10 @@ namespace NCL {
 			~OGLMesh();
 
 			void RecalculateNormals();
+			void GenerateTangents();
 
 			void UploadToGPU() override;
+			bool OnGPU() { return onGpu; }
 
 			static OGLMesh* GenerateQuad();
 			static OGLMesh* GenerateQuad(float minX, float maxX, float minY, float maxY, int currentWidth, int currentHeight);
@@ -40,6 +42,9 @@ namespace NCL {
 
 			void BindVertexAttribute(int attribSlot, int bufferID, int bindingID, int elementCount, int elementSize, int elementOffset);
 
+			Vector3 GenerateTangent(const Vector3 &a, const Vector3 &b,
+				const Vector3& c, const Vector2 & ta,
+				const Vector2& tb, const Vector2 & tc);
 			//void BufferData();
 
 			int		subCount;
@@ -47,6 +52,8 @@ namespace NCL {
 			GLuint vao;
 			GLuint oglType;
 			GLuint buffers[MAX_BUFFER];
+
+			bool onGpu = false;
 		};
 	}
 }

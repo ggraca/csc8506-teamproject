@@ -150,7 +150,7 @@ namespace NCL {
 			bool	isActive;
 			bool	isAddedToWorld;
 			std::string	name;
-			void AddRenderObject(string filename, GameObject* root, const Vector3& dim, const Vector3& pos, const Quaternion& orient, Material* mat = nullptr);
+			void AddRenderObject(string filename, GameObject* root, const Vector3& dim, const Vector3& pos, const Quaternion& orient, Material* mat);
 
 		private:
 
