@@ -93,10 +93,10 @@ void CannonScript::Aim() {
 	//cout << y << endl;
 	//cannon->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(1, 0, 0), x) * Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), y));
 	cannon->GetTransform().SetLocalOrientation(Quaternion::AxisAngleToQuaternion(Vector3(0, 1, 0), y));
-}
+
 	NDiff = Diff.Normalised();
 	
-	float x, y, a,b;
+	float a,b;
 
 	x = -asin(NDiff.y);
 	y = asin(NDiff.x / (cos(asin(x))));
