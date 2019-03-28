@@ -182,8 +182,10 @@
     <ClCompile Include="CartPrefab.cpp" />
     <ClCompile Include="CastlePrefab.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ConePrefab.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="CubePrefab.cpp" />
+    <ClCompile Include="CylinderPrefab.cpp" />
     <ClCompile Include="DamageControl.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugMenu.cpp" />
@@ -252,8 +254,10 @@
     <ClInclude Include="CartPrefab.h" />
     <ClInclude Include="CastlePrefab.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ConePrefab.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="CubePrefab.h" />
+    <ClInclude Include="CylinderPrefab.h" />
     <ClInclude Include="DamageControl.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugMenu.h" />

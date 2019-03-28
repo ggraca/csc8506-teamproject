@@ -4,6 +4,7 @@
 #include "GameWorld.h"
 #include "BulletPhysics.h"
 #include "Debug.h"
+#include "AudioEngine.h"
 
 HammerControl::HammerControl(GameObject * gameObject):ScriptObject(gameObject)
 {
@@ -101,6 +102,7 @@ void HammerControl::HammerHit()
 	GameObject * colliding = GameObject::gameWorld->CollisionObjectToGameObject(GameObject::gameWorld->Raycast(gameObject->GetTransform().GetWorldPosition(), gameObject->GetTransform().GetWorldPosition() + (CalculateDirection() * 150), end));
 	if (colliding)
 	{		
+		GameObject::gameWorld->GetAudio()->PlayEvent("event:/hammar", gameObject->GetTransform().GetWorldPosition());
 		if (colliding->GetComponent<HealthManager*>())
 		{
 			colliding->GetComponent<HealthManager*>()->TakeDamage((int)handle->GetTransform().GetChildrenList().size());

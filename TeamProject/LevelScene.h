@@ -19,10 +19,7 @@ namespace NCL {
 			~LevelScene();
 			void GenerateResources();
 			void LoadWorld();
-			
-		protected:
 			void ResetWorld();
-
 		};
 	}
 }

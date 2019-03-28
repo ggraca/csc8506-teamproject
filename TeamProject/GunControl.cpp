@@ -1,6 +1,8 @@
 #include "GunControl.h"
 #include "PhysicsObject.h"
 #include "RenderObject.h"
+#include "AudioEngine.h"
+#include "GameWorld.h"
 
 #include "Debug.h"
 GunControl::GunControl()
@@ -103,7 +105,8 @@ void GunControl::FireObjectAndRemoveFromResources(GameObject * child)
 
 void GunControl::Fire()
 {
-	if (!leftGun || !rightGun) {return; }
+	GameObject::gameWorld->GetAudio()->PlayEvent("event:/small-gun", gameObject->GetTransform().GetWorldPosition());
+	if (!leftGun || !rightGun) { return; }
 
 	auto child = gameObject->GetComponent<Player*>()->GetResources()[0];
 

@@ -40,16 +40,10 @@ CAudioEngine::CAudioEngine() {
 	Init();
 	setNumList(1);
 	setMinMaxDistance(10.0f, 10000.0f);
-	LoadSound(Assets::SOUNDSDIR + "jaguar.wav", true, true, false);
-	LoadSound(Assets::SOUNDSDIR + "bat.wav", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "swords.mp3", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "1.mp3", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "2.mp3", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "ole.wav", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "thud.wav", true, false, false);
-	LoadSound(Assets::SOUNDSDIR + "jump.wav", true, false, false);
-	LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
-	LoadBank(Assets::SOUNDSDIR + "Test2\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+	
+	LoadSound(Assets::SOUNDSDIR + "Awaken.wav", false, true, false);
+	LoadBank(Assets::SOUNDSDIR + "Final\\Build\\Master Bank.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
+	LoadBank(Assets::SOUNDSDIR + "Final\\Build\\Master Bank.strings.bank", FMOD_STUDIO_LOAD_BANK_NORMAL);
 }
 
 void CAudioEngine::Init() {
@@ -71,7 +65,7 @@ void CAudioEngine::Update() {
 	sgpImplementation->Update();
 }
 
-void CAudioEngine::LoadSound(const string &strSoundName, bool b3d, bool bLooping, bool bStream) // loads sounds (filename, streaming (Y/N), looping (Y/N), 3D sound (Y/N)) this will store it in the sound cloud
+void CAudioEngine::LoadSound(const string &strSoundName, bool b3d, bool bLooping, bool bStream) // loads sounds (filename, 3D sound (Y/N), looping (Y/N), streaming (Y/N)) this will store it in the sound cloud
 {
 	auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
 	if (tFoundIt != sgpImplementation->mSounds.end())
@@ -193,8 +187,6 @@ void CAudioEngine::LoadEvent(const string& strEventName, const Vector3& vPositio
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_N)) { test.position = VectorToFmod(Vector3(10, 0, 0)); }
 	if (Window::GetKeyboard()->KeyPressed(KEYBOARD_B)) { test.position = VectorToFmod(Vector3(19, 0, 0)); }*/
 
-//	cout << "New event 1";
-
 	pEventInstance->set3DAttributes(&test);
 //	CAudioEngine::ErrorCheck(tFoundit->second->set3DAttributes(&position, NULL));
 }
@@ -207,8 +199,6 @@ void CAudioEngine::PlayEvent(const string& strEventName, const Vector3& vPositio
 		if (tFoundit == sgpImplementation->mEvents.end())
 			return;
 	}
-//	cout << "New event 2";
-
 
 	FMOD::Studio::EventDescription* pEventDescription = NULL;
 	CAudioEngine::ErrorCheck(sgpImplementation->mpStudioSystem->getEvent(strEventName.c_str(), &pEventDescription));
@@ -310,7 +300,6 @@ int CAudioEngine::ErrorCheck(FMOD_RESULT result) { //error checks
 		cout << "FMOD ERROR " << result << endl;
 		return 1;
 	}
-	// cout << "FMOD all good" << endl;
 	return 0;
 }
 
