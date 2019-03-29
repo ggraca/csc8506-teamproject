@@ -315,6 +315,7 @@ void Player::TakeDamage(int amount)
 	{
 		hp = 0;
 		isDead = true;
+		LoseResource(GetResourceCount());
 	}
 }
 
