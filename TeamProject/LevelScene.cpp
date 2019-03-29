@@ -38,7 +38,9 @@ LevelScene::LevelScene(Game* g, bool& quitGame) : GameScene(g, quitGame) {
 
 void LevelScene::ResetWorld() {
 
-	auto floor = new CubePrefab(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0), Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
+	auto floor = new CubePrefab(Vector3(2900, -10, 2900), Quaternion::AxisAngleToQuaternion(Vector3(0, 0, 0), 0),Vector3(3000, 10, 3000), 0, 1.0f, 1.0f);
+	floor->GetComponent<RenderObject*>()->SetBoundingRadius(4500.0f);
+
 	Matrix4 floorTexMat = floor->GetComponent<RenderObject*>()->GetMaterial()->GetTextureMatrix();
 	floor->GetComponent<RenderObject*>()->GetMaterial()->SetTextureMatrix(floorTexMat * Matrix4::Scale(Vector3(32.0f, 32.0f, 32.0f)));
 	floor->SetTag(LayerAndTag::Tags::Ground);

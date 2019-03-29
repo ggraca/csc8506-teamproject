@@ -114,6 +114,9 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Others</Filter>
     </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Others</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

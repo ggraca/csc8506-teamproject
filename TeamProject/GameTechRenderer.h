@@ -9,6 +9,7 @@
 #include "HUDObject.h"
 #include "CameraControl.h"
 #include "RenderObject.h"
+#include "../Common/Frustum.h"
 
 class Light;
 class HUDObject;
@@ -65,6 +66,7 @@ namespace NCL {
 
 			void BuildObjectList();
 			void SortObjectList();
+			vector<const RenderObject*>* FrustumCull(Frustum& frustum);
 			void RenderShadowMap();
 			void RenderSkybox();
 			void RenderCamera();
