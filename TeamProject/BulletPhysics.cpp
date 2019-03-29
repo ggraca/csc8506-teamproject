@@ -23,7 +23,7 @@ BulletPhysics::~BulletPhysics()
 		btRigidBody* body = btRigidBody::upcast(obj);
 		if (body && body->getMotionState())
 		{
-			//delete body->getMotionState();
+			delete body->getMotionState();
 		}
 		dynamicsWorld->removeCollisionObject(obj);
 		delete obj;
@@ -93,25 +93,25 @@ void BulletPhysics::UpdateObjectTransform(GameObject* go, btRigidBody* body) {
 	transform.SetLocalOrientation(orient);
 }
 
-void BulletPhysics::UpdateObjectPhysics(GameObject* go) {
-
-	Transform& transform = go->GetTransform();
-	transform.UpdateMatrices();
-
-	if (!go->GetComponent<PhysicsObject*>()) { return; }
-	auto body = go->GetComponent<PhysicsObject*>()->GetRigidbody();
-	if (!body) { return; }
-
-	btTransform trans;
-	if (body && body->getMotionState()) body->getMotionState()->getWorldTransform(trans);
-	else trans = body->getWorldTransform();
-
-	trans.setRotation(btQuaternion(transform.GetLocalOrientation().x, transform.GetLocalOrientation().y, transform.GetLocalOrientation().z, transform.GetLocalOrientation().w));
-	trans.setOrigin(btVector3(transform.GetWorldPosition().x, transform.GetWorldPosition().y, transform.GetWorldPosition().z));
-	
-	
-	body->setWorldTransform(trans);
-}
+//void BulletPhysics::UpdateObjectPhysics(GameObject* go) {
+//
+//	Transform& transform = go->GetTransform();
+//	transform.UpdateMatrices();
+//
+//	if (!go->GetComponent<PhysicsObject*>()) { return; }
+//	auto body = go->GetComponent<PhysicsObject*>()->GetRigidbody();
+//	if (!body) { return; }
+//
+//	btTransform trans;
+//	if (body && body->getMotionState()) body->getMotionState()->getWorldTransform(trans);
+//	else trans = body->getWorldTransform();
+//
+//	trans.setRotation(btQuaternion(transform.GetLocalOrientation().x, transform.GetLocalOrientation().y, transform.GetLocalOrientation().z, transform.GetLocalOrientation().w));
+//	trans.setOrigin(btVector3(transform.GetWorldPosition().x, transform.GetWorldPosition().y, transform.GetWorldPosition().z));
+//	
+//	
+//	body->setWorldTransform(trans);
+//}
 
 void BulletPhysics::EmitOnCollisionEnterEvents(map<btRigidBody*, vector<btRigidBody*>> &collisionPairs, map<btRigidBody*, GameObject*> &collisionObjectGameObjectPair) {
 	for (auto key : collisionPairs) {
@@ -164,11 +164,6 @@ const btCollisionObject* BulletPhysics::RaycastPosDir(const Vector3& Pos, const 
 }
 
 void BulletPhysics::UpdateBullet(float dt, int iterations) {
-
-	/*for (auto&i : gameWorld.GetGameObjectList())
-	{
-		UpdateObjectPhysics(i);
-	}*/
 
 	dynamicsWorld->stepSimulation(dt, iterations);
 

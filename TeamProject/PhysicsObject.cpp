@@ -18,7 +18,7 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 	Vector3 dimensions = transform->GetLocalScale();
 
 	if (type == cube) {
-		shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z))); //TODO Where is shape deleted?
+		shape = new btBoxShape(btVector3(btScalar(dimensions.x), btScalar(dimensions.y), btScalar(dimensions.z)));
 	}
 	if (type == sphere) {
 		shape = new btSphereShape(btScalar(dimensions.x));
@@ -30,16 +30,15 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		shape = new btConeShape(btScalar(0.5 * dimensions.x), btScalar(dimensions.y));
 	}
 	if (type == complexMesh) {
+		string simplifiedMeshFile = Assets::MESHDIR + "x_" + objFile;
 		objFile.erase(objFile.length() - 3);
 		objFile = objFile + "txt";
 
 		ifstream boxData(Assets::MESHDIR + objFile);
-		if (boxData) {
-			compound = new btCompoundShape(); //TODO Where is shape deleted?
+		if (boxData) { //If a text file, containing cuboid dimensions and positions to make compound collision shape, exists with same name as OBJ file
+			compound = new btCompoundShape();
 			string a;
 			int numBoxes;
-			float elem;
-
 			boxData >> a;
 			if (a == "cylinder") {
 				boxData >> a;
@@ -76,14 +75,19 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 		}
 		else {
 			btTriangleMesh* triangleMesh = new btTriangleMesh();
-			OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(objFile);
-			if (mesh->GetChildren().size() == 1) {
-				Vector3 vert1, vert2, vert3;
-				btVector3 vertex1, vertex2, vertex3;
-				for (int i = 0; i < (int)mesh->GetChildren()[0]->GetPositionData().size(); ) {
-					vert1 = mesh->GetChildren()[0]->GetPositionData()[i];
-					vert2 = mesh->GetChildren()[0]->GetPositionData()[i + 1];
-					vert3 = mesh->GetChildren()[0]->GetPositionData()[i + 2];
+			ifstream simplifiedMeshData(simplifiedMeshFile);                  //Simplified mesh files can be created with vhacd_vs2010.exe, located in bullet3-master\bin, drastically reducing the number of vertices
+			string fileName = objFile;										  //in an OBJ file, but maintaining almost the same volume, making such files ideal for feeding into Bullet to create precise collision
+			if (simplifiedMeshData) {										  //volumes. Such files must be prefixed with an "x_", and a couple of examples should be in the Meshes folder. Unfortunately, these collision
+				fileName = "x_" + objFile;									  //volumes don't work well if there are any direct interactions with the player avatar, since the decision was made to manipulate its 
+			}																  //position directly, temporarily overriding Bullet Physics and thus its collision response. Therefore, manually creating collision volumes 
+			OBJGeometry* mesh = Assets::AssetManager::LoadOBJ(fileName);	  //from text files was deemed the only method to achieve completely reliable and reasonably precise results. Thus, this is effectively 
+			Vector3 vert1, vert2, vert3;									  //legacy code, but is retained because quite a large amount of work and testing went into it!	
+			btVector3 vertex1, vertex2, vertex3;
+			for (int j = 0; j < mesh->GetChildren().size(); j++) {
+				for (int i = 0; i < (int)mesh->GetChildren()[j]->GetPositionData().size(); ) {
+					vert1 = mesh->GetChildren()[j]->GetPositionData()[i];
+					vert2 = mesh->GetChildren()[j]->GetPositionData()[i + 1];
+					vert3 = mesh->GetChildren()[j]->GetPositionData()[i + 2];
 
 					vertex1 = btVector3(vert1.x * dimensions.x, vert1.y * dimensions.y, vert1.z * dimensions.z);
 					vertex2 = btVector3(vert2.x * dimensions.x, vert2.y * dimensions.y, vert2.z * dimensions.z);
@@ -92,19 +96,19 @@ PhysicsObject::PhysicsObject(Transform* parentTransform, ShapeType type, float m
 					triangleMesh->addTriangle(vertex1, vertex2, vertex3);
 					i += 6; //obj file reader repeats every triplet of vertices
 				}
-				if (boxCollider) { //If true, create a box collision shape from minimum and maximum extents of mesh
-					meshShape = new btBvhTriangleMeshShape(triangleMesh, true);
-					btVector3 min, max;
-					btTransform t1;
-					t1.setIdentity();
-					meshShape->getAabb(t1, min, max);
-					shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ()))); //y-component of collision volume should really be halved, then translated up by half its height, but for static geometry this makes no difference!
-				}
-				else
-				{
-					shape = new btBvhTriangleMeshShape(triangleMesh, true);
-				}
 			}
+			if (boxCollider) { //If true, create a box collision shape from minimum and maximum extents of mesh
+				meshShape = new btBvhTriangleMeshShape(triangleMesh, true);
+				btVector3 min, max;
+				btTransform t1;
+				t1.setIdentity();
+				meshShape->getAabb(t1, min, max);
+				shape = new btBoxShape(btVector3(0.5 * btScalar(max.getX() - min.getX()), btScalar(max.getY() - min.getY()), 0.5 * btScalar(max.getZ() - min.getZ()))); //y-component of collision volume should really be halved, then translated up by half its height, but for static geometry this makes no difference!
+			}
+			else
+			{
+				shape = new btBvhTriangleMeshShape(triangleMesh, true);
+			}		
 		}
 	}
 	SetBulletPhysicsParameters();
@@ -148,11 +152,4 @@ void PhysicsObject::SetBulletPhysicsParameters()
 	body->setRestitution(restitution);
 	body->setRollingFriction(0.9);
 	body->setSpinningFriction(0.3);
-
-	/*if (!isDynamic)
-	{
-		body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
-		body->setActivationState(DISABLE_DEACTIVATION);
-	}*/
-	
 }

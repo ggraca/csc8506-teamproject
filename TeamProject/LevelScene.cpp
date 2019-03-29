@@ -51,6 +51,17 @@ void LevelScene::ResetWorld() {
 
 	GenerateResources();
 
+	for (int i = 0; i < 10; ++i)
+	{
+		auto cone = new ConePrefab(Vector3(100.7f, 100.7f, 100.7f), Vector3(300.0f * i, 150.0f, 1800.0f), Quaternion::AxisAngleToQuaternion(Vector3(1.0f, 0.0f, 0.0f), 45.0f), 100, 0.9, 0.5);
+	}
+
+
+	for (int i = 0; i < 10; ++i)
+	{
+		auto cylinder = new CylinderPrefab(Vector3(50.7f, 100.7f, 50.7f), Vector3(300.0f * i, 150.0f, 1800.0f), Quaternion::AxisAngleToQuaternion(Vector3(0.0f, 1.0f, 1.0f), 45.0f), 100, 0.9, 0.5);
+	}
+
 	world->LateInstantiateRecursively(player);
 
 	LoadWorld();
@@ -89,7 +100,6 @@ void LevelScene::LoadWorld() {
 	infile >> z_length;
 
 	if (!infile) { std::cout << "no file" << std::endl; }
-
 
 	for (float i = 0; i < (x_length);i++) {
 		for (float j = 0; j < (z_length); j++) {

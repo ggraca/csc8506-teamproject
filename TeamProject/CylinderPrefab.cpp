@@ -7,7 +7,6 @@ CylinderPrefab::CylinderPrefab(const Vector3 dimensions, const Vector3& position
 
 	AddRenderObject(filename, this, dimensions, position, orient, mat);
 	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::cylinder, mass, restitution, friction, filename));
-	gameWorld->AddObjectPhysicsToWorld(this->GetComponent<PhysicsObject*>());
 	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::Cylinder));
 }
 
