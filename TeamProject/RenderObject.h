@@ -44,7 +44,7 @@ namespace NCL {
 			Material* material;
 			Transform*		transform;
 
-			float boundingRadius = 100.0f;
+			float boundingRadius = 1000.0f;
 
 			bool materialInstanced = false;
 		};
