@@ -78,7 +78,7 @@ void NetworkServer::OnClientConnect(int source) {
 		Transform t = o->GetGameObject()->GetTransform();
 		Vector3 pos = t.GetWorldPosition();
 		Quaternion rot = t.GetWorldOrientation();
-		Vector3 sca = t.GetLocalScale();
+		Vector3 sca = t.GetWorldScale();
 		bool ia = o->GetGameObject()->IsActive();
 
 		InstantiatePacket p = InstantiatePacket(o->GetPrefabId(), o->GetId(), pos, rot, sca, ia);

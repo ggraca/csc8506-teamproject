@@ -53,10 +53,7 @@ void Game::ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server)
 	currentScene = newScene;
 	renderer->HUDState(true);
 	currentScene->SetRenderer(renderer);
-	network = new NetworkManager(server);
 	renderer->SetGameWorld(currentScene->GetGameWorld());
-	currentScene->GetGameWorld()->SetNetwork(network->GetEntity());
-	network->GetEntity()->SetWorld(currentScene->GetGameWorld());
 	Debug::SetRenderer(renderer);
 }
 

@@ -41,6 +41,8 @@ MenuScene::~MenuScene()
 void LoadScene(LevelScene** scene, Game* game, bool& HasLoaded) {
 	std::cout << "Loading" << std::endl;
 	*scene = new LevelScene(game, game->QuittingGame());
+	(*scene)->GetGameWorld()->SetNetwork(game->GetNetwork()->GetEntity());
+	game->GetNetwork()->GetEntity()->SetWorld((*scene)->GetGameWorld());
 	(*scene)->ResetWorld();
 	HasLoaded = true;
 	std::cout << "Loading finished" << std::endl;
@@ -123,8 +125,9 @@ void MenuScene::MenuUpdate(float dt)
 		{
 			//Create Game
 			std::cout << "Starting load thread" << std::endl;
-			bool server = true;
+			server = true;
 			loading = true;
+			game->CreateNetwork(server);
 			loadingThread = new std::thread(LoadScene, std::ref(threadScenePtr), std::ref(game), std::ref(loadingFinished));
 			loadingThread->detach();
 		}
@@ -132,8 +135,9 @@ void MenuScene::MenuUpdate(float dt)
 		{
 			//Join Game
 			std::cout << "Starting load thread" << std::endl;
-			bool server = false;
+			server = false;
 			loading = true;
+			game->CreateNetwork(server);
 			loadingThread = new std::thread(LoadScene, std::ref(threadScenePtr), std::ref(game), std::ref(loadingFinished));
 			loadingThread->detach();
 		}
