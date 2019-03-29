@@ -4,8 +4,9 @@
 CastlePrefab::CastlePrefab(const Vector3& dimensions, const Vector3& position, const Quaternion& orient)
 {
 	string filename = "bau.obj";
+	Material* mat = Assets::AssetManager::GetMaterial("Castle Material");
 
-	AddRenderObject(filename, this, dimensions, position, orient);
+	AddRenderObject(filename, this, dimensions, position, orient, mat);
 	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::complexMesh, 0, 0, 0, filename));
 	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::Castle));
 	SetTag(LayerAndTag::Tags::Ground);

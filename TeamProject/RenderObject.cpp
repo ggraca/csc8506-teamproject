@@ -8,6 +8,7 @@ RenderObject::RenderObject(Transform* parentTransform, MeshGeometry* mesh, Mater
 	this->transform	= parentTransform;
 	this->mesh		= mesh;
 	this->material = material;
+	SetMaterialInstanced();
 }
 
 RenderObject::~RenderObject() {

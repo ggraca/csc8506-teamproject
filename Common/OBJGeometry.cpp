@@ -72,9 +72,9 @@ bool OBJGeometry::LoadOBJMesh(std::string filename) {
 	f.close();
 
 	// We now know where the materials are defined and we can import them with our Asset Manager
-	for (auto filename : mtlFiles) {
+	/*for (auto filename : mtlFiles) {
 		LoadMaterialsFromMTL(filename);
-	}
+	}*/
 
 	// We now have all our mesh data loaded in...Now to convert it into OpenGL vertex buffers!
 	for (unsigned int i = 0; i < inputSubMeshes.size(); ++i) {	
@@ -88,9 +88,7 @@ bool OBJGeometry::LoadOBJMesh(std::string filename) {
 OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals) {
 	if (sm->vertIndices.empty()) return nullptr;
 
-	ShaderBase* pbrShader = Assets::AssetManager::LoadShader("PBRShader", "pbrvert.glsl", "pbrfrag.glsl");
-	Material* material = Assets::AssetManager::LoadMaterial(sm->mtlType, pbrShader);
-	OBJMesh* m = new OBJMesh(material);
+	OBJMesh* m = new OBJMesh();
 
 	for (unsigned int j = 0; j < sm->vertIndices.size(); ++j) {
 		m->positions.push_back(inputVertices[sm->vertIndices[j] - 1]);
@@ -116,9 +114,7 @@ OBJMesh* OBJMesh::FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, ve
 	}
 
 	// TODO: Tangents
-	// m->GenerateTangents();
-
-	m->UploadToGPU();
+	m->GenerateTangents();
 
 	return m;
 }

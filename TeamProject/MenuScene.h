@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "MenuEntry.h"
 #include "Game.h"
+#include <thread>
+#include "LevelScene.h"
 
 class MenuScene : public Scene
 {
@@ -18,5 +20,14 @@ public:
 protected:
 	map<int, std::vector<MenuEntry>> menuEntries;
 	int menuPathIndex;
+	bool server = true;
+
+	bool loading = false;
+	bool loadingFinished = false;
+	float loadingtimer = 0.0f;
+	int loadingDots = 0;
+	LevelScene* loadedScene = nullptr;
+	LevelScene** threadScenePtr = &loadedScene;
+	std::thread* loadingThread = nullptr;
 };
 

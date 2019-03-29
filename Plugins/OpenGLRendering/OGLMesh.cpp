@@ -83,6 +83,8 @@ void OGLMesh::UploadToGPU() {
 	}
 
 	glBindVertexArray(0);
+
+	onGpu = true;
 }
 
 OGLMesh* OGLMesh::GenerateQuad() {
@@ -207,4 +209,51 @@ void OGLMesh::RecalculateNormals() {
 	else {
 
 	}
+}
+
+void OGLMesh::GenerateTangents() {
+	if (indices.size() > 0) {
+		for (GLuint i = 0; i < indices.size(); i += 3) {
+			int a = indices[i];
+			int b = indices[i + 1];
+			int c = indices[i + 2];
+
+			Vector3 tangent = GenerateTangent(positions[a], positions[b], positions[c],
+				texCoords[a], texCoords[b], texCoords[c]);
+
+			tangents[a] += tangent;
+			tangents[b] += tangent;
+			tangents[c] += tangent;
+		}
+	}
+	else {
+		for (size_t i = 0; i < positions.size(); i += 3) {
+			Vector3 tangent = GenerateTangent(positions[i], positions[i + 1], positions[i + 2],
+				texCoords[i], texCoords[i + 1], texCoords[i + 2]);
+
+			tangents.push_back(tangent);
+			tangents.push_back(tangent);
+			tangents.push_back(tangent);
+		}
+	}
+	for (GLuint i = 0; i < positions.size(); ++i) {
+		tangents[i].Normalise();
+	}
+}
+
+
+Vector3 OGLMesh::GenerateTangent(const Vector3 &a, const Vector3 &b,
+	const Vector3& c, const Vector2 & ta,
+	const Vector2& tb, const Vector2 & tc) {
+	Vector2 coord1 = tb - ta;
+	Vector2 coord2 = tc - ta;
+
+	Vector3 vertex1 = b - a;
+	Vector3 vertex2 = c - a;
+
+	Vector3 axis = Vector3(vertex1 * coord2.y - vertex2 * coord1.y);
+
+	float factor = 1.0f / (coord1.x * coord2.y - coord2.x * coord1.y);
+
+	return axis * factor;
 }

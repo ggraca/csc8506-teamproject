@@ -4,8 +4,9 @@
 MarketPrefab::MarketPrefab(const Vector3& dimensions, const Vector3& position, const Quaternion& orient)
 {
 	string filename = "market-stand.obj";
+	Material* mat = Assets::AssetManager::GetMaterial("Market Material");
 
-	AddRenderObject(filename, this, dimensions, position, orient);
+	AddRenderObject(filename, this, dimensions, position, orient, mat);
 	AddComponent<PhysicsObject*>((Component*)new PhysicsObject(&GetTransform(), ShapeType::complexMesh, 0, 0, 0, filename));
 	AddComponent<NetworkObject*>(new NetworkObject(this, NetworkObject::Market));
 	SetTag(LayerAndTag::Tags::Ground);

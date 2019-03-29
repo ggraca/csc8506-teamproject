@@ -17,9 +17,10 @@ public:
 	bool& QuittingGame() { return quitGame; }
 	void ChangeCurrentScene(Scene* newScene, GameTechRenderer* r, bool server);
 	CAudioEngine* GetAudio() const { return audio; }
+	NetworkManager* GetNetwork() const { return network; }
+	void CreateNetwork(bool server) { network = new NetworkManager(server); }
 
 private:
-	Console console;
 	Scene* currentScene;
 	GameTechRenderer* renderer;
 	bool quitGame = false;

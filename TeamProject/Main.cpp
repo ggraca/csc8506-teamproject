@@ -9,7 +9,7 @@ using namespace NCL;
 int main(int argc, char** argv) {
 	srand(unsigned(time(NULL)));
 
-	Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200,true);
+	Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, false);
 	//Window*w = Window::CreateGameWindow("Team Project!", 1920, 1200, true);
 	if (!w->HasInitialised()) return -1;
 

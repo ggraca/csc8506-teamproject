@@ -52,6 +52,16 @@ Rendering::ShaderBase* Assets::AssetManager::LoadShader(const string& shadername
 	return newShader;
 }
 
+Rendering::ShaderBase* Assets::AssetManager::GetShader(const string& shadername) {
+	auto iter = GetInstance().loadedShaders.find(shadername);
+
+	if (iter != GetInstance().loadedShaders.end()) {
+		return (*iter).second;
+	}
+
+	return nullptr;
+}
+
 MeshGeometry* Assets::AssetManager::LoadMesh(const std::string& filename) {
 	auto iter = GetInstance().loadedMeshes.find(filename);
 
@@ -63,7 +73,6 @@ MeshGeometry* Assets::AssetManager::LoadMesh(const std::string& filename) {
 	MeshGeometry* newMesh = (MeshGeometry*) new Rendering::OGLMesh(filename);
 	// .msh files have always triangles as faces
 	newMesh->SetPrimitiveType(GeometryPrimitive::Triangles);
-	newMesh->UploadToGPU();
 	GetInstance().loadedMeshes.insert(std::make_pair(filename, newMesh));
 	return newMesh;
 }
@@ -92,6 +101,16 @@ Rendering::Material* Assets::AssetManager::LoadMaterial(const std::string& mater
 	newMaterial->SetShader(shader);
 	GetInstance().loadedMaterials.insert(std::make_pair(materialname, newMaterial));
 	return newMaterial;
+}
+
+Rendering::Material* Assets::AssetManager::GetMaterial(const std::string& materialname) {
+	auto iter = GetInstance().loadedMaterials.find(materialname);
+
+	if (iter != GetInstance().loadedMaterials.end()) {
+		return (*iter).second;
+	}
+	
+	return nullptr;
 }
 
 void Assets::AssetManager::FlushTextures() {

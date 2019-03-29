@@ -1,5 +1,4 @@
 #include "MenuScene.h"
-#include "LevelScene.h"
 #include "PhysicsScene.h"
 #include "NetworkExampleScene.h"
 
@@ -39,10 +38,52 @@ MenuScene::~MenuScene()
 {
 }
 
+void LoadScene(LevelScene** scene, Game* game, bool& HasLoaded) {
+	std::cout << "Loading" << std::endl;
+	*scene = new LevelScene(game, game->QuittingGame());
+	(*scene)->GetGameWorld()->SetNetwork(game->GetNetwork()->GetEntity());
+	game->GetNetwork()->GetEntity()->SetWorld((*scene)->GetGameWorld());
+	(*scene)->ResetWorld();
+	HasLoaded = true;
+	std::cout << "Loading finished" << std::endl;
+}
+
 void MenuScene::Update(float dt)
 {
-	ShowMenu();
-	MenuUpdate(dt);
+	if (!loading) {
+		ShowMenu();
+		MenuUpdate(dt);
+	}
+	else {
+		loadingtimer += dt;
+		if (loadingtimer > 0.2f) {
+			loadingDots < 3 ? loadingDots++ : loadingDots = 0;
+			loadingtimer = 0.0f;
+		}
+
+		std::string loadingString = "Loading";
+
+		switch (loadingDots) {
+		case 1:
+			loadingString += ".";
+			break;
+		case 2:
+			loadingString += "..";
+			break;
+		case 3:
+			loadingString += "...";
+			break;
+		default:
+			break;
+		}
+
+		renderer->DrawString(loadingString, Vector2(100.0f, 100.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), 2.0f);
+
+		if (loadingFinished) {
+			game->ChangeCurrentScene(loadedScene, loadedScene->GetRenderer(), server);
+			delete loadingThread;
+		}
+	}
 }
 
 void MenuScene::MenuUpdate(float dt)
@@ -83,16 +124,22 @@ void MenuScene::MenuUpdate(float dt)
 		if (menuPathIndex == 0 && menuEntries[0][0].selected)
 		{
 			//Create Game
-			LevelScene* newScene = new LevelScene(game, game->QuittingGame());
-			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), true);
-			newScene->ResetWorld();
+			std::cout << "Starting load thread" << std::endl;
+			server = true;
+			loading = true;
+			game->CreateNetwork(server);
+			loadingThread = new std::thread(LoadScene, std::ref(threadScenePtr), std::ref(game), std::ref(loadingFinished));
+			loadingThread->detach();
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][1].selected)
 		{
 			//Join Game
-			LevelScene* newScene = new LevelScene(game, game->QuittingGame());
-			game->ChangeCurrentScene(newScene, newScene->GetRenderer(), false);
-			newScene->ResetWorld();
+			std::cout << "Starting load thread" << std::endl;
+			server = false;
+			loading = true;
+			game->CreateNetwork(server);
+			loadingThread = new std::thread(LoadScene, std::ref(threadScenePtr), std::ref(game), std::ref(loadingFinished));
+			loadingThread->detach();
 		}
 		else if (menuPathIndex == 0 && menuEntries[0][2].selected)
 		{

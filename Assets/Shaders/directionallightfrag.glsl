@@ -74,7 +74,7 @@ void main (void) {
         
     vec3 numerator    = NDF * G * F;
     float denominator = 4.0f * max(dot(normal, viewDir), 0.0f) * max(dot(normal, lightDir), 0.0f);
-    vec3 specular     = reflection * (1.0f - (kDiffuse + kSpecular)) + numerator / max(denominator, 0.001f);
+    vec3 specular     = numerator / max(denominator, 0.001f);
 	
 	float NdotL = max(dot(normal, lightDir), 0.0f);
 	
@@ -97,6 +97,9 @@ void main (void) {
 		radiance *= shadow;
 		specular *= shadow;
 	}
+	
+	//ambient specular
+	specular += reflection * (1.0f - (kDiffuse + kSpecular));
 	
 	fragColour [0] = vec4(radiance, 1.0f);
 	fragColour [1] = vec4(specular, 1.0f);

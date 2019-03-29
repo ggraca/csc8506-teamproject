@@ -87,8 +87,7 @@ struct OBJSubMesh {
 // TODO: Make this compatible with PS4
 class OBJMesh : public OGLMesh {
 public:
-	OBJMesh(NCL::Rendering::Material* mat) : material(mat) {}
-	NCL::Rendering::Material* material = nullptr; // TODO: fix this naming
+	OBJMesh() {}
 	static OBJMesh* FromSubMesh(OBJSubMesh* sm, vector<Vector3>& inputVertices, vector<Vector2>& inputTexCoords, vector<Vector3>& inputNormals);
 };
 

@@ -9,6 +9,7 @@
 #include "HUDObject.h"
 #include "CameraControl.h"
 #include "RenderObject.h"
+#include "../Common/Frustum.h"
 
 class Light;
 class HUDObject;
@@ -18,6 +19,19 @@ namespace NCL {
 		class RenderObject;
 		class ParticleSystem;
 		class PixOpsFlags;
+
+		enum class DebugRenderState {
+			STANDARD,
+			DEPTH,
+			NORMAL,
+			DIFFUSE,
+			MATERIAL,
+			EMISSIVE,
+			SPECULAR,
+			SHADOW,
+			MAX
+		};
+
 		class GameTechRenderer : public OGLRenderer	{
 		public:
 			GameTechRenderer();
@@ -52,6 +66,7 @@ namespace NCL {
 
 			void BuildObjectList();
 			void SortObjectList();
+			vector<const RenderObject*>* FrustumCull(Frustum& frustum);
 			void RenderShadowMap();
 			void RenderSkybox();
 			void RenderCamera();
@@ -62,6 +77,7 @@ namespace NCL {
 			void PresentScene();
 
 			void SetupDebugMatrix(OGLShader*s) override;
+			void RegisterRenderConsoleCommands();
 
 			vector<const RenderObject*> activeObjects;
 			vector<const Light*> activeLights;
@@ -116,6 +132,7 @@ namespace NCL {
 			int vertsDrawn = 0;
 			int shadowCasters = 0;
 			bool drawShadows = true;
+			DebugRenderState activeRenderState = DebugRenderState::STANDARD;
 		};
 	}
 }

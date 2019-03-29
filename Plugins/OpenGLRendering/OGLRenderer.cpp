@@ -134,6 +134,9 @@ void OGLRenderer::BindMesh(MeshGeometry*m) {
 		boundMesh = nullptr;
 	}
 	else if (OGLMesh* oglMesh = dynamic_cast<OGLMesh*>(m)) {
+		if (!oglMesh->OnGPU()) {
+			oglMesh->UploadToGPU();
+		}
 		if (oglMesh->GetVAO() == 0) {
 			std::cout << __FUNCTION__ << " has received invalid mesh?!" << std::endl;
 		}
