@@ -657,7 +657,7 @@ void GameTechRenderer::RenderHUD()
 		if (i == 0)
 		{
 			glEnable(GL_SCISSOR_TEST);
-			glScissor(GLint(10.0f + 170.0f * (1.0f - health)), 180, 655, 685);
+			glScissor(GLint(10.0f + 170.0f * (1.0f - health)), 180, currentWidth - 60, currentHeight - 60);
 		}
 
 		glActiveTexture(GL_TEXTURE8);
