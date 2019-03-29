@@ -85,6 +85,7 @@ void GunControl::DeactivateGun()
 void GunControl::FireObjectAndRemoveFromResources(std::vector<GameObject *> &children, int i )
 {
 	children[i]->GetComponent<Resource*>()->Reset();
+	children[i]->SetTag(gameObject->GetComponent<Player*>()->GetResourceTag());
 	children[i]->GetComponent<DamageControl*>()->SetDamage(idealProjectileDamage);
 
 	Vector3 projMov = (GetCameraPosition() + (CalculateDirection() * projectileSpeed)) - children[i]->GetTransform().GetWorldPosition();
@@ -96,7 +97,7 @@ void GunControl::FireObjectAndRemoveFromResources(GameObject * child)
 {
 	child->GetComponent<Resource*>()->Reset();
 	child->GetComponent<DamageControl*>()->SetDamage(idealProjectileDamage);
-
+	child->SetTag(gameObject->GetComponent<Player*>()->GetResourceTag());
 	Vector3 projMov = (GetCameraPosition() + (CalculateDirection() * projectileSpeed)) - child->GetTransform().GetWorldPosition();
 	child->GetComponent<PhysicsObject*>()->SetLinearVelocity(projMov);
 	gameObject->GetComponent<Player*>()->LoseResource(child);

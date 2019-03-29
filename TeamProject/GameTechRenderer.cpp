@@ -521,7 +521,7 @@ void GameTechRenderer::RenderPostProcess() {
 
 	DoPostProcess = false;
 	if (DoPostProcess) {
-		for (int i = 0; i < postProcessShaders.size(); i++)
+		for (int i = 0; i < (int)postProcessShaders.size(); i++)
 		{
 			int currentRendererdPostTex = (lastRendererdPostTex + 1) % 2;
 			//Create bind texture to framebuffer color attachment

@@ -96,6 +96,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib</AdditionalDependencies>
@@ -110,6 +111,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>BulletDynamics_vs2010.lib;BulletCollision_vs2010.lib;LinearMath_vs2010.lib</AdditionalDependencies>
@@ -126,6 +128,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -144,6 +147,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Plugins\Bullet\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BT_THREADSAFE=1;BT_USE_DOUBLE_PRECISION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
