@@ -290,6 +290,7 @@ void Player::LoseResource(int amount)
 	
 	for (int i = 0; i < amount; i++)
 	{
+		if (resources[0]->GetComponent<Resource*>()) { resources[0]->GetComponent<Resource*>()->Reset(); }
 		resources.erase(resources.begin());
 	}
 }
@@ -315,7 +316,9 @@ void Player::TakeDamage(int amount)
 	{
 		hp = 0;
 		isDead = true;
+		LoseResource(GetResourceCount());
 	}
+
 }
 
 
